@@ -1,6 +1,8 @@
 # FigmaGen
 [![Travis CI](https://travis-ci.org/hhru/FigmaGen.svg?branch=master)](https://travis-ci.org/hhru/FigmaGen)
-[![Codecov](https://codecov.io/gh/hhru/FigmaGen/branch/master/graph/badge.svg)](https://codecov.io/gh/hhru/FigmaGen)
+[![Version](https://img.shields.io/github/v/release/hhru/FigmaGen)](https://github.com/hhru/FigmaGen/releases)
+[![Xcode](https://img.shields.io/badge/Xcode-11-blue.svg)](https://developer.apple.com/xcode)
+[![Swift](https://img.shields.io/badge/Swift-5.1-orange.svg)](https://swift.org)
 [![License](https://img.shields.io/github/license/hhru/FigmaGen.svg?style=flat)](https://opensource.org/licenses/MIT)
 
 <!-- TODO: Add description -->
