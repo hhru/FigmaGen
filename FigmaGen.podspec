@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'FigmaGen'
-  spec.version = '1.0.0'
+  spec.version = `make version`
   spec.summary = 'A tool to automate resources using the Figma API.'
 
   spec.homepage = 'https://github.com/hhru/FigmaGen'
