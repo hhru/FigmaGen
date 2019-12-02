@@ -1,0 +1,13 @@
+base:
+  accessToken: 27366-f263f20e-ba21-4bfb-abc9-926db2e4081a
+  fileKey: ZvsRf99Ik11qS4PjS6MAFc
+
+colors:
+  includingNodes:
+    - 7:24
+  destinationPath: FigmaGenDemo/Generated/Colors.swift
+
+textStyles:
+  includingNodes:
+    - 3:19
+  destinationPath: FigmaGenDemo/Generated/TextStyle.swift
