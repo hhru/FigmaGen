@@ -14,5 +14,5 @@ protocol NodesExtractor {
         from file: FigmaFile,
         including includingNodeIDs: [String]?,
         excluding excludingNodeIDs: [String]?
-    ) -> [FigmaNode]
+    ) throws -> [FigmaNode]
 }

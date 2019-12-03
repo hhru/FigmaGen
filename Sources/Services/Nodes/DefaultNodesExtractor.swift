@@ -42,6 +42,22 @@ final class DefaultNodesExtractor {
             )
         }
     }
+
+    private func resolveNodeID(_ nodeID: String) throws -> String {
+        guard let unescapedNodeID = nodeID.removingPercentEncoding else {
+            throw NodesError.invalidNodeID(nodeID)
+        }
+
+        return unescapedNodeID
+    }
+
+    private func resolveNodeIDs(_ nodeIDs: [String]?, defaultNodeIDs: Set<String>) throws -> Set<String> {
+        guard let nodeIDs = nodeIDs, !nodeIDs.isEmpty else {
+            return defaultNodeIDs
+        }
+
+        return try Set(nodeIDs.map { try resolveNodeID($0) })
+    }
 }
 
 extension DefaultNodesExtractor: NodesExtractor {
@@ -52,13 +68,9 @@ extension DefaultNodesExtractor: NodesExtractor {
         from file: FigmaFile,
         including includingNodeIDs: [String]?,
         excluding excludingNodeIDs: [String]?
-    ) -> [FigmaNode] {
-        var includingNodeIDs = Set(includingNodeIDs ?? [])
-        var excludingNodeIDs = Set(excludingNodeIDs ?? [])
-
-        if includingNodeIDs.isEmpty {
-            includingNodeIDs.insert(file.document.id)
-        }
+    ) throws -> [FigmaNode] {
+        var includingNodeIDs = try self.resolveNodeIDs(includingNodeIDs, defaultNodeIDs: [file.document.id])
+        var excludingNodeIDs = try self.resolveNodeIDs(excludingNodeIDs, defaultNodeIDs: [])
 
         return extractNodes(
             from: file.document,
