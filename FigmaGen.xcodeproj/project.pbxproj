@@ -104,6 +104,7 @@
 		C0F775AE235846CC00389DD2 /* FigmaAPIRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F775AD235846CC00389DD2 /* FigmaAPIRoute.swift */; };
 		C0F775B0235846E400389DD2 /* FigmaAPIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F775AF235846E400389DD2 /* FigmaAPIVersion.swift */; };
 		C0F775B22358473A00389DD2 /* FigmaAPIHTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F775B12358473A00389DD2 /* FigmaAPIHTTPMethod.swift */; };
+		C0FE20712395E0DE003A6701 /* NodesError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FE20702395E0DE003A6701 /* NodesError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -229,6 +230,7 @@
 		C0F775AD235846CC00389DD2 /* FigmaAPIRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigmaAPIRoute.swift; sourceTree = "<group>"; };
 		C0F775AF235846E400389DD2 /* FigmaAPIVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigmaAPIVersion.swift; sourceTree = "<group>"; };
 		C0F775B12358473A00389DD2 /* FigmaAPIHTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigmaAPIHTTPMethod.swift; sourceTree = "<group>"; };
+		C0FE20702395E0DE003A6701 /* NodesError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodesError.swift; sourceTree = "<group>"; };
 		EE68917070188EC570F805C2 /* Pods-FigmaGen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FigmaGen.debug.xcconfig"; path = "Target Support Files/Pods-FigmaGen/Pods-FigmaGen.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -433,8 +435,9 @@
 		C0AF9F5023685AA400BE7DE8 /* Nodes */ = {
 			isa = PBXGroup;
 			children = (
-				C0AF9F5123685F2600BE7DE8 /* NodesExtractor.swift */,
 				C0AF9F5323685F4100BE7DE8 /* DefaultNodesExtractor.swift */,
+				C0FE20702395E0DE003A6701 /* NodesError.swift */,
+				C0AF9F5123685F2600BE7DE8 /* NodesExtractor.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -827,6 +830,7 @@
 				C0A4A17F235F5A390063FBE4 /* FigmaLayoutHorizontalConstraint.swift in Sources */,
 				C0A4A163235F5A390063FBE4 /* FigmaTextVerticalAlignment.swift in Sources */,
 				C0A4A16B235F5A390063FBE4 /* FigmaFile.swift in Sources */,
+				C0FE20712395E0DE003A6701 /* NodesError.swift in Sources */,
 				C06B053023633E9200DC2754 /* Services.swift in Sources */,
 				C0A4A180235F5A390063FBE4 /* FigmaComponent.swift in Sources */,
 				C05FD353235CC33E0042552E /* FigmaAPIFileRoute.swift in Sources */,
