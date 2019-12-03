@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AFE041D194175900330B172F /* Pods_FigmaGenDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A08B87D96CA942F42C11557 /* Pods_FigmaGenDemo.framework */; };
 		C09AD30D238FFE0F005C787A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09AD30C238FFE0F005C787A /* AppDelegate.swift */; };
 		C09AD311238FFE0F005C787A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09AD310238FFE0F005C787A /* ViewController.swift */; };
 		C09AD314238FFE0F005C787A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C09AD312238FFE0F005C787A /* Main.storyboard */; };
@@ -23,8 +22,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5A08B87D96CA942F42C11557 /* Pods_FigmaGenDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FigmaGenDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6A6F335D078F0E78DF698169 /* Pods-FigmaGenDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FigmaGenDemo.debug.xcconfig"; path = "Target Support Files/Pods-FigmaGenDemo/Pods-FigmaGenDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		C09AD309238FFE0F005C787A /* FigmaGenDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FigmaGenDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C09AD30C238FFE0F005C787A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C09AD310238FFE0F005C787A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -39,7 +36,6 @@
 		C0FE205E239573BF003A6701 /* SF-Pro-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Bold.otf"; sourceTree = "<group>"; };
 		C0FE205F239573BF003A6701 /* SF-Pro-Display-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Medium.otf"; sourceTree = "<group>"; };
 		C0FE2061239573BF003A6701 /* SF-Pro-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Semibold.otf"; sourceTree = "<group>"; };
-		FF883DA9DB440051A459952C /* Pods-FigmaGenDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FigmaGenDemo.release.xcconfig"; path = "Target Support Files/Pods-FigmaGenDemo/Pods-FigmaGenDemo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,26 +43,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AFE041D194175900330B172F /* Pods_FigmaGenDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		53A75683CDA42127D551B3E8 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				5A08B87D96CA942F42C11557 /* Pods_FigmaGenDemo.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		ADEF70126F46E67B4691E364 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6A6F335D078F0E78DF698169 /* Pods-FigmaGenDemo.debug.xcconfig */,
-				FF883DA9DB440051A459952C /* Pods-FigmaGenDemo.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -88,7 +73,6 @@
 				C09AD30B238FFE0F005C787A /* FigmaGenDemo */,
 				C09AD30A238FFE0F005C787A /* Products */,
 				ADEF70126F46E67B4691E364 /* Pods */,
-				53A75683CDA42127D551B3E8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -140,7 +124,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C09AD31D238FFE10005C787A /* Build configuration list for PBXNativeTarget "FigmaGenDemo" */;
 			buildPhases = (
-				D090400194E34F385CBEF1CB /* [CP] Check Pods Manifest.lock */,
 				C09AD305238FFE0F005C787A /* Sources */,
 				C09AD306238FFE0F005C787A /* Frameworks */,
 				C09AD307238FFE0F005C787A /* Resources */,
@@ -204,31 +187,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		D090400194E34F385CBEF1CB /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-FigmaGenDemo-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C09AD305238FFE0F005C787A /* Sources */ = {
@@ -380,7 +338,6 @@
 		};
 		C09AD31E238FFE10005C787A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6A6F335D078F0E78DF698169 /* Pods-FigmaGenDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -398,7 +355,6 @@
 		};
 		C09AD31F238FFE10005C787A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FF883DA9DB440051A459952C /* Pods-FigmaGenDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
