@@ -49,13 +49,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		ADEF70126F46E67B4691E364 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		C05B3B762393CF020042A8AA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -72,7 +65,6 @@
 			children = (
 				C09AD30B238FFE0F005C787A /* FigmaGenDemo */,
 				C09AD30A238FFE0F005C787A /* Products */,
-				ADEF70126F46E67B4691E364 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
