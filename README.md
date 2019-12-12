@@ -5,99 +5,95 @@
 [![Swift](https://img.shields.io/badge/Swift-5.1-orange.svg)](https://swift.org)
 [![License](https://img.shields.io/github/license/hhru/FigmaGen.svg?style=flat)](https://opensource.org/licenses/MIT)
 
-FigmaGen - инструмент командной строки для генерации кода на основе библиотеки компонентов в Figma.
+FigmaGen - a command line tool to generate code for UI styles using Figma components.
 
-Поддерживает генерацию:
-- цветовых стилей
-- текстовых стилей
+It can generate:
+- color styles
+- text styles
 
-#### Навигация
-- [Установка](#конфигурация)
+[README на русском языке](README-ru.md)
+
+#### Navigation
+- [Installation](#installation)
     - [CocoaPods](#cocoapods)
     - [Homebrew](#homebrew)
-    - [Вручную](#вручную)
-- [Использование](#использование)
-- [Конфигурация](#конфигурация)
-    - [Базовые параметры](#базовые-параметры)
-    - [Токен доступа Figma](#токен-доступа-figma)
-    - [Файл Figma](#файл-figma)
-    - [Настройки генерации](#настройки-генерации)
-- [Цвета](#цвета)
-- [Текстовые стили](#текстовые-стили)
-- [Лицензия](#лицензия)
+    - [Manually](#manually)
+- [Usage](#usage)
+- [Configuration](#configuration)
+    - [Base parameters](#base-parameters)
+    - [Figma access token](#figma-access-token)
+    - [Figma file](#figma-file)
+    - [Generation settings](#generation-settings)
+- [Colors](#color-styles)
+- [Text styles](#text-styles)
+- [License](#license)
 
-## Установка
+## Installation
 ### CocoaPods
-Для установки FigmaGen с помощью менеджера зависимостей [CocoaPods](http://cocoapods.org) добавьте строку в `Podfile`: 
+To install FigmaGen using [CocoaPods](http://cocoapods.org) add the following line to your `Podfile`: 
 ```ruby
 pod 'FigmaGen', '~> 1.0.0'
 ```
 
-Затем выполните команду:
+Then run in Terminal:
 ```sh
 $ pod install --repo-update
 ```
-
-В случае установки FigmaGen посредством CocoaPods команда генерации должна включать относительный путь к папке `Pods/FigmaGen`:
+If FigmaGen installed using CocoaPods then one should use the relative path to `Pods/FigmaGen` folder while using `generate` command:
 ```sh
 $ Pods/FigmaGen/figmagen generate
 ```
 
 ### Homebrew
-Для установки FigmaGen средствами менеджера пакетов [Homebrew](https://brew.sh) выполните команду:
+To install FigmaGen using [Homebrew](https://brew.sh) run:
 ```sh
 $ brew install hhru/tap/FigmaGen
 ```
 
-### Вручную
-- Откройте [страницу релизов репозитория](https://github.com/hhru/FigmaGen/releases).
-- Загрузить архив 'figmagen-x.y.z.zip', прикреплённый к последнему релизу.
-- Распакуйте архив в удобную папку проекта.
+### Manually
+- Go to [releases page](https://github.com/hhru/FigmaGen/releases).
+- Download the latest release `figmagen-x.y.z.zip`
+- Unzip the archive
 
-**Важно**: в случае такой установки команда генерации должна включать относительный путь к папке с содержимым ZIP-архива,
-например:
+**Important**: in this case one should use the relative path to the archive content folder while using `generate` command:
 ```sh
 $ MyFolder/figmagen generate
 ```
 
-## Использование
-Для генерации кода необходимо вызвать команду:
+## Usage
+To generate the code run in Terminal:
 ```sh
 $ figmagen generate
 ```
-Результатом её выполнения являются файлы исходного кода, согласно конфигурации (см. [Конфигурация](#конфигурация)),
-которая по умолчанию должна находиться в файле `.figmagen.yml`.
+The command generates source code files according to the configuration (see [Configuration](#configuration)), described in `.figmagen.yml` file.
 
-При желании можно использовать другой путь к конфигурации, передав его в параметре `--config`, например:
+One can use another configuration file passing its path in `--config` parameter:
 ```sh
 $ figmagen generate --config 'Folder/figmagen.yml'
 ```
 
-Получаемый код может быть легко кастомизирован,
-благодаря [Stencil-шаблонам](https://github.com/stencilproject/Stencil).
-Если возможностей стандартных шаблонов недостаточно, можно использовать собственный,
-указав путь к нему в [конфигурации](#конфигурация).
+The generated source code can be customised using [Stencil-templates](https://github.com/stencilproject/Stencil).
+If the standard templates do not fit your needs then use your own one, passing its path in the [configuration](#configuration).
 
-FigmaGen запрашивает данные файлов, используя [Figma API](https://www.figma.com/developers/api),
-поэтому для генерации кода требуется интернет-соединение.
+FigmaGen uses [Figma API](https://www.figma.com/developers/api), thus it needs an internet connection.
 
-## Конфигурация
-Для конфигурации FigmaGen используется файл в формате [YAML](https://yaml.org).
-В нем должны быть определены все обязательные параметры генерации кода.
+## Configuration
+FigmaGen can be configured using a file in [YAML](https://yaml.org) format.
+This file should contain all the required parameters.
 
-Конфигурация делится на несколько разделов:
-- `base`: базовые параметры, используемые всеми подкомандами генерации (см. [Базовые параметры](#базовые-параметры)).
-- `colors`: конфигурация подкоманды генерации цветовых стилей (см. [Цветовые стили](#цветовые-стили)).
-- `textStyles`: конфигурация подкоманды генерации текстовых стилей (см. [Текстовые стили](#текстовые-стили)).
+The configuration file structured into several sections:
+- `base`: base parameters that being used by all the commands (см. [Base parameters](#base-parameters)).
+- `colors`: color styles generation configuration (см. [Color styles](#color-styles)).
+- `textStyles`: text styles generation configuration (см. [Text styles](#text-styles)).
 
-### Базовые параметры
-Каждая подкоманда генерации использует следующие базовые параметры:
-- `accessToken`: строка с токеном доступа, необходимый для выполнения запросов Figma API
-(см. [Токен доступа Figma](#токен-доступа-figma)).
-- `fileKey`: идентификатор файла Figma, данные которого будут использованы для генерации кода
-(см. [Файл Figma](#файл-figma)).
+### Base parameters
+All the generation commands use the following base parameters:
+- `accessToken`: access token needed to perform requests to Figma API
+(see [Figma access token](#figma-access-token)).
+- `fileKey`: identifier of a Figma file that will be used for code generation
+(see [Figma file](#figma-file)).
 
-Пример:
+Example:
 ```yaml
 base:
   accessToken: 27482-71b3313c-0e88-481b-8c93-0e465ab8a868
@@ -105,42 +101,40 @@ base:
 ...
 ```
 
-Если какой-либо из базовых параметров отсутствует и в разделе подкоманды генерации, и в разделе `base`,
-то в результате выполнения команды `figmagen generate` будет получена соответствующая ошибка.
+If a base parameter is missing both in `base` section and in a concrete section (`colors` or `textStyles`) then one'll receive an error after running `figmagen generate` command.
 
-### Токен доступа Figma
-Для получения файлов Figma необходима авторизация, которая реализуется путём передачи персонального токена доступа.
-Такой токен может быть создан в несколько простых шагов:
-1. Открыть [настройки аккаунта](https://www.figma.com/settings) в Figma.
-2. Нажать кнопку "Create a new personal access token" в разделе "Personal Access Tokens".
-3. Ввести описание для создаваемого токена (например, "FigmaGen").
-4. Скопировать созданный токен в буфер обмена.
-5. Вставить токен доступа в поле `accessToken` конфигурации
+### Figma access token
+In order to get access to Figma files one have to be authorized via a personal access token.
+How to obtain a token:
+1. Open Figma [account settings](https://www.figma.com/settings).
+2. Press "Create a new personal access token" in "Personal Access Tokens" section.
+3. Input the token description ("FigmaGen", for example).
+4. Copy the token to the clipboard.
+5. Paste the token to `accessToken` field in the configuration file
 
-### Файл Figma
-FigmaGen запрашивает файл Figma по его стандартному идентификатору,
-который может быть получен из URL в адресной строке браузера.
-В общем виде этот URL имеет следующий формат:
+### Figma file
+FigmaGen requests the Figma file by its identifier, that can be copied from the file URL:
+This URL has the following format:
 ```
-https://www.figma.com/file/<идентификатор>/<название>?node-id=<идентификатор выделенного узла>
+https://www.figma.com/file/<identifier>/<name>?node-id=<selected-node-identifier>
 ```
 
-Получив идентификатор файла, его необходимо указать в поле `fileKey` конфигурации.
+Once the file identifier is obtained then insert it to `fileKey` in the configuration file.
 
-### Настройки генерации
-Для каждой подкоманды генерации необходимо определить следующие параметры:
-- `destinationPath`: путь для сохранения сгенерированного файла.
-- `templatePath`: путь к файлу Stencil-шаблона.
-Если параметр пропущен, то будет использован стандартный шаблон.
-- `includingNodes`: массив строк с идентификаторами узлов, которые должны быть использованы при генерации кода.
-Если этот параметр пропущен, то будут использованы все узлы файла.
-- `excludingNodes`: массив строк с идентификаторами узлов, которые должны быть проигнорированы при генерации кода.
-Если этот параметр пропущен, то будут использованы все узлы файла, указанные в поле `includingNodes`.
+### Generation settings
+For all the commands one should set the following parameters:
+- `destinationPath`:  path to the resulting file.
+- `templatePath`:  path to the Stencil-template.
+If missing then the default template will be used.
+- `includingNodes`:  array of node identifiers that should be used for code generation.
+If missing then all the nodes will be used.
+- `excludingNodes`:  array of node identifiers that should be ignored.
+If missing then all the nodes from `includingNodes` array will be used.
 
 ---
 
-## Цвета
-Пример конфигурации:
+## Color styles
+Configuration example
 ```yaml
 base:
   accessToken: 27482-71b3313c-0e88-481b-8c93-0e465ab8a868
@@ -151,13 +145,13 @@ colors:
   	- 7:24
 ```
 
-Пример использования сгенерированного кода:
+Usage example:
 ```swift
 view.backgroundColor = Colors.carolina
 ```
 
-## Текстовые стили
-Пример конфигурации:
+## Text styles
+Configuration example:
 ```yaml
 base:
   accessToken: 27482-71b3313c-0e88-481b-8c93-0e465ab8a868
@@ -168,10 +162,10 @@ textStyles:
     - 3:19
 ```
 
-Пример использования сгенерированного кода:
+Usage example:
 ```swift
 label.attributedText = "Hello World".styled(.title1, textColor: Colors.black)
 ```
 
-## Лицензия
-FigmaGen доступен для использования под лицензией MIT (см. [LICENSE](LICENSE)).
+## License
+FigmaGen is released under the MIT License. (see [LICENSE](LICENSE)).
