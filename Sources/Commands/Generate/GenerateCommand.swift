@@ -47,7 +47,8 @@ final class GenerateCommand: Command {
 
         let promises = [
             generateColorsIfNeeded(configuration: configuration),
-            generateTextStylesIfNeeded(configuration: configuration)
+            generateTextStylesIfNeeded(configuration: configuration),
+            generateSpacingsIfNeeded(configuration: configuration)
         ]
 
         firstly {
@@ -75,5 +76,13 @@ final class GenerateCommand: Command {
         }
 
         return TextStylesGenerator(services: services).generateTextStyles(configuration: textStylesConfiguration)
+    }
+
+    private func generateSpacingsIfNeeded(configuration: Configuration) -> Promise<Void> {
+        guard let spacingsConfiguration = configuration.resolveSpacingsConfiguration() else {
+            return .value(Void())
+        }
+
+        return SpacingsGenerator(services: services).generateSpacings(configuration: spacingsConfiguration)
     }
 }
