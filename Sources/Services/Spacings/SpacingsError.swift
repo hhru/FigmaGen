@@ -12,7 +12,7 @@ enum SpacingsError: Error, CustomStringConvertible {
 
     case invalidSpacingName(nodeName: String, nodeID: String)
     case spacingNotFound(nodeName: String, nodeID: String)
-    
+
     // MARK: - Instance Properties
 
     var description: String {
