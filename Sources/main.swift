@@ -18,6 +18,7 @@ let figmaGen = CLI(
 figmaGen.commands = [
     ColorsCommand(services: services),
     TextStylesCommand(services: services),
+    SpacingsCommand(services: services),
     GenerateCommand(services: services)
 ]
 
