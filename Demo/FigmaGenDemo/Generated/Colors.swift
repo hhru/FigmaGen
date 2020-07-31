@@ -43,10 +43,10 @@ public enum Colors {
     /// Hex: #29AB87FF; rgba: 41 171 135, 100%.
     public static let jungle = UIColor(rgbaHex: 0x29AB87FF)
 
-    /// Fuscia
+    /// Fuchsia
     ///
     /// Hex: #E958A7FF; rgba: 233 88 167, 100%.
-    public static let fuscia = UIColor(rgbaHex: 0xE958A7FF)
+    public static let fuchsia = UIColor(rgbaHex: 0xE958A7FF)
 
     /// Bumblebee
     ///

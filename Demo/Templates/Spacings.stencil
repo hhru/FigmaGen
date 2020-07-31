@@ -1,0 +1,17 @@
+// swiftlint:disable all
+{% if spacings %}
+import Foundation
+
+public enum Spacings {
+{% for spacing in spacings %}
+
+    /// {{spacing.name}}
+    ///
+    /// Value: {{spacing.value}}.
+    public static let {{spacing.name}}: CGFloat = {{spacing.value}}
+{% endfor %}
+}
+{% else %}
+// No spacings found
+{% endif %}
+// swiftlint:enable all
