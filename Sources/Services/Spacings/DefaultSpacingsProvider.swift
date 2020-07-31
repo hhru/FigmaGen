@@ -48,6 +48,7 @@ final class DefaultSpacingsProvider {
             .extractNodes(from: file, including: includingNodeIDs, excluding: excludingNodeIDs)
             .lazy
             .compactMap { try extractSpacing(from: $0) }
+            .sorted { $0.name < $1.name }
     }
 }
 
