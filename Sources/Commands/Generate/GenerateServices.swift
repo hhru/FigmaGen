@@ -6,4 +6,4 @@
 
 import Foundation
 
-typealias GenerateServices = ColorsServices & TextStylesServices
+typealias GenerateServices = ColorsServices & TextStylesServices & SpacingsServices

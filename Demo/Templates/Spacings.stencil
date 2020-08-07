@@ -1,0 +1,27 @@
+// swiftlint:disable all
+{% if spacings %}
+import UIKit
+
+public protocol Spacing {
+    init(_ value: Double)
+}
+
+extension Int: Spacing { }
+extension UInt: Spacing { }
+extension Float: Spacing { }
+extension Double: Spacing { }
+extension CGFloat: Spacing { }
+
+extension Spacing {
+{% for spacing in spacings %}
+
+    /// {{ spacing.name }}
+    ///
+    /// Value: {{ spacing.value }}.
+    public static var {{ spacing.name|lowercase }}: Self { Self({{ spacing.value }}) }
+{% endfor %}
+}
+{% else %}
+// No spacings found
+{% endif %}
+// swiftlint:enable all
