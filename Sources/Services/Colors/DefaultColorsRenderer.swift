@@ -5,28 +5,10 @@
 //
 
 import Foundation
-import Stencil
 import StencilSwiftKit
 import PathKit
 
 final class DefaultColorsRenderer {
-
-    // MARK: - Instance Properties
-
-    private let environment: Environment
-
-    // MARK: - Initializers
-
-    init() {
-        let stencilExtension = Extension()
-
-        stencilExtension.registerStencilSwiftExtensions()
-
-        environment = Environment(
-            extensions: [stencilExtension],
-            templateClass: StencilSwiftTemplate.self
-        )
-    }
 
     // MARK: - Instance Methods
 

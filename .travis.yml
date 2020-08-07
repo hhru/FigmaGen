@@ -1,5 +1,5 @@
 language: swift
-osx_image: xcode11
+osx_image: xcode11.6
 rvm: 2.6.3
 gemfile: Gemfile
 
@@ -21,7 +21,7 @@ script:
   - set -o pipefail
   - swift --version
   - swift test
-  - bundle exec pod lib lint --skip-tests --allow-warnings
+  - bundle exec pod spec lint --skip-tests --allow-warnings
   - bundle exec danger --remove-previous-comments
 
 branches:

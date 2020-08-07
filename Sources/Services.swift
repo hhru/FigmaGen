@@ -50,3 +50,19 @@ extension Services: TextStylesServices {
         return DefaultTextStylesRenderer()
     }
 }
+
+extension Services: SpacingsServices {
+
+    // MARK: - Instance Methods
+
+    func makeSpacingsProvider(accessToken: String) -> SpacingsProvider {
+        DefaultSpacingsProvider(
+            apiProvider: makeAPIProvider(accessToken: accessToken),
+            nodesExtractor: makeNodesExtractor()
+        )
+    }
+
+    func makeSpacingsRenderer() -> SpacingsRenderer {
+        DefaultSpacingsRenderer()
+    }
+}

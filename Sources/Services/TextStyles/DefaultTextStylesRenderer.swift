@@ -5,28 +5,10 @@
 //
 
 import Foundation
-import Stencil
 import StencilSwiftKit
 import PathKit
 
 final class DefaultTextStylesRenderer {
-
-    // MARK: - Instance Properties
-
-    private let stencilEnvironment: Environment
-
-    // MARK: - Initializers
-
-    init() {
-        let stencilExtension = Extension()
-
-        stencilExtension.registerStencilSwiftExtensions()
-
-        stencilEnvironment = Environment(
-            extensions: [stencilExtension],
-            templateClass: StencilSwiftTemplate.self
-        )
-    }
 
     // MARK: - Instance Methods
 
@@ -93,7 +75,7 @@ extension DefaultTextStylesRenderer: TextStylesRenderer {
 
         let template = try StencilSwiftTemplate(
             templateString: templatePath.read(),
-            environment: stencilEnvironment
+            environment: stencilSwiftEnvironment()
         )
 
         let output = try template.render(makeContext(with: textStyles))
