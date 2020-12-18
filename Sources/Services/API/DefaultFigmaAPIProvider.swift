@@ -16,7 +16,7 @@ final class DefaultFigmaAPIProvider {
         static let serverBaseURL = URL(string: "https://api.figma.com")!
         static let accessTokenHeaderName = "X-Figma-Token"
         static let codingDateLocale = Locale(identifier: "en_US_POSIX")
-        static let codingDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
+        static let codingDateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
     }
 
     // MARK: - Instance Properties
