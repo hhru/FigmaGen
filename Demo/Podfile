@@ -1,0 +1,7 @@
+platform :ios, '11.0'
+
+target 'FugenDemo' do
+  use_frameworks!
+
+  pod 'Fugen'
+end

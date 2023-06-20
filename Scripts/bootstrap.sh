@@ -3,31 +3,35 @@
 readonly arguments=$@
 
 readonly update_gems_flag='--update-gems'
-readonly update_pods_flag='--update-pods'
 readonly update_packages_flag='--update-packages'
 
 readonly project_path="$( pwd )"
 
 readonly required_macos_version='10.14.0'
 readonly required_ruby_version=$(cat .ruby-version)
+readonly required_swift_version=$(cat .swift-version)
 
 readonly homebrew_url='https://raw.githubusercontent.com/Homebrew/install/master/install'
 readonly rbenv_doctor_url='https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-doctor'
 readonly rbenv_doctor_temp_path="${project_path}/rbenv_doctor"
-readonly rbenv_shell_init_line='eval "$(rbenv init -)"'
+
+readonly rbenv_shell_init_line='if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi'
+readonly swiftenv_shell_init_line='if which swiftenv > /dev/null; then eval "$(swiftenv init -)"; fi'
 
 readonly default_style='\033[0m'
 readonly warning_style='\033[33m'
 readonly error_style='\033[31m'
 
-readonly project_style='\033[38;5;196m'
-readonly macos_style='\033[38;5;99m'
+readonly project_style='\033[38;5;56m'
+readonly macos_style='\033[38;5;161m'
 readonly xcode_style='\033[38;5;75m'
 readonly homebrew_style='\033[38;5;208m'
 readonly rbenv_style='\033[38;5;43m'
 readonly ruby_style='\033[38;5;89m'
 readonly bundler_style='\033[38;5;45m'
 readonly cocoapods_style='\033[38;5;161m'
+readonly swiftenv_style='\033[38;5;226m'
+readonly swift_style='\033[38;5;208m'
 readonly spm_style='\033[38;5;202m'
 readonly congratulations_style='\033[38;5;48m'
 
@@ -74,7 +78,7 @@ welcome_message_step() {
   echo "${default_style}"
   echo "------------------------------------------------------------------"
   echo "---                                                            ---"
-  echo "---                   Welcome to ${project_style}HeadHunter${default_style}"'!'"                   ---"
+  echo "---                   Welcome to ${project_style}Fugen${default_style}"'!'"                   ---"
   echo "---                                                            ---"
   echo "------------------------------------------------------------------"
   echo ""
@@ -121,8 +125,18 @@ homebrew_step() {
   fi
 
   echo ""
+  echo "  Installing 'brew bundle' command..."
+  assert_failure 'brew tap Homebrew/bundle'
+
+  echo ""
   echo "  Verifying that Homebrew is properly set up..."
   assert_warning 'brew doctor'
+}
+
+brewfile_step() {
+  echo ""
+  echo "Installing ${homebrew_style}Homebrew formulae${default_style} specified in Brewfile..."
+  assert_failure 'brew bundle --no-lock'
 }
 
 rbenv_shell_step() {
@@ -142,20 +156,7 @@ rbenv_step() {
   echo "Checking ${rbenv_style}rbenv${default_style} installation:"
 
   if brew ls --versions rbenv &> /dev/null; then
-    echo "  rbenv already installed. Updating..."
-    brew_outdated=$(brew outdated 2> /dev/null)
-    brew_outdated_exit_code=$?
-
-    if [ $brew_outdated_exit_code -ne 0 ]; then
-      echo "    Failed to find outdated formulae."
-      warning 'brew outdated' $brew_outdated_exit_code
-    else
-      if [[ $brew_outdated == *"rbenv"* ]]; then
-        assert_failure 'brew upgrade rbenv'
-      else
-        echo "    Already up-to-date."
-      fi
-    fi
+    echo "  rbenv already installed."
   else
     echo "  rbenv not found. Installing..."
     assert_failure 'brew install rbenv'
@@ -186,7 +187,7 @@ ruby_step() {
   echo ""
   echo "Checking ${ruby_style}Ruby${default_style} version:"
 
-  ruby_versions=($(rbenv versions 2>&1))
+  ruby_versions=$(rbenv versions 2>&1)
 
   if [[ " ${ruby_versions[@]} " =~ " ${required_ruby_version} " ]]; then
     echo "  Required Ruby version ($required_ruby_version) already installed."
@@ -224,15 +225,49 @@ gemfile_step() {
   fi
 }
 
-podfile_step() {
-  echo ""
+swiftenv_shell_step() {
+  shell_profile_path=$1
 
-  if [[ " ${arguments[*]} " == *" $update_pods_flag "* ]]; then
-    echo "Updating ${cocoapods_style}Cocoapods${default_style} specified in Podfile..."
-    assert_failure 'bundle exec pod update'
+  if [[ -f $shell_profile_path ]]; then
+    shell_profile_content=$(grep swiftenv $shell_profile_path 2> /dev/null)
+
+    if [[ $shell_profile_content != *"$swiftenv_shell_init_line"* ]]; then
+      echo $swiftenv_shell_init_line >> $shell_profile_path
+    fi
+  fi
+}
+
+swiftenv_step() {
+  echo ""
+  echo "Checking ${swiftenv_style}swiftenv${default_style} installation:"
+
+  if brew ls --versions swiftenv &> /dev/null; then
+    echo "  swiftenv already installed."
   else
-    echo "Installing ${cocoapods_style}Cocoapods${default_style} specified in Podfile..."
-    assert_failure 'bundle exec pod install'
+    echo "  swiftenv not found. Installing..."
+    assert_failure 'brew install kylef/formulae/swiftenv'
+  fi
+
+  assert_warning 'swiftenv rehash'
+
+  swiftenv_shell_step "${HOME}/.bash_profile"
+  swiftenv_shell_step "${HOME}/.zshrc"
+
+  eval "$(swiftenv init -)"
+}
+
+swift_step() {
+  echo ""
+  echo "Checking ${swift_style}Swift${default_style} version:"
+
+  swift_versions=$(swiftenv versions 2>&1)
+
+  if [[ " ${swift_versions[@]} " =~ " ${required_swift_version} " ]]; then
+    echo "  Required Swift version ($required_swift_version) already installed."
+  else
+    echo "  Required Swift version ($required_swift_version) not found. Installing..."
+    assert_failure 'swiftenv install $required_swift_version'
+    assert_warning 'swiftenv rehash'
   fi
 }
 
@@ -263,10 +298,12 @@ welcome_message_step
 macos_version_step
 xcode_command_line_tools_step
 homebrew_step
+brewfile_step
 rbenv_step
 ruby_step
 bundler_step
 gemfile_step
-podfile_step
+swiftenv_step
+swift_step
 spm_step
 congratulations_step
