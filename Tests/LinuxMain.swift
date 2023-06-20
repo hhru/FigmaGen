@@ -1,10 +1,10 @@
 import XCTest
 
-import FugenTests
-import FugenToolsTests
+import FigmaGenTests
+import FigmaGenToolsTests
 
 var tests = [XCTestCaseEntry]()
-tests += FugenTests.__allTests()
-tests += FugenToolsTests.__allTests()
+tests += FigmaGenTests.__allTests()
+tests += FigmaGenToolsTests.__allTests()
 
 XCTMain(tests)

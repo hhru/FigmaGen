@@ -1,7 +1,7 @@
 platform :ios, '11.0'
 
-target 'FugenDemo' do
+target 'FigmaGenDemo' do
   use_frameworks!
 
-  pod 'Fugen'
+  pod 'FigmaGen', :path => ".."
 end

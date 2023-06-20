@@ -2,13 +2,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "Fugen",
+    name: "FigmaGen",
     platforms: [
        .macOS(.v10_12)
     ],
     products: [
-        .executable(name: "fugen", targets: ["Fugen"]),
-        .library(name: "FugenTools", targets: ["FugenTools"]),
+        .executable(name: "figmagen", targets: ["FigmaGen"]),
+        .library(name: "FigmaGenTools", targets: ["FigmaGenTools"]),
     ],
     dependencies: [
         .package(url: "https://github.com/jakeheis/SwiftCLI", from: "6.0.3"),
@@ -22,7 +22,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Fugen",
+            name: "FigmaGen",
             dependencies: [
                 "Yams",
                 "SwiftCLI",
@@ -32,28 +32,28 @@ let package = Package(
                 "StencilSwiftKit",
                 "PromiseKit",
                 "DictionaryCoder",
-                "FugenTools"
+                "FigmaGenTools"
             ],
-            path: "Sources/Fugen"
+            path: "Sources/FigmaGen"
         ),
         .target(
-            name: "FugenTools",
+            name: "FigmaGenTools",
             dependencies: [
                 "SwiftCLI",
                 "PathKit",
                 "PromiseKit"
             ],
-            path: "Sources/FugenTools"
+            path: "Sources/FigmaGenTools"
         ),
         .testTarget(
-            name: "FugenTests",
-            dependencies: ["Fugen"],
-            path: "Tests/FugenTests"
+            name: "FigmaGenTests",
+            dependencies: ["FigmaGen"],
+            path: "Tests/FigmaGenTests"
         ),
         .testTarget(
-            name: "FugenToolsTests",
-            dependencies: ["FugenTools"],
-            path: "Tests/FugenToolsTests"
+            name: "FigmaGenToolsTests",
+            dependencies: ["FigmaGenTools"],
+            path: "Tests/FigmaGenToolsTests"
         )
     ],
     swiftLanguageVersions: [.v5]

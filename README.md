@@ -1,14 +1,14 @@
-# Fugen
-[![Build Status](https://github.com/almazrafi/Fugen/workflows/CI/badge.svg?event=push)](https://github.com/almazrafi/Fugen/actions?query=event%3Apush)
-[![Version](https://img.shields.io/github/v/release/almazrafi/Fugen)](https://github.com/almazrafi/Fugen/releases)
+# FigmaGen
+[![Build Status](https://github.com/hhru/FigmaGen/workflows/CI/badge.svg?event=push)](https://github.com/hhru/FigmaGen/actions?query=event%3Apush)
+[![Version](https://img.shields.io/github/v/release/hhru/FigmaGen)](https://github.com/hhru/FigmaGen/releases)
 [![Xcode](https://img.shields.io/badge/Xcode-13-blue.svg)](https://developer.apple.com/xcode)
 [![Swift](https://img.shields.io/badge/Swift-5.5-orange.svg)](https://swift.org)
 [![Platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20Linux-lightgrey)](https://swift.org/about/#platform-support)
-[![License](https://img.shields.io/github/license/almazrafi/Fugen.svg)](https://github.com/almazrafi/Fugen/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/hhru/FigmaGen.svg)](https://github.com/hhru/FigmaGen/blob/master/LICENSE)
 
-Fugen is a command line tool for exporting resources and generating code from your [Figma](http://figma.com/) files.
+FigmaGen is a command line tool for exporting resources and generating code from your [Figma](http://figma.com/) files.
 
-Currently, Fugen supports the following entities:
+Currently, FigmaGen supports the following entities:
 - ✅ Color styles
 - ✅ Text styles
 - ✅ Shadow styles
@@ -39,9 +39,9 @@ Currently, Fugen supports the following entities:
 
 ## Installation:
 ### CocoaPods
-To install Fugen using [CocoaPods](http://cocoapods.org) dependency manager, add this line to your `Podfile`:
+To install FigmaGen using [CocoaPods](http://cocoapods.org) dependency manager, add this line to your `Podfile`:
 ```ruby
-pod 'Fugen', '~> 1.4.0'
+pod 'FigmaGen', '~> 1.4.0'
 ```
 
 Then run this command:
@@ -49,9 +49,9 @@ Then run this command:
 $ pod install --repo-update
 ```
 
-If installing using CocoaPods, the generate command should include a relative path to the `Pods/Fugen` folder:
+If installing using CocoaPods, the generate command should include a relative path to the `Pods/FigmaGen` folder:
 ```sh
-$ Pods/Fugen/fugen generate
+$ Pods/FigmaGen/figmagen generate
 ```
 
 > Installation via CocoaPods is recommended, as it allows to use the fixed version on all team members machines
@@ -60,52 +60,52 @@ $ Pods/Fugen/fugen generate
 ### Homebrew
 For [Homebrew](https://brew.sh) dependency manager installation, run:
 ```sh
-$ brew install almazrafi/tap/fugen
+$ brew install hhru/tap/figmagen
 ```
 
 > It's impossible to set a specific package version via Homebrew.
-> If you chose this method, make sure all team members use the same version of Fugen.
+> If you chose this method, make sure all team members use the same version of FigmaGen.
 
 ### Mint
 
 For [Mint](https://github.com/yonaskolb/mint) package manager installation, run:
 
 ```sh
-$ mint install almazrafi/Fugen@1.4.0
+$ mint install hhru/FigmaGen@1.4.0
 ```
 
 ### ZIP archive
 
-Every release in the repo has a ZIP archive which can be used to integrate Fugen into a project.
+Every release in the repo has a ZIP archive which can be used to integrate FigmaGen into a project.
 To use that method, the following steps should be taken:
-- Open [repository release page](https://github.com/almazrafi/Fugen/releases).
-- Download the 'fugen-x.y.z.zip' archive attached to the latest release.
+- Open [repository release page](https://github.com/hhru/FigmaGen/releases).
+- Download the 'figmagen-x.y.z.zip' archive attached to the latest release.
 - Unarchive files into a convenient project folder
 
 If this integration method was chosen,
 the generation command should include a relative path to the folder with the ZIP-archive content, for example:
 ```sh
-$ Fugen/fugen generate
+$ FigmaGen/figmagen generate
 ```
 
-> It's recommended to include unarchived files into the Git index (`git add Fugen`).
-> It will guarantee that all team members are using the same version of Fugen for the project.
+> It's recommended to include unarchived files into the Git index (`git add FigmaGen`).
+> It will guarantee that all team members are using the same version of FigmaGen for the project.
 
 
 ## Usage
-Fugen provides a simple command for code generation:
+FigmaGen provides a simple command for code generation:
 ```sh
-$ fugen generate
+$ figmagen generate
 ```
 As the result, the source code files will be received according to the configuration (see [Configuration](#configuration)),
-which by default should be placed to `.fugen.yml` file.
+which by default should be placed to `.figmagen.yml` file.
 
 If you need, you can use a specific path to the configuration, just pass it in the `--config` parameter. For example:
 ```sh
-$ fugen generate --config 'Folder/fugen.yml'
+$ figmagen generate --config 'Folder/figmagen.yml'
 ```
 
-Fugen requests files data using [Figma API](https://www.figma.com/developers/api),
+FigmaGen requests files data using [Figma API](https://www.figma.com/developers/api),
 so make sure you have the internet connection on while generating the code.
 
 The resulting code could be easily customized with [Stencil-templates](https://github.com/stencilproject/Stencil).
@@ -113,40 +113,40 @@ If standard templates are not enough, a custom template could be used. Just
 specify its path in the [configuration](#configuration).
 
 ### Integration
-There is no point to run `fugen generate` at the build stage, as Fugen doesn't work with local resources,
+There is no point to run `figmagen generate` at the build stage, as FigmaGen doesn't work with local resources,
 which can be changed during development. All data for code generation is in Figma.
 Also, there won't be any merge conflicts, if you use design versioning.
 
 So, it is much better to generate code just once and keep it in the Git index.
-Also run `fugen generate` for the following reasons:
+Also run `figmagen generate` for the following reasons:
 - to upgrade to a new design version in Figma
-- after updating Fugen version
+- after updating FigmaGen version
 
 There are also some recommendations on integration based on technologies used in a project.
 All of them are listed in this section and will be updated as feedback is received.
 
 In case you have any problems or suggestions related to integration,
-please open the corresponding request in [Issues](https://github.com/almazrafi/Fugen/issues).
+please open the corresponding request in [Issues](https://github.com/hhru/FigmaGen/issues).
 
 #### CocoaPods
 If you are using [CocoaPods](http://cocoapods.org) dependency manager,
 run code generating command from `pre-install` event handler in `Podfile`:
 ```ruby
 pre_install do |installer|
-  system "Pods/Fugen/fugen generate"
+  system "Pods/FigmaGen/figmagen generate"
 end
 ```
 
-That will allow connecting the code generation command with updating Fugen version
+That will allow connecting the code generation command with updating FigmaGen version
 and will reduce the number of commands executed while cloning the project.
 
 🚨 If you want to keep the generated files in the Development Pod, this integration method is ideal.
-In this case the generation should be run after loading Fugen and before installing all Pods.
+In this case the generation should be run after loading FigmaGen and before installing all Pods.
 Otherwise, new files will not be indexed on time and won't get included into the Xcode-project.
 
 
 ## Configuration
-[YAML](https://yaml.org) file is used for Fugen configuration.
+[YAML](https://yaml.org) file is used for FigmaGen configuration.
 Define all necessary parameters of code generation in this file.
 
 Configuration is divided into several sections:
@@ -157,7 +157,7 @@ Configuration is divided into several sections:
 
 Any parameter from `base` section will be inherited and could be overwritten in the section of the particular generation step.
 If some section of the generation step is missing in the configuration,
-it will be skipped during `fugen generate` command execution.
+it will be skipped during `figmagen generate` command execution.
 
 ### Base parameters
 Each step of generation is using the following base parameters:
@@ -170,16 +170,16 @@ For example:
 ```yaml
 base:
   accessToken: 25961-4ac9fbc9-3bd8-4c43-bbe2-95e477f8a067
-  file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/Fugen-Demo
+  file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/FigmaGen-Demo
 
 colorStyles: { }
 
 textStyles:
-  file: https://www.figma.com/file/SSeboI2x0jmeG4QO8iBMqX/Fugen-Demo-iOS
+  file: https://www.figma.com/file/SSeboI2x0jmeG4QO8iBMqX/FigmaGen-Demo-iOS
 ```
 
 If a base parameter is missing for both the generation step section and in the `base` section,
-then as a result of the execution `fugen generate` command, the corresponding error will be received.
+then as a result of the execution `figmagen generate` command, the corresponding error will be received.
 
 ### Figma access token
 Authorization is required to receive Figma files.
@@ -187,7 +187,7 @@ The authorization is implemented by transferring a personal access token.
 This token could be created in a few simple steps:
 1. Open [account settings]((https://www.figma.com/settings)) in Figma.
 2. Press "Create a new personal access token" button in the "Personal Access Tokens" section.
-3. Enter a description for the token (for instance, "Fugen").
+3. Enter a description for the token (for instance, "FigmaGen").
 4. Copy the created token to the clipboard.
 
 ![](Docs/AccessToken.png)
@@ -207,7 +207,7 @@ For example:
 ```yaml
 base:
   accessToken:
-    env: FUGEN_ACCESS_TOKEN
+    env: FIGMAGEN_ACCESS_TOKEN
 ...
 ```
 
@@ -215,11 +215,11 @@ If for a certain file you need to use a different access token,
 it should be specified in the corresponding section of the configuration (see [Base parameters](#base-parameters)).
 
 ### Figma file
-Fugen requests Figma file by using the identifier from its URL. This URL should be placed in the `file` field of the configuration.
+FigmaGen requests Figma file by using the identifier from its URL. This URL should be placed in the `file` field of the configuration.
 For example:
 ```yaml
 base:
-  file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/Fugen-Demo
+  file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/FigmaGen-Demo
 ...
 ```
 
@@ -255,7 +255,7 @@ If this parameter is omitted, all file nodes will be used.
 If this parameter is omitted, all file nodes specified in the `includedNodes` field will be used.
 
 The values for these fields must be manually extracted from the file URL, according to its format.
-For example, for URL  `https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/Fugen-Demo?version-id=194665614&node-id=0%3A1`
+For example, for URL  `https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/FigmaGen-Demo?version-id=194665614&node-id=0%3A1`
 the configuration will look like:
 ```yaml
 base:
@@ -293,7 +293,7 @@ Sample configuration:
 ```yaml
 colorStyles:
   accessToken: 25961-4ac9fbc9-3bd8-4c43-bbe2-95e477f8a067
-  file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/Fugen-Demo
+  file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/FigmaGen-Demo
   assets: Sources/Assets.xcassets/Colors
   destination: Sources/ColorStyle.swift
   templateOptions:
@@ -333,7 +333,7 @@ Sample configuration:
 ```yaml
 textStyles:
   accessToken: 25961-4ac9fbc9-3bd8-4c43-bbe2-95e477f8a067
-  file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/Fugen-Demo
+  file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/FigmaGen-Demo
   destination: Sources/TextStyle.swift
   templateOptions:
     publicAccess: true
@@ -372,7 +372,7 @@ Sample configuration:
 ```yaml
 shadowStyles:
   accessToken: 25961-4ac9fbc9-3bd8-4c43-bbe2-95e477f8a067
-  file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/Fugen-Demo
+  file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/FigmaGen-Demo
   destination: Sources/ShadowStyle.swift
   templateOptions:
     publicAccess: true
@@ -429,7 +429,7 @@ Sample configuration:
 ```yaml
 images:
   accessToken: 25961-4ac9fbc9-3bd8-4c43-bbe2-95e477f8a067
-  file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/Fugen-Demo
+  file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/FigmaGen-Demo
   assets: Sources/Assets.xcassets/Images
   destination: Sources/Images.swift
   onlyExportables: true
@@ -439,7 +439,7 @@ images:
 ```
 
 #### Figma components
-Fugen only uses nodes that are [components](https://help.figma.com/article/66-components) as images.
+FigmaGen only uses nodes that are [components](https://help.figma.com/article/66-components) as images.
 So, make sure that the chosen frame in the file URL (see [Figma file](#figma-file))
 allows to filter out the components that should not render images in Figma file.
 
@@ -449,7 +449,7 @@ that have [export settings](https://help.figma.com/hc/en-us/articles/36004002811
 set the `onlyExportables` flag to `true`.
 
 #### Use absolute bounds
-By default Fugen exports the images using only space that is actually occupied by them, so if the node has extra space
+By default FigmaGen exports the images using only space that is actually occupied by them, so if the node has extra space
 around, it will be cropped. If you want to preserve this space set the `useAbsoluteBounds` to `true`.
 See [Image Endpoint Description](https://www.figma.com/developers/api#get-images-endpoint) for details.
 
@@ -500,4 +500,4 @@ Key  | Type | Default value | Description
 - If you want to contribute, submit a pull request.
 
 ## License
-Fugen is available under the MIT license. See the [LICENSE](LICENSE) file for more info.
+FigmaGen is available under the MIT license. See the [LICENSE](LICENSE) file for more info.

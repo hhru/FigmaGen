@@ -1,12 +1,12 @@
 PREFIX?=/usr/local
 
-PRODUCT_NAME=fugen
+PRODUCT_NAME=figmagen
 PRODUCT_VERSION=1.4.0
 TEMPLATES_NAME=Templates
 README_NAME=README.md
 LICENSE_NAME=LICENSE
 
-SOURCES_MAIN_PATH=Sources/Fugen/main.swift
+SOURCES_MAIN_PATH=Sources/FigmaGen/main.swift
 
 BUILD_PATH=.build
 RELEASE_PATH=$(BUILD_PATH)/release/$(PRODUCT_NAME)-$(PRODUCT_VERSION)
@@ -15,8 +15,8 @@ PRODUCT_PATH=$(BUILD_PATH)/release/$(PRODUCT_NAME)
 TEMPLATES_PATH=$(TEMPLATES_NAME)
 
 DEMO_PATH=Demo
-DEMO_WORKSPACE=FugenDemo.xcworkspace
-DEMO_TEST_SCHEME=FugenDemo
+DEMO_WORKSPACE=FigmaGenDemo.xcworkspace
+DEMO_TEST_SCHEME=FigmaGenDemo
 DEMO_TEST_DESTINATION=platform=iOS Simulator,name=iPhone 11
 DEMO_TEST_LOG_PATH=$(BUILD_PATH)/demo_test.json
 
@@ -52,7 +52,7 @@ test_demo: build
 
 	set -euo pipefail; \
 	cd $(DEMO_PATH); \
-	./fugen generate; \
+	./figmagen generate; \
 	bundle exec pod install; \
 	xcodebuild clean build test -workspace "$(DEMO_WORKSPACE)" -scheme "$(DEMO_TEST_SCHEME)" -destination "$(DEMO_TEST_DESTINATION)" | XCPRETTY_JSON_FILE_OUTPUT="../$(DEMO_TEST_LOG_PATH)" xcpretty -f `xcpretty-json-formatter`
 
@@ -69,8 +69,8 @@ uninstall:
 
 update_version:
 	sed -i '' 's|\(let version = "\)\(.*\)\("\)|\1$(PRODUCT_VERSION)\3|' $(SOURCES_MAIN_PATH)
-	sed -i '' 's|\(pod '\''Fugen'\'', '\''~> \)\(.*\)\('\''\)|\1$(PRODUCT_VERSION)\3|' $(README_PATH)
-	sed -i '' 's|\($ mint install almazrafi/Fugen@\)\(.*\)|\1$(PRODUCT_VERSION)|' $(README_PATH)
+	sed -i '' 's|\(pod '\''FigmaGen'\'', '\''~> \)\(.*\)\('\''\)|\1$(PRODUCT_VERSION)\3|' $(README_PATH)
+	sed -i '' 's|\($ mint install hhru/FigmaGen@\)\(.*\)|\1$(PRODUCT_VERSION)|' $(README_PATH)
 
 release: update_version build
 	mkdir -p $(RELEASE_PATH)

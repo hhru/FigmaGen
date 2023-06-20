@@ -1,16 +1,16 @@
 PODS:
-  - Fugen (1.1.0)
+  - FigmaGen (1.4.0)
 
 DEPENDENCIES:
-  - Fugen
+  - FigmaGen (from `..`)
 
-SPEC REPOS:
-  trunk:
-    - Fugen
+EXTERNAL SOURCES:
+  FigmaGen:
+    :path: ".."
 
 SPEC CHECKSUMS:
-  Fugen: b74397ba08948ef3b6c402ed98b080c299467432
+  FigmaGen: f376a7e02de675f34b36fe2de0c270b7b19fc457
 
-PODFILE CHECKSUM: 1272ede7df0e71d4a3a82f7dc4fdbfc5bc9e4a12
+PODFILE CHECKSUM: bcef742d65de7f8e21e5129374be764d23cce271
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.11.3

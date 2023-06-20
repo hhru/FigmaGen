@@ -78,7 +78,7 @@ welcome_message_step() {
   echo "${default_style}"
   echo "------------------------------------------------------------------"
   echo "---                                                            ---"
-  echo "---                   Welcome to ${project_style}Fugen${default_style}"'!'"                   ---"
+  echo "---                   Welcome to ${project_style}FigmaGen${default_style}"'!'"                   ---"
   echo "---                                                            ---"
   echo "------------------------------------------------------------------"
   echo ""
