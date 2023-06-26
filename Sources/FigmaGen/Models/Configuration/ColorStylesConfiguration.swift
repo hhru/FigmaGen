@@ -33,8 +33,8 @@ struct ColorStylesConfiguration: Decodable {
 
     // MARK: - Instance Methods
 
-    func resolve(base: BaseConfiguration?) -> ColorStylesConfiguration {
-        return ColorStylesConfiguration(
+    func resolve(base: BaseConfiguration?) -> Self {
+        Self(
             generation: generation.resolve(base: base),
             assets: assets
         )

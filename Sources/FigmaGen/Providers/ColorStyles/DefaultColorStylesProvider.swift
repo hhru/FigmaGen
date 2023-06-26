@@ -92,7 +92,7 @@ final class DefaultColorStylesProvider: ColorStylesProvider {
         nodes: NodesParameters,
         assets: String?
     ) -> Promise<[ColorStyle]> {
-        return firstly {
+        firstly {
             self.filesProvider.fetchFile(file)
         }.then { figmaFile in
             self.nodesProvider.fetchNodes(nodes, from: figmaFile).map { figmaNodes in

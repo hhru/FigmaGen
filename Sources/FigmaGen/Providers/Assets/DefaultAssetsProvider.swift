@@ -30,15 +30,15 @@ final class DefaultAssetsProvider: AssetsProvider {
     // MARK: -
 
     func saveAssetFolder(_ folder: AssetFolder, in folderPath: String) -> Promise<Void> {
-        return perform(on: DispatchQueue.global(qos: .userInitiated)) {
+        perform(on: DispatchQueue.global(qos: .userInitiated)) {
             try self.saveAssetFolder(folder, in: Path(folderPath))
         }
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let assetsExtension = "xcassets"
+    fileprivate static let assetsExtension = "xcassets"
 }

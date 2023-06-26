@@ -67,7 +67,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider {
         format: ImageFormat,
         in folderPath: String
     ) -> Promise<[ImageRenderedNode: ImageResource]> {
-        return perform(on: DispatchQueue.global(qos: .userInitiated)) {
+        perform(on: DispatchQueue.global(qos: .userInitiated)) {
             self.makeResources(
                 for: nodes,
                 format: format,

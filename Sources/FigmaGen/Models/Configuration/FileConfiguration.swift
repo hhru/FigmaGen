@@ -46,7 +46,7 @@ struct FileConfiguration: Decodable {
         let urlComponents = URLComponents(string: url.absoluteString)
         let urlQueryItems = urlComponents.flatMap { $0.queryItems }
 
-        if let urlQueryItems = urlQueryItems {
+        if let urlQueryItems {
             version = urlQueryItems
                 .first { $0.name == .fileURLVersionParameterName }?
                 .value
@@ -75,7 +75,7 @@ struct FileConfiguration: Decodable {
             let urlContainer = try decoder.singleValueContainer()
             let url = try urlContainer.decode(URL.self)
 
-            guard let configuration = FileConfiguration(url: url) else {
+            guard let configuration = Self(url: url) else {
                 throw DecodingError.dataCorruptedError(
                     in: urlContainer,
                     debugDescription: "'\(url)' is not a valid Figma file URL"
@@ -87,20 +87,20 @@ struct FileConfiguration: Decodable {
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let fileURLScheme = "https"
-    static let fileURLHost = "www.figma.com"
-    static let fileURLVersionParameterName = "version-id"
-    static let fileURLNodeParameterName = "node-id"
+    fileprivate static let fileURLScheme = "https"
+    fileprivate static let fileURLHost = "www.figma.com"
+    fileprivate static let fileURLVersionParameterName = "version-id"
+    fileprivate static let fileURLNodeParameterName = "node-id"
 }
 
-private extension Int {
+extension Int {
 
     // MARK: - Type Properties
 
-    static let filePathComponentCount = 4
-    static let fileKeyPathComponentIndex = 2
+    fileprivate static let filePathComponentCount = 4
+    fileprivate static let fileKeyPathComponentIndex = 2
 }

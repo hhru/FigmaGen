@@ -12,7 +12,7 @@ final class DefaultConfigurationProvider: ConfigurationProvider {
     // MARK: - Instance Methods
 
     func fetchConfiguration(from configurationPath: String) -> Promise<Configuration> {
-        return Promise { seal in
+        Promise { seal in
             let configurationPath = Path(configurationPath)
             let configurationContent = try configurationPath.read(.utf8)
 

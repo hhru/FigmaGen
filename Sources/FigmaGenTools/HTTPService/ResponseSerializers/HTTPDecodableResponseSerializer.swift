@@ -27,6 +27,6 @@ public final class HTTPDecodableResponseSerializer<T: Decodable>: HTTPResponseSe
     // MARK: - Instance Methods
 
     public func serialize(data: Data, statusCode: HTTPStatusCode, method: HTTPMethod) throws -> T {
-        return try decoder.decode(T.self, from: data)
+        try decoder.decode(T.self, from: data)
     }
 }

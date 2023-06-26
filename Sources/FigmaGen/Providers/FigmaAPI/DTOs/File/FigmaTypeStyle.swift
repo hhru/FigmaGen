@@ -43,7 +43,7 @@ struct FigmaTypeStyle: Decodable, Hashable {
     let rawLineHeightUnit: String?
 
     var textCase: FigmaTextCase? {
-        guard let rawTextCase = rawTextCase else {
+        guard let rawTextCase else {
             return FigmaTextCase.original
         }
 
@@ -51,7 +51,7 @@ struct FigmaTypeStyle: Decodable, Hashable {
     }
 
     var textDecoration: FigmaTextDecoration? {
-        guard let rawTextDecoration = rawTextDecoration else {
+        guard let rawTextDecoration else {
             return FigmaTextDecoration.none
         }
 

@@ -1,4 +1,4 @@
-// swift-tools-version:5.7
+// swift-tools-version:5.6
 import PackageDescription
 
 let package = Package(
@@ -8,7 +8,7 @@ let package = Package(
     ],
     products: [
         .executable(name: "figmagen", targets: ["FigmaGen"]),
-        .library(name: "FigmaGenTools", targets: ["FigmaGenTools"]),
+        .library(name: "FigmaGenTools", targets: ["FigmaGenTools"])
     ],
     dependencies: [
         .package(url: "https://github.com/jakeheis/SwiftCLI", from: "6.0.3"),
@@ -21,6 +21,16 @@ let package = Package(
         .package(url: "https://github.com/almazrafi/DictionaryCoder.git", from: "1.0.0")
     ],
     targets: [
+        .binaryTarget(
+            name: "SwiftLintBinary",
+            url: "https://github.com/realm/SwiftLint/releases/download/0.52.2/SwiftLintBinary-macos.artifactbundle.zip",
+            checksum: "89651e1c87fb62faf076ef785a5b1af7f43570b2b74c6773526e0d5114e0578e"
+        ),
+        .plugin(
+            name: "SwiftLintXcode",
+            capability: .buildTool(),
+            dependencies: ["SwiftLintBinary"]
+        ),
         .executableTarget(
             name: "FigmaGen",
             dependencies: [
@@ -43,7 +53,10 @@ let package = Package(
                 "PathKit",
                 "PromiseKit"
             ],
-            path: "Sources/FigmaGenTools"
+            path: "Sources/FigmaGenTools",
+            plugins: [
+                "SwiftLintXcode"
+            ]
         ),
         .testTarget(
             name: "FigmaGenTests",

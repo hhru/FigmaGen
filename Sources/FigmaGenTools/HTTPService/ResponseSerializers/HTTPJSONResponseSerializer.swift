@@ -26,6 +26,6 @@ public final class HTTPJSONResponseSerializer: HTTPResponseSerializer {
     // MARK: - Instance Methods
 
     public func serialize(data: Data, statusCode: HTTPStatusCode, method: HTTPMethod) throws -> Any {
-        return try JSONSerialization.jsonObject(with: data, options: options)
+        try JSONSerialization.jsonObject(with: data, options: options)
     }
 }

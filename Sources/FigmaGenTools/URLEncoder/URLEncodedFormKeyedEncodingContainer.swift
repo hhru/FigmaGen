@@ -63,7 +63,7 @@ internal final class URLEncodedFormKeyedEncodingContainer<Key: CodingKey>: Keyed
     }
 
     internal func nestedUnkeyedContainer(forKey key: Key) -> UnkeyedEncodingContainer {
-        return URLEncodedFormUnkeyedEncodingContainer(
+        URLEncodedFormUnkeyedEncodingContainer(
             context: context,
             boolEncodingStrategy: boolEncodingStrategy,
             dateEncodingStrategy: dateEncodingStrategy,
@@ -72,7 +72,7 @@ internal final class URLEncodedFormKeyedEncodingContainer<Key: CodingKey>: Keyed
     }
 
     internal func superEncoder() -> Encoder {
-        return URLEncodedFormEncoder(
+        URLEncodedFormEncoder(
             context: context,
             boolEncodingStrategy: boolEncodingStrategy,
             dateEncodingStrategy: dateEncodingStrategy,
@@ -81,7 +81,7 @@ internal final class URLEncodedFormKeyedEncodingContainer<Key: CodingKey>: Keyed
     }
 
     internal func superEncoder(forKey key: Key) -> Encoder {
-        return URLEncodedFormEncoder(
+        URLEncodedFormEncoder(
             context: context,
             boolEncodingStrategy: boolEncodingStrategy,
             dateEncodingStrategy: dateEncodingStrategy,

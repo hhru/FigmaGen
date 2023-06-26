@@ -67,7 +67,7 @@ extension HTTPTask {
 
     @discardableResult
     public func response(completion: @escaping (_ response: HTTPResponse<Data?>) -> Void) -> Self {
-        return response(on: .main, completion: completion)
+        response(on: .main, completion: completion)
     }
 
     @discardableResult
@@ -75,12 +75,12 @@ extension HTTPTask {
         serializer: Serializer,
         completion: @escaping (_ response: HTTPResponse<Serializer.SerializedObject>) -> Void
     ) -> Self {
-        return response(on: .main, serializer: serializer, completion: completion)
+        response(on: .main, serializer: serializer, completion: completion)
     }
 
     @discardableResult
     public func responseData(completion: @escaping (_ response: HTTPResponse<Data>) -> Void) -> Self {
-        return responseData(on: .main, completion: completion)
+        responseData(on: .main, completion: completion)
     }
 
     @discardableResult
@@ -88,7 +88,7 @@ extension HTTPTask {
         encoding: String.Encoding = .utf8,
         completion: @escaping (_ response: HTTPResponse<String>) -> Void
     ) -> Self {
-        return responseString(on: .main, encoding: encoding, completion: completion)
+        responseString(on: .main, encoding: encoding, completion: completion)
     }
 
     @discardableResult
@@ -96,7 +96,7 @@ extension HTTPTask {
         options: JSONSerialization.ReadingOptions = .allowFragments,
         completion: @escaping (_ response: HTTPResponse<Any>) -> Void
     ) -> Self {
-        return responseJSON(on: .main, options: options, completion: completion)
+        responseJSON(on: .main, options: options, completion: completion)
     }
 
     @discardableResult
@@ -105,6 +105,6 @@ extension HTTPTask {
         decoder: HTTPResponseDecoder = JSONDecoder(),
         completion: @escaping (_ response: HTTPResponse<T>) -> Void
     ) -> Self {
-        return responseDecodable(type: type, on: .main, decoder: decoder, completion: completion)
+        responseDecodable(type: type, on: .main, decoder: decoder, completion: completion)
     }
 }

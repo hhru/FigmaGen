@@ -90,15 +90,15 @@ internal final class URLEncodedFormSingleValueEncodingContainer: SingleValueEnco
             }
 
             return .array(array)
-        } else {
-            guard var dictionary = component.dictionary else {
-                return .dictionary([pathKey.stringValue: child])
-            }
-
-            dictionary[pathKey.stringValue] = child
-
-            return .dictionary(dictionary)
         }
+
+        guard var dictionary = component.dictionary else {
+            return .dictionary([pathKey.stringValue: child])
+        }
+
+        dictionary[pathKey.stringValue] = child
+
+        return .dictionary(dictionary)
     }
 
     private func encode<T: Encodable>(_ value: T, as string: String) throws {

@@ -9,6 +9,6 @@ final class StencilByteToHexFilter: StencilFilter {
     // MARK: - Instance Methods
 
     func filter(input: UInt8) -> String {
-        return String(format: "%02lX", input)
+        String(format: "%02lX", input)
     }
 }

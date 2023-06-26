@@ -35,10 +35,10 @@ public final class HTTPBodyURLEncoder: HTTPBodyEncoder {
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let contentTypeHeaderField = "Content-Type"
-    static let contentTypeHeaderValue = "application/x-www-form-urlencoded; charset=utf-8"
+    fileprivate static let contentTypeHeaderField = "Content-Type"
+    fileprivate static let contentTypeHeaderValue = "application/x-www-form-urlencoded; charset=utf-8"
 }

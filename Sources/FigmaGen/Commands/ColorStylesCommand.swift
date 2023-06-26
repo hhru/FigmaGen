@@ -98,7 +98,7 @@ final class ColorStylesCommand: AsyncExecutableCommand, GenerationConfigurableCo
     // MARK: - Instance Methods
 
     private func resolveColorStylesConfiguration() -> ColorStylesConfiguration {
-        return ColorStylesConfiguration(
+        ColorStylesConfiguration(
             generation: generationConfiguration,
             assets: assets.value
         )

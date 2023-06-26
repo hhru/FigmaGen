@@ -55,7 +55,7 @@ public final class HTTPServiceTask<SessionTask: URLSessionTask> {
         if let response = response as? HTTPURLResponse {
             statusCode = HTTPStatusCode(rawValue: response.statusCode)
 
-            headers = response.allHeaderFields.compactMap { (name, value) in
+            headers = response.allHeaderFields.compactMap { name, value in
                 guard let name = name as? String, let value = value as? String else {
                     return nil
                 }
@@ -93,7 +93,7 @@ public final class HTTPServiceTask<SessionTask: URLSessionTask> {
                 let statusCode = response.statusCode ?? 0
                 let object: Serializer.SerializedObject
 
-                if let data = data, !data.isEmpty {
+                if let data, !data.isEmpty {
                     object = try serializer.serialize(
                         data: data,
                         statusCode: statusCode,
@@ -153,7 +153,7 @@ public final class HTTPServiceTask<SessionTask: URLSessionTask> {
         on queue: DispatchQueue,
         completion: @escaping (_ response: HTTPResponse<Data>) -> Void
     ) -> Self {
-        return response(
+        response(
             on: queue,
             serializer: HTTPDataResponseSerializer(),
             completion: completion
@@ -166,7 +166,7 @@ public final class HTTPServiceTask<SessionTask: URLSessionTask> {
         encoding: String.Encoding,
         completion: @escaping (_ response: HTTPResponse<String>) -> Void
     ) -> Self {
-        return response(
+        response(
             on: queue,
             serializer: HTTPStringResponseSerializer(encoding: encoding),
             completion: completion
@@ -179,7 +179,7 @@ public final class HTTPServiceTask<SessionTask: URLSessionTask> {
         options: JSONSerialization.ReadingOptions,
         completion: @escaping (_ response: HTTPResponse<Any>) -> Void
     ) -> Self {
-        return response(
+        response(
             on: queue,
             serializer: HTTPJSONResponseSerializer(options: options),
             completion: completion
@@ -193,7 +193,7 @@ public final class HTTPServiceTask<SessionTask: URLSessionTask> {
         decoder: HTTPResponseDecoder,
         completion: @escaping (_ response: HTTPResponse<T>) -> Void
     ) -> Self {
-        return response(
+        response(
             on: queue,
             serializer: HTTPDecodableResponseSerializer(decoder: decoder),
             completion: completion

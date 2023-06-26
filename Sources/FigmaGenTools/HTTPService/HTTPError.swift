@@ -38,7 +38,7 @@ public struct HTTPError: Error, CustomStringConvertible {
     public var description: String {
         var description = "\(type(of: self)).\(code)"
 
-        if let reason = reason {
+        if let reason {
             let reasonDescription: String
 
             if let reason = reason as? HTTPErrorStringConvertible {
@@ -131,8 +131,8 @@ public struct HTTPError: Error, CustomStringConvertible {
             code = .access
 
         #if !os(Linux)
+
         case .appTransportSecurityRequiresSecureConnection:
-            // swiftlint:disable:previous vertical_whitespace_between_cases
             code = .secureConnection
 
         case .dataLengthExceedsMaximum:

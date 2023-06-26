@@ -32,17 +32,17 @@ extension GenerationParametersResolving {
     private func resolveTemplateType(configuration: GenerationConfiguration) -> RenderTemplateType {
         if let templatePath = configuration.template {
             return .custom(path: templatePath)
-        } else {
-            return defaultTemplateType
         }
+
+        return defaultTemplateType
     }
 
     private func resolveDestination(configuration: GenerationConfiguration) -> RenderDestination {
         if let destinationPath = configuration.destination {
             return .file(path: destinationPath)
-        } else {
-            return defaultDestination
         }
+
+        return defaultDestination
     }
 
     // MARK: -

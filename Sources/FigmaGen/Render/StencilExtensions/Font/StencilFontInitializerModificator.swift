@@ -59,9 +59,9 @@ final class StencilFontInitializerModificator: StencilFontModificator {
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let defaultWeight = "regular"
+    fileprivate static let defaultWeight = "regular"
 }

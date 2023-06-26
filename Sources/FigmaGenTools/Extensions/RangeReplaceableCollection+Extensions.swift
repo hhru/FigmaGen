@@ -13,18 +13,18 @@ extension RangeReplaceableCollection {
     }
 
     public func prepending<T: Collection>(contentsOf collection: T) -> Self where Self.Element == T.Element {
-        return collection + self
+        collection + self
     }
 
     public func prepending(_ element: Element) -> Self {
-        return prepending(contentsOf: [element])
+        prepending(contentsOf: [element])
     }
 
     public func appending<T: Collection>(contentsOf collection: T) -> Self where Self.Element == T.Element {
-        return self + collection
+        self + collection
     }
 
     public func appending(_ element: Element) -> Self {
-        return appending(contentsOf: [element])
+        appending(contentsOf: [element])
     }
 }

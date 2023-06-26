@@ -38,7 +38,7 @@ struct FigmaNode: Decodable, Hashable {
 
     let type: FigmaNodeType
 
-    var children: [FigmaNode]? {
+    var children: [Self]? {
         switch type {
         case .unknown, .vector, .star, .line, .ellipse, .regularPolygon, .rectangle, .text, .slice:
             return nil
@@ -111,17 +111,17 @@ struct FigmaNode: Decodable, Hashable {
     var isComponent: Bool {
         if case .component = type {
             return true
-        } else {
-            return false
         }
+
+        return false
     }
 
     var isInstance: Bool {
         if case .instance = type {
             return true
-        } else {
-            return false
         }
+
+        return false
     }
 
     // MARK: - Initializers

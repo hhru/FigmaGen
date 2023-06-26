@@ -6,7 +6,7 @@ public struct AssetFolder {
     // MARK: - Type Methods
 
     public static func isValidFolder(at folderPath: String) -> Bool {
-        return (try? AssetFolder(folderPath: folderPath)) != nil
+        (try? Self(folderPath: folderPath)) != nil
     }
 
     // MARK: - Instance Properties
@@ -21,7 +21,7 @@ public struct AssetFolder {
     public init(
         colorSets: [String: AssetColorSet] = [:],
         imageSets: [String: AssetImageSet] = [:],
-        folders: [String: AssetFolder] = [:],
+        folders: [String: Self] = [:],
         contents: AssetFolderContents = AssetFolderContents()
     ) {
         self.colorSets = colorSets
@@ -58,7 +58,7 @@ public struct AssetFolder {
                     imageSets[nodeName] = try AssetImageSet(folderPath: nodePath.string)
 
                 case nil:
-                    folders[nodeName] = try AssetFolder(folderPath: nodePath.string)
+                    folders[nodeName] = try Self(folderPath: nodePath.string)
 
                 default:
                     break
@@ -108,9 +108,9 @@ public struct AssetFolder {
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let contentsPath = "Contents.json"
+    fileprivate static let contentsPath = "Contents.json"
 }

@@ -54,7 +54,7 @@ final class DefaultLibraryGenerator: LibraryGenerator {
     // MARK: -
 
     func generate(configurationPath: String) -> Promise<Void> {
-        return firstly {
+        firstly {
             self.configurationProvider.fetchConfiguration(from: configurationPath)
         }.then { configuration in
             self.generate(configuration: configuration)

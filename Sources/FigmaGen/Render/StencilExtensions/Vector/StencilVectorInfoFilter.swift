@@ -21,6 +21,6 @@ final class StencilVectorInfoFilter: StencilVectorFilter {
     // MARK: - Instance Methods
 
     func filter(vector: Vector) throws -> String {
-        return "x \(vector.x); y \(vector.y)"
+        "x \(vector.x); y \(vector.y)"
     }
 }

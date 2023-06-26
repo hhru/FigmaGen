@@ -70,39 +70,39 @@ internal final class URLEncodedFormSerializer {
     // MARK: -
 
     internal func serialize(_ form: URLEncodedForm) -> String {
-        return form
+        form
             .map { serializeComponent($0.value, key: $0.key) }
             .joined(separator: .urlComponentSeparator)
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let urlDelimiters = ":#[]@!$&'()*+,;="
-    static let urlUnescapedSpace = " "
+    fileprivate static let urlDelimiters = ":#[]@!$&'()*+,;="
+    fileprivate static let urlUnescapedSpace = " "
 
-    static let urlPercentEscapedSpace = "%20"
-    static let urlPlusReplacedSpace = "+"
+    fileprivate static let urlPercentEscapedSpace = "%20"
+    fileprivate static let urlPlusReplacedSpace = "+"
 
-    static let urlComponentSeparator = "&"
+    fileprivate static let urlComponentSeparator = "&"
 
     // MARK: - Type Methods
 
-    static func urlStringComponent(key: String, value: String) -> String {
-        return "\(key)=\(value)"
+    fileprivate static func urlStringComponent(key: String, value: String) -> String {
+        "\(key)=\(value)"
     }
 
-    static func urlBracketsArrayComponentKey(_ key: String) -> String {
-        return "\(key)[]"
+    fileprivate static func urlBracketsArrayComponentKey(_ key: String) -> String {
+        "\(key)[]"
     }
 
-    static func urlNoBracketsArrayComponentKey(_ key: String) -> String {
-        return key
+    fileprivate static func urlNoBracketsArrayComponentKey(_ key: String) -> String {
+        key
     }
 
-    static func urlDictionaryComponentKey(_ key: String, elementKey: String) -> String {
-        return "\(key)[\(elementKey)]"
+    fileprivate static func urlDictionaryComponentKey(_ key: String, elementKey: String) -> String {
+        "\(key)[\(elementKey)]"
     }
 }

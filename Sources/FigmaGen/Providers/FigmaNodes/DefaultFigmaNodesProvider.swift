@@ -50,7 +50,7 @@ final class DefaultFigmaNodesProvider: FigmaNodesProvider {
     }
 
     private func resolveNodeIDs(_ nodeIDs: [String]?, defaultNodeIDs: Set<String>) throws -> Set<String> {
-        guard let nodeIDs = nodeIDs, !nodeIDs.isEmpty else {
+        guard let nodeIDs, !nodeIDs.isEmpty else {
             return defaultNodeIDs
         }
 
@@ -60,7 +60,7 @@ final class DefaultFigmaNodesProvider: FigmaNodesProvider {
     // MARK: -
 
     func fetchNodes(_ nodes: NodesParameters, from file: FigmaFile) -> Promise<[FigmaNode]> {
-        return perform(on: DispatchQueue.global(qos: .userInitiated)) {
+        perform(on: DispatchQueue.global(qos: .userInitiated)) {
             var includedNodeIDs = try self.resolveNodeIDs(nodes.includedIDs, defaultNodeIDs: [file.document.id])
             var excludedNodeIDs = try self.resolveNodeIDs(nodes.excludedIDs, defaultNodeIDs: [])
 

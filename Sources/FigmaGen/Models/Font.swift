@@ -19,10 +19,10 @@ extension Font {
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let textSystemFontName = "SFProText"
-    static let displaySystemFontName = "SFProDisplay"
+    fileprivate static let textSystemFontName = "SFProText"
+    fileprivate static let displaySystemFontName = "SFProDisplay"
 }

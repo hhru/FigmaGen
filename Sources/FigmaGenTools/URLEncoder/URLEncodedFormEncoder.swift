@@ -44,7 +44,7 @@ internal final class URLEncodedFormEncoder: Encoder {
     }
 
     internal func unkeyedContainer() -> UnkeyedEncodingContainer {
-        return URLEncodedFormUnkeyedEncodingContainer(
+        URLEncodedFormUnkeyedEncodingContainer(
             context: context,
             boolEncodingStrategy: boolEncodingStrategy,
             dateEncodingStrategy: dateEncodingStrategy,
@@ -53,7 +53,7 @@ internal final class URLEncodedFormEncoder: Encoder {
     }
 
     internal func singleValueContainer() -> SingleValueEncodingContainer {
-        return URLEncodedFormSingleValueEncodingContainer(
+        URLEncodedFormSingleValueEncodingContainer(
             context: context,
             boolEncodingStrategy: boolEncodingStrategy,
             dateEncodingStrategy: dateEncodingStrategy,

@@ -37,10 +37,10 @@ public final class HTTPBodyJSONEncoder: HTTPBodyEncoder {
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let contentTypeHeaderField = "Content-Type"
-    static let contentTypeHeaderValue = "application/json"
+    fileprivate static let contentTypeHeaderField = "Content-Type"
+    fileprivate static let contentTypeHeaderValue = "application/json"
 }

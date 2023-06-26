@@ -18,10 +18,10 @@ enum ImageFormat: String, Codable {
     // MARK: - Instance Methods
 
     func assetName(for fileName: String) -> String {
-        return fileName
+        fileName
     }
 
     func resourceName(for fileName: String) -> String {
-        return "\(fileName).\(fileExtension)"
+        "\(fileName).\(fileExtension)"
     }
 }

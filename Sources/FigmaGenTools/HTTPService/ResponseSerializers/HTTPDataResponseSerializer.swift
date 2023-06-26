@@ -20,7 +20,7 @@ public final class HTTPDataResponseSerializer: HTTPResponseSerializer {
     // MARK: - Instance Methods
 
     public func serialize(data: Data, statusCode: HTTPStatusCode, method: HTTPMethod) throws -> Data {
-        return data
+        data
     }
 }
 
@@ -29,6 +29,6 @@ extension Data: HTTPEmptyResponse {
     // MARK: - Type Methods
 
     public static func emptyResponseInstance() -> Data {
-        return Data()
+        Data()
     }
 }

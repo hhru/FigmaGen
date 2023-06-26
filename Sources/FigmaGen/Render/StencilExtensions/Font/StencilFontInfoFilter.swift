@@ -17,6 +17,6 @@ final class StencilFontInfoFilter: StencilFontFilter {
     // MARK: - Instance Methods
 
     func filter(font: Font) throws -> String {
-        return "\(font.family) (\(font.name)); weight \(font.weight); size \(font.size)"
+        "\(font.family) (\(font.name)); weight \(font.weight); size \(font.size)"
     }
 }

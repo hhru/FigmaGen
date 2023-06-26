@@ -84,7 +84,7 @@ final class DefaultFigmaAPIProvider: FigmaAPIProvider {
     // MARK: -
 
     func request<Route: FigmaAPIRoute>(route: Route) -> Promise<Void> where Route.Response == FigmaAPIEmptyResponse {
-        return Promise { seal in
+        Promise { seal in
             let task = httpService.request(route: makeHTTPRoute(for: route))
 
             task.response { response in
@@ -100,7 +100,7 @@ final class DefaultFigmaAPIProvider: FigmaAPIProvider {
     }
 
     func request<Route: FigmaAPIRoute>(route: Route) -> Promise<Route.Response> {
-        return Promise { seal in
+        Promise { seal in
             let task = httpService.request(route: makeHTTPRoute(for: route))
 
             task.responseDecodable(type: Route.Response.self, decoder: responseDecoder) { response in
@@ -116,20 +116,20 @@ final class DefaultFigmaAPIProvider: FigmaAPIProvider {
     }
 }
 
-private extension HTTPHeader {
+extension HTTPHeader {
 
     // MARK: - Type Methods
 
-    static func figmaAccessToken(_ value: String) -> HTTPHeader {
-        return HTTPHeader(name: "X-Figma-Token", value: value)
+    fileprivate static func figmaAccessToken(_ value: String) -> HTTPHeader {
+        HTTPHeader(name: "X-Figma-Token", value: value)
     }
 }
 
-private extension DateFormatter {
+extension DateFormatter {
 
     // MARK: - Type Properties
 
-    static func figmaAPI(withMilliseconds: Bool) -> DateFormatter {
+    fileprivate static func figmaAPI(withMilliseconds: Bool) -> DateFormatter {
         let dateFormatter = DateFormatter()
 
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
@@ -145,9 +145,9 @@ private extension DateFormatter {
     }
 }
 
-private extension URL {
+extension URL {
 
     // MARK: - Type Properties
 
-    static let figmaAPIServer = URL(string: "https://api.figma.com")!
+    fileprivate static let figmaAPIServer = URL(string: "https://api.figma.com")!
 }

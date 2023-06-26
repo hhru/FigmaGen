@@ -104,13 +104,13 @@ final class DefaultTemplateRenderer: TemplateRenderer {
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let templatesFileExtension = ".stencil"
-    static let templatesXcodeRelativePath = "../Templates"
-    static let templatesPodsRelativePath = "../Templates"
-    static let templatesShareRelativePath = "../../share/figmagen"
-    static let templateOptionsKey = "options"
+    fileprivate static let templatesFileExtension = ".stencil"
+    fileprivate static let templatesXcodeRelativePath = "../Templates"
+    fileprivate static let templatesPodsRelativePath = "../Templates"
+    fileprivate static let templatesShareRelativePath = "../../share/figmagen"
+    fileprivate static let templateOptionsKey = "options"
 }

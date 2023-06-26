@@ -88,7 +88,7 @@ final class DefaultImagesProvider: ImagesProvider {
         preserveVectorData: Bool,
         in assets: String?
     ) -> Promise<[ImageRenderedNode: ImageAsset]> {
-        return assets.map { folderPath in
+        assets.map { folderPath in
             imageAssetsProvider.saveImages(
                 nodes: nodes,
                 format: format,
@@ -103,9 +103,38 @@ final class DefaultImagesProvider: ImagesProvider {
         format: ImageFormat,
         in resources: String?
     ) -> Promise<[ImageRenderedNode: ImageResource]> {
-        return resources.map { folderPath in
+        resources.map { folderPath in
             imageResourcesProvider.saveImages(nodes: nodes, format: format, in: folderPath)
         } ?? .value([:])
+    }
+
+    private func saveAssetImagesIfNeeded(
+        nodes: [ImageRenderedNode],
+        parameters: ImagesParameters
+    ) -> Promise<[Image]> {
+        when(
+            fulfilled: self.saveAssetImagesIfNeeded(
+                nodes: nodes,
+                format: parameters.format,
+                preserveVectorData: parameters.preserveVectorData,
+                in: parameters.assets
+            ),
+            self.saveResourceImagesIfNeeded(
+                nodes: nodes,
+                format: parameters.format,
+                in: parameters.resources
+            )
+        )
+        .map { assets, resources in
+            nodes.map { node in
+                Image(
+                    node: node,
+                    format: parameters.format,
+                    asset: assets[node],
+                    resource: resources[node]
+                )
+            }
+        }
     }
 
     // MARK: -
@@ -115,7 +144,7 @@ final class DefaultImagesProvider: ImagesProvider {
         nodes: NodesParameters,
         parameters: ImagesParameters
     ) -> Promise<[Image]> {
-        return firstly {
+        firstly {
             self.filesProvider.fetchFile(file)
         }.then { figmaFile in
             self.nodesProvider.fetchNodes(nodes, from: figmaFile).map { figmaNodes in
@@ -126,7 +155,7 @@ final class DefaultImagesProvider: ImagesProvider {
                 )
             }
         }.then { nodes in
-           self.imageRenderProvider.renderImages(
+            self.imageRenderProvider.renderImages(
                 of: file,
                 nodes: nodes,
                 format: parameters.format,
@@ -134,30 +163,10 @@ final class DefaultImagesProvider: ImagesProvider {
                 useAbsoluteBounds: parameters.useAbsoluteBounds
             )
         }.then { nodes in
-            firstly {
-                when(
-                    fulfilled: self.saveAssetImagesIfNeeded(
-                        nodes: nodes,
-                        format: parameters.format,
-                        preserveVectorData: parameters.preserveVectorData,
-                        in: parameters.assets
-                    ),
-                    self.saveResourceImagesIfNeeded(
-                        nodes: nodes,
-                        format: parameters.format,
-                        in: parameters.resources
-                    )
-                )
-            }.map { assets, resources in
-                nodes.map { node in
-                    Image(
-                        node: node,
-                        format: parameters.format,
-                        asset: assets[node],
-                        resource: resources[node]
-                    )
-                }
-            }
+            self.saveAssetImagesIfNeeded(
+                nodes: nodes,
+                parameters: parameters
+            )
         }
     }
 }

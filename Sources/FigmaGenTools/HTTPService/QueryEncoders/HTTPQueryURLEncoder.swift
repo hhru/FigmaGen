@@ -40,9 +40,9 @@ public final class HTTPQueryURLEncoder: HTTPQueryEncoder {
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let querySeparator = "&"
+    fileprivate static let querySeparator = "&"
 }

@@ -4,7 +4,7 @@ public struct AssetInfo: Codable, Hashable {
 
     // MARK: - Type Properties
 
-    public static let defaultFigmaGen = AssetInfo(version: 1, author: "FigmaGen")
+    public static let defaultFigmaGen = Self(version: 1, author: "FigmaGen")
 
     // MARK: - Instance Properties
 

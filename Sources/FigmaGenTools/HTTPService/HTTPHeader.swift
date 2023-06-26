@@ -5,7 +5,7 @@ public struct HTTPHeader: Equatable, CustomStringConvertible {
     // MARK: - Type Methods
 
     private static func qualityEncoded<T: Collection> (_ collection: T) -> String where T.Element == String {
-        return collection
+        collection
             .enumerated()
             .map { "\($1);q=\(1.0 - (Double($0) * 0.1))" }
             .joined(separator: ", ")
@@ -13,55 +13,55 @@ public struct HTTPHeader: Equatable, CustomStringConvertible {
 
     // MARK: -
 
-    public static func acceptCharset(_ value: String) -> HTTPHeader {
-        return HTTPHeader(name: "Accept-Charset", value: value)
+    public static func acceptCharset(_ value: String) -> Self {
+        Self(name: "Accept-Charset", value: value)
     }
 
-    public static func acceptLanguage(_ value: String) -> HTTPHeader {
-        return HTTPHeader(name: "Accept-Language", value: value)
+    public static func acceptLanguage(_ value: String) -> Self {
+        Self(name: "Accept-Language", value: value)
     }
 
-    public static func acceptEncoding(_ value: String) -> HTTPHeader {
-        return HTTPHeader(name: "Accept-Encoding", value: value)
+    public static func acceptEncoding(_ value: String) -> Self {
+        Self(name: "Accept-Encoding", value: value)
     }
 
-    public static func authorization(username: String, password: String) -> HTTPHeader {
+    public static func authorization(username: String, password: String) -> Self {
         let credential = Data("\(username):\(password)".utf8).base64EncodedString()
 
         return authorization("Basic \(credential)")
     }
 
-    public static func authorization(bearerToken: String) -> HTTPHeader {
-        return authorization("Bearer \(bearerToken)")
+    public static func authorization(bearerToken: String) -> Self {
+        authorization("Bearer \(bearerToken)")
     }
 
-    public static func authorization(_ value: String) -> HTTPHeader {
-        return HTTPHeader(name: "Authorization", value: value)
+    public static func authorization(_ value: String) -> Self {
+        Self(name: "Authorization", value: value)
     }
 
-    public static func contentDisposition(_ value: String) -> HTTPHeader {
-        return HTTPHeader(name: "Content-Disposition", value: value)
+    public static func contentDisposition(_ value: String) -> Self {
+        Self(name: "Content-Disposition", value: value)
     }
 
-    public static func contentType(_ value: String) -> HTTPHeader {
-        return HTTPHeader(name: "Content-Type", value: value)
+    public static func contentType(_ value: String) -> Self {
+        Self(name: "Content-Type", value: value)
     }
 
-    public static func userAgent(_ value: String) -> HTTPHeader {
-        return HTTPHeader(name: "User-Agent", value: value)
+    public static func userAgent(_ value: String) -> Self {
+        Self(name: "User-Agent", value: value)
     }
 
-    public static func cookie(_ value: String) -> HTTPHeader {
-        return HTTPHeader(name: "Cookie", value: value)
+    public static func cookie(_ value: String) -> Self {
+        Self(name: "Cookie", value: value)
     }
 
     // MARK: -
 
-    public static func defaultAcceptLanguage() -> HTTPHeader {
-        return acceptLanguage(qualityEncoded(Locale.preferredLanguages.prefix(6)))
+    public static func defaultAcceptLanguage() -> Self {
+        acceptLanguage(qualityEncoded(Locale.preferredLanguages.prefix(6)))
     }
 
-    public static func defaultAcceptEncoding() -> HTTPHeader {
+    public static func defaultAcceptEncoding() -> Self {
         let encodings: [String]
 
         if #available(iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *) {
@@ -73,7 +73,7 @@ public struct HTTPHeader: Equatable, CustomStringConvertible {
         return acceptEncoding(qualityEncoded(encodings))
     }
 
-    public static func defaultUserAgent(bundle: Bundle = Bundle.main) -> HTTPHeader {
+    public static func defaultUserAgent(bundle: Bundle = Bundle.main) -> Self {
         let systemName: String
 
         #if os(iOS)

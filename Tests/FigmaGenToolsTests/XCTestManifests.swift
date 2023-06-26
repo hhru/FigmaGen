@@ -6,13 +6,13 @@ extension FigmaGenToolsTests {
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__FigmaGenToolsTests = [
-        ("testExample", testExample),
+        ("testExample", testExample)
     ]
 }
 
 public func __allTests() -> [XCTestCaseEntry] {
-    return [
-        testCase(FigmaGenToolsTests.__allTests__FigmaGenToolsTests),
+    [
+        testCase(FigmaGenToolsTests.__allTests__FigmaGenToolsTests)
     ]
 }
 #endif

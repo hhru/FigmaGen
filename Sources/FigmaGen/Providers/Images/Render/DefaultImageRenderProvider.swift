@@ -104,11 +104,11 @@ final class DefaultImageRenderProvider: ImageRenderProvider {
     }
 }
 
-private extension ImageFormat {
+extension ImageFormat {
 
     // MARK: - Instance Properties
 
-    var figmaFormat: FigmaImageFormat {
+    fileprivate var figmaFormat: FigmaImageFormat {
         switch self {
         case .pdf:
             return .pdf
@@ -125,11 +125,11 @@ private extension ImageFormat {
     }
 }
 
-private extension ImageScale {
+extension ImageScale {
 
     // MARK: - Instance Properties
 
-    var figmaScale: Double {
+    fileprivate var figmaScale: Double {
         switch self {
         case .none, .scale1x:
             return 1.0

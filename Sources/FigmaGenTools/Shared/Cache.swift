@@ -13,7 +13,7 @@ public final class Cache<Key: Hashable, Value> {
     // MARK: - Instance Methods
 
     public func value(forKey key: Key) -> Value? {
-        return wrapped.object(forKey: CacheKey(key))?.value
+        wrapped.object(forKey: CacheKey(key))?.value
     }
 
     public func setValue(_ value: Value, forKey key: Key) {

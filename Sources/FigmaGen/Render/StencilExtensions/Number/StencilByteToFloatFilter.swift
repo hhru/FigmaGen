@@ -9,6 +9,6 @@ final class StencilByteToFloatFilter: StencilFilter {
     // MARK: - Instance Methods
 
     func filter(input: UInt8) -> Double {
-        return Double(input) / Double(255.0)
+        Double(input) / Double(255.0)
     }
 }

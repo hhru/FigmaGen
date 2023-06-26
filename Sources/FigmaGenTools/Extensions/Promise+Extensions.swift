@@ -6,7 +6,7 @@ extension Promise {
     // MARK: - Type Methods
 
     public static func error(_ error: Error) -> Promise<T> {
-        return Promise(error: error)
+        Promise(error: error)
     }
 
     // MARK: - Instance Methods
@@ -24,7 +24,7 @@ extension Promise {
     }
 
     public func asOptional() -> Promise<T?> {
-        return map(on: nil) { $0 as T? }
+        map(on: nil) { $0 as T? }
     }
 }
 
@@ -33,7 +33,7 @@ public func perform<T>(
     flags: DispatchWorkItemFlags? = nil,
     _ body: @escaping () throws -> T
 ) -> Promise<T> {
-    return Promise<T> { seal in
+    Promise<T> { seal in
         let work = {
             do {
                 seal.fulfill(try body())
@@ -42,7 +42,7 @@ public func perform<T>(
             }
         }
 
-        if let queue = queue {
+        if let queue {
             queue.async(flags: flags, work)
         } else {
             work()

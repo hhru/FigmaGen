@@ -5,12 +5,12 @@ internal enum URLEncodedFormComponent {
     // MARK: - Enumeration Cases
 
     case string(String)
-    case array([URLEncodedFormComponent])
-    case dictionary([String: URLEncodedFormComponent])
+    case array([Self])
+    case dictionary([String: Self])
 
     // MARK: - Instance Properties
 
-    internal var array: [URLEncodedFormComponent]? {
+    internal var array: [Self]? {
         switch self {
         case let .array(array):
             return array
@@ -20,7 +20,7 @@ internal enum URLEncodedFormComponent {
         }
     }
 
-    internal var dictionary: [String: URLEncodedFormComponent]? {
+    internal var dictionary: [String: Self]? {
         switch self {
         case let .dictionary(object):
             return object

@@ -11,6 +11,6 @@ struct StencilTagNode: NodeType {
     // MARK: - Instance Methods
 
     func render(_ context: Context) throws -> String {
-        return try renderer(context)
+        try renderer(context)
     }
 }

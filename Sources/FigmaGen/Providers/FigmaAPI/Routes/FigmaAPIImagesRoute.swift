@@ -46,9 +46,9 @@ struct FigmaAPIImagesRoute: FigmaAPIRoute {
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let nodeIDsSeparator = ","
+    fileprivate static let nodeIDsSeparator = ","
 }

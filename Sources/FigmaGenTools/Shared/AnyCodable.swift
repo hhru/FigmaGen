@@ -12,6 +12,7 @@ public struct AnyCodable: Codable {
         self.value = value as Any
     }
 
+    // swiftlint:disable:next function_body_length
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
 
@@ -21,30 +22,30 @@ public struct AnyCodable: Codable {
             let string = try? container.decode(String.self)
 
             if let bool = try? container.decode(Bool.self) {
-                if let string = string, string != String(describing: bool) {
+                if let string, string != String(describing: bool) {
                     self.init(string)
                 } else {
                     self.init(bool)
                 }
             } else if let int = try? container.decode(Int.self) {
-                if let string = string, string != String(describing: int) {
+                if let string, string != String(describing: int) {
                     self.init(string)
                 } else {
                     self.init(int)
                 }
             } else if let uint = try? container.decode(UInt.self) {
-                if let string = string, string != String(describing: uint) {
+                if let string, string != String(describing: uint) {
                     self.init(string)
                 } else {
                     self.init(uint)
                 }
             } else if let double = try? container.decode(Double.self) {
-                if let string = string, string != String(describing: double) {
+                if let string, string != String(describing: double) {
                     self.init(string)
                 } else {
                     self.init(double)
                 }
-            } else if let string = string {
+            } else if let string {
                 self.init(string)
             } else if let array = try? container.decode([AnyCodable].self) {
                 self.init(array.map { $0.value })
@@ -119,10 +120,10 @@ public struct AnyCodable: Codable {
             try container.encode(url.absoluteString)
 
         case let array as [Any?]:
-            try container.encode(array.map(AnyCodable.init))
+            try container.encode(array.map(Self.init))
 
         case let dictionary as [String: Any?]:
-            try container.encode(dictionary.mapValues(AnyCodable.init))
+            try container.encode(dictionary.mapValues(Self.init))
 
         default:
             let context = EncodingError.Context(

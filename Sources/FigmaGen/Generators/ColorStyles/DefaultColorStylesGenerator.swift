@@ -22,7 +22,7 @@ final class DefaultColorStylesGenerator: ColorStylesGenerator, GenerationParamet
     // MARK: - Instance Methods
 
     private func generate(parameters: GenerationParameters, assets: String?) -> Promise<Void> {
-        return firstly {
+        firstly {
             self.colorStylesProvider.fetchColorStyles(
                 from: parameters.file,
                 nodes: parameters.nodes,
@@ -42,7 +42,7 @@ final class DefaultColorStylesGenerator: ColorStylesGenerator, GenerationParamet
     // MARK: -
 
     func generate(configuration: ColorStylesConfiguration) -> Promise<Void> {
-        return perform(on: DispatchQueue.global(qos: .userInitiated)) {
+        perform(on: DispatchQueue.global(qos: .userInitiated)) {
             try self.resolveGenerationParameters(from: configuration.generation)
         }.then { parameters in
             self.generate(parameters: parameters, assets: configuration.assets)

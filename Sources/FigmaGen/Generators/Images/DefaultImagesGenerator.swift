@@ -22,7 +22,7 @@ final class DefaultImagesGenerator: ImagesGenerator, GenerationParametersResolvi
     // MARK: - Instance Methods
 
     private func generate(parameters: GenerationParameters, imagesParameters: ImagesParameters) -> Promise<Void> {
-        return firstly {
+        firstly {
             self.imagesProvider.fetchImages(
                 from: parameters.file,
                 nodes: parameters.nodes,
@@ -42,7 +42,7 @@ final class DefaultImagesGenerator: ImagesGenerator, GenerationParametersResolvi
     // MARK: -
 
     func generate(configuration: ImagesConfiguration) -> Promise<Void> {
-        return perform(on: DispatchQueue.global(qos: .userInitiated)) {
+        perform(on: DispatchQueue.global(qos: .userInitiated)) {
             try self.resolveGenerationParameters(from: configuration.generatation)
         }.then { parameters in
             self.generate(parameters: parameters, imagesParameters: configuration.imagesParameters)
@@ -50,11 +50,11 @@ final class DefaultImagesGenerator: ImagesGenerator, GenerationParametersResolvi
     }
 }
 
-private extension ImagesConfiguration {
+extension ImagesConfiguration {
 
     // MARK: - Instance Properties
 
-    var imagesParameters: ImagesParameters {
+    fileprivate var imagesParameters: ImagesParameters {
         ImagesParameters(
             format: format,
             scales: scales,

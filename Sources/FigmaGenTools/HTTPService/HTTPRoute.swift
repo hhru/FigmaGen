@@ -51,7 +51,7 @@ public struct HTTPRoute: CustomStringConvertible {
     public func asRequest() throws -> URLRequest {
         var request: URLRequest
 
-        if let queryParameters = queryParameters {
+        if let queryParameters {
             let encodedURL = try queryEncoder.encode(
                 url: url,
                 parameters: HTTPAnyEncodable(queryParameters)
@@ -68,7 +68,7 @@ public struct HTTPRoute: CustomStringConvertible {
             request.setValue(header.value, forHTTPHeaderField: header.name)
         }
 
-        if let bodyParameters = bodyParameters {
+        if let bodyParameters {
             request = try bodyEncoder.encode(
                 request: request,
                 parameters: HTTPAnyEncodable(bodyParameters)

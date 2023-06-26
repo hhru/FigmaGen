@@ -1,7 +1,5 @@
 included:
-  - Example
   - Sources
-  - Tests
 
 excluded:
   - "*/Pods"
@@ -60,9 +58,7 @@ only_rules:
   - empty_string
   - empty_xctest_method
   - enum_case_associated_values_count
-  - explicit_acl
   - explicit_init
-  - explicit_top_level_acl
   - fatal_error_message
   - file_header
   - file_length
@@ -82,7 +78,6 @@ only_rules:
   - implicit_return
   - implicitly_unwrapped_optional
   - inclusive_language
-  - indentation_width
   - invalid_swiftlint_command
   - is_disjoint
   - joined_default_parameter
@@ -105,7 +100,6 @@ only_rules:
   - modifier_order
   - multiline_arguments
   - multiline_arguments_brackets
-  - multiline_function_chains
   - multiline_literal_brackets
   - multiline_parameters
   - multiline_parameters_brackets
@@ -366,12 +360,6 @@ implicit_return:
 
 implicitly_unwrapped_optional:
   mode: all_except_iboutlets
-
-indentation_width:
-  indentation_width: 4
-  include_comments: true
-  include_compiler_directives: true
-  include_multiline_strings: false
 
 large_tuple:
   warning: 3

@@ -61,7 +61,7 @@ struct FigmaVectorNodeInfo: Decodable, Hashable {
     }
 
     var strokeCap: FigmaStrokeCap? {
-        guard let rawStrokeCap = rawStrokeCap else {
+        guard let rawStrokeCap else {
             return FigmaStrokeCap.none
         }
 
@@ -69,7 +69,7 @@ struct FigmaVectorNodeInfo: Decodable, Hashable {
     }
 
     var strokeJoin: FigmaStrokeJoin? {
-        guard let rawStrokeJoin = rawStrokeJoin else {
+        guard let rawStrokeJoin else {
             return FigmaStrokeJoin.miter
         }
 
@@ -83,6 +83,6 @@ struct FigmaVectorNodeInfo: Decodable, Hashable {
     // MARK: - Instance Methods
 
     func styleID(of styleType: FigmaStyleType) -> String? {
-        return styles?[styleType.rawValue.lowercased()]
+        styles?[styleType.rawValue.lowercased()]
     }
 }

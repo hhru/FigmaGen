@@ -22,7 +22,7 @@ final class DefaultTextStylesGenerator: TextStylesGenerator, GenerationParameter
     // MARK: - Instance Methods
 
     private func generate(parameters: GenerationParameters) -> Promise<Void> {
-        return firstly {
+        firstly {
             self.textStylesProvider.fetchTextStyles(from: parameters.file, nodes: parameters.nodes)
         }.map { textStyles in
             TextStylesContext(textStyles: textStyles)
@@ -38,7 +38,7 @@ final class DefaultTextStylesGenerator: TextStylesGenerator, GenerationParameter
     // MARK: -
 
     func generate(configuration: TextStylesConfiguration) -> Promise<Void> {
-        return perform(on: DispatchQueue.global(qos: .userInitiated)) {
+        perform(on: DispatchQueue.global(qos: .userInitiated)) {
             try self.resolveGenerationParameters(from: configuration)
         }.then { parameters in
             self.generate(parameters: parameters)

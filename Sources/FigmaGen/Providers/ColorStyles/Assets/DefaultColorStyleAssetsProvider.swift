@@ -18,7 +18,7 @@ final class DefaultColorStyleAssetsProvider: ColorStyleAssetsProvider {
     // MARK: - Instance Methods
 
     private func makeAsset(for node: ColorStyleNode) -> ColorStyleAsset {
-        return ColorStyleAsset(name: node.name.camelized)
+        ColorStyleAsset(name: node.name.camelized)
     }
 
     private func makeAssets(for nodes: [ColorStyleNode]) -> [ColorStyleNode: ColorStyleAsset] {
@@ -52,7 +52,7 @@ final class DefaultColorStyleAssetsProvider: ColorStyleAssetsProvider {
     }
 
     private func makeAssetColorSets(for assets: [ColorStyleNode: ColorStyleAsset]) -> [String: AssetColorSet] {
-        return assets.reduce(into: [:]) { result, asset in
+        assets.reduce(into: [:]) { result, asset in
             result[asset.value.name] = makeAssetColorSet(for: asset.key)
         }
     }
@@ -60,7 +60,7 @@ final class DefaultColorStyleAssetsProvider: ColorStyleAssetsProvider {
     // MARK: -
 
     func saveColorStyles(nodes: [ColorStyleNode], in folderPath: String) -> Promise<[ColorStyleNode: ColorStyleAsset]> {
-        return perform(on: DispatchQueue.global(qos: .userInitiated)) {
+        perform(on: DispatchQueue.global(qos: .userInitiated)) {
             self.makeAssets(for: nodes)
         }.nest { assets in
             perform(on: DispatchQueue.global(qos: .userInitiated)) {

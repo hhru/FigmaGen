@@ -56,12 +56,12 @@ struct GenerationConfiguration: Decodable {
 
     // MARK: - Instance Methods
 
-    func resolve(base: BaseConfiguration?) -> GenerationConfiguration {
-        guard let base = base else {
+    func resolve(base: BaseConfiguration?) -> Self {
+        guard let base else {
             return self
         }
 
-        return GenerationConfiguration(
+        return Self(
             file: file ?? base.file,
             accessToken: accessToken ?? base.accessToken,
             template: template,

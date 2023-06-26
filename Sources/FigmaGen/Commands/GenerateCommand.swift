@@ -41,9 +41,9 @@ final class GenerateCommand: AsyncExecutableCommand {
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let defaultConfigurationPath = ".figmagen.yml"
+    fileprivate static let defaultConfigurationPath = ".figmagen.yml"
 }

@@ -163,7 +163,7 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
     }
 
     private func resolveImageScales() -> [ImageScale] {
-        return scales
+        scales
             .value?
             .components(separatedBy: String.scaleSeparator)
             .map { rawScale in
@@ -176,7 +176,7 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
     }
 
     private func resolveImagesConfiguration() -> ImagesConfiguration {
-        return ImagesConfiguration(
+        ImagesConfiguration(
             generatation: generationConfiguration,
             assets: assets.value,
             resources: resources.value,
@@ -201,9 +201,9 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let scaleSeparator = ","
+    fileprivate static let scaleSeparator = ","
 }

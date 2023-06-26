@@ -14,18 +14,18 @@ struct Configuration: Decodable {
     // MARK: - Instance Methods
 
     func resolveColorStyles() -> ColorStylesConfiguration? {
-        return colorStyles?.resolve(base: base)
+        colorStyles?.resolve(base: base)
     }
 
     func resolveTextStyles() -> TextStylesConfiguration? {
-        return textStyles?.resolve(base: base)
+        textStyles?.resolve(base: base)
     }
 
     func resolveImages() -> ImagesConfiguration? {
-        return images?.resolve(base: base)
+        images?.resolve(base: base)
     }
 
     func resolveShadowStyles() -> ShadowStylesConfiguration? {
-        return shadowStyles?.resolve(base: base)
+        shadowStyles?.resolve(base: base)
     }
 }

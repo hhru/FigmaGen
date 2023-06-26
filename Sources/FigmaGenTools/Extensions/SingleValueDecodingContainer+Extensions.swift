@@ -5,6 +5,6 @@ extension SingleValueDecodingContainer {
     // MARK: - Instance Methods
 
     public func decode<T: Decodable>() throws -> T {
-        return try decode(T.self)
+        try decode(T.self)
     }
 }

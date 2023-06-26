@@ -12,7 +12,7 @@ final class DefaultDataProvider: DataProvider {
     // MARK: - Instance Methods
 
     func fetchData(from url: URL) -> Promise<Data> {
-        return perform(on: DispatchQueue.global(qos: .userInitiated)) {
+        perform(on: DispatchQueue.global(qos: .userInitiated)) {
             if let data = self.dataCache.value(forKey: url) {
                 return data
             }
@@ -24,7 +24,7 @@ final class DefaultDataProvider: DataProvider {
     }
 
     func saveData(from url: URL, to filePath: String) -> Promise<Void> {
-        return firstly {
+        firstly {
             self.fetchData(from: url)
         }.map(on: DispatchQueue.global(qos: .userInitiated)) { fileData in
             let filePath = Path(filePath)

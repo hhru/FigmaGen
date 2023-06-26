@@ -39,6 +39,6 @@ extension String: HTTPEmptyResponse {
     // MARK: - Type Methods
 
     public static func emptyResponseInstance() -> String {
-        return ""
+        ""
     }
 }

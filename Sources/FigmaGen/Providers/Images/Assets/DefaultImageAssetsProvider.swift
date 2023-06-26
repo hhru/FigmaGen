@@ -70,7 +70,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
     }
 
     private func makeAssetImageSets(for assets: [ImageRenderedNode: ImageAsset]) -> [String: AssetImageSet] {
-        return assets.values.reduce(into: [:]) { result, asset in
+        assets.values.reduce(into: [:]) { result, asset in
             result[asset.name] = makeAssetImageSet(for: asset)
         }
     }
@@ -99,7 +99,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
         preserveVectorData: Bool,
         in folderPath: String
     ) -> Promise<[ImageRenderedNode: ImageAsset]> {
-        return perform(on: DispatchQueue.global(qos: .userInitiated)) {
+        perform(on: DispatchQueue.global(qos: .userInitiated)) {
             self.makeAssets(
                 for: nodes,
                 format: format,
@@ -121,11 +121,11 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
     }
 }
 
-private extension ImageScale {
+extension ImageScale {
 
     // MARK: - Instance Properties
 
-    var assetImageScale: AssetImageScale? {
+    fileprivate var assetImageScale: AssetImageScale? {
         switch self {
         case .none:
             return nil
@@ -142,9 +142,9 @@ private extension ImageScale {
     }
 }
 
-private extension AssetImageProperties {
+extension AssetImageProperties {
 
-    init?(from imageAsset: ImageAsset) {
+    fileprivate init?(from imageAsset: ImageAsset) {
         guard imageAsset.preserveVectorData else {
             return nil
         }

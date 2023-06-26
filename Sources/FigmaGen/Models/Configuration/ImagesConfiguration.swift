@@ -64,8 +64,8 @@ struct ImagesConfiguration: Decodable {
 
     // MARK: - Instance Methods
 
-    func resolve(base: BaseConfiguration?) -> ImagesConfiguration {
-        return ImagesConfiguration(
+    func resolve(base: BaseConfiguration?) -> Self {
+        Self(
             generatation: generatation.resolve(base: base),
             assets: assets,
             resources: resources,

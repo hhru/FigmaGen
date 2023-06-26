@@ -54,9 +54,9 @@ extension AssetNode {
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let contentsPath = "Contents.json"
+    fileprivate static let contentsPath = "Contents.json"
 }

@@ -71,9 +71,9 @@ extension GenerationConfigurableCommand {
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let templateOptionSeparator = ":"
+    fileprivate static let templateOptionSeparator = ":"
 }

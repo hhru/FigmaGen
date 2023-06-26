@@ -139,7 +139,7 @@ final class DefaultTextStylesProvider: TextStylesProvider {
     // MARK: -
 
     func fetchTextStyles(from file: FileParameters, nodes: NodesParameters) -> Promise<[TextStyle]> {
-        return firstly {
+        firstly {
             self.filesProvider.fetchFile(file)
         }.then { figmaFile in
             self.nodesProvider.fetchNodes(nodes, from: figmaFile).map { figmaNodes in
@@ -149,11 +149,11 @@ final class DefaultTextStylesProvider: TextStylesProvider {
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Methods
 
-    static func regularFontName(family fontFamily: String) -> String {
-        return "\(fontFamily)-Regular"
+    fileprivate static func regularFontName(family fontFamily: String) -> String {
+        "\(fontFamily)-Regular"
     }
 }
