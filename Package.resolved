@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/shibapm/Komondor.git",
       "state" : {
-        "revision" : "7c3c6040c01c99b83afc7eaa8f2a8a69337f659a",
-        "version" : "1.1.1"
+        "revision" : "90b087b1e39069684b1ff4bf915c2aae594f2d60",
+        "version" : "1.1.3"
       }
     },
     {
@@ -75,10 +75,10 @@
     {
       "identity" : "stencil",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kylef/Stencil.git",
+      "location" : "https://github.com/stencilproject/Stencil.git",
       "state" : {
-        "revision" : "973e190edf5d09274e4a6bc2e636c86899ed84c3",
-        "version" : "0.14.1"
+        "revision" : "4f222ac85d673f35df29962fc4c36ccfdaf9da5b",
+        "version" : "0.15.1"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SwiftGen/StencilSwiftKit.git",
       "state" : {
-        "revision" : "54cbedcdbb4334e03930adcff7343ffaf317bf0f",
-        "version" : "2.8.0"
+        "revision" : "20e2de5322c83df005939d9d9300fab130b49f97",
+        "version" : "2.10.1"
       }
     },
     {

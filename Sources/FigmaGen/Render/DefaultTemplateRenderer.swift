@@ -85,11 +85,10 @@ final class DefaultTemplateRenderer: TemplateRenderer {
 
         let stencilEnvironment = Environment(
             loader: FileSystemLoader(paths: [templatePath.parent()]),
-            extensions: [stencilExtensionRegistry],
-            templateClass: StencilSwiftTemplate.self
+            extensions: [stencilExtensionRegistry]
         )
 
-        let stencilTemplate = StencilSwiftTemplate(
+        let stencilTemplate = Template(
             templateString: try templatePath.read(),
             environment: stencilEnvironment
         )
