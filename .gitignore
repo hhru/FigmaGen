@@ -54,7 +54,7 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
-# Fugen
-Demo/fugen
+# FigmaGen
+Demo/figmagen
 Demo/Templates
-fugen-*.zip
+figmagen-*.zip
