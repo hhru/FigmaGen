@@ -66,7 +66,7 @@ public struct Shadow: Equatable {
         opacity: 0.10000000149011612
     )
 
-    /// Thin Shadow 
+    /// Thin Shadow
     ///
     /// Offset: x 0.0; y 1.0
     /// Radius: 4.0
@@ -268,6 +268,14 @@ open class ShadowStyleLayer: CALayer {
 
     public override convenience init() {
         self.init(shadowStyle: .clear)
+    }
+
+    public override convenience init(layer: Any) {
+        if let layer = layer as? ShadowStyleLayer {
+            self.init(shadowStyle: layer.shadowStyle)
+        } else {
+            self.init(shadowStyle: .clear)
+        }
     }
 
     public required init?(coder: NSCoder) {

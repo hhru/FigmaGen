@@ -32,7 +32,7 @@ public struct TextStyle: Equatable {
     /// Underline: false
     /// Paragraph spacing: default
     /// Paragraph indent: default
-    /// Line height: 15.225
+    /// Line height: 15.525
     /// Letter spacing: 0.0
     public static let caption = TextStyle(
         font: UIFont(name: "SFProDisplay-Light", size: 13.0),
@@ -46,7 +46,7 @@ public struct TextStyle: Equatable {
         underline: false,
         paragraphSpacing: nil,
         paragraphIndent: nil,
-        lineHeight: 15.225,
+        lineHeight: 15.525,
         letterSpacing: 0.0
     )
 
@@ -84,7 +84,7 @@ public struct TextStyle: Equatable {
     /// Underline: false
     /// Paragraph spacing: default
     /// Paragraph indent: default
-    /// Line height: 17.575
+    /// Line height: 17.9
     /// Letter spacing: 0.2
     public static let subtitle = TextStyle(
         font: UIFont(name: "SFProDisplay-Regular", size: 15.0),
@@ -98,7 +98,7 @@ public struct TextStyle: Equatable {
         underline: false,
         paragraphSpacing: nil,
         paragraphIndent: nil,
-        lineHeight: 17.575,
+        lineHeight: 17.9,
         letterSpacing: 0.2
     )
 
@@ -110,7 +110,7 @@ public struct TextStyle: Equatable {
     /// Underline: false
     /// Paragraph spacing: default
     /// Paragraph indent: default
-    /// Line height: 19.925
+    /// Line height: 20.275
     /// Letter spacing: 0.125
     public static let title = TextStyle(
         font: UIFont(name: "SFProDisplay-Medium", size: 17.0),
@@ -124,7 +124,7 @@ public struct TextStyle: Equatable {
         underline: false,
         paragraphSpacing: nil,
         paragraphIndent: nil,
-        lineHeight: 19.925,
+        lineHeight: 20.275,
         letterSpacing: 0.125
     )
 
@@ -136,7 +136,7 @@ public struct TextStyle: Equatable {
     /// Underline: false
     /// Paragraph spacing: default
     /// Paragraph indent: default
-    /// Line height: 39.85
+    /// Line height: 40.575
     /// Letter spacing: 0.1
     public static let largeTitle = TextStyle(
         font: UIFont(name: "SFProDisplay-Bold", size: 34.0),
@@ -150,7 +150,7 @@ public struct TextStyle: Equatable {
         underline: false,
         paragraphSpacing: nil,
         paragraphIndent: nil,
-        lineHeight: 39.85,
+        lineHeight: 40.575,
         letterSpacing: 0.1
     )
 
