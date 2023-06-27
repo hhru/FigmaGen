@@ -6,145 +6,266 @@
 	objectVersion = 51;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		C01B801E25060F6B0080227E /* FigmaGen */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = C01B801F25060F6B0080227E /* Build configuration list for PBXAggregateTarget "FigmaGen" */;
+			buildPhases = (
+				C01B802225060F710080227E /* FigmaGen */,
+			);
+			dependencies = (
+			);
+			name = FigmaGen;
+			productName = Fugen;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
-		C09AD30D238FFE0F005C787A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09AD30C238FFE0F005C787A /* AppDelegate.swift */; };
-		C09AD311238FFE0F005C787A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09AD310238FFE0F005C787A /* ViewController.swift */; };
-		C09AD314238FFE0F005C787A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C09AD312238FFE0F005C787A /* Main.storyboard */; };
-		C09AD316238FFE10005C787A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C09AD315238FFE10005C787A /* Assets.xcassets */; };
-		C09AD319238FFE10005C787A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C09AD317238FFE10005C787A /* LaunchScreen.storyboard */; };
-		C0FE20572394540F003A6701 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FE20552394540F003A6701 /* TextStyle.swift */; };
-		C0FE20582394540F003A6701 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FE20562394540F003A6701 /* Colors.swift */; };
-		C0FE2066239573BF003A6701 /* SF-Pro-Display-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = C0FE205C239573BF003A6701 /* SF-Pro-Display-Light.otf */; };
-		C0FE2067239573BF003A6701 /* SF-Pro-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = C0FE205D239573BF003A6701 /* SF-Pro-Display-Regular.otf */; };
-		C0FE2068239573BF003A6701 /* SF-Pro-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C0FE205E239573BF003A6701 /* SF-Pro-Display-Bold.otf */; };
-		C0FE2069239573BF003A6701 /* SF-Pro-Display-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = C0FE205F239573BF003A6701 /* SF-Pro-Display-Medium.otf */; };
-		C0FE206B239573BF003A6701 /* SF-Pro-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C0FE2061239573BF003A6701 /* SF-Pro-Display-Semibold.otf */; };
+		7ED1B6F1C418840A5C1245BE /* Pods_FigmaGenDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11B7DAD9DD79D94016B46F17 /* Pods_FigmaGenDemo.framework */; };
+		8E5334092A420D9B006D6569 /* ShadowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5333F42A420D9B006D6569 /* ShadowStyle.swift */; };
+		8E53340A2A420D9B006D6569 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5333F52A420D9B006D6569 /* TextStyle.swift */; };
+		8E53340B2A420D9B006D6569 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5333F62A420D9B006D6569 /* Images.swift */; };
+		8E53340C2A420D9B006D6569 /* ColorStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5333F72A420D9B006D6569 /* ColorStyle.swift */; };
+		8E53340D2A420D9B006D6569 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E5333F92A420D9B006D6569 /* LaunchScreen.storyboard */; };
+		8E53340E2A420D9B006D6569 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E5333FB2A420D9B006D6569 /* Main.storyboard */; };
+		8E53340F2A420D9B006D6569 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5333FD2A420D9B006D6569 /* ViewController.swift */; };
+		8E5334102A420D9B006D6569 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E5333FF2A420D9B006D6569 /* Colors.xcassets */; };
+		8E5334112A420D9B006D6569 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E5334002A420D9B006D6569 /* Images.xcassets */; };
+		8E5334122A420D9B006D6569 /* SF-Pro-Display-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E5334022A420D9B006D6569 /* SF-Pro-Display-Light.otf */; };
+		8E5334132A420D9B006D6569 /* SF-Pro-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E5334032A420D9B006D6569 /* SF-Pro-Display-Regular.otf */; };
+		8E5334142A420D9B006D6569 /* SF-Pro-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E5334042A420D9B006D6569 /* SF-Pro-Display-Bold.otf */; };
+		8E5334152A420D9B006D6569 /* SF-Pro-Display-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E5334052A420D9B006D6569 /* SF-Pro-Display-Medium.otf */; };
+		8E5334162A420D9B006D6569 /* SF-Pro-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E5334062A420D9B006D6569 /* SF-Pro-Display-Semibold.otf */; };
+		8E5334172A420D9B006D6569 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5334072A420D9B006D6569 /* AppDelegate.swift */; };
+		8E53341C2A420DA4006D6569 /* FigmaGenDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E53341A2A420DA4006D6569 /* FigmaGenDemoTests.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		C0D5EB6023EEBE92000AB1B0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C0E6B5EF238096C500083ADB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C0E6B5F6238096C500083ADB;
+			remoteInfo = FugenDemo;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		C09AD309238FFE0F005C787A /* FigmaGenDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FigmaGenDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		C09AD30C238FFE0F005C787A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C09AD310238FFE0F005C787A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		C09AD313238FFE0F005C787A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		C09AD315238FFE10005C787A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C09AD318238FFE10005C787A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		C09AD31A238FFE10005C787A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C0FE20552394540F003A6701 /* TextStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
-		C0FE20562394540F003A6701 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
-		C0FE205C239573BF003A6701 /* SF-Pro-Display-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Light.otf"; sourceTree = "<group>"; };
-		C0FE205D239573BF003A6701 /* SF-Pro-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Regular.otf"; sourceTree = "<group>"; };
-		C0FE205E239573BF003A6701 /* SF-Pro-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Bold.otf"; sourceTree = "<group>"; };
-		C0FE205F239573BF003A6701 /* SF-Pro-Display-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Medium.otf"; sourceTree = "<group>"; };
-		C0FE2061239573BF003A6701 /* SF-Pro-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Semibold.otf"; sourceTree = "<group>"; };
+		11B7DAD9DD79D94016B46F17 /* Pods_FigmaGenDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FigmaGenDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		23C6A1263942D9DA0D5FFDCC /* Pods-FigmaGenDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FigmaGenDemo.release.xcconfig"; path = "Target Support Files/Pods-FigmaGenDemo/Pods-FigmaGenDemo.release.xcconfig"; sourceTree = "<group>"; };
+		29B6BD966DD89C853A1AFFD2 /* Pods-FugenDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FugenDemo.debug.xcconfig"; path = "Target Support Files/Pods-FugenDemo/Pods-FugenDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		8E5333F42A420D9B006D6569 /* ShadowStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowStyle.swift; sourceTree = "<group>"; };
+		8E5333F52A420D9B006D6569 /* TextStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
+		8E5333F62A420D9B006D6569 /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		8E5333F72A420D9B006D6569 /* ColorStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorStyle.swift; sourceTree = "<group>"; };
+		8E5333FA2A420D9B006D6569 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8E5333FC2A420D9B006D6569 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8E5333FD2A420D9B006D6569 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8E5333FF2A420D9B006D6569 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		8E5334002A420D9B006D6569 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		8E5334022A420D9B006D6569 /* SF-Pro-Display-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Light.otf"; sourceTree = "<group>"; };
+		8E5334032A420D9B006D6569 /* SF-Pro-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Regular.otf"; sourceTree = "<group>"; };
+		8E5334042A420D9B006D6569 /* SF-Pro-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Bold.otf"; sourceTree = "<group>"; };
+		8E5334052A420D9B006D6569 /* SF-Pro-Display-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Medium.otf"; sourceTree = "<group>"; };
+		8E5334062A420D9B006D6569 /* SF-Pro-Display-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Semibold.otf"; sourceTree = "<group>"; };
+		8E5334072A420D9B006D6569 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8E5334082A420D9B006D6569 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E53341A2A420DA4006D6569 /* FigmaGenDemoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FigmaGenDemoTests.swift; sourceTree = "<group>"; };
+		8E53341B2A420DA4006D6569 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8FC235E00E36DC62C4755546 /* Pods-Fugen Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fugen Demo.debug.xcconfig"; path = "Target Support Files/Pods-Fugen Demo/Pods-Fugen Demo.debug.xcconfig"; sourceTree = "<group>"; };
+		A8D0E422FCBD612FC060F4E3 /* Pods-FigmaGenDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FigmaGenDemo.debug.xcconfig"; path = "Target Support Files/Pods-FigmaGenDemo/Pods-FigmaGenDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		BEAAC6E1082665BBB49FA803 /* Pods-FugenDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FugenDemo.release.xcconfig"; path = "Target Support Files/Pods-FugenDemo/Pods-FugenDemo.release.xcconfig"; sourceTree = "<group>"; };
+		C0D5EB5B23EEBE92000AB1B0 /* FigmaGenDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FigmaGenDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0E6B5F7238096C500083ADB /* FigmaGenDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FigmaGenDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C670EBD294B45540406F27CE /* Pods-Fugen Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fugen Demo.release.xcconfig"; path = "Target Support Files/Pods-Fugen Demo/Pods-Fugen Demo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C09AD306238FFE0F005C787A /* Frameworks */ = {
+		C0D5EB5823EEBE92000AB1B0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C0E6B5F4238096C500083ADB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7ED1B6F1C418840A5C1245BE /* Pods_FigmaGenDemo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C05B3B762393CF020042A8AA /* Resources */ = {
+		45BFC2FE748FBFC15ABD446E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				C0FE205B239573BF003A6701 /* Fonts */,
-				C09AD315238FFE10005C787A /* Assets.xcassets */,
-				C09AD317238FFE10005C787A /* LaunchScreen.storyboard */,
-				C09AD312238FFE0F005C787A /* Main.storyboard */,
+				8FC235E00E36DC62C4755546 /* Pods-Fugen Demo.debug.xcconfig */,
+				C670EBD294B45540406F27CE /* Pods-Fugen Demo.release.xcconfig */,
+				29B6BD966DD89C853A1AFFD2 /* Pods-FugenDemo.debug.xcconfig */,
+				BEAAC6E1082665BBB49FA803 /* Pods-FugenDemo.release.xcconfig */,
+				A8D0E422FCBD612FC060F4E3 /* Pods-FigmaGenDemo.debug.xcconfig */,
+				23C6A1263942D9DA0D5FFDCC /* Pods-FigmaGenDemo.release.xcconfig */,
 			);
-			path = Resources;
+			path = Pods;
 			sourceTree = "<group>";
 		};
-		C09AD300238FFE0F005C787A = {
+		8E5333F22A420D9B006D6569 /* FigmaGenDemo */ = {
 			isa = PBXGroup;
 			children = (
-				C09AD30B238FFE0F005C787A /* FigmaGenDemo */,
-				C09AD30A238FFE0F005C787A /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		C09AD30A238FFE0F005C787A /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C09AD309238FFE0F005C787A /* FigmaGenDemo.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		C09AD30B238FFE0F005C787A /* FigmaGenDemo */ = {
-			isa = PBXGroup;
-			children = (
-				C0FE205423945089003A6701 /* Generated */,
-				C05B3B762393CF020042A8AA /* Resources */,
-				C09AD30C238FFE0F005C787A /* AppDelegate.swift */,
-				C09AD310238FFE0F005C787A /* ViewController.swift */,
-				C09AD31A238FFE10005C787A /* Info.plist */,
+				8E5333F32A420D9B006D6569 /* Generated */,
+				8E5333F82A420D9B006D6569 /* Storyboards */,
+				8E5333FD2A420D9B006D6569 /* ViewController.swift */,
+				8E5333FE2A420D9B006D6569 /* Resources */,
+				8E5334072A420D9B006D6569 /* AppDelegate.swift */,
+				8E5334082A420D9B006D6569 /* Info.plist */,
 			);
 			path = FigmaGenDemo;
 			sourceTree = "<group>";
 		};
-		C0FE205423945089003A6701 /* Generated */ = {
+		8E5333F32A420D9B006D6569 /* Generated */ = {
 			isa = PBXGroup;
 			children = (
-				C0FE20562394540F003A6701 /* Colors.swift */,
-				C0FE20552394540F003A6701 /* TextStyle.swift */,
+				8E5333F42A420D9B006D6569 /* ShadowStyle.swift */,
+				8E5333F52A420D9B006D6569 /* TextStyle.swift */,
+				8E5333F62A420D9B006D6569 /* Images.swift */,
+				8E5333F72A420D9B006D6569 /* ColorStyle.swift */,
 			);
 			path = Generated;
 			sourceTree = "<group>";
 		};
-		C0FE205B239573BF003A6701 /* Fonts */ = {
+		8E5333F82A420D9B006D6569 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				C0FE205E239573BF003A6701 /* SF-Pro-Display-Bold.otf */,
-				C0FE205C239573BF003A6701 /* SF-Pro-Display-Light.otf */,
-				C0FE205F239573BF003A6701 /* SF-Pro-Display-Medium.otf */,
-				C0FE205D239573BF003A6701 /* SF-Pro-Display-Regular.otf */,
-				C0FE2061239573BF003A6701 /* SF-Pro-Display-Semibold.otf */,
+				8E5333F92A420D9B006D6569 /* LaunchScreen.storyboard */,
+				8E5333FB2A420D9B006D6569 /* Main.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		8E5333FE2A420D9B006D6569 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8E5333FF2A420D9B006D6569 /* Colors.xcassets */,
+				8E5334002A420D9B006D6569 /* Images.xcassets */,
+				8E5334012A420D9B006D6569 /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		8E5334012A420D9B006D6569 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				8E5334022A420D9B006D6569 /* SF-Pro-Display-Light.otf */,
+				8E5334032A420D9B006D6569 /* SF-Pro-Display-Regular.otf */,
+				8E5334042A420D9B006D6569 /* SF-Pro-Display-Bold.otf */,
+				8E5334052A420D9B006D6569 /* SF-Pro-Display-Medium.otf */,
+				8E5334062A420D9B006D6569 /* SF-Pro-Display-Semibold.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		8E5334192A420DA4006D6569 /* FigmaGenDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				8E53341A2A420DA4006D6569 /* FigmaGenDemoTests.swift */,
+				8E53341B2A420DA4006D6569 /* Info.plist */,
+			);
+			path = FigmaGenDemoTests;
+			sourceTree = "<group>";
+		};
+		C0E6B5EE238096C500083ADB = {
+			isa = PBXGroup;
+			children = (
+				8E5333F22A420D9B006D6569 /* FigmaGenDemo */,
+				8E5334192A420DA4006D6569 /* FigmaGenDemoTests */,
+				C0E6B5F8238096C500083ADB /* Products */,
+				45BFC2FE748FBFC15ABD446E /* Pods */,
+				CB1DDE6FE90E7C3F902816CB /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		C0E6B5F8238096C500083ADB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C0E6B5F7238096C500083ADB /* FigmaGenDemo.app */,
+				C0D5EB5B23EEBE92000AB1B0 /* FigmaGenDemoTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CB1DDE6FE90E7C3F902816CB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				11B7DAD9DD79D94016B46F17 /* Pods_FigmaGenDemo.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C09AD308238FFE0F005C787A /* FigmaGenDemo */ = {
+		C0D5EB5A23EEBE92000AB1B0 /* FigmaGenDemoTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C09AD31D238FFE10005C787A /* Build configuration list for PBXNativeTarget "FigmaGenDemo" */;
+			buildConfigurationList = C0D5EB6423EEBE92000AB1B0 /* Build configuration list for PBXNativeTarget "FigmaGenDemoTests" */;
 			buildPhases = (
-				C09AD305238FFE0F005C787A /* Sources */,
-				C09AD306238FFE0F005C787A /* Frameworks */,
-				C09AD307238FFE0F005C787A /* Resources */,
+				C0D5EB5723EEBE92000AB1B0 /* Sources */,
+				C0D5EB5823EEBE92000AB1B0 /* Frameworks */,
+				C0D5EB5923EEBE92000AB1B0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C0D5EB6123EEBE92000AB1B0 /* PBXTargetDependency */,
+			);
+			name = FigmaGenDemoTests;
+			productName = FugenDemoTests;
+			productReference = C0D5EB5B23EEBE92000AB1B0 /* FigmaGenDemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C0E6B5F6238096C500083ADB /* FigmaGenDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C0E6B60B238096C500083ADB /* Build configuration list for PBXNativeTarget "FigmaGenDemo" */;
+			buildPhases = (
+				2F36647D95B78805F756F3F1 /* [CP] Check Pods Manifest.lock */,
+				C0E6B5F3238096C500083ADB /* Sources */,
+				C0E6B5F4238096C500083ADB /* Frameworks */,
+				C0E6B5F5238096C500083ADB /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = FigmaGenDemo;
-			productName = FigmaGenDemo;
-			productReference = C09AD309238FFE0F005C787A /* FigmaGenDemo.app */;
+			productName = "Fugen Demo";
+			productReference = C0E6B5F7238096C500083ADB /* FigmaGenDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		C09AD301238FFE0F005C787A /* Project object */ = {
+		C0E6B5EF238096C500083ADB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1120;
-				LastUpgradeCheck = 1120;
-				ORGANIZATIONNAME = HeadHunter;
+				LastSwiftUpdateCheck = 1130;
+				LastUpgradeCheck = 1100;
+				ORGANIZATIONNAME = "Almaz Ibragimov";
 				TargetAttributes = {
-					C09AD308238FFE0F005C787A = {
-						CreatedOnToolsVersion = 11.2.1;
+					C01B801E25060F6B0080227E = {
+						CreatedOnToolsVersion = 11.5;
+					};
+					C0D5EB5A23EEBE92000AB1B0 = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = C0E6B5F6238096C500083ADB;
+					};
+					C0E6B5F6238096C500083ADB = {
+						CreatedOnToolsVersion = 11.0;
 					};
 				};
 			};
-			buildConfigurationList = C09AD304238FFE0F005C787A /* Build configuration list for PBXProject "FigmaGenDemo" */;
+			buildConfigurationList = C0E6B5F2238096C500083ADB /* Build configuration list for PBXProject "FigmaGenDemo" */;
 			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -152,69 +273,198 @@
 				en,
 				Base,
 			);
-			mainGroup = C09AD300238FFE0F005C787A;
-			productRefGroup = C09AD30A238FFE0F005C787A /* Products */;
+			mainGroup = C0E6B5EE238096C500083ADB;
+			productRefGroup = C0E6B5F8238096C500083ADB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C09AD308238FFE0F005C787A /* FigmaGenDemo */,
+				C0E6B5F6238096C500083ADB /* FigmaGenDemo */,
+				C0D5EB5A23EEBE92000AB1B0 /* FigmaGenDemoTests */,
+				C01B801E25060F6B0080227E /* FigmaGen */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C09AD307238FFE0F005C787A /* Resources */ = {
+		C0D5EB5923EEBE92000AB1B0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C09AD319238FFE10005C787A /* LaunchScreen.storyboard in Resources */,
-				C09AD316238FFE10005C787A /* Assets.xcassets in Resources */,
-				C0FE2068239573BF003A6701 /* SF-Pro-Display-Bold.otf in Resources */,
-				C0FE2066239573BF003A6701 /* SF-Pro-Display-Light.otf in Resources */,
-				C0FE2067239573BF003A6701 /* SF-Pro-Display-Regular.otf in Resources */,
-				C0FE206B239573BF003A6701 /* SF-Pro-Display-Semibold.otf in Resources */,
-				C09AD314238FFE0F005C787A /* Main.storyboard in Resources */,
-				C0FE2069239573BF003A6701 /* SF-Pro-Display-Medium.otf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0E6B5F5238096C500083ADB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8E5334152A420D9B006D6569 /* SF-Pro-Display-Medium.otf in Resources */,
+				8E5334102A420D9B006D6569 /* Colors.xcassets in Resources */,
+				8E5334122A420D9B006D6569 /* SF-Pro-Display-Light.otf in Resources */,
+				8E5334112A420D9B006D6569 /* Images.xcassets in Resources */,
+				8E53340D2A420D9B006D6569 /* LaunchScreen.storyboard in Resources */,
+				8E5334142A420D9B006D6569 /* SF-Pro-Display-Bold.otf in Resources */,
+				8E5334162A420D9B006D6569 /* SF-Pro-Display-Semibold.otf in Resources */,
+				8E5334132A420D9B006D6569 /* SF-Pro-Display-Regular.otf in Resources */,
+				8E53340E2A420D9B006D6569 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2F36647D95B78805F756F3F1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FigmaGenDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C01B802225060F710080227E /* FigmaGen */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = FigmaGen;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "Pods/FigmaGen/figmagen generate\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		C09AD305238FFE0F005C787A /* Sources */ = {
+		C0D5EB5723EEBE92000AB1B0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0FE20572394540F003A6701 /* TextStyle.swift in Sources */,
-				C0FE20582394540F003A6701 /* Colors.swift in Sources */,
-				C09AD311238FFE0F005C787A /* ViewController.swift in Sources */,
-				C09AD30D238FFE0F005C787A /* AppDelegate.swift in Sources */,
+				8E53341C2A420DA4006D6569 /* FigmaGenDemoTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0E6B5F3238096C500083ADB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8E5334172A420D9B006D6569 /* AppDelegate.swift in Sources */,
+				8E53340F2A420D9B006D6569 /* ViewController.swift in Sources */,
+				8E53340A2A420D9B006D6569 /* TextStyle.swift in Sources */,
+				8E53340B2A420D9B006D6569 /* Images.swift in Sources */,
+				8E5334092A420D9B006D6569 /* ShadowStyle.swift in Sources */,
+				8E53340C2A420D9B006D6569 /* ColorStyle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		C09AD312238FFE0F005C787A /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C09AD313238FFE0F005C787A /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
+/* Begin PBXTargetDependency section */
+		C0D5EB6123EEBE92000AB1B0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C0E6B5F6238096C500083ADB /* FigmaGenDemo */;
+			targetProxy = C0D5EB6023EEBE92000AB1B0 /* PBXContainerItemProxy */;
 		};
-		C09AD317238FFE10005C787A /* LaunchScreen.storyboard */ = {
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8E5333F92A420D9B006D6569 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				C09AD318238FFE10005C787A /* Base */,
+				8E5333FA2A420D9B006D6569 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		8E5333FB2A420D9B006D6569 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8E5333FC2A420D9B006D6569 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		C09AD31B238FFE10005C787A /* Debug */ = {
+		C01B802025060F6B0080227E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C01B802125060F6B0080227E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		C0D5EB6223EEBE92000AB1B0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = FigmaGenDemoTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "ru.hh.FigmaGen-Demo.Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FigamGenDemo.app/FigamGenDemo";
+			};
+			name = Debug;
+		};
+		C0D5EB6323EEBE92000AB1B0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = FigmaGenDemoTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "ru.hh.FigmaGen-Demo.Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FigamGenDemo.app/FigamGenDemo";
+			};
+			name = Release;
+		};
+		C0E6B609238096C500083ADB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -246,6 +496,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -264,7 +515,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -274,7 +525,7 @@
 			};
 			name = Debug;
 		};
-		C09AD31C238FFE10005C787A /* Release */ = {
+		C0E6B60A238096C500083ADB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -306,6 +557,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -318,7 +570,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -328,62 +580,86 @@
 			};
 			name = Release;
 		};
-		C09AD31E238FFE10005C787A /* Debug */ = {
+		C0E6B60C238096C500083ADB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A8D0E422FCBD612FC060F4E3 /* Pods-FigmaGenDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FigmaGenDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.self.FigmaGenDemo;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "ru.hh.FigmaGen-Demo";
+				PRODUCT_NAME = FigmaGenDemo;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
-		C09AD31F238FFE10005C787A /* Release */ = {
+		C0E6B60D238096C500083ADB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 23C6A1263942D9DA0D5FFDCC /* Pods-FigmaGenDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FigmaGenDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.self.FigmaGenDemo;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "ru.hh.FigmaGen-Demo";
+				PRODUCT_NAME = FigmaGenDemo;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C09AD304238FFE0F005C787A /* Build configuration list for PBXProject "FigmaGenDemo" */ = {
+		C01B801F25060F6B0080227E /* Build configuration list for PBXAggregateTarget "FigmaGen" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C09AD31B238FFE10005C787A /* Debug */,
-				C09AD31C238FFE10005C787A /* Release */,
+				C01B802025060F6B0080227E /* Debug */,
+				C01B802125060F6B0080227E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C09AD31D238FFE10005C787A /* Build configuration list for PBXNativeTarget "FigmaGenDemo" */ = {
+		C0D5EB6423EEBE92000AB1B0 /* Build configuration list for PBXNativeTarget "FigmaGenDemoTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C09AD31E238FFE10005C787A /* Debug */,
-				C09AD31F238FFE10005C787A /* Release */,
+				C0D5EB6223EEBE92000AB1B0 /* Debug */,
+				C0D5EB6323EEBE92000AB1B0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C0E6B5F2238096C500083ADB /* Build configuration list for PBXProject "FigmaGenDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0E6B609238096C500083ADB /* Debug */,
+				C0E6B60A238096C500083ADB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C0E6B60B238096C500083ADB /* Build configuration list for PBXNativeTarget "FigmaGenDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0E6B60C238096C500083ADB /* Debug */,
+				C0E6B60D238096C500083ADB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = C09AD301238FFE0F005C787A /* Project object */;
+	rootObject = C0E6B5EF238096C500083ADB /* Project object */;
 }

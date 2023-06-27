@@ -1,99 +1,278 @@
 // swiftlint:disable all
-import Foundation
+// Generated using FigmaGen - https://github.com/hhru/FigmaGen
+
+#if canImport(UIKit)
 import UIKit
+#else
+import AppKit
+#endif
 
 public struct TextStyle: Equatable {
 
-    public let font: UIFont
-    public let textColor: UIColor
+    // MARK: - Nested Types
+
+    public enum ValidationError: Error, CustomStringConvertible {
+        case fontNotFound(name: String, size: Double)
+
+        public var description: String {
+            switch self {
+            case let .fontNotFound(name, size):
+                return "Font '\(name) \(size)' couldn't be loaded"
+            }
+        }
+    }
+
+    // MARK: - Type Properties
+
+    /// Caption
+    ///
+    /// Font: SF Pro Display (SFProDisplay-Light); weight 300.0; size 13.0
+    /// Color: Eclipse; hex #393939FF; rgba 57 57 57, 100%
+    /// Strikethrough: false
+    /// Underline: false
+    /// Paragraph spacing: default
+    /// Paragraph indent: default
+    /// Line height: 15.525
+    /// Letter spacing: 0.0
+    public static let caption = TextStyle(
+        font: UIFont(name: "SFProDisplay-Light", size: 13.0),
+        color: UIColor(
+            red: 0.2235294133424759,
+            green: 0.2235294133424759,
+            blue: 0.2235294133424759,
+            alpha: 1.0
+        ),
+        strikethrough: false,
+        underline: false,
+        paragraphSpacing: nil,
+        paragraphIndent: nil,
+        lineHeight: 15.525,
+        letterSpacing: 0.0
+    )
+
+    /// Body
+    ///
+    /// Font: SF Pro Display (SFProDisplay-Regular); weight 400.0; size 13.0
+    /// Color: Eclipse; hex #393939FF; rgba 57 57 57, 100%
+    /// Strikethrough: false
+    /// Underline: false
+    /// Paragraph spacing: 4.0
+    /// Paragraph indent: 16.0
+    /// Line height: 16.0
+    /// Letter spacing: 0.125
+    public static let body = TextStyle(
+        font: UIFont(name: "SFProDisplay-Regular", size: 13.0),
+        color: UIColor(
+            red: 0.2235294133424759,
+            green: 0.2235294133424759,
+            blue: 0.2235294133424759,
+            alpha: 1.0
+        ),
+        strikethrough: false,
+        underline: false,
+        paragraphSpacing: 4.0,
+        paragraphIndent: 16.0,
+        lineHeight: 16.0,
+        letterSpacing: 0.125
+    )
+
+    /// Subtitle
+    ///
+    /// Font: SF Pro Display (SFProDisplay-Regular); weight 400.0; size 15.0
+    /// Color: Eclipse; hex #393939FF; rgba 57 57 57, 100%
+    /// Strikethrough: false
+    /// Underline: false
+    /// Paragraph spacing: default
+    /// Paragraph indent: default
+    /// Line height: 17.9
+    /// Letter spacing: 0.2
+    public static let subtitle = TextStyle(
+        font: UIFont(name: "SFProDisplay-Regular", size: 15.0),
+        color: UIColor(
+            red: 0.2235294133424759,
+            green: 0.2235294133424759,
+            blue: 0.2235294133424759,
+            alpha: 1.0
+        ),
+        strikethrough: false,
+        underline: false,
+        paragraphSpacing: nil,
+        paragraphIndent: nil,
+        lineHeight: 17.9,
+        letterSpacing: 0.2
+    )
+
+    /// Title
+    ///
+    /// Font: SF Pro Display (SFProDisplay-Medium); weight 500.0; size 17.0
+    /// Color: Eclipse; hex #393939FF; rgba 57 57 57, 100%
+    /// Strikethrough: false
+    /// Underline: false
+    /// Paragraph spacing: default
+    /// Paragraph indent: default
+    /// Line height: 20.275
+    /// Letter spacing: 0.125
+    public static let title = TextStyle(
+        font: UIFont(name: "SFProDisplay-Medium", size: 17.0),
+        color: UIColor(
+            red: 0.2235294133424759,
+            green: 0.2235294133424759,
+            blue: 0.2235294133424759,
+            alpha: 1.0
+        ),
+        strikethrough: false,
+        underline: false,
+        paragraphSpacing: nil,
+        paragraphIndent: nil,
+        lineHeight: 20.275,
+        letterSpacing: 0.125
+    )
+
+    /// Large Title
+    ///
+    /// Font: SF Pro Display (SFProDisplay-Bold); weight 700.0; size 34.0
+    /// Color: Eclipse; hex #393939FF; rgba 57 57 57, 100%
+    /// Strikethrough: false
+    /// Underline: false
+    /// Paragraph spacing: default
+    /// Paragraph indent: default
+    /// Line height: 40.575
+    /// Letter spacing: 0.1
+    public static let largeTitle = TextStyle(
+        font: UIFont(name: "SFProDisplay-Bold", size: 34.0),
+        color: UIColor(
+            red: 0.2235294133424759,
+            green: 0.2235294133424759,
+            blue: 0.2235294133424759,
+            alpha: 1.0
+        ),
+        strikethrough: false,
+        underline: false,
+        paragraphSpacing: nil,
+        paragraphIndent: nil,
+        lineHeight: 40.575,
+        letterSpacing: 0.1
+    )
+
+    // MARK: - Type Methods
+
+    public static func validate() throws {
+        guard UIFont(name: "SFProDisplay-Light", size: 13.0) != nil else {
+            throw ValidationError.fontNotFound(name: "SFProDisplay-Light", size: 13.0)
+        }
+
+        guard UIFont(name: "SFProDisplay-Regular", size: 13.0) != nil else {
+            throw ValidationError.fontNotFound(name: "SFProDisplay-Regular", size: 13.0)
+        }
+
+        guard UIFont(name: "SFProDisplay-Regular", size: 15.0) != nil else {
+            throw ValidationError.fontNotFound(name: "SFProDisplay-Regular", size: 15.0)
+        }
+
+        guard UIFont(name: "SFProDisplay-Medium", size: 17.0) != nil else {
+            throw ValidationError.fontNotFound(name: "SFProDisplay-Medium", size: 17.0)
+        }
+
+        guard UIFont(name: "SFProDisplay-Bold", size: 34.0) != nil else {
+            throw ValidationError.fontNotFound(name: "SFProDisplay-Bold", size: 34.0)
+        }
+
+        print("All text styles are valid")
+    }
+
+    // MARK: - Instance Properties
+
+    public let font: UIFont?
+    public let color: UIColor?
+    public let backgroundColor: UIColor?
+    public let strikethrough: Bool
+    public let underline: Bool
     public let paragraphSpacing: CGFloat?
     public let paragraphIndent: CGFloat?
     public let lineHeight: CGFloat?
     public let letterSpacing: CGFloat?
+    public let lineBreakMode: NSLineBreakMode?
+    public let alignment: NSTextAlignment?
 
-    public var actualLineHeight: CGFloat {
-        return lineHeight ?? font.lineHeight
-    }
+    // MARK: - Initializers
 
     public init(
-        font: UIFont,
-        textColor: UIColor,
+        font: UIFont? = nil,
+        color: UIColor? = nil,
+        backgroundColor: UIColor? = nil,
+        strikethrough: Bool = false,
+        underline: Bool = false,
         paragraphSpacing: CGFloat? = nil,
         paragraphIndent: CGFloat? = nil,
         lineHeight: CGFloat? = nil,
-        letterSpacing: CGFloat? = nil
+        letterSpacing: CGFloat? = nil,
+        lineBreakMode: NSLineBreakMode? = nil,
+        alignment: NSTextAlignment? = nil
     ) {
         self.font = font
-        self.textColor = textColor
+        self.color = color
+        self.backgroundColor = backgroundColor
+        self.strikethrough = strikethrough
+        self.underline = underline
         self.paragraphSpacing = paragraphSpacing
         self.paragraphIndent = paragraphIndent
         self.lineHeight = lineHeight
         self.letterSpacing = letterSpacing
+        self.lineBreakMode = lineBreakMode
+        self.alignment = alignment
     }
 
-    public init(
-        fontName: String,
-        fontSize: CGFloat,
-        textColor: UIColor,
-        paragraphSpacing: CGFloat? = nil,
-        paragraphIndent: CGFloat? = nil,
-        lineHeight: CGFloat? = nil,
-        letterSpacing: CGFloat? = nil
-    ) {
-        self.init(
-            font: UIFont(name: fontName, size: fontSize) ?? UIFont.systemFont(ofSize: fontSize),
-            textColor: textColor,
-            paragraphSpacing: paragraphSpacing,
-            paragraphIndent: paragraphIndent,
-            lineHeight: lineHeight,
-            letterSpacing: letterSpacing
-        )
-    }
+    // MARK: - Instance Methods
 
-    public func withTextColor(_ textColor: UIColor) -> TextStyle {
-        return TextStyle(
-            font: font,
-            textColor: textColor,
-            paragraphSpacing: paragraphSpacing,
-            paragraphIndent: paragraphIndent,
-            lineHeight: lineHeight,
-            letterSpacing: letterSpacing
-        )
-    }
+    private func attributes(paragraphStyle: NSParagraphStyle?) -> [NSAttributedString.Key: Any] {
+        var attributes: [NSAttributedString.Key: Any] = [:]
 
-    public func attributes(
-        textColor: UIColor? = nil,
-        backgroundColor: UIColor? = nil,
-        alignment: NSTextAlignment? = nil,
-        lineBreakMode: NSLineBreakMode? = nil,
-        ignoringParagraphStyle: Bool = false
-    ) -> [NSAttributedString.Key: Any] {
-        var attributes: [NSAttributedString.Key: Any] = [
-            .font: font,
-            .foregroundColor: textColor ?? self.textColor,
-        ]
+        if let paragraphStyle = paragraphStyle {
+            attributes[.paragraphStyle] = paragraphStyle
+        }
+
+        if let font = font {
+            attributes[.font] = font
+        }
+
+        if let color = color {
+            attributes[.foregroundColor] = color
+        }
 
         if let backgroundColor = backgroundColor {
             attributes[.backgroundColor] = backgroundColor
         }
 
+        if strikethrough {
+            attributes[.strikethroughStyle] = NSUnderlineStyle.single.rawValue
+        }
+
+        if underline {
+            attributes[.underlineStyle] = NSUnderlineStyle.single.rawValue
+        }
+
         if let letterSpacing = letterSpacing {
-            attributes[.kern] = NSNumber(value: Float(letterSpacing))
+            attributes[.kern] = letterSpacing
         }
 
-        if ignoringParagraphStyle {
-            return attributes
-        }
+        return attributes
+    }
 
+    // MARK: -
+
+    public func paragraphStyle() -> NSParagraphStyle {
         let paragraphStyle = NSMutableParagraphStyle()
 
         if let lineHeight = lineHeight {
-            let paragraphLineSpacing = (lineHeight - font.lineHeight) / 2.0
-            let paragraphLineHeight = lineHeight - paragraphLineSpacing
+            if let font = font {
+                paragraphStyle.lineSpacing = (lineHeight - font.lineHeight) * 0.5
+                paragraphStyle.minimumLineHeight = lineHeight - paragraphStyle.lineSpacing
+            } else {
+                paragraphStyle.lineSpacing = 0.0
+                paragraphStyle.minimumLineHeight = lineHeight
+            }
 
-            paragraphStyle.lineSpacing = paragraphLineSpacing
-            paragraphStyle.minimumLineHeight = paragraphLineHeight
-            paragraphStyle.maximumLineHeight = paragraphLineHeight
+            paragraphStyle.maximumLineHeight = paragraphStyle.minimumLineHeight
         }
 
         if let paragraphSpacing = paragraphSpacing {
@@ -104,161 +283,216 @@ public struct TextStyle: Equatable {
             paragraphStyle.firstLineHeadIndent = paragraphIndent
         }
 
-        if let alignment = alignment {
-            paragraphStyle.alignment = alignment
-        }
-
         if let lineBreakMode = lineBreakMode {
             paragraphStyle.lineBreakMode = lineBreakMode
         }
 
-        attributes[.paragraphStyle] = paragraphStyle
+        if let alignment = alignment {
+            paragraphStyle.alignment = alignment
+        }
 
-        return attributes
+        return paragraphStyle
     }
-}
 
-public extension TextStyle {
+    public func attributes(includingParagraphStyle: Bool = true) -> [NSAttributedString.Key: Any] {
+        if includingParagraphStyle {
+            return attributes(paragraphStyle: paragraphStyle())
+        } else {
+            return attributes(paragraphStyle: nil)
+        }
+    }
 
-    /// Body
-    ///
-    /// Font: SF Pro Display (SFProDisplay-Regular); weight 400.0; size 13.0
-    /// Text color: Black; hex: #313033FF; rgba: 49 48 51, 100%
-    /// Paragraph spacing: default
-    /// Paragraph indent: default
-    /// Line height: 17.0
-    /// Letter spacing: -0.0
-    static let body = TextStyle(
-        fontName: "SFProDisplay-Regular",
-        fontSize: 13.0,
-        textColor: UIColor(rgbaHex: 0x313033FF),
-        paragraphSpacing: nil,
-        paragraphIndent: nil,
-        lineHeight: 17.0,
-        letterSpacing: -0.0
-    )
-
-    /// Subtitle 2
-    ///
-    /// Font: SF Pro Display (SFProDisplay-Regular); weight 400.0; size 11.0
-    /// Text color: Black; hex: #313033FF; rgba: 49 48 51, 100%
-    /// Paragraph spacing: default
-    /// Paragraph indent: default
-    /// Line height: 14.0
-    /// Letter spacing: 0.25
-    static let subtitle2 = TextStyle(
-        fontName: "SFProDisplay-Regular",
-        fontSize: 11.0,
-        textColor: UIColor(rgbaHex: 0x313033FF),
-        paragraphSpacing: nil,
-        paragraphIndent: nil,
-        lineHeight: 14.0,
-        letterSpacing: 0.25
-    )
-
-    /// Subtitle 1
-    ///
-    /// Font: SF Pro Display (SFProDisplay-Bold); weight 700.0; size 13.0
-    /// Text color: Black; hex: #313033FF; rgba: 49 48 51, 100%
-    /// Paragraph spacing: default
-    /// Paragraph indent: default
-    /// Line height: 15.25
-    /// Letter spacing: 0.35
-    static let subtitle1 = TextStyle(
-        fontName: "SFProDisplay-Bold",
-        fontSize: 13.0,
-        textColor: UIColor(rgbaHex: 0x313033FF),
-        paragraphSpacing: nil,
-        paragraphIndent: nil,
-        lineHeight: 15.25,
-        letterSpacing: 0.35
-    )
-
-    /// Title 2
-    ///
-    /// Font: SF Pro Display (SFProDisplay-Semibold); weight 600.0; size 14.0
-    /// Text color: Black; hex: #313033FF; rgba: 49 48 51, 100%
-    /// Paragraph spacing: default
-    /// Paragraph indent: default
-    /// Line height: 16.4
-    /// Letter spacing: 0.0
-    static let title2 = TextStyle(
-        fontName: "SFProDisplay-Semibold",
-        fontSize: 14.0,
-        textColor: UIColor(rgbaHex: 0x313033FF),
-        paragraphSpacing: nil,
-        paragraphIndent: nil,
-        lineHeight: 16.4,
-        letterSpacing: 0.0
-    )
-
-    /// Title 1
-    ///
-    /// Font: SF Pro Display (SFProDisplay-Bold); weight 700.0; size 17.0
-    /// Text color: Black; hex: #313033FF; rgba: 49 48 51, 100%
-    /// Paragraph spacing: default
-    /// Paragraph indent: default
-    /// Line height: 19.9
-    /// Letter spacing: 0.35
-    static let title1 = TextStyle(
-        fontName: "SFProDisplay-Bold",
-        fontSize: 17.0,
-        textColor: UIColor(rgbaHex: 0x313033FF),
-        paragraphSpacing: nil,
-        paragraphIndent: nil,
-        lineHeight: 19.9,
-        letterSpacing: 0.35
-    )
-
-    /// Large Title
-    ///
-    /// Font: SF Pro Display (SFProDisplay-Bold); weight 700.0; size 36.0
-    /// Text color: Black; hex: #313033FF; rgba: 49 48 51, 100%
-    /// Paragraph spacing: default
-    /// Paragraph indent: default
-    /// Line height: 40.0
-    /// Letter spacing: 0.25
-    static let largeTitle = TextStyle(
-        fontName: "SFProDisplay-Bold",
-        fontSize: 36.0,
-        textColor: UIColor(rgbaHex: 0x313033FF),
-        paragraphSpacing: nil,
-        paragraphIndent: nil,
-        lineHeight: 40.0,
-        letterSpacing: 0.25
-    )
-}
-
-public extension String {
-
-    func styled(
-        _ textStyle: TextStyle,
-        textColor: UIColor? = nil,
-        backgroundColor: UIColor? = nil,
-        alignment: NSTextAlignment? = nil,
-        lineBreakMode: NSLineBreakMode? = nil
+    public func attributedString(
+        _ string: String,
+        includingParagraphStyle: Bool = true
     ) -> NSAttributedString {
-        return NSAttributedString(
-            string: self,
-            attributes: textStyle.attributes(
-                textColor: textColor,
-                backgroundColor: backgroundColor,
-                alignment: alignment,
-                lineBreakMode: lineBreakMode
-            )
+        return NSAttributedString(string: string, style: self, includingParagraphStyle: includingParagraphStyle)
+    }
+
+    // MARK: -
+
+    public func withFont(_ font: UIFont?) -> TextStyle {
+        return TextStyle(
+            font: font,
+            color: color,
+            backgroundColor: backgroundColor,
+            strikethrough: strikethrough,
+            underline: underline,
+            paragraphSpacing: paragraphSpacing,
+            paragraphIndent: paragraphIndent,
+            lineHeight: lineHeight,
+            letterSpacing: letterSpacing,
+            lineBreakMode: lineBreakMode,
+            alignment: alignment
+        )
+    }
+
+    public func withColor(_ color: UIColor?) -> TextStyle {
+        return TextStyle(
+            font: font,
+            color: color,
+            backgroundColor: backgroundColor,
+            strikethrough: strikethrough,
+            underline: underline,
+            paragraphSpacing: paragraphSpacing,
+            paragraphIndent: paragraphIndent,
+            lineHeight: lineHeight,
+            letterSpacing: letterSpacing,
+            lineBreakMode: lineBreakMode,
+            alignment: alignment
+        )
+    }
+
+    public func withBackgroundColor(_ backgroundColor: UIColor?) -> TextStyle {
+        return TextStyle(
+            font: font,
+            color: color,
+            backgroundColor: backgroundColor,
+            strikethrough: strikethrough,
+            underline: underline,
+            paragraphSpacing: paragraphSpacing,
+            paragraphIndent: paragraphIndent,
+            lineHeight: lineHeight,
+            letterSpacing: letterSpacing,
+            lineBreakMode: lineBreakMode,
+            alignment: alignment
+        )
+    }
+
+    public func withStrikethrough(_ strikethrough: Bool) -> TextStyle {
+        return TextStyle(
+            font: font,
+            color: color,
+            backgroundColor: backgroundColor,
+            strikethrough: strikethrough,
+            underline: underline,
+            paragraphSpacing: paragraphSpacing,
+            paragraphIndent: paragraphIndent,
+            lineHeight: lineHeight,
+            letterSpacing: letterSpacing,
+            lineBreakMode: lineBreakMode,
+            alignment: alignment
+        )
+    }
+
+    public func withUnderline(_ underline: Bool) -> TextStyle {
+        return TextStyle(
+            font: font,
+            color: color,
+            backgroundColor: backgroundColor,
+            strikethrough: strikethrough,
+            underline: underline,
+            paragraphSpacing: paragraphSpacing,
+            paragraphIndent: paragraphIndent,
+            lineHeight: lineHeight,
+            letterSpacing: letterSpacing,
+            lineBreakMode: lineBreakMode,
+            alignment: alignment
+        )
+    }
+
+    public func withParagraphSpacing(_ paragraphSpacing: CGFloat?) -> TextStyle {
+        return TextStyle(
+            font: font,
+            color: color,
+            backgroundColor: backgroundColor,
+            strikethrough: strikethrough,
+            underline: underline,
+            paragraphSpacing: paragraphSpacing,
+            paragraphIndent: paragraphIndent,
+            lineHeight: lineHeight,
+            letterSpacing: letterSpacing,
+            lineBreakMode: lineBreakMode,
+            alignment: alignment
+        )
+    }
+
+    public func withParagraphIndent(_ paragraphIndent: CGFloat?) -> TextStyle {
+        return TextStyle(
+            font: font,
+            color: color,
+            backgroundColor: backgroundColor,
+            strikethrough: strikethrough,
+            underline: underline,
+            paragraphSpacing: paragraphSpacing,
+            paragraphIndent: paragraphIndent,
+            lineHeight: lineHeight,
+            letterSpacing: letterSpacing,
+            lineBreakMode: lineBreakMode,
+            alignment: alignment
+        )
+    }
+
+    public func withLineHeight(_ lineHeight: CGFloat?) -> TextStyle {
+        return TextStyle(
+            font: font,
+            color: color,
+            backgroundColor: backgroundColor,
+            strikethrough: strikethrough,
+            underline: underline,
+            paragraphSpacing: paragraphSpacing,
+            paragraphIndent: paragraphIndent,
+            lineHeight: lineHeight,
+            letterSpacing: letterSpacing,
+            lineBreakMode: lineBreakMode,
+            alignment: alignment
+        )
+    }
+
+    public func withLetterSpacing(_ letterSpacing: CGFloat?) -> TextStyle {
+        return TextStyle(
+            font: font,
+            color: color,
+            backgroundColor: backgroundColor,
+            strikethrough: strikethrough,
+            underline: underline,
+            paragraphSpacing: paragraphSpacing,
+            paragraphIndent: paragraphIndent,
+            lineHeight: lineHeight,
+            letterSpacing: letterSpacing,
+            lineBreakMode: lineBreakMode,
+            alignment: alignment
+        )
+    }
+
+    public func withLineBreakMode(_ lineBreakMode: NSLineBreakMode?) -> TextStyle {
+        return TextStyle(
+            font: font,
+            color: color,
+            backgroundColor: backgroundColor,
+            strikethrough: strikethrough,
+            underline: underline,
+            paragraphSpacing: paragraphSpacing,
+            paragraphIndent: paragraphIndent,
+            lineHeight: lineHeight,
+            letterSpacing: letterSpacing,
+            lineBreakMode: lineBreakMode,
+            alignment: alignment
+        )
+    }
+
+    public func withAlignment(_ alignment: NSTextAlignment?) -> TextStyle {
+        return TextStyle(
+            font: font,
+            color: color,
+            backgroundColor: backgroundColor,
+            strikethrough: strikethrough,
+            underline: underline,
+            paragraphSpacing: paragraphSpacing,
+            paragraphIndent: paragraphIndent,
+            lineHeight: lineHeight,
+            letterSpacing: letterSpacing,
+            lineBreakMode: lineBreakMode,
+            alignment: alignment
         )
     }
 }
 
-private extension UIColor {
+public extension NSAttributedString {
 
-    convenience init(rgbaHex: UInt32) {
-        self.init(
-            red: CGFloat((rgbaHex >> 24) & 0xFF) / 255.0,
-            green: CGFloat((rgbaHex >> 16) & 0xFF) / 255.0,
-            blue: CGFloat((rgbaHex >> 8) & 0xFF) / 255.0,
-            alpha: CGFloat(rgbaHex & 0xFF) / 255.0
-        )
+    // MARK: - Initializers
+
+    convenience init(string: String, style: TextStyle, includingParagraphStyle: Bool = true) {
+        self.init(string: string, attributes: style.attributes(includingParagraphStyle: includingParagraphStyle))
     }
 }
-// swiftlint:enable all
