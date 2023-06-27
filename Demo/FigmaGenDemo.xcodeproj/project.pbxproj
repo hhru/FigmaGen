@@ -11,7 +11,7 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = C01B801F25060F6B0080227E /* Build configuration list for PBXAggregateTarget "FigmaGen" */;
 			buildPhases = (
-				C01B802225060F710080227E /* Fugen */,
+				C01B802225060F710080227E /* FigmaGen */,
 			);
 			dependencies = (
 			);
@@ -334,7 +334,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C01B802225060F710080227E /* Fugen */ = {
+		C01B802225060F710080227E /* FigmaGen */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -343,7 +343,7 @@
 			);
 			inputPaths = (
 			);
-			name = Fugen;
+			name = FigmaGen;
 			outputFileListPaths = (
 			);
 			outputPaths = (

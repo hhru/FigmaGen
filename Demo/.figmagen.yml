@@ -3,8 +3,8 @@ base:
 
 colorStyles:
   file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/Fugen-Demo?node-id=91%3A3
-  assets: FugenDemo/Resources/Colors.xcassets
-  destination: FugenDemo/Generated/ColorStyle.swift
+  assets: FigmaGenDemo/Resources/Colors.xcassets
+  destination: FigmaGenDemo/Generated/ColorStyle.swift
   templateOptions:
     publicAccess: true
 
@@ -13,20 +13,20 @@ textStyles:
     key: 61xw2FQn61Xr7VVFYwiHHy
     includedNodes:
       - 91%3A38
-  destination: FugenDemo/Generated/TextStyle.swift
+  destination: FigmaGenDemo/Generated/TextStyle.swift
   templateOptions:
     publicAccess: true
     usingSystemFonts: false
 
 images:
   file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/Fugen-Demo?node-id=91%3A63
-  assets: FugenDemo/Resources/Images.xcassets/Generated
-  destination: FugenDemo/Generated/Images.swift
+  assets: FigmaGenDemo/Resources/Images.xcassets/Generated
+  destination: FigmaGenDemo/Generated/Images.swift
   templateOptions:
     publicAccess: true
 
 shadowStyles:
   file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/Fugen-Demo?node-id=236%3A4
-  destination: FugenDemo/Generated/ShadowStyle.swift
+  destination: FigmaGenDemo/Generated/ShadowStyle.swift
   templateOptions:
     publicAccess: true

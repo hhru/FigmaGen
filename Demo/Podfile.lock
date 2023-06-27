@@ -2,15 +2,21 @@ PODS:
   - FigmaGen (1.4.0)
 
 DEPENDENCIES:
-  - FigmaGen (from `..`)
+  - FigmaGen (from `https://github.com/hhru/FigmaGen.git`, branch `MOB-31419`)
 
 EXTERNAL SOURCES:
   FigmaGen:
-    :path: ".."
+    :branch: MOB-31419
+    :git: https://github.com/hhru/FigmaGen.git
+
+CHECKOUT OPTIONS:
+  FigmaGen:
+    :commit: db4c30969abc75cc1392d18661d55d370f1bf8ad
+    :git: https://github.com/hhru/FigmaGen.git
 
 SPEC CHECKSUMS:
   FigmaGen: f376a7e02de675f34b36fe2de0c270b7b19fc457
 
-PODFILE CHECKSUM: bcef742d65de7f8e21e5129374be764d23cce271
+PODFILE CHECKSUM: 7204492777c4edb13804a8fd4dbc06793736e4df
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1
