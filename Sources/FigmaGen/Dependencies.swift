@@ -110,4 +110,6 @@ enum Dependencies {
         imagesGenerator: imagesGenerator,
         shadowStylesGenerator: shadowStylesGenerator
     )
+
+    static let tokensGenerator: TokensGenerator = DefaultTokensGenerator()
 }

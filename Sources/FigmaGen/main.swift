@@ -19,7 +19,8 @@ figmagen.commands = [
     TextStylesCommand(generator: Dependencies.textStylesGenerator),
     ImagesCommand(generator: Dependencies.imagesGenerator),
     GenerateCommand(generator: Dependencies.libraryGenerator),
-    ShadowStylesCommand(generator: Dependencies.shadowStylesGenerator)
+    ShadowStylesCommand(generator: Dependencies.shadowStylesGenerator),
+    TokensCommand(generator: Dependencies.tokensGenerator)
 ]
 
 figmagen.goAndExitOnError()

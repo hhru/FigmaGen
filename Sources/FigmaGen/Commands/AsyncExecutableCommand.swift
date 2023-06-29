@@ -6,7 +6,7 @@ protocol AsyncExecutableCommand: Command {
 
     // MARK: - Instance Methods
 
-    func executeAsyncAndExit() throws
+    func executeAsyncAndExit() async throws
 
     func fail(message: String) -> Never
     func succeed(message: String) -> Never
@@ -17,7 +17,9 @@ extension AsyncExecutableCommand {
     // MARK: - Instance Methods
 
     func execute() throws {
-        try executeAsyncAndExit()
+        _Concurrency.Task {
+            try await executeAsyncAndExit()
+        }
 
         RunLoop.main.run()
     }
