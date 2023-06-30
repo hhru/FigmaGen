@@ -56,6 +56,10 @@ enum Dependencies {
         nodesProvider: figmaNodesProvider
     )
 
+    static let tokensProvider: TokensProvider = DefaultTokensProvider(
+        apiProvider: figmaAPIProvider
+    )
+
     // MARK: -
 
     static let templateContextCoder: TemplateContextCoder = DefaultTemplateContextCoder()
@@ -111,5 +115,7 @@ enum Dependencies {
         shadowStylesGenerator: shadowStylesGenerator
     )
 
-    static let tokensGenerator: TokensGenerator = DefaultTokensGenerator()
+    static let tokensGenerator: TokensGenerator = DefaultTokensGenerator(
+        tokensProvider: tokensProvider
+    )
 }

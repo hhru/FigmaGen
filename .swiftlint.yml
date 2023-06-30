@@ -131,7 +131,6 @@ only_rules:
   - prohibited_interface_builder
   - prohibited_super_call
   - protocol_property_accessors_order
-  - raw_value_for_camel_cased_codable_enum
   - reduce_boolean
   - reduce_into
   - redundant_discardable_let

@@ -8,6 +8,7 @@ struct FigmaAPIFileRouteQueryParameters: Encodable {
         case version
         case nodeIDs = "ids"
         case depth
+        case pluginData = "plugin_data"
     }
 
     // MARK: - Instance Properties
@@ -15,4 +16,5 @@ struct FigmaAPIFileRouteQueryParameters: Encodable {
     let version: String?
     let nodeIDs: String?
     let depth: Int?
+    let pluginData: String?
 }
