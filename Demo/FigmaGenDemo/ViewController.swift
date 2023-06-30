@@ -1,20 +1,37 @@
 //
-// FigmaGen
-// Copyright © 2019 HeadHunter
-// MIT Licence
+//  ViewController.swift
+//  FigmaGenDemo
+//
+//  Created by Almaz Ibragimov on 16.11.2019.
+//  Copyright © 2019 Almaz Ibragimov. All rights reserved.
 //
 
 import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var subtitleLabel: UILabel!
+    @IBOutlet private weak var cardView: ShadowStyleView!
+    @IBOutlet private weak var label: UILabel!
+    @IBOutlet private weak var imageView: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        titleLabel.attributedText = "Title".styled(.title2, textColor: Colors.black)
-        subtitleLabel.attributedText = "Subtitle".styled(.subtitle2, textColor: Colors.gray)
+        view.backgroundColor = ColorStyle.razzmatazz.color
+        view.backgroundColor = UIColor(style: .razzmatazz)
+
+        label.attributedText = TextStyle.title.attributedString("Hello world")
+        label.attributedText = NSAttributedString(string: "Hello world", style: .title)
+
+        label.attributedText = TextStyle
+            .title
+            .withColor(.white)
+            .withLineBreakMode(.byWordWrapping)
+            .attributedString("Hello world")
+
+        imageView.image = Images.cloud
+
+        cardView.shadowStyle = .cardShadow
+        label.shadow = .thinShadow
     }
 }

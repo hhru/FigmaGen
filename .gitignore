@@ -25,6 +25,7 @@ xcuserdata/
 *.moved-aside
 *.xcuserstate
 *.xcscmblueprint
+*.profraw
 
 ## Obj-C/Swift specific
 *.hmap
@@ -53,5 +54,7 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
-# Releases
+# FigmaGen
+Demo/figmagen
+Demo/Templates
 figmagen-*.zip
