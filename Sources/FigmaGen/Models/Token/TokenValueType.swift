@@ -1,6 +1,6 @@
 import Foundation
 
-enum TokenValueType: Codable, Hashable {
+enum TokenValueType: Hashable {
 
     // MARK: - Enumeration Cases
 
