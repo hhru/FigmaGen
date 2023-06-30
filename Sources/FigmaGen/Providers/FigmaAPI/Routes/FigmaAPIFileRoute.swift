@@ -25,7 +25,8 @@ struct FigmaAPIFileRoute: FigmaAPIRoute {
         fileKey: String,
         version: String? = nil,
         nodeIDs: [String]? = nil,
-        depth: Int? = nil
+        depth: Int? = nil,
+        pluginData: String? = nil
     ) {
         self.accessToken = accessToken
         self.fileKey = fileKey
@@ -33,7 +34,8 @@ struct FigmaAPIFileRoute: FigmaAPIRoute {
         self.queryParameters = QueryParameters(
             version: version,
             nodeIDs: nodeIDs?.joined(separator: .nodeIDsSeparator),
-            depth: depth
+            depth: depth,
+            pluginData: pluginData
         )
     }
 }

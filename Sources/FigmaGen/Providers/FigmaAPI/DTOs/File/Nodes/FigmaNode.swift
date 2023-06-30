@@ -9,6 +9,7 @@ struct FigmaNode: Decodable, Hashable {
         case name
         case rawType = "type"
         case isVisible = "visible"
+        case sharedPluginData
     }
 
     private enum CodingValues {
@@ -35,6 +36,7 @@ struct FigmaNode: Decodable, Hashable {
     let name: String?
     let rawType: String
     let isVisible: Bool?
+    let sharedPluginData: FigmaPluginData?
 
     let type: FigmaNodeType
 
@@ -135,6 +137,7 @@ struct FigmaNode: Decodable, Hashable {
         name = try container.decodeIfPresent(forKey: .name)
         rawType = try container.decode(String.self, forKey: .rawType)
         isVisible = try container.decodeIfPresent(forKey: .isVisible)
+        sharedPluginData = try container.decodeIfPresent(forKey: .sharedPluginData)
 
         switch rawType {
         case CodingValues.documentType:
