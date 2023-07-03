@@ -13,4 +13,6 @@ Pod::Spec.new do |spec|
 
   spec.preserve_paths = '*'
   spec.exclude_files = '**/file.zip'
+
+  spec.tvos.deployment_target = '16.1'
 end
