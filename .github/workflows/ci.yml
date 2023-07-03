@@ -85,4 +85,4 @@ jobs:
         continue-on-error: true
         run: bundle exec pod spec lint
       - name: Lib Lint
-        run: bundle exec pod lib lint --skip-tests --allow-warnings
+        run: bundle exec pod lib lint --skip-tests --allow-warnings --verbose
