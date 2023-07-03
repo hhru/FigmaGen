@@ -14,5 +14,8 @@ Pod::Spec.new do |spec|
   spec.preserve_paths = '*'
   spec.exclude_files = '**/file.zip'
 
-  spec.tvos.deployment_target = '16.1'
+  spec.ios.deployment_target = '11.0'
+  spec.osx.deployment_target = '10.13'
+  spec.watchos.deployment_target = '4.0'
+  spec.tvos.deployment_target = '11.0'
 end
