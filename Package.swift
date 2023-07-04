@@ -29,7 +29,9 @@ let package = Package(
         .plugin(
             name: "SwiftLintXcode",
             capability: .buildTool(),
-            dependencies: ["SwiftLintBinary"]
+            dependencies: [
+                .target(name: "SwiftLintBinary", condition: .when(platforms: [.macOS]))
+            ]
         ),
         .executableTarget(
             name: "FigmaGen",

@@ -83,12 +83,15 @@ final class DefaultTemplateRenderer: TemplateRenderer {
 
         let templatePath = try resolveTemplatePath(of: template.type)
 
+        // Using deprecated StencilSwiftTemplate because
+        // there is no option in TrimBehavior.Trim to remove only newlines without whitespaces
         let stencilEnvironment = Environment(
             loader: FileSystemLoader(paths: [templatePath.parent()]),
-            extensions: [stencilExtensionRegistry]
+            extensions: [stencilExtensionRegistry],
+            templateClass: StencilSwiftTemplate.self
         )
 
-        let stencilTemplate = Template(
+        let stencilTemplate = StencilSwiftTemplate(
             templateString: try templatePath.read(),
             environment: stencilEnvironment
         )

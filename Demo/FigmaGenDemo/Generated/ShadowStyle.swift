@@ -66,7 +66,7 @@ public struct Shadow: Equatable {
         opacity: 0.10000000149011612
     )
 
-    /// Thin Shadow
+    /// Thin Shadow 
     ///
     /// Offset: x 0.0; y 1.0
     /// Radius: 4.0

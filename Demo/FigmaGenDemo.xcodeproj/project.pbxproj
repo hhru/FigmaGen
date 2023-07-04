@@ -439,7 +439,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FigamGenDemo.app/FigamGenDemo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FigmaGenDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FigmaGenDemo";
 			};
 			name = Debug;
 		};
@@ -460,7 +460,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FigamGenDemo.app/FigamGenDemo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FigmaGenDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FigmaGenDemo";
 			};
 			name = Release;
 		};
