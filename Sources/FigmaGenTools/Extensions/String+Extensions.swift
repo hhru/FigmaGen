@@ -25,4 +25,36 @@ extension String {
             .map { $0.firstUppercased }
             .joined()
     }
+
+    // MARK: - Instance Methods
+
+    public func slice(
+        from startCharactet: Character,
+        to endCharacter: Character,
+        includingBounds: Bool
+    ) -> Substring? {
+        if includingBounds {
+            guard let startIndex = firstIndex(of: startCharactet) else {
+                return nil
+            }
+
+            guard let endIndex = firstIndex(of: endCharacter) else {
+                return nil
+            }
+
+            let substringRange = startIndex...endIndex
+
+            return self[substringRange]
+        }
+
+        guard let rangeFrom = range(of: String(startCharactet))?.upperBound else {
+            return nil
+        }
+
+        guard let rangeTo = self[rangeFrom...].range(of: String(endCharacter))?.lowerBound else {
+            return nil
+        }
+
+        return self[rangeFrom..<rangeTo]
+    }
 }

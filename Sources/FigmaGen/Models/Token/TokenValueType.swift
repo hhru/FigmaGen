@@ -24,4 +24,32 @@ enum TokenValueType: Hashable {
     case textCase(value: String)
     case textDecoration(value: String)
     case typography(value: TokenTypographyValue)
+
+    // MARK: - Instance Properties
+
+    var stringValue: String? {
+        switch self {
+        case let .a11yScales(value),
+             let .borderRadius(value),
+             let .color(value),
+             let .core(value),
+             let .dimension(value),
+             let .fontFamilies(value),
+             let .fontSizes(value),
+             let .fontWeights(value),
+             let .letterSpacing(value),
+             let .lineHeights(value),
+             let .opacity(value),
+             let .paragraphSpacing(value),
+             let .scaling(value),
+             let .sizing(value),
+             let .spacing(value),
+             let .textCase(value),
+             let .textDecoration(value):
+            return value
+
+        case .animation, .boxShadow, .typography:
+            return nil
+        }
+    }
 }

@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "expression",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nicklockwood/Expression.git",
+      "state" : {
+        "revision" : "bd35e1919e7c596b45869a3704dc2a15fab648c4",
+        "version" : "0.13.7"
+      }
+    },
+    {
       "identity" : "komondor",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/shibapm/Komondor.git",
