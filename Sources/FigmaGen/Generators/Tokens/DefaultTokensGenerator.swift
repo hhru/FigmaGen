@@ -19,11 +19,11 @@ final class DefaultTokensGenerator: TokensGenerator, GenerationParametersResolvi
 
     // MARK: - Instance Methods
 
-    private func evaluteValue(_ value: String) -> String {
-        let expression = Expression(value)
+    private func evaluteValue(_ value: String) throws -> String {
+        let expression = AnyExpression(value)
 
         do {
-            return try String(expression.evaluate())
+            return try expression.evaluate()
         } catch {
             return value
         }
@@ -55,7 +55,42 @@ final class DefaultTokensGenerator: TokensGenerator, GenerationParametersResolvi
             )
         }
 
-        return evaluteValue(result)
+        return try evaluteValue(result)
+    }
+
+    private func resolveColorValue(_ value: String, tokenValues: TokenValues) throws -> Color {
+        let components = value
+            .slice(from: "(", to: ")", includingBounds: false)?
+            .components(separatedBy: ", ")
+
+        guard let components, components.count == 2 else {
+            throw TokensGeneratorError(code: .invalidRGBAColorValue(rgba: value))
+        }
+
+        let hex = components[0]
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .uppercased()
+            .filter { $0 != "#" }
+
+        let alphaPercent = components[1]
+
+        guard let alpha = Double(alphaPercent.dropLast()) else {
+            throw TokensGeneratorError(code: .invalidAlphaComponent(alpha: alphaPercent))
+        }
+
+        guard hex.count == 6 else {
+            throw TokensGeneratorError(code: .invalidHEXComponent(hex: hex))
+        }
+
+        var rgbValue: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&rgbValue)
+
+        return Color(
+            red: Double((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: Double((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: Double(rgbValue & 0x0000FF) / 255.0,
+            alpha: alpha / 100.0
+        )
     }
 
     private func generate(parameters: GenerationParameters) async throws {
@@ -70,7 +105,11 @@ final class DefaultTokensGenerator: TokensGenerator, GenerationParametersResolvi
                 return (tokenValue, try resolveValue(value, tokenValues: tokenValues))
             }
             .forEach { tokenValue, value in
-                print("[\(tokenValue.name)] \(value)")
+                if value.hasPrefix("rgba") {
+                    print("[\(tokenValue.name)] \(try resolveColorValue(value, tokenValues: tokenValues))")
+                } else {
+                    print("[\(tokenValue.name)] \(value)")
+                }
             }
 
         // PORTFOLIO-22826 Генерация основных токенов

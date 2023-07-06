@@ -8,6 +8,9 @@ struct TokensGeneratorError: Error, CustomStringConvertible {
         case referenceNotFound(name: String)
         case unexpectedTokenValueType(name: String)
         case expressionFailed(expression: String)
+        case invalidRGBAColorValue(rgba: String)
+        case invalidAlphaComponent(alpha: String)
+        case invalidHEXComponent(hex: String)
     }
 
     // MARK: - Instance Properties
@@ -26,6 +29,15 @@ struct TokensGeneratorError: Error, CustomStringConvertible {
 
         case .expressionFailed(let expression):
             return "Failed to evaluate value from expression: \(expression)"
+
+        case .invalidRGBAColorValue(let rgba):
+            return "Invalid rgba() value: \(rgba)"
+
+        case .invalidAlphaComponent(let alpha):
+            return "Failed convert alpha to float: \(alpha)"
+
+        case .invalidHEXComponent(let hex):
+            return "Invalid hex value: \(hex)"
         }
     }
 }
