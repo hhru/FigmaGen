@@ -11,6 +11,7 @@ struct TokensGeneratorError: Error, CustomStringConvertible {
         case invalidRGBAColorValue(rgba: String)
         case invalidAlphaComponent(alpha: String)
         case invalidHEXComponent(hex: String)
+        case failedExtractLinearGradientParams(linearGradient: String)
     }
 
     // MARK: - Instance Properties
@@ -38,6 +39,9 @@ struct TokensGeneratorError: Error, CustomStringConvertible {
 
         case .invalidHEXComponent(let hex):
             return "Invalid hex value: \(hex)"
+
+        case .failedExtractLinearGradientParams(let linearGradient):
+            return "Failed extract linear gradient parameters: \(linearGradient)"
         }
     }
 }

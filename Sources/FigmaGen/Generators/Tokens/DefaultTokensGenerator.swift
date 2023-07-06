@@ -58,25 +58,11 @@ final class DefaultTokensGenerator: TokensGenerator, GenerationParametersResolvi
         return try evaluteValue(result)
     }
 
-    private func resolveColorValue(_ value: String, tokenValues: TokenValues) throws -> Color {
-        let components = value
-            .slice(from: "(", to: ")", includingBounds: false)?
-            .components(separatedBy: ", ")
-
-        guard let components, components.count == 2 else {
-            throw TokensGeneratorError(code: .invalidRGBAColorValue(rgba: value))
-        }
-
-        let hex = components[0]
+    private func makeColor(hex: String, alpha: CGFloat) throws -> Color {
+        let hex = hex
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .uppercased()
             .filter { $0 != "#" }
-
-        let alphaPercent = components[1]
-
-        guard let alpha = Double(alphaPercent.dropLast()) else {
-            throw TokensGeneratorError(code: .invalidAlphaComponent(alpha: alphaPercent))
-        }
 
         guard hex.count == 6 else {
             throw TokensGeneratorError(code: .invalidHEXComponent(hex: hex))
@@ -89,7 +75,68 @@ final class DefaultTokensGenerator: TokensGenerator, GenerationParametersResolvi
             red: Double((rgbValue & 0xFF0000) >> 16) / 255.0,
             green: Double((rgbValue & 0x00FF00) >> 8) / 255.0,
             blue: Double(rgbValue & 0x0000FF) / 255.0,
-            alpha: alpha / 100.0
+            alpha: alpha
+        )
+    }
+
+    private func resolveRGBAColorValue(_ value: String, tokenValues: TokenValues) throws -> Color {
+        let components = value
+            .slice(from: "(", to: ")", includingBounds: false)?
+            .components(separatedBy: ", ")
+
+        guard let components, components.count == 2 else {
+            throw TokensGeneratorError(code: .invalidRGBAColorValue(rgba: value))
+        }
+
+        let hex = components[0]
+        let alphaPercent = components[1]
+
+        guard let alpha = Double(alphaPercent.dropLast()) else {
+            throw TokensGeneratorError(code: .invalidAlphaComponent(alpha: alphaPercent))
+        }
+
+        return try makeColor(hex: hex, alpha: alpha / 100.0)
+    }
+
+    private func resolveColorValue(_ value: String, tokenValues: TokenValues) throws -> Color {
+        if value.hasPrefix("rgba") {
+            return try resolveRGBAColorValue(value, tokenValues: tokenValues)
+        }
+
+        return try makeColor(hex: value, alpha: 1.0)
+    }
+
+    private func resolveLinearGradientValue(_ value: String, tokenValues: TokenValues) throws -> LinearGradient {
+        guard let startFunctionIndex = value.firstIndex(of: "("), let endFunctionIndex = value.lastIndex(of: ")") else {
+            throw TokensGeneratorError(code: .failedExtractLinearGradientParams(linearGradient: value))
+        }
+
+        let rawParams = value[value.index(after: startFunctionIndex)..<endFunctionIndex]
+        let pattern = #",(?![^(]*\))(?![^"']*["'](?:[^"']*["'][^"']*["'])*[^"']*$)"#
+
+        let params = try String(rawParams)
+            .split(usingRegex: pattern)
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+
+        let angle = params[0]
+
+        let colorStopList = try params
+            .removingFirst()
+            .map { rawColorStop in
+                guard let separatorRange = rawColorStop.range(of: " ", options: .backwards) else {
+                    throw TokensGeneratorError(code: .failedExtractLinearGradientParams(linearGradient: value))
+                }
+
+                let percentage = String(rawColorStop[separatorRange.upperBound...])
+                let rawColor = String(rawColorStop[...separatorRange.lowerBound])
+                let color = try resolveColorValue(rawColor, tokenValues: tokenValues)
+
+                return LinearGradient.LinearColorStop(color: color, percentage: percentage)
+            }
+
+        return LinearGradient(
+            angle: angle,
+            colorStopList: colorStopList
         )
     }
 
@@ -106,7 +153,9 @@ final class DefaultTokensGenerator: TokensGenerator, GenerationParametersResolvi
             }
             .forEach { tokenValue, value in
                 if value.hasPrefix("rgba") {
-                    print("[\(tokenValue.name)] \(try resolveColorValue(value, tokenValues: tokenValues))")
+                    print("[\(tokenValue.name)] \(try resolveRGBAColorValue(value, tokenValues: tokenValues))")
+                } else if value.hasPrefix("linear-gradient") {
+                    print("[\(tokenValue.name)] \(try resolveLinearGradientValue(value, tokenValues: tokenValues))")
                 } else {
                     print("[\(tokenValue.name)] \(value)")
                 }
