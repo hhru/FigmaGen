@@ -18,7 +18,8 @@ let package = Package(
         .package(url: "https://github.com/stencilproject/Stencil.git", from: "0.13.0"),
         .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", from: "2.7.2"),
         .package(url: "https://github.com/mxcl/PromiseKit.git", from: "8.0.0"),
-        .package(url: "https://github.com/almazrafi/DictionaryCoder.git", from: "1.0.0")
+        .package(url: "https://github.com/almazrafi/DictionaryCoder.git", from: "1.0.0"),
+        .package(url: "https://github.com/nicklockwood/Expression.git", from: "0.13.0")
     ],
     targets: [
         .binaryTarget(
@@ -44,7 +45,8 @@ let package = Package(
                 "StencilSwiftKit",
                 "PromiseKit",
                 "DictionaryCoder",
-                "FigmaGenTools"
+                "FigmaGenTools",
+                "Expression"
             ],
             path: "Sources/FigmaGen"
         ),
