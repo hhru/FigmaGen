@@ -68,4 +68,25 @@ extension String {
 
         return (0...matches.count).map { String(self[ranges[$0].upperBound..<ranges[$0 + 1].lowerBound]) }
     }
+
+    public func replacingOccurrences(
+        matchingPattern pattern: String,
+        replacementProvider: (String) throws -> String
+    ) throws -> String {
+        let expression = try NSRegularExpression(pattern: pattern, options: [])
+        let matches = expression.matches(in: self, options: [], range: NSRange(startIndex..<endIndex, in: self))
+
+        return try matches
+            .reversed()
+            .reduce(into: self) { current, result in
+                guard let range = Range(result.range, in: current) else {
+                    return
+                }
+
+                let token = String(current[range])
+                let replacement = try replacementProvider(token)
+
+                current.replaceSubrange(range, with: replacement)
+            }
+    }
 }

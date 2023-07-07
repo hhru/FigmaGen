@@ -31,24 +31,11 @@ final class DefaultTokensGenerator: TokensGenerator, GenerationParametersResolvi
 
     private func resolveValue(_ value: String, tokenValues: TokenValues) throws -> String {
         let allTokens = tokenValues.all
-        let referenceStart = "{"
-        let referenceEnd = "}"
 
-        let scanner = Scanner(string: value)
-
-        var value = value
-        var referenceRanges: [(String, Range<String.Index>)] = []
-
-        while !scanner.isAtEnd {
-            _ = scanner.scanUpToString(referenceStart)
-            let startIndex = scanner.currentIndex
-            _ = scanner.scanString(referenceStart)
-            let referenceName = scanner.scanUpToString(referenceEnd)
-            _ = scanner.scanString(referenceEnd)
-
-            guard let referenceName else {
-                continue
-            }
+        let resolvedValue = try value.replacingOccurrences(matchingPattern: #"\{.*?\}"#) { referenceName in
+            let referenceName = referenceName
+                .removingFirst()
+                .removingLast()
 
             guard let token = allTokens.first(where: { $0.name == referenceName }) else {
                 throw TokensGeneratorError(code: .referenceNotFound(name: referenceName))
@@ -58,16 +45,10 @@ final class DefaultTokensGenerator: TokensGenerator, GenerationParametersResolvi
                 throw TokensGeneratorError(code: .unexpectedTokenValueType(name: referenceName))
             }
 
-            referenceRanges.append(
-                (try resolveValue(value, tokenValues: tokenValues), startIndex..<scanner.currentIndex)
-            )
+            return try resolveValue(value, tokenValues: tokenValues)
         }
 
-        referenceRanges
-            .reversed()
-            .forEach { value.replaceSubrange($1, with: $0) }
-
-        return evaluteValue(value)
+        return evaluteValue(resolvedValue)
     }
 
     private func makeColor(hex: String, alpha: CGFloat) throws -> Color {
