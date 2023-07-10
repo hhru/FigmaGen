@@ -62,6 +62,10 @@ enum Dependencies {
 
     // MARK: -
 
+    static let tokensResolver: TokensResolver = DefaultTokensResolver()
+
+    // MARK: -
+
     static let templateContextCoder: TemplateContextCoder = DefaultTemplateContextCoder()
 
     static let stencilExtensions: [StencilExtension] = [
@@ -116,6 +120,7 @@ enum Dependencies {
     )
 
     static let tokensGenerator: TokensGenerator = DefaultTokensGenerator(
-        tokensProvider: tokensProvider
+        tokensProvider: tokensProvider,
+        tokensResolver: tokensResolver
     )
 }
