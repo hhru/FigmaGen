@@ -103,7 +103,7 @@ final class TokensResolverTests: XCTestCase {
 
         let firstColor = "rgba({color.base.red.50}, {semantic.opacity.transparent})"
         let secondColor = "{color.base.red.50}"
-        let value = "linear-gradient(0deg, \(firstColor) 0%, \(secondColor) 100%"
+        let value = "linear-gradient(0deg, \(firstColor) 0%, \(secondColor) 100%)"
 
         let expectedLinearGradient = LinearGradient(
             angle: "0deg",
