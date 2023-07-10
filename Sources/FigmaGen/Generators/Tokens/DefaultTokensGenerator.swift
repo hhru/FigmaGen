@@ -34,15 +34,13 @@ final class DefaultTokensGenerator: TokensGenerator, GenerationParametersResolvi
             }
             .forEach { tokenValue, value in
                 if value.hasPrefix("rgba") {
-                    print(
-                        "[\(tokenValue.name)] " +
-                        "\(try tokensResolver.resolveRGBAColorValue(value, tokenValues: tokenValues))"
-                    )
+                    let color = try tokensResolver.resolveRGBAColorValue(value, tokenValues: tokenValues)
+
+                    print("[\(tokenValue.name)] \(color)")
                 } else if value.hasPrefix("linear-gradient") {
-                    print(
-                        "[\(tokenValue.name)] " +
-                        "\(try tokensResolver.resolveLinearGradientValue(value, tokenValues: tokenValues))"
-                    )
+                    let gradient = try tokensResolver.resolveLinearGradientValue(value, tokenValues: tokenValues)
+
+                    print("[\(tokenValue.name)] \(gradient)")
                 } else {
                     print("[\(tokenValue.name)] \(value)")
                 }
