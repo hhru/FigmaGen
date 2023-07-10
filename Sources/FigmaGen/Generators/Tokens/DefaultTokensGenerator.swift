@@ -101,7 +101,7 @@ final class DefaultTokensGenerator: TokensGenerator, GenerationParametersResolvi
 
     private func resolveLinearGradientValue(_ value: String, tokenValues: TokenValues) throws -> LinearGradient {
         guard let startFunctionIndex = value.firstIndex(of: "("), let endFunctionIndex = value.lastIndex(of: ")") else {
-            throw TokensGeneratorError(code: .failedExtractLinearGradientParams(linearGradient: value))
+            throw TokensGeneratorError(code: .failedToExtractLinearGradientParams(linearGradient: value))
         }
 
         let rawParams = value[value.index(after: startFunctionIndex)..<endFunctionIndex]
@@ -117,7 +117,7 @@ final class DefaultTokensGenerator: TokensGenerator, GenerationParametersResolvi
             .removingFirst()
             .map { rawColorStop in
                 guard let separatorRange = rawColorStop.range(of: " ", options: .backwards) else {
-                    throw TokensGeneratorError(code: .failedExtractLinearGradientParams(linearGradient: value))
+                    throw TokensGeneratorError(code: .failedToExtractLinearGradientParams(linearGradient: value))
                 }
 
                 let percentage = String(rawColorStop[separatorRange.upperBound...])
