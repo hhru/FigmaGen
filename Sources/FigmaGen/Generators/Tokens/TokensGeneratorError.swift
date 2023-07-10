@@ -35,13 +35,13 @@ struct TokensGeneratorError: Error, CustomStringConvertible {
             return "Invalid rgba() value: \(rgba)"
 
         case .invalidAlphaComponent(let alpha):
-            return "Failed convert alpha to float: \(alpha)"
+            return "Failed to convert alpha to float: \(alpha)"
 
         case .invalidHEXComponent(let hex):
             return "Invalid hex value: \(hex)"
 
         case .failedExtractLinearGradientParams(let linearGradient):
-            return "Failed extract linear gradient parameters: \(linearGradient)"
+            return "Failed to extract linear gradient parameters: \(linearGradient)"
         }
     }
 }
