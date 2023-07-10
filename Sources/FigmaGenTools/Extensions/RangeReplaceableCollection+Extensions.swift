@@ -35,7 +35,7 @@ extension RangeReplaceableCollection {
     }
 }
 
-extension RangeReplaceableCollection where Self: BidirectionalCollection, Self == SubSequence {
+extension RangeReplaceableCollection where Self: BidirectionalCollection {
 
     // MARK: - Instance Methods
 
