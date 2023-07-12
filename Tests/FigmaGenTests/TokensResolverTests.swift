@@ -171,6 +171,39 @@ final class TokensResolverTests: XCTestCase {
 
         XCTAssertEqual(actualLinearGradient, expectedLinearGradient)
     }
+
+    func testResolveHexColorWithReferences() throws {
+        let tokenValues = TokenValues(
+            core: [
+                TokenValue(type: .opacity(value: "48%"), name: "core.opacity.48")
+            ],
+            semantic: [
+                TokenValue(type: .opacity(value: "{core.opacity.48}"), name: "semantic.opacity.disabled")
+            ],
+            colors: [
+                TokenValue(type: .core(value: "#ffffff"), name: "color.base.white")
+            ],
+            typography: [],
+            day: [],
+            night: []
+        )
+
+        let value = "rgba({color.base.white}, {semantic.opacity.disabled})"
+        let expectedHexColor = "#FFFFFF7A"
+
+        let actualHexColor = try tokensResolver.resolveHexColorValue(value, tokenValues: tokenValues)
+
+        XCTAssertEqual(actualHexColor, expectedHexColor)
+    }
+
+    func testResolveHexColorWithoutReferences() throws {
+        let value = "rgba(#FFFFFF, 48%)"
+        let expectedHexColor = "#FFFFFF7A"
+
+        let actualHexColor = try tokensResolver.resolveHexColorValue(value, tokenValues: .empty)
+
+        XCTAssertEqual(actualHexColor, expectedHexColor)
+    }
 }
 
 extension TokenValues {

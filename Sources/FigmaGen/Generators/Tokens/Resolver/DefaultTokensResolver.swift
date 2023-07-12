@@ -87,6 +87,12 @@ final class DefaultTokensResolver: TokensResolver {
         return try makeColor(hex: hex, alpha: alpha / 100.0)
     }
 
+    func resolveHexColorValue(_ value: String, tokenValues: TokenValues) throws -> String {
+        let resolvedValue = try resolveValue(value, tokenValues: tokenValues)
+
+        return try resolveColorValue(resolvedValue, tokenValues: tokenValues).hexString
+    }
+
     func resolveLinearGradientValue(_ value: String, tokenValues: TokenValues) throws -> LinearGradient {
         let value = try resolveValue(value, tokenValues: tokenValues)
 

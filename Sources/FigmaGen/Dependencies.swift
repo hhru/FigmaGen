@@ -64,6 +64,9 @@ enum Dependencies {
 
     static let tokensResolver: TokensResolver = DefaultTokensResolver()
 
+    static let tokensGenerationParametersResolver: TokensGenerationParametersResolver
+        = DefaultTokensGenerationParametersResolver()
+
     // MARK: -
 
     static let templateContextCoder: TemplateContextCoder = DefaultTemplateContextCoder()
@@ -119,8 +122,14 @@ enum Dependencies {
         shadowStylesGenerator: shadowStylesGenerator
     )
 
+    static let colorTokensGenerator: ColorTokensGenerator = DefaultColorTokensGenerator(
+        tokensResolver: tokensResolver,
+        templateRenderer: templateRenderer
+    )
+
     static let tokensGenerator: TokensGenerator = DefaultTokensGenerator(
         tokensProvider: tokensProvider,
-        tokensResolver: tokensResolver
+        tokensGenerationParametersResolver: tokensGenerationParametersResolver,
+        colorTokensGenerator: colorTokensGenerator
     )
 }

@@ -12,6 +12,8 @@ struct TokensGeneratorError: Error, CustomStringConvertible {
         case invalidAlphaComponent(alpha: String)
         case invalidHEXComponent(hex: String)
         case failedToExtractLinearGradientParams(linearGradient: String)
+
+        case nightColorNotFound(tokenName: String)
     }
 
     // MARK: - Instance Properties
@@ -42,6 +44,9 @@ struct TokensGeneratorError: Error, CustomStringConvertible {
 
         case .failedToExtractLinearGradientParams(let linearGradient):
             return "Failed to extract linear gradient parameters: \(linearGradient)"
+
+        case .nightColorNotFound(let tokenName):
+            return "Night color for token '\(tokenName)' not found"
         }
     }
 }

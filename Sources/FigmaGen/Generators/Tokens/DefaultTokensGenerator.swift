@@ -2,58 +2,39 @@ import Foundation
 import FigmaGenTools
 import Expression
 
-final class DefaultTokensGenerator: TokensGenerator, GenerationParametersResolving {
+final class DefaultTokensGenerator: TokensGenerator {
 
     // MARK: - Instance Properties
 
     let tokensProvider: TokensProvider
-    let tokensResolver: TokensResolver
-
-    let defaultTemplateType = RenderTemplateType.native(name: "Tokens")
-    let defaultDestination = RenderDestination.console
+    let tokensGenerationParametersResolver: TokensGenerationParametersResolver
+    let colorTokensGenerator: ColorTokensGenerator
 
     // MARK: - Initializers
 
-    init(tokensProvider: TokensProvider, tokensResolver: TokensResolver) {
+    init(
+        tokensProvider: TokensProvider,
+        tokensGenerationParametersResolver: TokensGenerationParametersResolver,
+        colorTokensGenerator: ColorTokensGenerator
+    ) {
         self.tokensProvider = tokensProvider
-        self.tokensResolver = tokensResolver
+        self.tokensGenerationParametersResolver = tokensGenerationParametersResolver
+        self.colorTokensGenerator = colorTokensGenerator
     }
 
     // MARK: - Instance Methods
 
-    private func generate(parameters: GenerationParameters) async throws {
+    private func generate(parameters: TokensGenerationParameters) async throws {
         let tokenValues = try await tokensProvider.fetchTokens(from: parameters.file)
 
-        try tokenValues.all
-            .compactMap { tokenValue -> (TokenValue, String)? in
-                guard let value = tokenValue.type.stringValue else {
-                    return nil
-                }
-
-                return (tokenValue, try tokensResolver.resolveValue(value, tokenValues: tokenValues))
-            }
-            .forEach { tokenValue, value in
-                if value.hasPrefix("rgba") {
-                    let color = try tokensResolver.resolveRGBAColorValue(value, tokenValues: tokenValues)
-
-                    print("[\(tokenValue.name)] \(color)")
-                } else if value.hasPrefix("linear-gradient") {
-                    let gradient = try tokensResolver.resolveLinearGradientValue(value, tokenValues: tokenValues)
-
-                    print("[\(tokenValue.name)] \(gradient)")
-                } else {
-                    print("[\(tokenValue.name)] \(value)")
-                }
-            }
-
-        // PORTFOLIO-22826 Генерация основных токенов
+        try colorTokensGenerator.generate(renderParameters: parameters.tokens.colorRender, tokenValues: tokenValues)
     }
 
     // MARK: -
 
     func generate(configuration: TokensConfiguration) async throws {
         let parameters = try await Task.detached(priority: .userInitiated) {
-            try self.resolveGenerationParameters(from: configuration)
+            try self.tokensGenerationParametersResolver.resolveGenerationParameters(from: configuration)
         }.value
 
         try await generate(parameters: parameters)

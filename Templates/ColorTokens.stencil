@@ -1,0 +1,41 @@
+// swiftlint:disable all
+// Generated using FigmaGen - https://github.com/hhru/FigmaGen
+{% set colorTypeName %}{{ options.colorTypeName|default:"UIColor" }}{% endset %}
+{% set accessModifier %}{% if options.publicAccess %}public{% else %}internal{% endif %}{% endset %}
+{% set tokenTypeName %}{{ options.tokenTypeName|default:"ColorTokens" }}{% endset %}
+{% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
+{% macro typeName name %}{{ name|swiftIdentifier:"pretty"|upperFirstLetter|escapeReservedKeywords }}{% endmacro %}
+{% macro recursiveBlock item %}
+    {% for color in item.colors %}
+
+    /// {{ color.name }}
+    ///
+    /// Day: {{ color.dayValue }}
+    /// Night: {{ color.nightValue }}
+    public let {% call propertyName color.path.last %}: {{ colorTypeName }}
+    {% endfor %}
+    {% for child in item.children %}
+
+    public struct {% call typeName child.name %} {
+        {% filter indent:4 %}
+        {% call recursiveBlock child %}
+        {% endfilter %}
+    }
+
+    public let {% call propertyName child.name %}: {% call typeName child.name %}
+    {% endfor %}
+{% endmacro %}
+
+#if canImport(UIKit)
+import UIKit
+#else
+import AppKit
+#endif
+
+{{ accessModifier }} struct {{ tokenTypeName }} {
+    {% if colorTokens %}
+    {% call recursiveBlock colorTokens %}
+    {% else %}
+    // No color tokens found
+    {% endif %}
+}

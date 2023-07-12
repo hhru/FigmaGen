@@ -1,6 +1,6 @@
 import SwiftCLI
 
-final class TokensCommand: AsyncExecutableCommand, GenerationConfigurableCommand {
+final class TokensCommand: AsyncExecutableCommand {
 
     // MARK: - Instance Properties
 
@@ -25,25 +25,6 @@ final class TokensCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             """
     )
 
-    let includedNodes = VariadicKey<String>(
-        "--includingNodes",
-        "-i",
-        description: #"""
-            A list of Figma nodes whose styles will be extracted.
-            Can be repeated multiple times and must be in the format: -i "1:23".
-            If omitted, all nodes will be included.
-            """#
-    )
-
-    let excludedNodes = VariadicKey<String>(
-        "--excludingNodes",
-        "-e",
-        description: #"""
-            A list of Figma nodes whose styles will be ignored.
-            Can be repeated multiple times and must be in the format: -e "1:23".
-            """#
-    )
-
     let accessToken = Key<String>(
         "--accessToken",
         description: """
@@ -52,27 +33,24 @@ final class TokensCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             """
     )
 
-    let template = Key<String>(
-        "--template",
-        "-t",
+    let colorsTemplate = Key<String>(
+        "--colors-template",
         description: """
             Path to the template file.
             If no template is passed a default template will be used.
             """
     )
 
-    let templateOptions = VariadicKey<String>(
-        "--options",
-        "-o",
+    let colorsTemplateOptions = VariadicKey<String>(
+        "--colors-options",
         description: #"""
             An option that will be merged with template context, and overwrite any values of the same name.
             Can be repeated multiple times and must be in the format: -o "name:value".
             """#
     )
 
-    let destination = Key<String>(
-        "--destination",
-        "-d",
+    let colorsDestination = Key<String>(
+        "--colors-destination",
         description: """
             The path to the file to generate.
             By default, generated code will be printed on stdout.
@@ -89,10 +67,66 @@ final class TokensCommand: AsyncExecutableCommand, GenerationConfigurableCommand
 
     func executeAsyncAndExit() async throws {
         do {
-            try await generator.generate(configuration: generationConfiguration)
+            try await generator.generate(configuration: configuration)
             succeed(message: "Tokens generated successfully!")
         } catch {
             fail(message: "Failed to generate tokens: \(error)")
         }
+    }
+}
+
+extension TokensCommand {
+
+    // MARK: - Instance Properties
+
+    var configuration: TokensConfiguration {
+        TokensConfiguration(
+            file: resolveFileConfiguration(),
+            accessToken: resolveAccessTokenConfiguration(),
+            templates: TokensTemplateConfiguration(
+                color: TokensTemplateConfiguration.Template(
+                    template: colorsTemplate.value,
+                    templateOptions: resolveTemplateOptions(colorsTemplateOptions.value),
+                    destination: colorsDestination.value
+                )
+            )
+        )
+    }
+
+    // MARK: - Instance Methods
+
+    private func resolveFileConfiguration() -> FileConfiguration? {
+        guard let fileKey = fileKey.value else {
+            return nil
+        }
+
+        return FileConfiguration(
+            key: fileKey,
+            version: fileVersion.value,
+            includedNodes: nil,
+            excludedNodes: nil
+        )
+    }
+
+    private func resolveAccessTokenConfiguration() -> AccessTokenConfiguration? {
+        guard let accessToken = accessToken.value else {
+            return nil
+        }
+
+        return .value(accessToken)
+    }
+
+    private func resolveTemplateOptions(_ templateOptionsValues: [String]) -> [String: Any] {
+        var templateOptions: [String: String] = [:]
+
+        for templateOption in templateOptionsValues {
+            var optionComponents = templateOption.components(separatedBy: String.templateOptionSeparator)
+            let optionKey = optionComponents.removeFirst().trimmingCharacters(in: .whitespaces)
+            let optionValue = optionComponents.joined(separator: .templateOptionSeparator)
+
+            templateOptions[optionKey] = optionValue
+        }
+
+        return templateOptions
     }
 }
