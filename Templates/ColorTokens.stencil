@@ -10,8 +10,8 @@
 
     /// {{ color.name }}
     ///
-    /// Day: {{ color.dayValue }}
-    /// Night: {{ color.nightValue }}
+    /// Day: {{ color.dayTheme.value }}
+    /// Night: {{ color.nightTheme.value }}
     public let {% call propertyName color.path.last %}: {{ colorTypeName }}
     {% endfor %}
     {% for child in item.children %}

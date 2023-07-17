@@ -84,7 +84,10 @@ enum Dependencies {
         StencilColorInfoFilter(contextCoder: templateContextCoder),
         StencilFontInfoFilter(contextCoder: templateContextCoder),
         StencilFontInitializerModificator(contextCoder: templateContextCoder),
-        StencilFontSystemFilter(contextCoder: templateContextCoder)
+        StencilFontSystemFilter(contextCoder: templateContextCoder),
+        StencilCollectionDropFirstModificator(),
+        StencilCollectionDropLastModificator(),
+        StencilHexToAlphaFilter()
     ]
 
     static let templateRenderer: TemplateRenderer = DefaultTemplateRenderer(

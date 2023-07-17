@@ -32,6 +32,22 @@ final class DefaultColorTokensGenerator: ColorTokensGenerator {
         return try tokensResolver.resolveHexColorValue(nightValue, tokenValues: tokenValues)
     }
 
+    private func resolveNightReference(
+        tokenName: String,
+        fallbackRefence: String,
+        tokenValues: TokenValues
+    ) -> String {
+        guard let nightToken = tokenValues.night.first(where: { $0.name == tokenName }) else {
+            return fallbackRefence
+        }
+
+        guard case .color(let nightValue) = nightToken.type else {
+            return fallbackRefence
+        }
+
+        return nightValue
+    }
+
     private func structure(tokenColors: [ColorToken], atNamePath namePath: [String] = []) -> [String: Any] {
         var structuredColors: [String: Any] = [:]
 
@@ -62,6 +78,39 @@ final class DefaultColorTokensGenerator: ColorTokensGenerator {
         return structuredColors
     }
 
+    private func makeColorToken(
+        dayValue: String,
+        tokenName: String,
+        tokenValues: TokenValues,
+        path: [String]
+    ) throws -> ColorToken {
+        let dayHexColorValue = try tokensResolver.resolveHexColorValue(
+            dayValue,
+            tokenValues: tokenValues
+        )
+
+        return ColorToken(
+            dayTheme: ColorToken.Theme(
+                value: dayHexColorValue,
+                reference: dayValue
+            ),
+            nightTheme: ColorToken.Theme(
+                value: try resolveNightValue(
+                    tokenName: tokenName,
+                    fallbackValue: dayHexColorValue,
+                    tokenValues: tokenValues
+                ),
+                reference: resolveNightReference(
+                    tokenName: tokenName,
+                    fallbackRefence: dayValue,
+                    tokenValues: tokenValues
+                )
+            ),
+            name: tokenName,
+            path: path.removingFirst()
+        )
+    }
+
     // MARK: -
 
     func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws {
@@ -72,22 +121,15 @@ final class DefaultColorTokensGenerator: ColorTokensGenerator {
 
             let path = token.name.components(separatedBy: ".")
 
-            guard path[0] == "color" && path[1] != "component" else {
+            guard path[0] == "color" else {
                 return nil
             }
 
-            return ColorToken(
-                dayValue: try tokensResolver.resolveHexColorValue(
-                    dayValue,
-                    tokenValues: tokenValues
-                ),
-                nightValue: try resolveNightValue(
-                    tokenName: token.name,
-                    fallbackValue: dayValue,
-                    tokenValues: tokenValues
-                ),
-                name: token.name,
-                path: path.removingFirst()
+            return try makeColorToken(
+                dayValue: dayValue,
+                tokenName: token.name,
+                tokenValues: tokenValues,
+                path: path
             )
         }
 
