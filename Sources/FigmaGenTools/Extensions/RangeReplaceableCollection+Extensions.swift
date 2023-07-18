@@ -27,21 +27,24 @@ extension RangeReplaceableCollection {
     public func appending(_ element: Element) -> Self {
         appending(contentsOf: [element])
     }
-
-    public func removingFirst() -> Self {
-        var copy = self
-        copy.removeFirst()
-        return copy
-    }
 }
 
-extension RangeReplaceableCollection where Self: BidirectionalCollection {
+extension RangeReplaceableCollection where Element: Equatable {
 
     // MARK: - Instance Methods
 
-    public func removingLast() -> Self {
+    @discardableResult
+    public mutating func removeFirst(_ element: Element) -> Element? {
+        guard let index = firstIndex(of: element) else {
+            return nil
+        }
+
+        return remove(at: index)
+    }
+
+    public func removingFirst(_ element: Element) -> Self {
         var copy = self
-        copy.removeLast()
+        copy.removeFirst(element)
         return copy
     }
 }

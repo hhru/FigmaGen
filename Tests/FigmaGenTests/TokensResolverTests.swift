@@ -181,19 +181,25 @@ final class TokensResolverTests: XCTestCase {
                 TokenValue(type: .opacity(value: "{core.opacity.48}"), name: "semantic.opacity.disabled")
             ],
             colors: [
-                TokenValue(type: .core(value: "#ffffff"), name: "color.base.white")
+                TokenValue(type: .color(value: "#ffffff"), name: "color.base.white"),
+                TokenValue(type: .color(value: "#111"), name: "color.base.gray.5")
             ],
             typography: [],
             day: [],
             night: []
         )
 
-        let value = "rgba({color.base.white}, {semantic.opacity.disabled})"
-        let expectedHexColor = "#FFFFFF7A"
+        let value1 = "rgba({color.base.white}, {semantic.opacity.disabled})"
+        let expectedHexColor1 = "#FFFFFF7A"
 
-        let actualHexColor = try tokensResolver.resolveHexColorValue(value, tokenValues: tokenValues)
+        let value2 = "rgba( {color.base.gray.5} , {semantic.opacity.disabled})"
+        let expectedHexColor2 = "#1111117A"
 
-        XCTAssertEqual(actualHexColor, expectedHexColor)
+        let actualHexColor1 = try tokensResolver.resolveHexColorValue(value1, tokenValues: tokenValues)
+        let actualHexColor2 = try tokensResolver.resolveHexColorValue(value2, tokenValues: tokenValues)
+
+        XCTAssertEqual(actualHexColor1, expectedHexColor1)
+        XCTAssertEqual(actualHexColor2, expectedHexColor2)
     }
 
     func testResolveHexColorWithoutReferences() throws {

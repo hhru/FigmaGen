@@ -17,29 +17,39 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
         }
     }
 
-    private func resolveColorTemplateType(configuration: TokensConfiguration) -> RenderTemplateType {
-        if let templatePath = configuration.templates?.color?.template {
+    private func resolveTemplateType(
+        template: TokensTemplateConfiguration.Template?,
+        nativeTemplateName: String
+    ) -> RenderTemplateType {
+        if let templatePath = template?.template {
             return .custom(path: templatePath)
         }
 
-        return .native(name: "ColorTokens")
+        return .native(name: nativeTemplateName)
     }
 
-    private func resolveColorDestination(configuration: TokensConfiguration) -> RenderDestination {
-        if let destinationPath = configuration.templates?.color?.destination {
+    private func resolveDestination(template: TokensTemplateConfiguration.Template?) -> RenderDestination {
+        if let destinationPath = template?.destination {
             return .file(path: destinationPath)
         }
 
         return .console
     }
 
-    private func resolveColorRenderParameters(configuration: TokensConfiguration) -> RenderParameters {
-        let templateType = resolveColorTemplateType(configuration: configuration)
-        let destination = resolveColorDestination(configuration: configuration)
+    private func resolveRenderParameters(
+        template: TokensTemplateConfiguration.Template?,
+        nativeTemplateName: String
+    ) -> RenderParameters {
+        let templateType = resolveTemplateType(
+            template: template,
+            nativeTemplateName: nativeTemplateName
+        )
+
+        let destination = resolveDestination(template: template)
 
         let template = RenderTemplate(
             type: templateType,
-            options: configuration.templates?.color?.templateOptions ?? [:]
+            options: template?.templateOptions ?? [:]
         )
 
         return RenderParameters(template: template, destination: destination)
@@ -62,12 +72,21 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             accessToken: accessToken
         )
 
-        let colorRender = resolveColorRenderParameters(configuration: configuration)
+        let colorRender = resolveRenderParameters(
+            template: configuration.templates?.color,
+            nativeTemplateName: "ColorTokens"
+        )
+
+        let baseColorRender = resolveRenderParameters(
+            template: configuration.templates?.baseColor,
+            nativeTemplateName: "BaseColorTokens"
+        )
 
         return TokensGenerationParameters(
             file: file,
             tokens: TokensGenerationParameters.TokensParameters(
-                colorRender: colorRender
+                colorRender: colorRender,
+                baseColorRender: baseColorRender
             )
         )
     }

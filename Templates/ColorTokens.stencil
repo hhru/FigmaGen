@@ -1,5 +1,4 @@
-// swiftlint:disable all
-// Generated using FigmaGen - https://github.com/hhru/FigmaGen
+{% include "FileHeader.stencil" %}
 {% set colorTypeName %}{{ options.colorTypeName|default:"UIColor" }}{% endset %}
 {% set accessModifier %}{% if options.publicAccess %}public{% else %}internal{% endif %}{% endset %}
 {% set tokenTypeName %}{{ options.tokenTypeName|default:"ColorTokens" }}{% endset %}

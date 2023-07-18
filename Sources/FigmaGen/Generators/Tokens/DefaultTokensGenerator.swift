@@ -9,17 +9,20 @@ final class DefaultTokensGenerator: TokensGenerator {
     let tokensProvider: TokensProvider
     let tokensGenerationParametersResolver: TokensGenerationParametersResolver
     let colorTokensGenerator: ColorTokensGenerator
+    let baseColorTokensGenerator: BaseColorTokensGenerator
 
     // MARK: - Initializers
 
     init(
         tokensProvider: TokensProvider,
         tokensGenerationParametersResolver: TokensGenerationParametersResolver,
-        colorTokensGenerator: ColorTokensGenerator
+        colorTokensGenerator: ColorTokensGenerator,
+        baseColorTokensGenerator: BaseColorTokensGenerator
     ) {
         self.tokensProvider = tokensProvider
         self.tokensGenerationParametersResolver = tokensGenerationParametersResolver
         self.colorTokensGenerator = colorTokensGenerator
+        self.baseColorTokensGenerator = baseColorTokensGenerator
     }
 
     // MARK: - Instance Methods
@@ -27,7 +30,15 @@ final class DefaultTokensGenerator: TokensGenerator {
     private func generate(parameters: TokensGenerationParameters) async throws {
         let tokenValues = try await tokensProvider.fetchTokens(from: parameters.file)
 
-        try colorTokensGenerator.generate(renderParameters: parameters.tokens.colorRender, tokenValues: tokenValues)
+        try colorTokensGenerator.generate(
+            renderParameters: parameters.tokens.colorRender,
+            tokenValues: tokenValues
+        )
+
+        try baseColorTokensGenerator.generate(
+            renderParameters: parameters.tokens.baseColorRender,
+            tokenValues: tokenValues
+        )
     }
 
     // MARK: -

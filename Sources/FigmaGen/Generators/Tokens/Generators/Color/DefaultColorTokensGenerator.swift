@@ -107,7 +107,7 @@ final class DefaultColorTokensGenerator: ColorTokensGenerator {
                 )
             ),
             name: tokenName,
-            path: path.removingFirst()
+            path: Array(path.dropFirst())
         )
     }
 

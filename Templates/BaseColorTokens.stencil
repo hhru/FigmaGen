@@ -1,0 +1,39 @@
+{% include "FileHeader.stencil" %}
+{% if colors %}
+{% set accessModifier %}{% if options.publicAccess %}public{% else %}internal{% endif %}{% endset %}
+{% set tokenTypeName %}{{ options.tokenTypeName|default:"BaseColorTokens" }}{% endset %}
+{% set colorTypeName %}{{ options.colorTypeName|default:"UIColor" }}{% endset %}
+{% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
+
+#if canImport(UIKit)
+import UIKit
+#else
+import AppKit
+#endif
+
+{{ accessModifier }} struct {{ tokenTypeName }} {
+    {% for color in colors %}
+    /// {{ color.value }}
+    {{ accessModifier }} let {% call propertyName color.path|removingFirst:"color"|removingFirst:"base"|join:"." %} = {{ colorTypeName }}(hex: 0x{{ color.value|replace:"#",""|uppercase }})
+    {% endfor %}
+}
+{% else %}
+// No base color tokens found
+{% endif %}
+
+private extension {{ colorTypeName }} {
+
+    convenience init(hex: UInt32) {
+        let red = UInt8((hex >> 24) & 0xFF)
+        let green = UInt8((hex >> 16) & 0xFF)
+        let blue = UInt8((hex >> 8) & 0xFF)
+        let alpha = UInt8(hex & 0xFF)
+
+        self.init(
+            red: CGFloat(red) / 255.0, 
+            green: CGFloat(green) / 255.0, 
+            blue: CGFloat(blue) / 255.0, 
+            alpha: CGFloat(alpha) / 255.0
+        )
+    }
+}

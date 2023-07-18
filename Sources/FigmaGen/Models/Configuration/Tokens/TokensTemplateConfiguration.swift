@@ -29,6 +29,7 @@ struct TokensTemplateConfiguration: Decodable {
     // MARK: - Instance Properties
 
     let color: Template?
+    let baseColor: Template?
 }
 
 extension TokensTemplateConfiguration.Template {
