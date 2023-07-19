@@ -89,7 +89,7 @@ enum Dependencies {
         StencilCollectionDropLastModificator(),
         StencilCollectionRemovingFirstModificator(),
         StencilHexToAlphaFilter(),
-        StencilFullHexFilter()
+        StencilFullHexModificator()
     ]
 
     static let templateRenderer: TemplateRenderer = DefaultTemplateRenderer(
@@ -119,14 +119,6 @@ enum Dependencies {
         templateRenderer: templateRenderer
     )
 
-    static let libraryGenerator: LibraryGenerator = DefaultLibraryGenerator(
-        configurationProvider: configurationProvider,
-        colorStylesGenerator: colorStylesGenerator,
-        textStylesGenerator: textStylesGenerator,
-        imagesGenerator: imagesGenerator,
-        shadowStylesGenerator: shadowStylesGenerator
-    )
-
     static let colorTokensGenerator: ColorTokensGenerator = DefaultColorTokensGenerator(
         tokensResolver: tokensResolver,
         templateRenderer: templateRenderer
@@ -142,5 +134,14 @@ enum Dependencies {
         tokensGenerationParametersResolver: tokensGenerationParametersResolver,
         colorTokensGenerator: colorTokensGenerator,
         baseColorTokensGenerator: baseColorTokensGenerator
+    )
+
+    static let libraryGenerator: LibraryGenerator = DefaultLibraryGenerator(
+        configurationProvider: configurationProvider,
+        colorStylesGenerator: colorStylesGenerator,
+        textStylesGenerator: textStylesGenerator,
+        imagesGenerator: imagesGenerator,
+        shadowStylesGenerator: shadowStylesGenerator,
+        tokensGenerator: tokensGenerator
     )
 }

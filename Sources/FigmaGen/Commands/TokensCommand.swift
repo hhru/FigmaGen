@@ -108,12 +108,12 @@ extension TokensCommand {
             file: resolveFileConfiguration(),
             accessToken: resolveAccessTokenConfiguration(),
             templates: TokensTemplateConfiguration(
-                color: TokensTemplateConfiguration.Template(
+                colors: TokensTemplateConfiguration.Template(
                     template: colorsTemplate.value,
                     templateOptions: resolveTemplateOptions(colorsTemplateOptions.value),
                     destination: colorsDestination.value
                 ),
-                baseColor: TokensTemplateConfiguration.Template(
+                baseColors: TokensTemplateConfiguration.Template(
                     template: baseColorsTemplate.value,
                     templateOptions: resolveTemplateOptions(baseColorsTemplateOptions.value),
                     destination: baseColorsDestination.value

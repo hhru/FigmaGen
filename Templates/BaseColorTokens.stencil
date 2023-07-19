@@ -14,12 +14,9 @@ import AppKit
 {{ accessModifier }} struct {{ tokenTypeName }} {
     {% for color in colors %}
     /// {{ color.value }}
-    {{ accessModifier }} let {% call propertyName color.path|removingFirst:"color"|removingFirst:"base"|join:"." %} = {{ colorTypeName }}(hex: 0x{{ color.value|replace:"#",""|uppercase }})
+    {{ accessModifier }} let {% call propertyName color.path|removingFirst:"color"|removingFirst:"base"|join:"." %} = {{ colorTypeName }}(hex: 0x{{ color.value|fullHex|replace:"#","" }})
     {% endfor %}
 }
-{% else %}
-// No base color tokens found
-{% endif %}
 
 private extension {{ colorTypeName }} {
 
@@ -37,3 +34,6 @@ private extension {{ colorTypeName }} {
         )
     }
 }
+{% else %}
+// No base color tokens found
+{% endif %}

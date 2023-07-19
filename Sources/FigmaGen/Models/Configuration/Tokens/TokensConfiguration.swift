@@ -36,4 +36,18 @@ struct TokensConfiguration: Decodable {
         self.accessToken = accessToken
         self.templates = templates
     }
+
+    // MARK: - Instance Methods
+
+    func resolve(base: BaseConfiguration?) -> Self {
+        guard let base else {
+            return self
+        }
+
+        return Self(
+            file: file ?? base.file,
+            accessToken: accessToken ?? base.accessToken,
+            templates: templates
+        )
+    }
 }

@@ -28,9 +28,8 @@ final class DefaultTokensResolver: TokensResolver {
         }
 
         let hexFloat = CGFloat(hexComponent)
-        let floatValue = CGFloat(hexFloat / 255.0)
 
-        return floatValue
+        return hexFloat / 255.0
     }
 
     private func makeColor(hex: String, alpha: CGFloat) throws -> Color {
@@ -118,7 +117,7 @@ final class DefaultTokensResolver: TokensResolver {
         let resolvedValue = try resolveValue(value, tokenValues: tokenValues)
 
         if resolvedValue.hasPrefix("#") {
-            return value
+            return resolvedValue
         }
 
         return try resolveColorValue(resolvedValue, tokenValues: tokenValues).hexString

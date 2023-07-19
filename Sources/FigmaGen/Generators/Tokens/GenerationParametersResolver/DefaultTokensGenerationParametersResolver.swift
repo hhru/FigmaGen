@@ -73,12 +73,12 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
         )
 
         let colorRender = resolveRenderParameters(
-            template: configuration.templates?.color,
+            template: configuration.templates?.colors,
             nativeTemplateName: "ColorTokens"
         )
 
         let baseColorRender = resolveRenderParameters(
-            template: configuration.templates?.baseColor,
+            template: configuration.templates?.baseColors,
             nativeTemplateName: "BaseColorTokens"
         )
 

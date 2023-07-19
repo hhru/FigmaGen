@@ -107,7 +107,7 @@ final class DefaultColorTokensGenerator: ColorTokensGenerator {
                 )
             ),
             name: tokenName,
-            path: Array(path.dropFirst())
+            path: path
         )
     }
 
@@ -121,7 +121,7 @@ final class DefaultColorTokensGenerator: ColorTokensGenerator {
 
             let path = token.name.components(separatedBy: ".")
 
-            guard path[0] == "color" else {
+            guard path[0] != "gradient" else {
                 return nil
             }
 
