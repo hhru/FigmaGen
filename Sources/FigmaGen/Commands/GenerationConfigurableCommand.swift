@@ -75,5 +75,5 @@ extension String {
 
     // MARK: - Type Properties
 
-    fileprivate static let templateOptionSeparator = ":"
+    static let templateOptionSeparator = ":"
 }

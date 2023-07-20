@@ -15,25 +15,49 @@ final class DefaultTokensResolver: TokensResolver {
         }
     }
 
-    private func makeColor(hex: String, alpha: CGFloat) throws -> Color {
-        let hex = hex
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .uppercased()
-            .filter { $0 != "#" }
+    private func colorComponent(from string: String, start: Int, length: Int) -> Double {
+        let startIndex = string.index(string.startIndex, offsetBy: start)
+        let endIndex = string.index(startIndex, offsetBy: length)
+        let substring = string[startIndex..<endIndex]
+        let fullHexString = (length == 2) ? String(substring) : "\(substring)\(substring)"
 
-        guard hex.count == 6 else {
-            throw TokensGeneratorError(code: .invalidHEXComponent(hex: hex))
+        var hexComponent: UInt64 = 0
+
+        guard Scanner(string: fullHexString).scanHexInt64(&hexComponent) else {
+            return .zero
         }
 
-        var rgbValue: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&rgbValue)
+        let hexFloat = CGFloat(hexComponent)
 
-        return Color(
-            red: Double((rgbValue & 0xFF0000) >> 16) / 255.0,
-            green: Double((rgbValue & 0x00FF00) >> 8) / 255.0,
-            blue: Double(rgbValue & 0x0000FF) / 255.0,
-            alpha: alpha
-        )
+        return hexFloat / 255.0
+    }
+
+    private func makeColor(hex: String, alpha: CGFloat) throws -> Color {
+        let hex = hex
+            .replacingOccurrences(of: "#", with: "")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .uppercased()
+
+        switch hex.count {
+        case .rgb:
+            return Color(
+                red: colorComponent(from: hex, start: 0, length: 1),
+                green: colorComponent(from: hex, start: 1, length: 1),
+                blue: colorComponent(from: hex, start: 2, length: 1),
+                alpha: alpha
+            )
+
+        case .rrggbb:
+            return Color(
+                red: colorComponent(from: hex, start: 0, length: 2),
+                green: colorComponent(from: hex, start: 2, length: 2),
+                blue: colorComponent(from: hex, start: 4, length: 2),
+                alpha: alpha
+            )
+
+        default:
+            throw TokensGeneratorError(code: .invalidHEXComponent(hex: hex))
+        }
     }
 
     private func resolveColorValue(_ value: String, tokenValues: TokenValues) throws -> Color {
@@ -50,9 +74,11 @@ final class DefaultTokensResolver: TokensResolver {
         let allTokens = tokenValues.all
 
         let resolvedValue = try value.replacingOccurrences(matchingPattern: #"\{.*?\}"#) { referenceName in
-            let referenceName = referenceName
-                .removingFirst()
-                .removingLast()
+            let referenceName = String(
+                referenceName
+                    .dropFirst()
+                    .dropLast()
+            )
 
             guard let token = allTokens.first(where: { $0.name == referenceName }) else {
                 throw TokensGeneratorError(code: .referenceNotFound(name: referenceName))
@@ -87,6 +113,16 @@ final class DefaultTokensResolver: TokensResolver {
         return try makeColor(hex: hex, alpha: alpha / 100.0)
     }
 
+    func resolveHexColorValue(_ value: String, tokenValues: TokenValues) throws -> String {
+        let resolvedValue = try resolveValue(value, tokenValues: tokenValues)
+
+        if resolvedValue.hasPrefix("#") {
+            return resolvedValue
+        }
+
+        return try resolveColorValue(resolvedValue, tokenValues: tokenValues).hexString
+    }
+
     func resolveLinearGradientValue(_ value: String, tokenValues: TokenValues) throws -> LinearGradient {
         let value = try resolveValue(value, tokenValues: tokenValues)
 
@@ -104,7 +140,7 @@ final class DefaultTokensResolver: TokensResolver {
         let angle = params[0]
 
         let colorStopList = try params
-            .removingFirst()
+            .dropFirst()
             .map { rawColorStop in
                 guard let separatorRange = rawColorStop.range(of: " ", options: .backwards) else {
                     throw TokensGeneratorError(code: .failedToExtractLinearGradientParams(linearGradient: value))
@@ -122,4 +158,12 @@ final class DefaultTokensResolver: TokensResolver {
             colorStopList: colorStopList
         )
     }
+}
+
+extension Int {
+
+    // MARK: - Type Properties
+
+    fileprivate static let rgb = 3
+    fileprivate static let rrggbb = 6
 }

@@ -10,6 +10,7 @@ final class DefaultLibraryGenerator: LibraryGenerator {
     let textStylesGenerator: TextStylesGenerator
     let imagesGenerator: ImagesGenerator
     let shadowStylesGenerator: ShadowStylesGenerator
+    let tokensGenerator: TokensGenerator
 
     // MARK: - Initializers
 
@@ -18,13 +19,15 @@ final class DefaultLibraryGenerator: LibraryGenerator {
         colorStylesGenerator: ColorStylesGenerator,
         textStylesGenerator: TextStylesGenerator,
         imagesGenerator: ImagesGenerator,
-        shadowStylesGenerator: ShadowStylesGenerator
+        shadowStylesGenerator: ShadowStylesGenerator,
+        tokensGenerator: TokensGenerator
     ) {
         self.configurationProvider = configurationProvider
         self.colorStylesGenerator = colorStylesGenerator
         self.textStylesGenerator = textStylesGenerator
         self.imagesGenerator = imagesGenerator
         self.shadowStylesGenerator = shadowStylesGenerator
+        self.tokensGenerator = tokensGenerator
     }
 
     // MARK: - Instance Methods
@@ -46,6 +49,10 @@ final class DefaultLibraryGenerator: LibraryGenerator {
 
         if let shadowStylesConfiguration = configuration.resolveShadowStyles() {
             promises.append(shadowStylesGenerator.generate(configuration: shadowStylesConfiguration))
+        }
+
+        if let tokensConfiguration = configuration.resolveTokens() {
+            promises.append(Promise { try await self.tokensGenerator.generate(configuration: tokensConfiguration) })
         }
 
         return when(fulfilled: promises)

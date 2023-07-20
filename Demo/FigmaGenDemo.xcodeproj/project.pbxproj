@@ -22,6 +22,8 @@
 
 /* Begin PBXBuildFile section */
 		7ED1B6F1C418840A5C1245BE /* Pods_FigmaGenDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11B7DAD9DD79D94016B46F17 /* Pods_FigmaGenDemo.framework */; };
+		8E44BFD42A67ECB300EE5D7E /* BaseColorTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E44BFD22A67ECB300EE5D7E /* BaseColorTokens.swift */; };
+		8E44BFD52A67ECB300EE5D7E /* ColorTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E44BFD32A67ECB300EE5D7E /* ColorTokens.swift */; };
 		8E5334092A420D9B006D6569 /* ShadowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5333F42A420D9B006D6569 /* ShadowStyle.swift */; };
 		8E53340A2A420D9B006D6569 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5333F52A420D9B006D6569 /* TextStyle.swift */; };
 		8E53340B2A420D9B006D6569 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5333F62A420D9B006D6569 /* Images.swift */; };
@@ -54,6 +56,8 @@
 		11B7DAD9DD79D94016B46F17 /* Pods_FigmaGenDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FigmaGenDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		23C6A1263942D9DA0D5FFDCC /* Pods-FigmaGenDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FigmaGenDemo.release.xcconfig"; path = "Target Support Files/Pods-FigmaGenDemo/Pods-FigmaGenDemo.release.xcconfig"; sourceTree = "<group>"; };
 		29B6BD966DD89C853A1AFFD2 /* Pods-FugenDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FugenDemo.debug.xcconfig"; path = "Target Support Files/Pods-FugenDemo/Pods-FugenDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		8E44BFD22A67ECB300EE5D7E /* BaseColorTokens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseColorTokens.swift; sourceTree = "<group>"; };
+		8E44BFD32A67ECB300EE5D7E /* ColorTokens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorTokens.swift; sourceTree = "<group>"; };
 		8E5333F42A420D9B006D6569 /* ShadowStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowStyle.swift; sourceTree = "<group>"; };
 		8E5333F52A420D9B006D6569 /* TextStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		8E5333F62A420D9B006D6569 /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
@@ -128,10 +132,12 @@
 		8E5333F32A420D9B006D6569 /* Generated */ = {
 			isa = PBXGroup;
 			children = (
+				8E44BFD22A67ECB300EE5D7E /* BaseColorTokens.swift */,
+				8E5333F72A420D9B006D6569 /* ColorStyle.swift */,
+				8E44BFD32A67ECB300EE5D7E /* ColorTokens.swift */,
+				8E5333F62A420D9B006D6569 /* Images.swift */,
 				8E5333F42A420D9B006D6569 /* ShadowStyle.swift */,
 				8E5333F52A420D9B006D6569 /* TextStyle.swift */,
-				8E5333F62A420D9B006D6569 /* Images.swift */,
-				8E5333F72A420D9B006D6569 /* ColorStyle.swift */,
 			);
 			path = Generated;
 			sourceTree = "<group>";
@@ -367,12 +373,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E44BFD42A67ECB300EE5D7E /* BaseColorTokens.swift in Sources */,
 				8E5334172A420D9B006D6569 /* AppDelegate.swift in Sources */,
 				8E53340F2A420D9B006D6569 /* ViewController.swift in Sources */,
 				8E53340A2A420D9B006D6569 /* TextStyle.swift in Sources */,
 				8E53340B2A420D9B006D6569 /* Images.swift in Sources */,
 				8E5334092A420D9B006D6569 /* ShadowStyle.swift in Sources */,
 				8E53340C2A420D9B006D6569 /* ColorStyle.swift in Sources */,
+				8E44BFD52A67ECB300EE5D7E /* ColorTokens.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

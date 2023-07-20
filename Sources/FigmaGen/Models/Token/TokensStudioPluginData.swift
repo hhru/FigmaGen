@@ -8,7 +8,6 @@ struct TokensStudioPluginData: Codable, Hashable {
 
         // MARK: - Instance Properties
 
-        let persistentNodesCache: String
         let version: String
         let values: String
         let usedTokenSet: String

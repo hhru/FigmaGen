@@ -64,6 +64,9 @@ enum Dependencies {
 
     static let tokensResolver: TokensResolver = DefaultTokensResolver()
 
+    static let tokensGenerationParametersResolver: TokensGenerationParametersResolver
+        = DefaultTokensGenerationParametersResolver()
+
     // MARK: -
 
     static let templateContextCoder: TemplateContextCoder = DefaultTemplateContextCoder()
@@ -81,7 +84,12 @@ enum Dependencies {
         StencilColorInfoFilter(contextCoder: templateContextCoder),
         StencilFontInfoFilter(contextCoder: templateContextCoder),
         StencilFontInitializerModificator(contextCoder: templateContextCoder),
-        StencilFontSystemFilter(contextCoder: templateContextCoder)
+        StencilFontSystemFilter(contextCoder: templateContextCoder),
+        StencilCollectionDropFirstModificator(),
+        StencilCollectionDropLastModificator(),
+        StencilCollectionRemovingFirstModificator(),
+        StencilHexToAlphaFilter(),
+        StencilFullHexModificator()
     ]
 
     static let templateRenderer: TemplateRenderer = DefaultTemplateRenderer(
@@ -111,16 +119,29 @@ enum Dependencies {
         templateRenderer: templateRenderer
     )
 
+    static let colorTokensGenerator: ColorTokensGenerator = DefaultColorTokensGenerator(
+        tokensResolver: tokensResolver,
+        templateRenderer: templateRenderer
+    )
+
+    static let baseColorTokensGenerator: BaseColorTokensGenerator = DefaultBaseColorTokensGenerator(
+        tokensResolver: tokensResolver,
+        templateRenderer: templateRenderer
+    )
+
+    static let tokensGenerator: TokensGenerator = DefaultTokensGenerator(
+        tokensProvider: tokensProvider,
+        tokensGenerationParametersResolver: tokensGenerationParametersResolver,
+        colorTokensGenerator: colorTokensGenerator,
+        baseColorTokensGenerator: baseColorTokensGenerator
+    )
+
     static let libraryGenerator: LibraryGenerator = DefaultLibraryGenerator(
         configurationProvider: configurationProvider,
         colorStylesGenerator: colorStylesGenerator,
         textStylesGenerator: textStylesGenerator,
         imagesGenerator: imagesGenerator,
-        shadowStylesGenerator: shadowStylesGenerator
-    )
-
-    static let tokensGenerator: TokensGenerator = DefaultTokensGenerator(
-        tokensProvider: tokensProvider,
-        tokensResolver: tokensResolver
+        shadowStylesGenerator: shadowStylesGenerator,
+        tokensGenerator: tokensGenerator
     )
 }

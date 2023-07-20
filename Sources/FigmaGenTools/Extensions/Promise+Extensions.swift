@@ -9,6 +9,21 @@ extension Promise {
         Promise(error: error)
     }
 
+    // MARK: - Initializers
+
+    public convenience init(asyncFunc: @escaping () async throws -> T) {
+        self.init { resolver in
+            Task {
+                do {
+                    let result = try await asyncFunc()
+                    resolver.fulfill(result)
+                } catch {
+                    resolver.reject(error)
+                }
+            }
+        }
+    }
+
     // MARK: - Instance Methods
 
     public func nest<U: Thenable>(

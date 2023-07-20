@@ -68,10 +68,10 @@ final class DefaultTemplateRenderer: TemplateRenderer {
 
     // MARK: -
 
-    func renderTemplate<Context: Encodable>(
+    func renderTemplate(
         _ template: RenderTemplate,
         to destination: RenderDestination,
-        context: Context
+        context: [String: Any]
     ) throws {
         let stencilExtensionRegistry = ExtensionRegistry()
 
@@ -96,13 +96,23 @@ final class DefaultTemplateRenderer: TemplateRenderer {
             environment: stencilEnvironment
         )
 
-        let templateContext = try contextCoder
-            .encode(context)
-            .merging([.templateOptionsKey: template.options]) { $1 }
+        let templateContext = context.merging([.templateOptionsKey: template.options]) { $1 }
 
         let output = try stencilTemplate.render(templateContext)
 
         try writeOutput(output, to: destination)
+    }
+
+    func renderTemplate<Context: Encodable>(
+        _ template: RenderTemplate,
+        to destination: RenderDestination,
+        context: Context
+    ) throws {
+        try renderTemplate(
+            template,
+            to: destination,
+            context: try contextCoder.encode(context)
+        )
     }
 }
 
