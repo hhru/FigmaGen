@@ -82,11 +82,17 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             nativeTemplateName: "BaseColorTokens"
         )
 
+        let fontFamilyRender = resolveRenderParameters(
+            template: configuration.templates?.fontFamilies,
+            nativeTemplateName: "FontFamilyTokens"
+        )
+
         return TokensGenerationParameters(
             file: file,
             tokens: TokensGenerationParameters.TokensParameters(
                 colorRender: colorRender,
-                baseColorRender: baseColorRender
+                baseColorRender: baseColorRender,
+                fontFamilyRender: fontFamilyRender
             )
         )
     }

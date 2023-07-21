@@ -10,6 +10,7 @@ struct TokensGenerationParameters {
 
         let colorRender: RenderParameters
         let baseColorRender: RenderParameters
+        let fontFamilyRender: RenderParameters
     }
 
     // MARK: - Instance Properties
