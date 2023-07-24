@@ -134,12 +134,18 @@ enum Dependencies {
         templateRenderer: templateRenderer
     )
 
+    static let typographyTokensGenerator: TypographyTokensGenerator = DefaultTypographyTokensGenerator(
+        tokensResolver: tokensResolver,
+        templateRenderer: templateRenderer
+    )
+
     static let tokensGenerator: TokensGenerator = DefaultTokensGenerator(
         tokensProvider: tokensProvider,
         tokensGenerationParametersResolver: tokensGenerationParametersResolver,
         colorTokensGenerator: colorTokensGenerator,
         baseColorTokensGenerator: baseColorTokensGenerator,
-        fontFamilyTokensGenerator: fontFamilyTokensGenerator
+        fontFamilyTokensGenerator: fontFamilyTokensGenerator,
+        typographyTokensGenerator: typographyTokensGenerator
     )
 
     static let libraryGenerator: LibraryGenerator = DefaultLibraryGenerator(
