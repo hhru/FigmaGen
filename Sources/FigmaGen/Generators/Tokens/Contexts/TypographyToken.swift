@@ -8,6 +8,9 @@ struct TypographyToken {
     typealias FontScaleToken = ContextToken
     typealias LetterSpacingToken = ContextToken
     typealias LineHeightToken = ContextToken
+    typealias TextDecorationToken = ContextToken
+    typealias ParagraphSpacingToken = ContextToken
+    typealias ParagraphIndentToken = ContextToken
 
     // MARK: - Instance Properties
 
@@ -15,8 +18,11 @@ struct TypographyToken {
     let name: String
     let fontFamily: FontFamilyToken
     let fontWeight: FontWeightToken
-    let fontSize: FontSizeToken
-    let fontScale: FontScaleToken
-    let letterSpacing: LetterSpacingToken
     let lineHeight: LineHeightToken
+    let fontSize: FontSizeToken
+    let letterSpacing: LetterSpacingToken?
+    let paragraphSpacing: ParagraphSpacingToken
+    let paragraphIndent: ParagraphIndentToken?
+    let textDecoration: TextDecorationToken?
+    let fontScale: FontScaleToken?
 }
