@@ -54,6 +54,7 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
 
             return TypographyToken(
                 path: tokenValue.name.components(separatedBy: "."),
+                name: tokenValue.name,
                 fontFamily: FontFamilyToken(
                     path: value.fontFamily.components(separatedBy: "."),
                     value: try tokensResolver.resolveValue(value.fontFamily, tokenValues: tokenValues)
@@ -79,6 +80,36 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
         }
     }
 
+    private func structure(tokens: [TypographyToken], atPath path: [String] = []) -> [String: Any] {
+        var structuredTypography: [String: Any] = [:]
+
+        if let name = path.last {
+            structuredTypography["name"] = name
+        }
+
+        let typographies = tokens
+            .filter { $0.path.removingFirst("typography").count == path.count + 1 }
+            .sorted { $0.name.lowercased() < $1.name.lowercased() }
+
+        if !typographies.isEmpty {
+            structuredTypography["typographies"] = typographies
+        }
+
+        let childTypographyTokens = tokens.filter { $0.path.removingFirst("typography").count > path.count + 1 }
+
+        let children = Dictionary(grouping: childTypographyTokens) { $0.path.removingFirst("typography")[path.count] }
+            .sorted { $0.key < $1.key }
+            .map { name, tokens in
+                structure(tokens: tokens, atPath: path + [name])
+            }
+
+        if !children.isEmpty {
+            structuredTypography["children"] = children
+        }
+
+        return structuredTypography
+    }
+
     // MARK: -
 
     func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws {
@@ -87,7 +118,10 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
         try templateRenderer.renderTemplate(
             renderParameters.template,
             to: renderParameters.destination,
-            context: ["typographies": tokens]
+            context: [
+                "typographies": tokens,
+                "structuredTypography": structure(tokens: tokens)
+            ]
         )
     }
 }

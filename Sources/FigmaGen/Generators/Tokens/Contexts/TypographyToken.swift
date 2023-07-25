@@ -12,6 +12,7 @@ struct TypographyToken {
     // MARK: - Instance Properties
 
     let path: [String]
+    let name: String
     let fontFamily: FontFamilyToken
     let fontWeight: FontWeightToken
     let fontSize: FontSizeToken
