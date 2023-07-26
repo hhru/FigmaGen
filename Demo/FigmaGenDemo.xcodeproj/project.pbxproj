@@ -40,6 +40,7 @@
 		8E5334162A420D9B006D6569 /* SF-Pro-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E5334062A420D9B006D6569 /* SF-Pro-Display-Semibold.otf */; };
 		8E5334172A420D9B006D6569 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5334072A420D9B006D6569 /* AppDelegate.swift */; };
 		8E53341C2A420DA4006D6569 /* FigmaGenDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E53341A2A420DA4006D6569 /* FigmaGenDemoTests.swift */; };
+		8EAE283E2A716D4A007C477F /* BoxShadowTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAE283D2A716D4A007C477F /* BoxShadowTokens.swift */; };
 		8EFF17F52A70096E00C47577 /* FontFamilyTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFF17F32A70096D00C47577 /* FontFamilyTokens.swift */; };
 		8EFF17F62A70096E00C47577 /* TypographyTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFF17F42A70096D00C47577 /* TypographyTokens.swift */; };
 		8EFF17F92A70233300C47577 /* Inter-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8EFF17F72A70233300C47577 /* Inter-Regular.otf */; };
@@ -81,6 +82,7 @@
 		8E5334082A420D9B006D6569 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E53341A2A420DA4006D6569 /* FigmaGenDemoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FigmaGenDemoTests.swift; sourceTree = "<group>"; };
 		8E53341B2A420DA4006D6569 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8EAE283D2A716D4A007C477F /* BoxShadowTokens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxShadowTokens.swift; sourceTree = "<group>"; };
 		8EFF17F32A70096D00C47577 /* FontFamilyTokens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontFamilyTokens.swift; sourceTree = "<group>"; };
 		8EFF17F42A70096D00C47577 /* TypographyTokens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypographyTokens.swift; sourceTree = "<group>"; };
 		8EFF17F72A70233300C47577 /* Inter-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Regular.otf"; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				8E44BFD22A67ECB300EE5D7E /* BaseColorTokens.swift */,
+				8EAE283D2A716D4A007C477F /* BoxShadowTokens.swift */,
 				8E5333F72A420D9B006D6569 /* ColorStyle.swift */,
 				8E44BFD32A67ECB300EE5D7E /* ColorTokens.swift */,
 				8EFF17F32A70096D00C47577 /* FontFamilyTokens.swift */,
@@ -395,6 +398,7 @@
 				8EFF17F52A70096E00C47577 /* FontFamilyTokens.swift in Sources */,
 				8E44BFD42A67ECB300EE5D7E /* BaseColorTokens.swift in Sources */,
 				8E5334172A420D9B006D6569 /* AppDelegate.swift in Sources */,
+				8EAE283E2A716D4A007C477F /* BoxShadowTokens.swift in Sources */,
 				8E53340F2A420D9B006D6569 /* ViewController.swift in Sources */,
 				8E53340A2A420D9B006D6569 /* TextStyle.swift in Sources */,
 				8E53340B2A420D9B006D6569 /* Images.swift in Sources */,
