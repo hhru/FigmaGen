@@ -8,10 +8,10 @@ struct TokenTypographyValue: Codable, Hashable {
     let fontWeight: String
     let lineHeight: String
     let fontSize: String
-    let letterSpacing: String
+    let letterSpacing: String?
     let paragraphSpacing: String
-    let paragraphIndent: String
-    let textCase: String
-    let textDecoration: String
-    let fontScale: String
+    let paragraphIndent: String?
+    let textCase: String?
+    let textDecoration: String?
+    let fontScale: String?
 }

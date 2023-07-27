@@ -10,6 +10,8 @@ final class DefaultTokensGenerator: TokensGenerator {
     let tokensGenerationParametersResolver: TokensGenerationParametersResolver
     let colorTokensGenerator: ColorTokensGenerator
     let baseColorTokensGenerator: BaseColorTokensGenerator
+    let fontFamilyTokensGenerator: FontFamilyTokensGenerator
+    let typographyTokensGenerator: TypographyTokensGenerator
 
     // MARK: - Initializers
 
@@ -17,12 +19,16 @@ final class DefaultTokensGenerator: TokensGenerator {
         tokensProvider: TokensProvider,
         tokensGenerationParametersResolver: TokensGenerationParametersResolver,
         colorTokensGenerator: ColorTokensGenerator,
-        baseColorTokensGenerator: BaseColorTokensGenerator
+        baseColorTokensGenerator: BaseColorTokensGenerator,
+        fontFamilyTokensGenerator: FontFamilyTokensGenerator,
+        typographyTokensGenerator: TypographyTokensGenerator
     ) {
         self.tokensProvider = tokensProvider
         self.tokensGenerationParametersResolver = tokensGenerationParametersResolver
         self.colorTokensGenerator = colorTokensGenerator
         self.baseColorTokensGenerator = baseColorTokensGenerator
+        self.fontFamilyTokensGenerator = fontFamilyTokensGenerator
+        self.typographyTokensGenerator = typographyTokensGenerator
     }
 
     // MARK: - Instance Methods
@@ -37,6 +43,16 @@ final class DefaultTokensGenerator: TokensGenerator {
 
         try baseColorTokensGenerator.generate(
             renderParameters: parameters.tokens.baseColorRender,
+            tokenValues: tokenValues
+        )
+
+        try fontFamilyTokensGenerator.generate(
+            renderParameters: parameters.tokens.fontFamilyRender,
+            tokenValues: tokenValues
+        )
+
+        try typographyTokensGenerator.generate(
+            renderParameters: parameters.tokens.typographyRender,
             tokenValues: tokenValues
         )
     }

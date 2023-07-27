@@ -1,0 +1,23 @@
+{% include "FileHeader.stencil" %}
+{% if fontFamilies %}
+{% set accessModifier %}{% if options.publicAccess %}public{% else %}internal{% endif %}{% endset %}
+{% set tokenTypeName %}{{ options.tokenTypeName|default:"FontFamilyTokens" }}{% endset %}
+{% macro typeName name %}{{ name|swiftIdentifier:"pretty"|upperFirstLetter|escapeReservedKeywords }}{% endmacro %}
+{% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
+{{ accessModifier }} struct {{ tokenTypeName }} {
+
+    {% for fontFamily in fontFamilies %}
+    {{ accessModifier }} struct {% call typeName fontFamily.path.last %} {
+        {% for fontWeight in fontWeights %}
+        {{ accessModifier }} let {% call propertyName fontWeight.path.last %} = "{{ fontFamily.value }}-{{ fontWeight.value|replace:" ","" }}"
+        {% endfor %}
+    }
+
+    {% endfor %}
+    {% for fontFamily in fontFamilies %}
+    public let {% call propertyName fontFamily.path.last %} = {% call typeName fontFamily.path.last %}()
+    {% endfor %}
+}
+{% else %}
+// No font family tokens found
+{% endif %}

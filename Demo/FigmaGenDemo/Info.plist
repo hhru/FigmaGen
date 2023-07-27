@@ -27,6 +27,9 @@
 		<string>SF-Pro-Display-Light.otf</string>
 		<string>SF-Pro-Display-Medium.otf</string>
 		<string>SF-Pro-Display-Regular.otf</string>
+		<string>Inter-Regular.otf</string>
+		<string>Inter-Bold.otf</string>
+		<string>Roboto-Regular.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

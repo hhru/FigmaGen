@@ -42,3 +42,12 @@ tokens:
       destination: FigmaGenDemo/Generated/BaseColorTokens.swift
       templateOptions:
         publicAccess: true
+    fontFamilies:
+      destination: FigmaGenDemo/Generated/FontFamilyTokens.swift
+      templateOptions:
+        publicAccess: true
+    typographies:
+      destination: FigmaGenDemo/Generated/TypographyTokens.swift
+      templateOptions:
+        publicAccess: true
+        styleTypeName: Typography
