@@ -129,6 +129,30 @@ final class TokensCommand: AsyncExecutableCommand {
             """
     )
 
+    let boxShadowsTemplate = Key<String>(
+        "--box-shadows-template",
+        description: """
+            Path to the template file.
+            If no template is passed a default template will be used.
+            """
+    )
+
+    let boxShadowsTemplateOptions = VariadicKey<String>(
+        "--box-shadows-options",
+        description: #"""
+            An option that will be merged with template context, and overwrite any values of the same name.
+            Can be repeated multiple times and must be in the format: -o "name:value".
+            """#
+    )
+
+    let boxShadowsDestination = Key<String>(
+        "--box-shadows-destination",
+        description: """
+            The path to the file to generate.
+            By default, generated code will be printed on stdout.
+            """
+    )
+
     // MARK: - Initializers
 
     init(generator: TokensGenerator) {
@@ -175,6 +199,11 @@ extension TokensCommand {
                     template: typographiesTemplate.value,
                     templateOptions: resolveTemplateOptions(typographiesTemplateOptions.value),
                     destination: typographiesDestination.value
+                ),
+                boxShadows: TokensTemplateConfiguration.Template(
+                    template: boxShadowsTemplate.value,
+                    templateOptions: resolveTemplateOptions(boxShadowsTemplateOptions.value),
+                    destination: boxShadowsDestination.value
                 )
             )
         )

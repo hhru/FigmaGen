@@ -139,13 +139,19 @@ enum Dependencies {
         templateRenderer: templateRenderer
     )
 
+    static let boxShadowTokensGenerator: BoxShadowTokensGenerator = DefaultBoxShadowTokensGenerator(
+        tokensResolver: tokensResolver,
+        templateRenderer: templateRenderer
+    )
+
     static let tokensGenerator: TokensGenerator = DefaultTokensGenerator(
         tokensProvider: tokensProvider,
         tokensGenerationParametersResolver: tokensGenerationParametersResolver,
         colorTokensGenerator: colorTokensGenerator,
         baseColorTokensGenerator: baseColorTokensGenerator,
         fontFamilyTokensGenerator: fontFamilyTokensGenerator,
-        typographyTokensGenerator: typographyTokensGenerator
+        typographyTokensGenerator: typographyTokensGenerator,
+        boxShadowTokensGenerator: boxShadowTokensGenerator
     )
 
     static let libraryGenerator: LibraryGenerator = DefaultLibraryGenerator(

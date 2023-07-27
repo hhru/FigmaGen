@@ -57,6 +57,7 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
 
     // MARK: -
 
+    // swiftlint:disable:next function_body_length
     func resolveGenerationParameters(from configuration: TokensConfiguration) throws -> TokensGenerationParameters {
         guard let fileConfiguration = configuration.file else {
             throw GenerationParametersError.invalidFileConfiguration
@@ -92,13 +93,19 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             nativeTemplateName: "TypographyTokens"
         )
 
+        let boxShadowRender = resolveRenderParameters(
+            template: configuration.templates?.boxShadows,
+            nativeTemplateName: "BoxShadowTokens"
+        )
+
         return TokensGenerationParameters(
             file: file,
             tokens: TokensGenerationParameters.TokensParameters(
                 colorRender: colorRender,
                 baseColorRender: baseColorRender,
                 fontFamilyRender: fontFamilyRender,
-                typographyRender: typographyRender
+                typographyRender: typographyRender,
+                boxShadowRender: boxShadowRender
             )
         )
     }

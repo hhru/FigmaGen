@@ -51,3 +51,8 @@ tokens:
       templateOptions:
         publicAccess: true
         styleTypeName: Typography
+    boxShadows:
+      destination: FigmaGenDemo/Generated/BoxShadowTokens.swift
+      templateOptions:
+        publicAccess: true
+        shadowTypeName: ShadowToken

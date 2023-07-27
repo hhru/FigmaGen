@@ -1,0 +1,94 @@
+{% include "FileHeader.stencil" %}
+{% if boxShadows %}
+{% set accessModifier %}{% if options.publicAccess %}public{% else %}internal{% endif %}{% endset %}
+{% set tokenTypeName %}{{ options.tokenTypeName|default:"BoxShadowTokens" }}{% endset %}
+{% set shadowTypeName %}{{ options.shadowTypeName|default:"Shadow" }}{% endset %}
+{% set colorTypeName %}{{ options.colorTypeName|default:"UIColor" }}{% endset %}
+{% set viewTypeName %}{{ options.viewTypeName|default:"UIView" }}{% endset %}
+{% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
+{% set shadowPropertyName %}{% call propertyName shadowTypeName %}{% endset %}
+#if canImport(UIKit)
+import UIKit
+#else
+import AppKit
+#endif
+
+{{ accessModifier }} struct {{ tokenTypeName }} {
+    {% for boxShadow in boxShadows %}
+
+    /// {{ boxShadow.path|dropFirst|join:" " }}
+    ///
+    /// Offset: day – x {{ boxShadow.dayTheme.x }}; y {{ boxShadow.nightTheme.y }} / night – x {{ boxShadow.nightTheme.x }}; y {{ boxShadow.nightTheme.y }}
+    /// Radius: day – {{ boxShadow.dayTheme.blur }} / night – {{ boxShadow.nightTheme.blur }}
+    /// Color: day – {{ boxShadow.dayTheme.color }} / night – {{ boxShadow.nightTheme.color }}
+    {{ accessModifier }} let {% call propertyName boxShadow.path.last %}: {{ shadowTypeName }}
+    {% endfor %}
+}
+
+{{ accessModifier }} struct {{ shadowTypeName }}: Equatable {
+
+    // MARK: - Instance Properties
+
+    {{ accessModifier }} let offset: CGSize
+    {{ accessModifier }} let radius: CGFloat
+    {{ accessModifier }} let color: {{ colorTypeName }}?
+    {{ accessModifier }} let opacity: Float
+
+    // MARK: - Initializers
+
+    {{ accessModifier }} init(
+        offset: CGSize = CGSize(width: 0, height: -3),
+        radius: CGFloat = 3.0,
+        color: {{ colorTypeName }}? = .black,
+        opacity: Float = 0.0
+    ) {
+        self.offset = offset
+        self.radius = radius
+        self.color = color
+        self.opacity = opacity
+    }
+}
+
+{{ accessModifier }} extension CALayer {
+
+    // MARK: - Instance Properties
+
+    var {{ shadowPropertyName }}: {{ shadowTypeName }} {
+        get {
+            {{ shadowTypeName }}(
+                offset: shadowOffset,
+                radius: shadowRadius,
+                color: shadowColor.map({{ colorTypeName }}.init(cgColor:)),
+                opacity: shadowOpacity
+            )
+        }
+
+        set {
+            shadowOffset = newValue.offset
+            shadowRadius = newValue.radius
+            shadowColor = newValue.color?.cgColor
+            shadowOpacity = newValue.opacity
+        }
+    }
+
+    // MARK: - Initializers
+
+    convenience init({{ shadowPropertyName }}: {{ shadowTypeName }}) {
+        self.init()
+
+        self.{{ shadowPropertyName }} = {{ shadowPropertyName }}
+    }
+}
+
+{{ accessModifier }} extension {{ viewTypeName }} {
+
+    // MARK: - Instance Properties
+
+    var {{ shadowPropertyName }}: {{ shadowTypeName }} {
+        get { layer.{{ shadowPropertyName }} }
+        set { layer.{{ shadowPropertyName }} = newValue }
+    }
+}
+{% else %}
+// No box shadow tokens found
+{% endif %}

@@ -32,6 +32,7 @@ struct TokensTemplateConfiguration: Decodable {
     let baseColors: Template?
     let fontFamilies: Template?
     let typographies: Template?
+    let boxShadows: Template?
 }
 
 extension TokensTemplateConfiguration.Template {
