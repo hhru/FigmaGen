@@ -1,0 +1,118 @@
+{% include "FileHeader.stencil" %}
+{% set accessModifier %}{% if options.publicAccess %}public{% else %}internal{% endif %}{% endset %}
+{% set themeTypeName %}{{ options.styleTypeName|default:"Theme" }}{% endset %}
+{% set colorTokensTypeName %}{{ options.tokenTypeName|default:"ColorTokens" }}{% endset %}
+{% set boxShadowTokensTypeName %}{{ options.tokenTypeName|default:"BoxShadowTokens" }}{% endset %}
+{% set typographyTokensTypeName %}{{ options.tokenTypeName|default:"TypographyTokens" }}{% endset %}
+{% set colorTypeName %}{{ options.colorTypeName|default:"UIColor" }}{% endset %}
+{% set shadowTypeName %}{{ options.shadowTypeName|default:"Shadow" }}{% endset %}
+{% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord }}{% endmacro %}
+{% macro typeName name %}{{ name|swiftIdentifier:"pretty"|upperFirstLetter|escapeReservedKeywords }}{% endmacro %}
+{% macro hexColor color %}{{ color|fullHex|uppercase|replace:"#","0x" }}{% endmacro %}
+{% macro argumentsBlock item theme parentTypeName %}
+{% for color in item.colors %}
+{% call propertyName color.path.last %}: {{ colorTypeName }}(hex: {% call hexColor color[theme].value %}){% if not forloop.last %},{% endif %}
+{% endfor %}
+{% for child in item.children %}
+{% set childTypeName %}{% if parentTypeName %}{{ parentTypeName }}.{% endif %}{% call typeName child.name %}{% endset %}
+{% call propertyName child.name %}: {{ childTypeName }}(
+    {% filter indent:4 %}
+    {% call argumentsBlock child theme childTypeName %}
+    {% endfilter %}
+){% if not forloop.last %},{% endif %}
+{% endfor %}
+{% endmacro %}
+{% macro colorsArgumentsBlock colors theme %}
+{% if colors %}
+colors: {{ colorTokensTypeName }}(
+    {% filter indent:4 %}
+    {% call argumentsBlock colors theme colorTokensTypeName %}
+    {% endfilter %}
+),
+{% endif %}
+{% endmacro %}
+{% macro shadowsArgumentsBlock boxShadows theme %}
+{% if boxShadows %}
+shadows: {{ boxShadowTokensTypeName }}(
+{% for boxShadow in boxShadows %}
+    {% call propertyName boxShadow.path.last %}: {{ shadowTypeName }}(
+        offset: CGSize(width: {{ boxShadow[theme].x }}, height: {{ boxShadow[theme].y }}),
+        radius: {{ boxShadow[theme].blur }},
+        color: {{ colorTypeName }}(hex: {% call hexColor boxShadow[theme].color %}),
+        opacity: 1.0
+    ){% if not forloop.last %},{% endif %}
+{% endfor %}
+)
+{% endif %}
+{% endmacro %}
+
+#if canImport(UIKit)
+import UIKit
+#else
+import AppKit
+#endif
+
+{{ accessModifier }} struct {{ themeTypeName }} {
+
+    {% if colors %}
+    {{ accessModifier }} let colors: {{ colorTokensTypeName }}
+    {% endif %}
+    {% if boxShadows %}
+    {{ accessModifier }} let shadows: {{ boxShadowTokensTypeName }}
+    {% endif %}
+    {{ accessModifier }} let typographies: {{ typographyTokensTypeName }}
+
+    init(
+        {% if colors %}
+        colors: {{ colorTokensTypeName }},
+        {% endif %}
+        {% if boxShadows %}
+        shadows: {{ boxShadowTokensTypeName }},
+        {% endif %}
+        typographies: {{ typographyTokensTypeName }} = {{ typographyTokensTypeName }}()
+    ) {
+        {% if colors %}
+        self.colors = colors
+        {% endif %}
+        {% if boxShadows %}
+        self.shadows = shadows
+        {% endif %}
+        self.typographies = typographies
+    }
+}
+
+extension {{ themeTypeName }} {
+
+    {{ accessModifier }} static let defaultLight = Self(
+        {% filter indent:8 %}
+        {% call colorsArgumentsBlock colors "dayTheme" %}
+        {% call shadowsArgumentsBlock boxShadows "dayTheme" %}
+        {% endfilter %}
+    )
+
+    {{ accessModifier }} static let defaultDark = Self(
+        {% filter indent:8 %}
+        {% call colorsArgumentsBlock colors "nightTheme" %}
+        {% call shadowsArgumentsBlock boxShadows "nightTheme" %}
+        {% endfilter %}
+    )
+}
+
+{% if colors or boxShadows %}
+private extension {{ colorTypeName }} {
+
+    convenience init(hex: UInt32) {
+        let red = UInt8((hex >> 24) & 0xFF)
+        let green = UInt8((hex >> 16) & 0xFF)
+        let blue = UInt8((hex >> 8) & 0xFF)
+        let alpha = UInt8(hex & 0xFF)
+
+        self.init(
+            red: CGFloat(red) / 255.0, 
+            green: CGFloat(green) / 255.0, 
+            blue: CGFloat(blue) / 255.0, 
+            alpha: CGFloat(alpha) / 255.0
+        )
+    }
+}
+{% endif %}
