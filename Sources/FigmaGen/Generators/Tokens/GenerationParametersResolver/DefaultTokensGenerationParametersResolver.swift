@@ -98,6 +98,11 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             nativeTemplateName: "BoxShadowTokens"
         )
 
+        let themeRender = resolveRenderParameters(
+            template: configuration.templates?.theme,
+            nativeTemplateName: "Theme"
+        )
+
         return TokensGenerationParameters(
             file: file,
             tokens: TokensGenerationParameters.TokensParameters(
@@ -105,7 +110,8 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
                 baseColorRender: baseColorRender,
                 fontFamilyRender: fontFamilyRender,
                 typographyRender: typographyRender,
-                boxShadowRender: boxShadowRender
+                boxShadowRender: boxShadowRender,
+                themeRender: themeRender
             )
         )
     }

@@ -13,6 +13,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     let fontFamilyTokensGenerator: FontFamilyTokensGenerator
     let typographyTokensGenerator: TypographyTokensGenerator
     let boxShadowTokensGenerator: BoxShadowTokensGenerator
+    let themeTokensGenerator: ThemeTokensGenerator
 
     // MARK: - Initializers
 
@@ -23,7 +24,8 @@ final class DefaultTokensGenerator: TokensGenerator {
         baseColorTokensGenerator: BaseColorTokensGenerator,
         fontFamilyTokensGenerator: FontFamilyTokensGenerator,
         typographyTokensGenerator: TypographyTokensGenerator,
-        boxShadowTokensGenerator: BoxShadowTokensGenerator
+        boxShadowTokensGenerator: BoxShadowTokensGenerator,
+        themeTokensGenerator: ThemeTokensGenerator
     ) {
         self.tokensProvider = tokensProvider
         self.tokensGenerationParametersResolver = tokensGenerationParametersResolver
@@ -32,6 +34,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         self.fontFamilyTokensGenerator = fontFamilyTokensGenerator
         self.typographyTokensGenerator = typographyTokensGenerator
         self.boxShadowTokensGenerator = boxShadowTokensGenerator
+        self.themeTokensGenerator = themeTokensGenerator
     }
 
     // MARK: - Instance Methods
@@ -61,6 +64,11 @@ final class DefaultTokensGenerator: TokensGenerator {
 
         try boxShadowTokensGenerator.generate(
             renderParameters: parameters.tokens.boxShadowRender,
+            tokenValues: tokenValues
+        )
+
+        try themeTokensGenerator.generate(
+            renderParameters: parameters.tokens.themeRender,
             tokenValues: tokenValues
         )
     }

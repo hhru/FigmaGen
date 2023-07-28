@@ -1,6 +1,6 @@
 import Foundation
 
-struct BoxShadowTokensGeneratorError: Error, CustomStringConvertible {
+struct BoxShadowTokensContextProviderError: Error, CustomStringConvertible {
 
     // MARK: - Nested Types
 
