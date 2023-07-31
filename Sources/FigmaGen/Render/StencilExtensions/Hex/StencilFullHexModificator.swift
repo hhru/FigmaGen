@@ -28,24 +28,27 @@ final class StencilFullHexModificator: StencilModificator {
             throw StencilFilterError(code: .invalidValue(input), filter: name)
         }
 
-        let hex = input.uppercased()
+        let hex = String(input.uppercased().dropFirst())
+        let updatedHex: String
 
         switch hex.count {
         case .rgb:
-            return Array(hex)
+            updatedHex = Array(hex)
                 .map { "\($0)\($0)" }
                 .joined()
                 .appendingHexAlpha(to: hexPosition)
 
         case .rrggbb:
-            return hex.appendingHexAlpha(to: hexPosition)
+            updatedHex = hex.appendingHexAlpha(to: hexPosition)
 
         case .rrggbbaa:
-            return hex
+            updatedHex = hex
 
         default:
             throw StencilFilterError(code: .invalidValue(input), filter: name)
         }
+
+        return updatedHex.prepending("#")
     }
 }
 
@@ -53,9 +56,9 @@ extension Int {
 
     // MARK: - Type Properties
 
-    fileprivate static let rgb = 4
-    fileprivate static let rrggbb = 7
-    fileprivate static let rrggbbaa = 9
+    fileprivate static let rgb = 3
+    fileprivate static let rrggbb = 6
+    fileprivate static let rrggbbaa = 8
 }
 
 extension String {

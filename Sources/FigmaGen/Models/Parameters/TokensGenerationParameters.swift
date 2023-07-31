@@ -13,6 +13,7 @@ struct TokensGenerationParameters {
         let fontFamilyRender: RenderParameters
         let typographyRender: RenderParameters
         let boxShadowRender: RenderParameters
+        let themeRender: RenderParameters
     }
 
     // MARK: - Instance Properties

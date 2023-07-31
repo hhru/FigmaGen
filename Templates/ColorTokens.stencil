@@ -1,5 +1,5 @@
 {% include "FileHeader.stencil" %}
-{% if colorTokens %}
+{% if colors %}
 {% set colorTypeName %}{{ options.colorTypeName|default:"UIColor" }}{% endset %}
 {% set accessModifier %}{% if options.publicAccess %}public{% else %}internal{% endif %}{% endset %}
 {% set tokenTypeName %}{{ options.tokenTypeName|default:"ColorTokens" }}{% endset %}
@@ -31,7 +31,7 @@ import AppKit
 #endif
 
 {{ accessModifier }} struct {{ tokenTypeName }} {
-    {% call recursiveBlock colorTokens %}
+    {% call recursiveBlock colors %}
 }
 {% else %}
 // No color tokens found

@@ -56,3 +56,8 @@ tokens:
       templateOptions:
         publicAccess: true
         shadowTypeName: ShadowToken
+    theme:
+      destination: FigmaGenDemo/Generated/Theme.swift
+      templateOptions:
+        publicAccess: true
+        shadowTypeName: ShadowToken

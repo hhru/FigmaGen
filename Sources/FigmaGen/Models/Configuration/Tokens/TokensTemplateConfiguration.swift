@@ -33,6 +33,7 @@ struct TokensTemplateConfiguration: Decodable {
     let fontFamilies: Template?
     let typographies: Template?
     let boxShadows: Template?
+    let theme: Template?
 }
 
 extension TokensTemplateConfiguration.Template {

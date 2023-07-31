@@ -67,6 +67,12 @@ enum Dependencies {
     static let tokensGenerationParametersResolver: TokensGenerationParametersResolver
         = DefaultTokensGenerationParametersResolver()
 
+    static let colorTokensContextProvider: ColorTokensContextProvider = DefaultColorTokensContextProvider(
+        tokensResolver: tokensResolver
+    )
+
+    static let boxShadowTokensContextProvider: BoxShadowTokensContextProvider = DefaultBoxShadowTokensContextProvider()
+
     // MARK: -
 
     static let templateContextCoder: TemplateContextCoder = DefaultTemplateContextCoder()
@@ -120,8 +126,8 @@ enum Dependencies {
     )
 
     static let colorTokensGenerator: ColorTokensGenerator = DefaultColorTokensGenerator(
-        tokensResolver: tokensResolver,
-        templateRenderer: templateRenderer
+        templateRenderer: templateRenderer,
+        colorTokensContextProvider: colorTokensContextProvider
     )
 
     static let baseColorTokensGenerator: BaseColorTokensGenerator = DefaultBaseColorTokensGenerator(
@@ -140,7 +146,13 @@ enum Dependencies {
     )
 
     static let boxShadowTokensGenerator: BoxShadowTokensGenerator = DefaultBoxShadowTokensGenerator(
-        tokensResolver: tokensResolver,
+        boxShadowTokensContextProvider: boxShadowTokensContextProvider,
+        templateRenderer: templateRenderer
+    )
+
+    static let themeTokensGenerator: ThemeTokensGenerator = DefaultThemeTokensGenerator(
+        colorTokensContextProvider: colorTokensContextProvider,
+        boxShadowsContextProvider: boxShadowTokensContextProvider,
         templateRenderer: templateRenderer
     )
 
@@ -151,7 +163,8 @@ enum Dependencies {
         baseColorTokensGenerator: baseColorTokensGenerator,
         fontFamilyTokensGenerator: fontFamilyTokensGenerator,
         typographyTokensGenerator: typographyTokensGenerator,
-        boxShadowTokensGenerator: boxShadowTokensGenerator
+        boxShadowTokensGenerator: boxShadowTokensGenerator,
+        themeTokensGenerator: themeTokensGenerator
     )
 
     static let libraryGenerator: LibraryGenerator = DefaultLibraryGenerator(
