@@ -22,18 +22,6 @@ let package = Package(
         .package(url: "https://github.com/nicklockwood/Expression.git", from: "0.13.0")
     ],
     targets: [
-        .binaryTarget(
-            name: "SwiftLintBinary",
-            url: "https://github.com/realm/SwiftLint/releases/download/0.52.2/SwiftLintBinary-macos.artifactbundle.zip",
-            checksum: "89651e1c87fb62faf076ef785a5b1af7f43570b2b74c6773526e0d5114e0578e"
-        ),
-        .plugin(
-            name: "SwiftLintXcode",
-            capability: .buildTool(),
-            dependencies: [
-                .target(name: "SwiftLintBinary", condition: .when(platforms: [.macOS]))
-            ]
-        ),
         .executableTarget(
             name: "FigmaGen",
             dependencies: [
@@ -57,10 +45,7 @@ let package = Package(
                 "PathKit",
                 "PromiseKit"
             ],
-            path: "Sources/FigmaGenTools",
-            plugins: [
-                "SwiftLintXcode"
-            ]
+            path: "Sources/FigmaGenTools"
         ),
         .testTarget(
             name: "FigmaGenTests",

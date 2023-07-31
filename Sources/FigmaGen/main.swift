@@ -6,7 +6,7 @@ import PathKit
 Path.current = Path(#file).appending("../../../Demo")
 #endif
 
-let version = "2.0.0-beta.2"
+let version = "2.0.0-beta.3"
 
 let figmagen = CLI(
     name: "figmagen",
@@ -24,6 +24,3 @@ figmagen.commands = [
 ]
 
 figmagen.goAndExitOnError()
-
-let someForceCast = NSObject() as! Int
-let colonOnWrongSide: Int = 0
