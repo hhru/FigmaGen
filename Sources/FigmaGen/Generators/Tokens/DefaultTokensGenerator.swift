@@ -42,35 +42,47 @@ final class DefaultTokensGenerator: TokensGenerator {
     private func generate(parameters: TokensGenerationParameters) async throws {
         let tokenValues = try await tokensProvider.fetchTokens(from: parameters.file)
 
-        try colorTokensGenerator.generate(
-            renderParameters: parameters.tokens.colorRender,
-            tokenValues: tokenValues
-        )
+        if let colorRenderParameters = parameters.tokens.colorRender {
+            try colorTokensGenerator.generate(
+                renderParameters: colorRenderParameters,
+                tokenValues: tokenValues
+            )
+        }
 
-        try baseColorTokensGenerator.generate(
-            renderParameters: parameters.tokens.baseColorRender,
-            tokenValues: tokenValues
-        )
+        if let baseColorRenderParameters = parameters.tokens.baseColorRender {
+            try baseColorTokensGenerator.generate(
+                renderParameters: baseColorRenderParameters,
+                tokenValues: tokenValues
+            )
+        }
 
-        try fontFamilyTokensGenerator.generate(
-            renderParameters: parameters.tokens.fontFamilyRender,
-            tokenValues: tokenValues
-        )
+        if let fontFamilyRenderParameters = parameters.tokens.fontFamilyRender {
+            try fontFamilyTokensGenerator.generate(
+                renderParameters: fontFamilyRenderParameters,
+                tokenValues: tokenValues
+            )
+        }
 
-        try typographyTokensGenerator.generate(
-            renderParameters: parameters.tokens.typographyRender,
-            tokenValues: tokenValues
-        )
+        if let typographyRenderParameters = parameters.tokens.typographyRender {
+            try typographyTokensGenerator.generate(
+                renderParameters: typographyRenderParameters,
+                tokenValues: tokenValues
+            )
+        }
 
-        try boxShadowTokensGenerator.generate(
-            renderParameters: parameters.tokens.boxShadowRender,
-            tokenValues: tokenValues
-        )
+        if let boxShadowRenderParameters = parameters.tokens.boxShadowRender {
+            try boxShadowTokensGenerator.generate(
+                renderParameters: boxShadowRenderParameters,
+                tokenValues: tokenValues
+            )
+        }
 
-        try themeTokensGenerator.generate(
-            renderParameters: parameters.tokens.themeRender,
-            tokenValues: tokenValues
-        )
+        if let themeRenderParameters = parameters.tokens.themeRender {
+            try themeTokensGenerator.generate(
+                renderParameters: themeRenderParameters,
+                tokenValues: tokenValues
+            )
+        }
     }
 
     // MARK: -

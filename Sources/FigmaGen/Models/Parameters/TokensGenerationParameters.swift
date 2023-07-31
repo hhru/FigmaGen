@@ -8,12 +8,12 @@ struct TokensGenerationParameters {
 
         // MARK: - Instance Properties
 
-        let colorRender: RenderParameters
-        let baseColorRender: RenderParameters
-        let fontFamilyRender: RenderParameters
-        let typographyRender: RenderParameters
-        let boxShadowRender: RenderParameters
-        let themeRender: RenderParameters
+        let colorRender: RenderParameters?
+        let baseColorRender: RenderParameters?
+        let fontFamilyRender: RenderParameters?
+        let typographyRender: RenderParameters?
+        let boxShadowRender: RenderParameters?
+        let themeRender: RenderParameters?
     }
 
     // MARK: - Instance Properties
