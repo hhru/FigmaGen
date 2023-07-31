@@ -5,15 +5,22 @@ import PackagePlugin
 struct SwiftLintPlugin {
 
     private func makeBuildCommands(
+        inputFiles: [Path],
         packageDirectory: Path,
         workingDirectory: Path,
         tool: PluginContext.Tool
     ) -> [Command] {
+        guard !inputFiles.isEmpty else {
+            return []
+        }
+
         var arguments = ["--quiet"]
 
         if let configuration = packageDirectory.firstConfigurationFileInParentDirectories() {
             arguments.append(contentsOf: ["--config", "\(configuration.string)"])
         }
+
+        arguments += inputFiles.map { $0.string }
 
         let outputFilesDirectory = workingDirectory.appending("Output")
 
@@ -36,7 +43,12 @@ extension SwiftLintPlugin: BuildToolPlugin {
             return []
         }
 
+        guard let sourceTarget = target as? SourceModuleTarget else {
+            return []
+        }
+
         return makeBuildCommands(
+            inputFiles: sourceTarget.sourceFiles(withSuffix: "swift").map { $0.path },
             packageDirectory: context.package.directory,
             workingDirectory: context.pluginWorkDirectory,
             tool: try context.tool(named: "swiftlint")
@@ -56,6 +68,9 @@ extension SwiftLintPlugin: XcodeBuildToolPlugin {
         }
 
         return makeBuildCommands(
+            inputFiles: target.inputFiles
+                .filter { $0.type == .source && $0.path.extension == "swift" }
+                .map { $0.path },
             packageDirectory: context.xcodeProject.directory,
             workingDirectory: context.pluginWorkDirectory,
             tool: try context.tool(named: "swiftlint")

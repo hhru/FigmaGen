@@ -24,6 +24,3 @@ figmagen.commands = [
 ]
 
 figmagen.goAndExitOnError()
-
-let someForceCast = NSObject() as! Int
-let colonOnWrongSide: Int = 0

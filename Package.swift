@@ -48,7 +48,10 @@ let package = Package(
                 "FigmaGenTools",
                 "Expression"
             ],
-            path: "Sources/FigmaGen"
+            path: "Sources/FigmaGen",
+            plugins: [
+                "SwiftLintXcode"
+            ]
         ),
         .target(
             name: "FigmaGenTools",
