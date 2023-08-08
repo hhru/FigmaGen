@@ -4,5 +4,5 @@ struct ImagesContext: Encodable {
 
     // MARK: - Instance Properties
 
-    let images: [Image]
+    let imageSets: [ImageSet]
 }

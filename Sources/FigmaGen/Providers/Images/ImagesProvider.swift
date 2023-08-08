@@ -9,5 +9,5 @@ protocol ImagesProvider {
         from file: FileParameters,
         nodes: NodesParameters,
         parameters: ImagesParameters
-    ) -> Promise<[Image]>
+    ) -> Promise<[ImageSet]>
 }

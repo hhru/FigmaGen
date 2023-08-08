@@ -28,8 +28,8 @@ final class DefaultImagesGenerator: ImagesGenerator, GenerationParametersResolvi
                 nodes: parameters.nodes,
                 parameters: imagesParameters
             )
-        }.map { images in
-            ImagesContext(images: images)
+        }.map { imageSets in
+            ImagesContext(imageSets: imageSets)
         }.done { context in
             try self.templateRenderer.renderTemplate(
                 parameters.render.template,

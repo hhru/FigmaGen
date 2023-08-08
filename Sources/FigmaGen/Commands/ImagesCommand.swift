@@ -72,7 +72,7 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
 
     let format = Key<String>(
         "--format",
-        "-r",
+        "-f",
         description: """
             Optional image output format, can be 'pdf', 'png', 'jpg' or 'svg'.
             Defaults to 'pdf'.
@@ -194,16 +194,16 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
         firstly {
             self.generator.generate(configuration: self.resolveImagesConfiguration())
         }.done {
-            self.succeed(message: "Color styles generated successfully!")
+            self.succeed(message: "Images generated successfully!")
         }.catch { error in
             self.fail(message: "Failed to generate images: \(error)")
         }
     }
 }
 
-extension String {
+private extension String {
 
     // MARK: - Type Properties
 
-    fileprivate static let scaleSeparator = ","
+    static let scaleSeparator = ","
 }

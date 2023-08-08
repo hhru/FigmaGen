@@ -17,8 +17,17 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider {
 
     // MARK: - Instance Methods
 
-    private func makeResource(for node: ImageRenderedNode, format: ImageFormat, folderPath: Path) -> ImageResource {
-        let fileName = node.base.name.camelized
+    private func makeResource(
+        for node: ImageRenderedNode,
+        setNode: ImageComponentSetRenderedNode,
+        format: ImageFormat,
+        folderPath: Path
+    ) -> ImageResource {
+        let fileName = setNode.isSingleComponent
+            ? node.base.name.camelized
+            : "\(setNode.name) \(node.base.name)".camelized
+
+        let folderPath = setNode.isSingleComponent ? folderPath : folderPath.appending(setNode.name.camelized)
         let fileExtension = format.fileExtension
 
         let filePaths = node.urls.keys.reduce(into: [:]) { result, scale in
@@ -31,14 +40,21 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider {
     }
 
     private func makeResources(
-        for nodes: [ImageRenderedNode],
+        for nodes: [ImageComponentSetRenderedNode],
         format: ImageFormat,
         folderPath: Path
     ) -> [ImageRenderedNode: ImageResource] {
         var resources: [ImageRenderedNode: ImageResource] = [:]
 
-        nodes.forEach { node in
-            resources[node] = makeResource(for: node, format: format, folderPath: folderPath)
+        nodes.forEach { setNode in
+            setNode.components.forEach { node in
+                resources[node] = makeResource(
+                    for: node,
+                    setNode: setNode,
+                    format: format,
+                    folderPath: folderPath
+                )
+            }
         }
 
         return resources
@@ -63,7 +79,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider {
     // MARK: -
 
     func saveImages(
-        nodes: [ImageRenderedNode],
+        nodes: [ImageComponentSetRenderedNode],
         format: ImageFormat,
         in folderPath: String
     ) -> Promise<[ImageRenderedNode: ImageResource]> {

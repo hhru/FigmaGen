@@ -19,5 +19,6 @@ indirect enum FigmaNodeType: Hashable {
     case text(info: FigmaVectorNodeInfo, payload: FigmaTextNodePayload)
     case slice(info: FigmaSliceNodeInfo)
     case component(info: FigmaFrameNodeInfo)
+    case componentSet(info: FigmaFrameNodeInfo)
     case instance(info: FigmaFrameNodeInfo, payload: FigmaInstanceNodePayload)
 }
