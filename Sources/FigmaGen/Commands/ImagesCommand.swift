@@ -201,9 +201,9 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
     }
 }
 
-private extension String {
+extension String {
 
     // MARK: - Type Properties
 
-    static let scaleSeparator = ","
+    fileprivate static let scaleSeparator = ","
 }
