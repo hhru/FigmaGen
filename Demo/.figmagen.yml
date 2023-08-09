@@ -19,7 +19,11 @@ textStyles:
     usingSystemFonts: false
 
 images:
-  file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/Fugen-Demo?node-id=91%3A63
+  file: 
+    key: W6dy4CFSZWUVpVnSzNZIxA
+    includeNodes:
+      - 92%106
+      - 92%242
   assets: FigmaGenDemo/Resources/Images.xcassets/Generated
   destination: FigmaGenDemo/Generated/Images.swift
   templateOptions:

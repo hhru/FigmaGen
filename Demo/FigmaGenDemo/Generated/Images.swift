@@ -25,7 +25,144 @@ public enum Images {
         }
     }
 
+    public enum InterfaceEssentialInstagram {
+
+        /// Style=Filled
+        ///
+        /// Asset: InterfaceEssentialInstagramStyleFilled
+        public static var styleFilled: UIImage {
+            return UIImage(named: "InterfaceEssentialInstagramStyleFilled")!
+        }
+
+        /// Style=Outlined
+        ///
+        /// Asset: InterfaceEssentialInstagramStyleOutlined
+        public static var styleOutlined: UIImage {
+            return UIImage(named: "InterfaceEssentialInstagramStyleOutlined")!
+        }
+    }
+
+    public enum InterfaceEssentialDribbble {
+
+        /// Style=Filled
+        ///
+        /// Asset: InterfaceEssentialDribbbleStyleFilled
+        public static var styleFilled: UIImage {
+            return UIImage(named: "InterfaceEssentialDribbbleStyleFilled")!
+        }
+
+        /// Style=Outlined
+        ///
+        /// Asset: InterfaceEssentialDribbbleStyleOutlined
+        public static var styleOutlined: UIImage {
+            return UIImage(named: "InterfaceEssentialDribbbleStyleOutlined")!
+        }
+    }
+
+    public enum InterfaceEssentialBehance {
+
+        /// Style=Filled
+        ///
+        /// Asset: InterfaceEssentialBehanceStyleFilled
+        public static var styleFilled: UIImage {
+            return UIImage(named: "InterfaceEssentialBehanceStyleFilled")!
+        }
+
+        /// Style=Outlined
+        ///
+        /// Asset: InterfaceEssentialBehanceStyleOutlined
+        public static var styleOutlined: UIImage {
+            return UIImage(named: "InterfaceEssentialBehanceStyleOutlined")!
+        }
+    }
+
+    public enum InterfaceEssentialLinkedin {
+
+        /// Style=Filled
+        ///
+        /// Asset: InterfaceEssentialLinkedinStyleFilled
+        public static var styleFilled: UIImage {
+            return UIImage(named: "InterfaceEssentialLinkedinStyleFilled")!
+        }
+
+        /// Style=Outlined
+        ///
+        /// Asset: InterfaceEssentialLinkedinStyleOutlined
+        public static var styleOutlined: UIImage {
+            return UIImage(named: "InterfaceEssentialLinkedinStyleOutlined")!
+        }
+    }
+
+    public enum InterfaceEssentialTwitter {
+
+        /// Style=Filled
+        ///
+        /// Asset: InterfaceEssentialTwitterStyleFilled
+        public static var styleFilled: UIImage {
+            return UIImage(named: "InterfaceEssentialTwitterStyleFilled")!
+        }
+
+        /// Style=Outlined
+        ///
+        /// Asset: InterfaceEssentialTwitterStyleOutlined
+        public static var styleOutlined: UIImage {
+            return UIImage(named: "InterfaceEssentialTwitterStyleOutlined")!
+        }
+    }
+
+    public enum InterfaceEssentialFacebook {
+
+        /// Style=Filled
+        ///
+        /// Asset: InterfaceEssentialFacebookStyleFilled
+        public static var styleFilled: UIImage {
+            return UIImage(named: "InterfaceEssentialFacebookStyleFilled")!
+        }
+
+        /// Outlined
+        ///
+        /// Asset: InterfaceEssentialFacebookOutlined
+        public static var outlined: UIImage {
+            return UIImage(named: "InterfaceEssentialFacebookOutlined")!
+        }
+    }
+
+    public enum InterfaceEssentialGoogle {
+
+        /// Style=Filled
+        ///
+        /// Asset: InterfaceEssentialGoogleStyleFilled
+        public static var styleFilled: UIImage {
+            return UIImage(named: "InterfaceEssentialGoogleStyleFilled")!
+        }
+
+        /// Style=Outlined
+        ///
+        /// Asset: InterfaceEssentialGoogleStyleOutlined
+        public static var styleOutlined: UIImage {
+            return UIImage(named: "InterfaceEssentialGoogleStyleOutlined")!
+        }
+    }
+
+    public enum InterfaceEssentialFigma {
+
+        /// Style=Filled
+        ///
+        /// Asset: InterfaceEssentialFigmaStyleFilled
+        public static var styleFilled: UIImage {
+            return UIImage(named: "InterfaceEssentialFigmaStyleFilled")!
+        }
+
+        /// Style=Outlined
+        ///
+        /// Asset: InterfaceEssentialFigmaStyleOutlined
+        public static var styleOutlined: UIImage {
+            return UIImage(named: "InterfaceEssentialFigmaStyleOutlined")!
+        }
+    }
+
     // MARK: - Type Properties
+
 
     /// WeChat
     ///
@@ -138,6 +275,70 @@ public enum Images {
 
         guard UIImage(named: "Geo") != nil else {
             throw ValidationError.assetNotFound(name: "Geo")
+        }
+
+        guard UIImage(named: "InterfaceEssentialInstagramStyleFilled") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialInstagramStyleFilled")
+        }
+
+        guard UIImage(named: "InterfaceEssentialInstagramStyleOutlined") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialInstagramStyleOutlined")
+        }
+
+        guard UIImage(named: "InterfaceEssentialDribbbleStyleFilled") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialDribbbleStyleFilled")
+        }
+
+        guard UIImage(named: "InterfaceEssentialDribbbleStyleOutlined") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialDribbbleStyleOutlined")
+        }
+
+        guard UIImage(named: "InterfaceEssentialBehanceStyleFilled") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialBehanceStyleFilled")
+        }
+
+        guard UIImage(named: "InterfaceEssentialBehanceStyleOutlined") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialBehanceStyleOutlined")
+        }
+
+        guard UIImage(named: "InterfaceEssentialLinkedinStyleFilled") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialLinkedinStyleFilled")
+        }
+
+        guard UIImage(named: "InterfaceEssentialLinkedinStyleOutlined") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialLinkedinStyleOutlined")
+        }
+
+        guard UIImage(named: "InterfaceEssentialTwitterStyleFilled") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialTwitterStyleFilled")
+        }
+
+        guard UIImage(named: "InterfaceEssentialTwitterStyleOutlined") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialTwitterStyleOutlined")
+        }
+
+        guard UIImage(named: "InterfaceEssentialFacebookStyleFilled") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialFacebookStyleFilled")
+        }
+
+        guard UIImage(named: "InterfaceEssentialFacebookOutlined") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialFacebookOutlined")
+        }
+
+        guard UIImage(named: "InterfaceEssentialGoogleStyleFilled") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialGoogleStyleFilled")
+        }
+
+        guard UIImage(named: "InterfaceEssentialGoogleStyleOutlined") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialGoogleStyleOutlined")
+        }
+
+        guard UIImage(named: "InterfaceEssentialFigmaStyleFilled") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialFigmaStyleFilled")
+        }
+
+        guard UIImage(named: "InterfaceEssentialFigmaStyleOutlined") != nil else {
+            throw ValidationError.assetNotFound(name: "InterfaceEssentialFigmaStyleOutlined")
         }
 
         print("All images are valid")
