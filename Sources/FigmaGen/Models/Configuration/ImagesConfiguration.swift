@@ -12,6 +12,7 @@ struct ImagesConfiguration: Decodable {
         case onlyExportables
         case useAbsoluteBounds
         case preserveVectorData
+        case groupByFrame
     }
 
     // MARK: - Instance Properties
@@ -24,6 +25,7 @@ struct ImagesConfiguration: Decodable {
     let onlyExportables: Bool
     let useAbsoluteBounds: Bool
     let preserveVectorData: Bool
+    let groupByFrame: Bool
 
     // MARK: - Initializers
 
@@ -35,7 +37,8 @@ struct ImagesConfiguration: Decodable {
         scales: [ImageScale],
         onlyExportables: Bool,
         useAbsoluteBounds: Bool,
-        preserveVectorData: Bool
+        preserveVectorData: Bool,
+        groupByFrame: Bool
     ) {
         self.generatation = generatation
         self.assets = assets
@@ -45,6 +48,7 @@ struct ImagesConfiguration: Decodable {
         self.onlyExportables = onlyExportables
         self.useAbsoluteBounds = useAbsoluteBounds
         self.preserveVectorData = preserveVectorData
+        self.groupByFrame = groupByFrame
     }
 
     init(from decoder: Decoder) throws {
@@ -58,6 +62,7 @@ struct ImagesConfiguration: Decodable {
         onlyExportables = try container.decodeIfPresent(forKey: .onlyExportables) ?? false
         useAbsoluteBounds = try container.decodeIfPresent(forKey: .useAbsoluteBounds) ?? false
         preserveVectorData = try container.decodeIfPresent(forKey: .preserveVectorData) ?? false
+        groupByFrame = try container.decodeIfPresent(forKey: .groupByFrame) ?? false
 
         generatation = try GenerationConfiguration(from: decoder)
     }
@@ -73,7 +78,8 @@ struct ImagesConfiguration: Decodable {
             scales: scales,
             onlyExportables: onlyExportables,
             useAbsoluteBounds: useAbsoluteBounds,
-            preserveVectorData: preserveVectorData
+            preserveVectorData: preserveVectorData,
+            groupByFrame: groupByFrame
         )
     }
 }

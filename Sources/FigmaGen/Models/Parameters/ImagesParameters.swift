@@ -11,4 +11,5 @@ struct ImagesParameters {
     let onlyExportables: Bool
     let useAbsoluteBounds: Bool
     let preserveVectorData: Bool
+    let groupByFrame: Bool
 }
