@@ -1,4 +1,5 @@
 import Foundation
+import FigmaGenTools
 
 struct FigmaNode: Decodable, Hashable {
 
@@ -33,6 +34,8 @@ struct FigmaNode: Decodable, Hashable {
 
     // MARK: - Instance Properties
 
+    private var _parent: Inderect<FigmaNode>?
+
     let id: String
     let name: String?
     let rawType: String
@@ -40,6 +43,10 @@ struct FigmaNode: Decodable, Hashable {
     let sharedPluginData: FigmaPluginData?
 
     let type: FigmaNodeType
+
+    var parent: Self? {
+        _parent?.value
+    }
 
     var children: [Self]? {
         switch type {
@@ -50,17 +57,17 @@ struct FigmaNode: Decodable, Hashable {
             return documentNodeInfo.children
 
         case let .canvas(info: canvasNodeInfo):
-            return canvasNodeInfo.children
+            return canvasNodeInfo.children?.map { $0.withParent(self) }
 
         case let .frame(info: frameNodeInfo),
              let .group(info: frameNodeInfo),
              let .component(info: frameNodeInfo),
              let .componentSet(info: frameNodeInfo),
              let .instance(info: frameNodeInfo, payload: _):
-            return frameNodeInfo.children
+            return frameNodeInfo.children?.map { $0.withParent(self) }
 
         case let .booleanOperation(info: _, payload: payload):
-            return payload.children
+            return payload.children?.map { $0.withParent(self) }
         }
     }
 
@@ -207,5 +214,40 @@ struct FigmaNode: Decodable, Hashable {
         default:
             type = .unknown
         }
+    }
+
+    init(
+        id: String,
+        name: String?,
+        rawType: String,
+        isVisible: Bool?,
+        sharedPluginData: FigmaPluginData?,
+        type: FigmaNodeType,
+        parent: FigmaNode? = nil
+    ) {
+        self.id = id
+        self.name = name
+        self.rawType = rawType
+        self.isVisible = isVisible
+        self.sharedPluginData = sharedPluginData
+        self.type = type
+        self._parent = parent.map { Inderect($0) }
+    }
+}
+
+extension FigmaNode {
+
+    // MARK: - Instance Methods
+
+    func withParent(_ parent: FigmaNode) -> Self {
+        Self(
+            id: id,
+            name: name,
+            rawType: rawType,
+            isVisible: isVisible,
+            sharedPluginData: sharedPluginData,
+            type: type,
+            parent: parent
+        )
     }
 }
