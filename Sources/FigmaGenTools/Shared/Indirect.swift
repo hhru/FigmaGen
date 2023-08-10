@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Inderect<Value> {
+public struct Indirect<Value> {
 
     // MARK: - Nested Types
 
@@ -41,20 +41,20 @@ public struct Inderect<Value> {
 
 // MARK: - Equatable
 
-extension Inderect.Wrapper: Equatable where Value: Equatable {
+extension Indirect.Wrapper: Equatable where Value: Equatable {
 
     // MARK: - Type Methods
 
-    static func == (lhs: Inderect<Value>.Wrapper, rhs: Inderect<Value>.Wrapper) -> Bool {
+    static func == (lhs: Indirect<Value>.Wrapper, rhs: Indirect<Value>.Wrapper) -> Bool {
         lhs.value == rhs.value
     }
 }
 
-extension Inderect: Equatable where Value: Equatable { }
+extension Indirect: Equatable where Value: Equatable { }
 
 // MARK: - Hashable
 
-extension Inderect.Wrapper: Hashable where Value: Hashable {
+extension Indirect.Wrapper: Hashable where Value: Hashable {
 
     // MARK: - Instance Methods
 
@@ -63,4 +63,4 @@ extension Inderect.Wrapper: Hashable where Value: Hashable {
     }
 }
 
-extension Inderect: Hashable where Value: Hashable { }
+extension Indirect: Hashable where Value: Hashable { }

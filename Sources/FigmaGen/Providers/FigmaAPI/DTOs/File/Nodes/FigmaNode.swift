@@ -34,7 +34,7 @@ struct FigmaNode: Decodable, Hashable {
 
     // MARK: - Instance Properties
 
-    private var _parent: Inderect<FigmaNode>?
+    private var _parent: Indirect<FigmaNode>?
 
     let id: String
     let name: String?
@@ -231,7 +231,7 @@ struct FigmaNode: Decodable, Hashable {
         self.isVisible = isVisible
         self.sharedPluginData = sharedPluginData
         self.type = type
-        self._parent = parent.map { Inderect($0) }
+        self._parent = parent.map { Indirect($0) }
     }
 }
 
