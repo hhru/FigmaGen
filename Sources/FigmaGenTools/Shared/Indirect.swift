@@ -45,7 +45,7 @@ extension Indirect.Wrapper: Equatable where Value: Equatable {
 
     // MARK: - Type Methods
 
-    static func == (lhs: Indirect<Value>.Wrapper, rhs: Indirect<Value>.Wrapper) -> Bool {
+    fileprivate static func == (lhs: Indirect<Value>.Wrapper, rhs: Indirect<Value>.Wrapper) -> Bool {
         lhs.value == rhs.value
     }
 }
@@ -58,7 +58,7 @@ extension Indirect.Wrapper: Hashable where Value: Hashable {
 
     // MARK: - Instance Methods
 
-    func hash(into hasher: inout Hasher) {
+    fileprivate func hash(into hasher: inout Hasher) {
         hasher.combine(value)
     }
 }

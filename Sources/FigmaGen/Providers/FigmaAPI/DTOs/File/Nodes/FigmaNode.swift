@@ -223,7 +223,7 @@ struct FigmaNode: Decodable, Hashable {
         isVisible: Bool?,
         sharedPluginData: FigmaPluginData?,
         type: FigmaNodeType,
-        parent: FigmaNode? = nil
+        parent: Self? = nil
     ) {
         self.id = id
         self.name = name
