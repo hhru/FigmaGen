@@ -156,6 +156,11 @@ enum Dependencies {
         templateRenderer: templateRenderer
     )
 
+    static let spacingTokensGenerator: SpacingTokensGenerator = DefaultSpacingTokensGenerator(
+        tokensResolver: tokensResolver,
+        templateRenderer: templateRenderer
+    )
+
     static let tokensGenerator: TokensGenerator = DefaultTokensGenerator(
         tokensProvider: tokensProvider,
         tokensGenerationParametersResolver: tokensGenerationParametersResolver,
@@ -164,7 +169,8 @@ enum Dependencies {
         fontFamilyTokensGenerator: fontFamilyTokensGenerator,
         typographyTokensGenerator: typographyTokensGenerator,
         boxShadowTokensGenerator: boxShadowTokensGenerator,
-        themeTokensGenerator: themeTokensGenerator
+        themeTokensGenerator: themeTokensGenerator,
+        spacingTokensGenerator: spacingTokensGenerator
     )
 
     static let libraryGenerator: LibraryGenerator = DefaultLibraryGenerator(

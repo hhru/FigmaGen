@@ -14,6 +14,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     let typographyTokensGenerator: TypographyTokensGenerator
     let boxShadowTokensGenerator: BoxShadowTokensGenerator
     let themeTokensGenerator: ThemeTokensGenerator
+    let spacingTokensGenerator: SpacingTokensGenerator
 
     // MARK: - Initializers
 
@@ -25,7 +26,8 @@ final class DefaultTokensGenerator: TokensGenerator {
         fontFamilyTokensGenerator: FontFamilyTokensGenerator,
         typographyTokensGenerator: TypographyTokensGenerator,
         boxShadowTokensGenerator: BoxShadowTokensGenerator,
-        themeTokensGenerator: ThemeTokensGenerator
+        themeTokensGenerator: ThemeTokensGenerator,
+        spacingTokensGenerator: SpacingTokensGenerator
     ) {
         self.tokensProvider = tokensProvider
         self.tokensGenerationParametersResolver = tokensGenerationParametersResolver
@@ -35,6 +37,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         self.typographyTokensGenerator = typographyTokensGenerator
         self.boxShadowTokensGenerator = boxShadowTokensGenerator
         self.themeTokensGenerator = themeTokensGenerator
+        self.spacingTokensGenerator = spacingTokensGenerator
     }
 
     // MARK: - Instance Methods
@@ -80,6 +83,13 @@ final class DefaultTokensGenerator: TokensGenerator {
         if let themeRenderParameters = parameters.tokens.themeRender {
             try themeTokensGenerator.generate(
                 renderParameters: themeRenderParameters,
+                tokenValues: tokenValues
+            )
+        }
+
+        if let spacingRenderParameters = parameters.tokens.spacingRender {
+            try spacingTokensGenerator.generate(
+                renderParameters: spacingRenderParameters,
                 tokenValues: tokenValues
             )
         }
