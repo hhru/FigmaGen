@@ -163,7 +163,6 @@ public enum Images {
 
     // MARK: - Type Properties
 
-
     /// WeChat
     ///
     /// Asset: WeChat
