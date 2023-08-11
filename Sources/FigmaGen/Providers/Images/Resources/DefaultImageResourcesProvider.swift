@@ -8,11 +8,13 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
     // MARK: - Instance Properties
 
     let dataProvider: DataProvider
+    let postProcessor: ImageResourcesPostProcessor
 
     // MARK: - Initializers
 
-    init(dataProvider: DataProvider) {
+    init(dataProvider: DataProvider, postProcessor: ImageResourcesPostProcessor) {
         self.dataProvider = dataProvider
+        self.postProcessor = postProcessor
     }
 
     // MARK: - Instance Methods
@@ -63,9 +65,21 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
         return resources
     }
 
-    private func saveImageFiles(node: ImageRenderedNode, resource: ImageResource) -> Promise<Void> {
+    private func saveImageFiles(
+        node: ImageRenderedNode,
+        resource: ImageResource,
+        postProcessor: String?
+    ) -> Promise<Void> {
         let promises = node.urls.compactMap { scale, url in
-            resource.filePaths[scale].map { self.dataProvider.saveData(from: url, to: $0) }
+            resource.filePaths[scale].map { filePath in
+                self.dataProvider
+                    .saveData(from: url, to: filePath)
+                    .done {
+                        if let postProcessor {
+                            try self.postProcessor.execute(postProcessorPath: postProcessor, filePath: filePath)
+                        }
+                    }
+            }
         }
 
         return when(fulfilled: promises)
@@ -73,6 +87,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
 
     private func saveImageFiles(
         resources: [ImageRenderedNode: ImageResource],
+        postProcessor: String?,
         in folderPath: Path
     ) throws -> Promise<Void> {
         if folderPath.exists {
@@ -80,7 +95,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
         }
 
         let promises = resources.map { node, resource in
-            saveImageFiles(node: node, resource: resource)
+            saveImageFiles(node: node, resource: resource, postProcessor: postProcessor)
         }
 
         return when(fulfilled: promises)
@@ -92,6 +107,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
         nodes: [ImageComponentSetRenderedNode],
         groupByFrame: Bool,
         format: ImageFormat,
+        postProcessor: String?,
         in folderPath: String
     ) -> Promise<[ImageRenderedNode: ImageResource]> {
         perform(on: DispatchQueue.global(qos: .userInitiated)) {
@@ -102,7 +118,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
                 folderPath: Path(folderPath)
             )
         }.nest { resources in
-            try self.saveImageFiles(resources: resources, in: Path(folderPath))
+            try self.saveImageFiles(resources: resources, postProcessor: postProcessor, in: Path(folderPath))
         }
     }
 }

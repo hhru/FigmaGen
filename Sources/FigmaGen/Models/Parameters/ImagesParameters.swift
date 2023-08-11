@@ -8,6 +8,7 @@ struct ImagesParameters {
     let scales: [ImageScale]
     let assets: String?
     let resources: String?
+    let postProcessor: String?
     let onlyExportables: Bool
     let useAbsoluteBounds: Bool
     let preserveVectorData: Bool

@@ -169,10 +169,17 @@ final class DefaultImagesProvider: ImagesProvider {
         nodes: [ImageComponentSetRenderedNode],
         groupByFrame: Bool,
         format: ImageFormat,
+        postProcessor: String?,
         in resources: String?
     ) -> Promise<[ImageRenderedNode: ImageResource]> {
         resources.map { folderPath in
-            imageResourcesProvider.saveImages(nodes: nodes, groupByFrame: groupByFrame, format: format, in: folderPath)
+            imageResourcesProvider.saveImages(
+                nodes: nodes,
+                groupByFrame: groupByFrame,
+                format: format,
+                postProcessor: postProcessor,
+                in: folderPath
+            )
         } ?? .value([:])
     }
 
@@ -192,6 +199,7 @@ final class DefaultImagesProvider: ImagesProvider {
                 nodes: nodes,
                 groupByFrame: parameters.groupByFrame,
                 format: parameters.format,
+                postProcessor: parameters.postProcessor,
                 in: parameters.resources
             )
         )
