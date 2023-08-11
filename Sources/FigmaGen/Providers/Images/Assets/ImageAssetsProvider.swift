@@ -9,6 +9,7 @@ protocol ImageAssetsProvider {
         nodes: [ImageComponentSetRenderedNode],
         format: ImageFormat,
         preserveVectorData: Bool,
+        groupByFrame: Bool,
         in folderPath: String
     ) -> Promise<[ImageComponentSetAsset]>
 }

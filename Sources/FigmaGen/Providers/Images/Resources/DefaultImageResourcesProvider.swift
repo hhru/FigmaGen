@@ -3,7 +3,7 @@ import FigmaGenTools
 import PromiseKit
 import PathKit
 
-final class DefaultImageResourcesProvider: ImageResourcesProvider {
+final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderPathResolving {
 
     // MARK: - Instance Properties
 
@@ -20,6 +20,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider {
     private func makeResource(
         for node: ImageRenderedNode,
         setNode: ImageComponentSetRenderedNode,
+        groupByFrame: Bool,
         format: ImageFormat,
         folderPath: Path
     ) -> ImageResource {
@@ -27,7 +28,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider {
             ? node.base.name.camelized
             : "\(setNode.name) \(node.base.name)".camelized
 
-        let folderPath = setNode.isSingleComponent ? folderPath : folderPath.appending(setNode.name.camelized)
+        let folderPath = resolveFolderPath(groupByFrame: groupByFrame, setNode: setNode, folderPath: folderPath)
         let fileExtension = format.fileExtension
 
         let filePaths = node.urls.keys.reduce(into: [:]) { result, scale in
@@ -41,6 +42,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider {
 
     private func makeResources(
         for nodes: [ImageComponentSetRenderedNode],
+        groupByFrame: Bool,
         format: ImageFormat,
         folderPath: Path
     ) -> [ImageRenderedNode: ImageResource] {
@@ -51,6 +53,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider {
                 resources[node] = makeResource(
                     for: node,
                     setNode: setNode,
+                    groupByFrame: groupByFrame,
                     format: format,
                     folderPath: folderPath
                 )
@@ -68,7 +71,14 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider {
         return when(fulfilled: promises)
     }
 
-    private func saveImageFiles(resources: [ImageRenderedNode: ImageResource]) -> Promise<Void> {
+    private func saveImageFiles(
+        resources: [ImageRenderedNode: ImageResource],
+        in folderPath: Path
+    ) throws -> Promise<Void> {
+        if folderPath.exists {
+            try folderPath.delete()
+        }
+
         let promises = resources.map { node, resource in
             saveImageFiles(node: node, resource: resource)
         }
@@ -80,17 +90,19 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider {
 
     func saveImages(
         nodes: [ImageComponentSetRenderedNode],
+        groupByFrame: Bool,
         format: ImageFormat,
         in folderPath: String
     ) -> Promise<[ImageRenderedNode: ImageResource]> {
         perform(on: DispatchQueue.global(qos: .userInitiated)) {
             self.makeResources(
                 for: nodes,
+                groupByFrame: groupByFrame,
                 format: format,
                 folderPath: Path(folderPath)
             )
         }.nest { resources in
-            self.saveImageFiles(resources: resources)
+            try self.saveImageFiles(resources: resources, in: Path(folderPath))
         }
     }
 }
