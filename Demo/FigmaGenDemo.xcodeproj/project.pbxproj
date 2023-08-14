@@ -40,6 +40,7 @@
 		8E5334162A420D9B006D6569 /* SF-Pro-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E5334062A420D9B006D6569 /* SF-Pro-Display-Semibold.otf */; };
 		8E5334172A420D9B006D6569 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5334072A420D9B006D6569 /* AppDelegate.swift */; };
 		8E53341C2A420DA4006D6569 /* FigmaGenDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E53341A2A420DA4006D6569 /* FigmaGenDemoTests.swift */; };
+		8E6B236E2A8A6BA100192E1A /* SpacingTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E6B236D2A8A6BA100192E1A /* SpacingTokens.swift */; };
 		8E97DB762A741FD600E8AAC1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E97DB752A741FD600E8AAC1 /* Theme.swift */; };
 		8EAE283E2A716D4A007C477F /* BoxShadowTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAE283D2A716D4A007C477F /* BoxShadowTokens.swift */; };
 		8EFF17F52A70096E00C47577 /* FontFamilyTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFF17F32A70096D00C47577 /* FontFamilyTokens.swift */; };
@@ -83,6 +84,7 @@
 		8E5334082A420D9B006D6569 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E53341A2A420DA4006D6569 /* FigmaGenDemoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FigmaGenDemoTests.swift; sourceTree = "<group>"; };
 		8E53341B2A420DA4006D6569 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E6B236D2A8A6BA100192E1A /* SpacingTokens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpacingTokens.swift; sourceTree = "<group>"; };
 		8E97DB752A741FD600E8AAC1 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		8EAE283D2A716D4A007C477F /* BoxShadowTokens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxShadowTokens.swift; sourceTree = "<group>"; };
 		8EFF17F32A70096D00C47577 /* FontFamilyTokens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontFamilyTokens.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				8EFF17F32A70096D00C47577 /* FontFamilyTokens.swift */,
 				8E5333F62A420D9B006D6569 /* Images.swift */,
 				8E5333F42A420D9B006D6569 /* ShadowStyle.swift */,
+				8E6B236D2A8A6BA100192E1A /* SpacingTokens.swift */,
 				8E5333F52A420D9B006D6569 /* TextStyle.swift */,
 				8E97DB752A741FD600E8AAC1 /* Theme.swift */,
 				8EFF17F42A70096D00C47577 /* TypographyTokens.swift */,
@@ -403,6 +406,7 @@
 				8E5334172A420D9B006D6569 /* AppDelegate.swift in Sources */,
 				8EAE283E2A716D4A007C477F /* BoxShadowTokens.swift in Sources */,
 				8E53340F2A420D9B006D6569 /* ViewController.swift in Sources */,
+				8E6B236E2A8A6BA100192E1A /* SpacingTokens.swift in Sources */,
 				8E53340A2A420D9B006D6569 /* TextStyle.swift in Sources */,
 				8E53340B2A420D9B006D6569 /* Images.swift in Sources */,
 				8E5334092A420D9B006D6569 /* ShadowStyle.swift in Sources */,
