@@ -109,7 +109,7 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
 
         let spacingRender = resolveRenderParameters(
             template: configuration.templates?.spacing,
-            nativeTemplateName: "Spacing"
+            nativeTemplateName: "SpacingTokens"
         )
 
         return TokensGenerationParameters(

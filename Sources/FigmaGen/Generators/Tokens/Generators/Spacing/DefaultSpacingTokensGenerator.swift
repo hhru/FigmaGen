@@ -22,8 +22,8 @@ final class DefaultSpacingTokensGenerator: SpacingTokensGenerator {
         }
 
         return SpacingToken(
-                path: token.name.components(separatedBy: "."),
-                value: try tokensResolver.resolveValue(value, tokenValues: tokenValues)
+            path: token.name.components(separatedBy: "."),
+            value: try tokensResolver.resolveValue(value, tokenValues: tokenValues)
         )
     }
 
@@ -33,9 +33,9 @@ final class DefaultSpacingTokensGenerator: SpacingTokensGenerator {
         let spacings = try tokenValues.core.compactMap { try makeSpacingToken(from: $0, tokenValues: tokenValues) }
 
         try templateRenderer.renderTemplate(
-                renderParameters.template,
-                to: renderParameters.destination,
-                context: ["spacings": spacings]
+            renderParameters.template,
+            to: renderParameters.destination,
+            context: ["spacings": spacings]
         )
     }
 }

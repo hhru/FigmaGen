@@ -102,8 +102,8 @@ final class DefaultTokensGenerator: TokensGenerator {
     private func generateBaseColorsTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
         if let baseColorRenderParameters = parameters.tokens.baseColorRender {
             try baseColorTokensGenerator.generate(
-                    renderParameters: baseColorRenderParameters,
-                    tokenValues: tokenValues
+                renderParameters: baseColorRenderParameters,
+                tokenValues: tokenValues
             )
         }
     }
@@ -111,8 +111,8 @@ final class DefaultTokensGenerator: TokensGenerator {
     private func generateColorsTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
         if let colorRenderParameters = parameters.tokens.colorRender {
             try colorTokensGenerator.generate(
-                    renderParameters: colorRenderParameters,
-                    tokenValues: tokenValues
+                renderParameters: colorRenderParameters,
+                tokenValues: tokenValues
             )
         }
     }
