@@ -177,6 +177,14 @@ final class TokensCommand: AsyncExecutableCommand {
             """
     )
 
+    let spacingTemplate = Key<String>(
+        "--spacing-template",
+        description: """
+            Path to the template file.
+            If no template is passed a default template will be used.
+            """
+    )
+
     let spacingTemplateOptions = VariadicKey<String>(
         "--spacing-options",
         description: #"""
@@ -251,7 +259,7 @@ extension TokensCommand {
                     destination: themeDestination.value
                 ),
                 spacing: TokensTemplateConfiguration.Template(
-                    template: themeTemplate.value,
+                    template: spacingTemplate.value,
                     templateOptions: resolveTemplateOptions(spacingTemplateOptions.value),
                     destination: spacingDestination.value
                 )

@@ -1,0 +1,23 @@
+{% include "FileHeader.stencil" %}
+{% if spacings %}
+{% set accessModifier %}{% if options.publicAccess %}public{% else %}internal{% endif %}{% endset %}
+{% set tokenTypeName %}{{ options.tokenTypeName|default:"SpacingTokens" }}{% endset %}
+{% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
+import CoreGraphics
+
+{{ accessModifier }} struct {{ tokenTypeName }} {
+
+    // MARK: - Instance Properties
+    {% for spacing in spacings %}
+
+    /// {{ spacing.path|join:"." }}
+    ///
+    /// Value: {{ spacing.value }}
+    {{ accessModifier }} var {% call propertyName spacing.path|join:"_" %}: CGFloat {
+        {{ spacing.value }}
+    }
+    {% endfor %}
+}
+{% else %}
+// No spacing tokens found
+{% endif %}
