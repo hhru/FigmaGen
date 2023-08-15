@@ -64,7 +64,6 @@ import AppKit
 {% if forloop.first %}
 
     // MARK: - Type Properties
-
 {% endif%}
 
 {% call imageProperties set.images.0 %}
