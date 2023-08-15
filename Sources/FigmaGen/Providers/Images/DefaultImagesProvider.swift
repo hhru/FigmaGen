@@ -94,7 +94,7 @@ final class DefaultImagesProvider: ImagesProvider {
                 return nil
             }
 
-            return ImageComponentSetNode(name: imageNode.name, component: imageNode)
+            return ImageComponentSetNode(name: imageNode.name, parentName: node.parent?.name, component: imageNode)
 
         case .componentSet:
             guard let children = node.children else {
@@ -116,7 +116,7 @@ final class DefaultImagesProvider: ImagesProvider {
                 throw ImagesProviderError(code: .invalidComponentName, nodeID: node.id, nodeName: node.name)
             }
 
-            return ImageComponentSetNode(name: nodeComponentSetName, components: nodes)
+            return ImageComponentSetNode(name: nodeComponentSetName, parentName: node.parent?.name, components: nodes)
 
         default:
             return nil
@@ -151,6 +151,7 @@ final class DefaultImagesProvider: ImagesProvider {
         nodes: [ImageComponentSetRenderedNode],
         format: ImageFormat,
         preserveVectorData: Bool,
+        groupByFrame: Bool,
         in assets: String?
     ) -> Promise<[ImageComponentSetAsset]> {
         assets.map { folderPath in
@@ -158,6 +159,7 @@ final class DefaultImagesProvider: ImagesProvider {
                 nodes: nodes,
                 format: format,
                 preserveVectorData: preserveVectorData,
+                groupByFrame: groupByFrame,
                 in: folderPath
             )
         } ?? .value([])
@@ -165,11 +167,12 @@ final class DefaultImagesProvider: ImagesProvider {
 
     private func saveResourceImagesIfNeeded(
         nodes: [ImageComponentSetRenderedNode],
+        groupByFrame: Bool,
         format: ImageFormat,
         in resources: String?
     ) -> Promise<[ImageRenderedNode: ImageResource]> {
         resources.map { folderPath in
-            imageResourcesProvider.saveImages(nodes: nodes, format: format, in: folderPath)
+            imageResourcesProvider.saveImages(nodes: nodes, groupByFrame: groupByFrame, format: format, in: folderPath)
         } ?? .value([:])
     }
 
@@ -182,10 +185,12 @@ final class DefaultImagesProvider: ImagesProvider {
                 nodes: nodes,
                 format: parameters.format,
                 preserveVectorData: parameters.preserveVectorData,
+                groupByFrame: parameters.groupByFrame,
                 in: parameters.assets
             ),
             self.saveResourceImagesIfNeeded(
                 nodes: nodes,
+                groupByFrame: parameters.groupByFrame,
                 format: parameters.format,
                 in: parameters.resources
             )

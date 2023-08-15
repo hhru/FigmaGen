@@ -3,7 +3,7 @@ import FigmaGenTools
 import PromiseKit
 import PathKit
 
-final class DefaultImageAssetsProvider: ImageAssetsProvider {
+final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathResolving {
 
     // MARK: - Instance Properties
 
@@ -24,10 +24,11 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
         setNode: ImageComponentSetRenderedNode,
         format: ImageFormat,
         preserveVectorData: Bool,
+        groupByFrame: Bool,
         folderPath: Path
     ) -> ImageAsset {
         let name = setNode.isSingleComponent ? node.base.name.camelized : "\(setNode.name) \(node.base.name)".camelized
-        let folderPath = setNode.isSingleComponent ? folderPath : folderPath.appending(setNode.name.camelized)
+        let folderPath = resolveFolderPath(groupByFrame: groupByFrame, setNode: setNode, folderPath: folderPath)
 
         let filePaths = node.urls.keys.reduce(into: [:]) { result, scale in
             result[scale] = folderPath
@@ -43,6 +44,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
         for nodes: [ImageComponentSetRenderedNode],
         format: ImageFormat,
         preserveVectorData: Bool,
+        groupByFrame: Bool,
         folderPath: Path
     ) -> [ImageComponentSetAsset] {
         nodes.map { setNode in
@@ -54,12 +56,14 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
                     setNode: setNode,
                     format: format,
                     preserveVectorData: preserveVectorData,
+                    groupByFrame: groupByFrame,
                     folderPath: folderPath
                 )
             }
 
             return ImageComponentSetAsset(
                 name: setNode.name,
+                parentName: setNode.parentName,
                 assets: assets
             )
         }
@@ -93,6 +97,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
 
     private func saveAssetFolders(
         assets: [ImageComponentSetAsset: AssetFolder],
+        groupByFrame: Bool,
         in folderPath: String
     ) throws -> Promise<Void> {
         let folderPath = Path(folderPath)
@@ -104,7 +109,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
         let promises = assets.map { asset, folder in
             assetsProvider.saveAssetFolder(
                 folder,
-                in: (asset.isSingleComponent ? folderPath : folderPath.appending(asset.name.camelized)).string
+                in: resolveFolderPath(groupByFrame: groupByFrame, setAsset: asset, folderPath: folderPath).string
             )
         }
 
@@ -127,6 +132,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
         nodes: [ImageComponentSetRenderedNode],
         format: ImageFormat,
         preserveVectorData: Bool,
+        groupByFrame: Bool,
         in folderPath: String
     ) -> Promise<[ImageComponentSetAsset]> {
         perform(on: DispatchQueue.global(qos: .userInitiated)) {
@@ -134,6 +140,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
                 for: nodes,
                 format: format,
                 preserveVectorData: preserveVectorData,
+                groupByFrame: groupByFrame,
                 folderPath: Path(folderPath)
             )
         }.nest { assets in
@@ -145,7 +152,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
                     )
                 }
             }.then { assets in
-                try self.saveAssetFolders(assets: assets, in: folderPath)
+                try self.saveAssetFolders(assets: assets, groupByFrame: groupByFrame, in: folderPath)
             }.then {
                 self.saveImageFiles(assets: assets)
             }

@@ -135,9 +135,16 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
     let preserveVectorData = Flag(
         "--preserveVectorData",
         description: """
-        Set preserve vector data flag in Xcode assets.
-        By default, Xcode assets will be generated without vector data preserving.
-        """
+            Set preserve vector data flag in Xcode assets.
+            By default, Xcode assets will be generated without vector data preserving.
+            """
+    )
+
+    let groupByFrame = Flag(
+        "--groupByFrame",
+        description: """
+            Groupу generated assets and resources into folders with name of parent frame.
+            """
     )
 
     // MARK: - Initializers
@@ -184,7 +191,8 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             scales: resolveImageScales(),
             onlyExportables: onlyExportables.value,
             useAbsoluteBounds: useAbsoluteBounds.value,
-            preserveVectorData: preserveVectorData.value
+            preserveVectorData: preserveVectorData.value,
+            groupByFrame: groupByFrame.value
         )
     }
 

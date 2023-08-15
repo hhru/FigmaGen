@@ -51,7 +51,7 @@ final class DefaultImageRenderProvider: ImageRenderProvider {
             return ImageRenderedNode(base: imageNode, urls: nodeImageURLs)
         }
 
-        return ImageComponentSetRenderedNode(name: node.name, components: renderedNodes)
+        return ImageComponentSetRenderedNode(name: node.name, parentName: node.parentName, components: renderedNodes)
     }
 
     private func renderImages(
