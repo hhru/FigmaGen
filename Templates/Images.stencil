@@ -1,12 +1,30 @@
 {% include "FileHeader.stencil" %}
-{% if images %}
+{% if imageSets %}
 {% set accessModifier %}{% if options.publicAccess %}public{% else %}internal{% endif %}{% endset %}
 {% set imagesEnumName %}{{ options.imagesEnumName|default:"Images" }}{% endset %}
 {% set imageTypeName %}{{ options.imageTypeName|default:"UIImage" }}{% endset %}
 {% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
+{% macro typeName name %}{{ name|swiftIdentifier:"pretty"|upperFirstLetter|escapeReservedKeywords }}{% endmacro %}
 {% macro assetImage asset %}{{ imageTypeName }}(named: "{{ asset.name }}"){% endmacro %}
 {% macro resourceFileName resource %}{{ resource.fileName }}.{{ resource.fileExtension }}{% endmacro %}
 {% macro resourceImage resource %}{{ imageTypeName }}(named: "{% call resourceFileName resource %}"){% endmacro %}
+{% macro imageProperties image %}
+{% if image.asset %}
+    /// {{ image.name }}
+    ///
+    /// Asset: {{ image.asset.name }}
+    {{ accessModifier }} static var {% call propertyName image.name %}: {{ imageTypeName }} {
+        return {% call assetImage image.asset %}!
+    }
+{% elif image.resource %}
+	/// {{ image.name }}
+	///
+	/// Resource: {% call resourceFileName image.resource %}
+    {{ accessModifier }} static var {% call propertyName image.name %}: {{ imageTypeName }} {
+        return {% call resourceImage image.resource %}!
+    }
+{% endif %}
+{% endmacro %}
 #if canImport(UIKit)
 import UIKit
 #else
@@ -31,31 +49,32 @@ import AppKit
             }
         }
     }
+{% for set in imageSets where set.images.count > 1 %}
+
+    {{ accessModifier }} enum {% call typeName set.name %} {
+        {% for image in set.images %}
+
+        {% filter indent:4 %}
+        {% call imageProperties image %}
+        {% endfilter %}
+        {% endfor %}
+    }
+{% endfor %}
+{% for set in imageSets where set.images.count == 1 %}
+{% if forloop.first %}
 
     // MARK: - Type Properties
-{% for image in images %}
 
-{% if image.asset %}
-    /// {{ image.name }}
-    ///
-    /// Asset: {{ image.asset.name }}
-    {{ accessModifier }} static var {% call propertyName image.name %}: {{ imageTypeName }} {
-        return {% call assetImage image.asset %}!
-    }
-{% elif image.resource %}
-	/// {{ image.name }}
-	///
-	/// Resource: {% call resourceFileName image.resource %}
-    {{ accessModifier }} static var {% call propertyName image.name %}: {{ imageTypeName }} {
-        return {% call resourceImage image.resource %}!
-    }
-{% endif %}
+{% endif%}
+
+{% call imageProperties set.images.0 %}
 {% endfor %}
 
     // MARK: - Type Methods
 
     {{ accessModifier }} static func validate() throws {
-        {% for image in images %}
+        {% for set in imageSets %}
+        {% for image in set.images %}
         {% if image.asset %}
         guard {% call assetImage image.asset %} != nil else {
             throw ValidationError.assetNotFound(name: "{{ image.asset.name }}")
@@ -67,9 +86,10 @@ import AppKit
         {% endif %}
 
         {% endfor %}
+        {% endfor %}
         print("All images are valid")
     }
 }
 {% else %}
-// No text style found
+// No images found
 {% endif %}

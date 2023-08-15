@@ -90,10 +90,6 @@ public struct AssetFolder {
     public func save(in folderPath: String) throws {
         let folderPath = Path(folderPath)
 
-        if folderPath.exists {
-            try folderPath.delete()
-        }
-
         try folderPath.mkpath()
 
         try saveNodes(colorSets, in: folderPath)

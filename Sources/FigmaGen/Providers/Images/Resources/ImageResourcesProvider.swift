@@ -6,7 +6,7 @@ protocol ImageResourcesProvider {
     // MARK: - Instance Methods
 
     func saveImages(
-        nodes: [ImageRenderedNode],
+        nodes: [ImageComponentSetRenderedNode],
         format: ImageFormat,
         in folderPath: String
     ) -> Promise<[ImageRenderedNode: ImageResource]>

@@ -37,22 +37,26 @@ final class DefaultImageRenderProvider: ImageRenderProvider {
         return urls
     }
 
-    private func makeImageRenderedNode(
-        for node: ImageNode,
+    private func makeImageSetRenderedNode(
+        for node: ImageComponentSetNode,
         imageURLs: [ImageScale: [ImageNode: URL]]
-    ) -> ImageRenderedNode {
+    ) -> ImageComponentSetRenderedNode {
         let scales = imageURLs.keys
 
-        let nodeImageURLs = scales.reduce(into: [:]) { result, scale in
-            result[scale] = imageURLs[scale]?[node]
+        let renderedNodes = node.components.map { imageNode in
+            let nodeImageURLs = scales.reduce(into: [:]) { result, scale in
+                result[scale] = imageURLs[scale]?[imageNode]
+            }
+
+            return ImageRenderedNode(base: imageNode, urls: nodeImageURLs)
         }
 
-        return ImageRenderedNode(base: node, urls: nodeImageURLs)
+        return ImageComponentSetRenderedNode(name: node.name, components: renderedNodes)
     }
 
     private func renderImages(
         of file: FileParameters,
-        nodes: [ImageNode],
+        nodes: [ImageComponentSetNode],
         format: ImageFormat,
         scale: ImageScale,
         useAbsoluteBounds: Bool
@@ -61,7 +65,9 @@ final class DefaultImageRenderProvider: ImageRenderProvider {
             accessToken: file.accessToken,
             fileKey: file.key,
             fileVersion: file.version,
-            nodeIDs: nodes.map { $0.id },
+            nodeIDs: nodes
+                .flatMap { $0.components }
+                .map { $0.id },
             format: format.figmaFormat,
             scale: scale.figmaScale,
             useAbsoluteBounds: useAbsoluteBounds
@@ -70,7 +76,10 @@ final class DefaultImageRenderProvider: ImageRenderProvider {
         return firstly {
             self.apiProvider.request(route: route)
         }.map(on: DispatchQueue.global(qos: .userInitiated)) { images in
-            try self.extractImageURLs(from: images.urls, nodes: nodes)
+            try self.extractImageURLs(
+                from: images.urls,
+                nodes: nodes.flatMap { $0.components }
+            )
         }
     }
 
@@ -78,11 +87,11 @@ final class DefaultImageRenderProvider: ImageRenderProvider {
 
     func renderImages(
         of file: FileParameters,
-        nodes: [ImageNode],
+        nodes: [ImageComponentSetNode],
         format: ImageFormat,
         scales: [ImageScale],
         useAbsoluteBounds: Bool
-    ) -> Promise<[ImageRenderedNode]> {
+    ) -> Promise<[ImageComponentSetRenderedNode]> {
         guard !nodes.isEmpty else {
             return .value([])
         }
@@ -99,7 +108,7 @@ final class DefaultImageRenderProvider: ImageRenderProvider {
         }.map(on: DispatchQueue.global(qos: .userInitiated)) { imageURLs in
             Dictionary(imageURLs) { $1 }
         }.map(on: DispatchQueue.global(qos: .userInitiated)) { imageURLs in
-            nodes.map { self.makeImageRenderedNode(for: $0, imageURLs: imageURLs) }
+            nodes.map { self.makeImageSetRenderedNode(for: $0, imageURLs: imageURLs) }
         }
     }
 }

@@ -27,6 +27,7 @@ struct FigmaNode: Decodable, Hashable {
         static let textType = "TEXT"
         static let sliceType = "SLICE"
         static let componentType = "COMPONENT"
+        static let componentSetType = "COMPONENT_SET"
         static let instanceType = "INSTANCE"
     }
 
@@ -54,6 +55,7 @@ struct FigmaNode: Decodable, Hashable {
         case let .frame(info: frameNodeInfo),
              let .group(info: frameNodeInfo),
              let .component(info: frameNodeInfo),
+             let .componentSet(info: frameNodeInfo),
              let .instance(info: frameNodeInfo, payload: _):
             return frameNodeInfo.children
 
@@ -81,6 +83,7 @@ struct FigmaNode: Decodable, Hashable {
         case let .frame(info: nodeInfo),
              let .group(info: nodeInfo),
              let .component(info: nodeInfo),
+             let .componentSet(info: nodeInfo),
              let .instance(info: nodeInfo, payload: _):
             return nodeInfo
         }
@@ -95,6 +98,7 @@ struct FigmaNode: Decodable, Hashable {
              .group,
              .slice,
              .component,
+             .componentSet,
              .instance:
             return nil
 
@@ -190,6 +194,9 @@ struct FigmaNode: Decodable, Hashable {
 
         case CodingValues.componentType:
             type = .component(info: try FigmaFrameNodeInfo(from: decoder))
+
+        case CodingValues.componentSetType:
+            type = .componentSet(info: try FigmaFrameNodeInfo(from: decoder))
 
         case CodingValues.instanceType:
             type = .instance(

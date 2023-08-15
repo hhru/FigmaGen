@@ -21,11 +21,13 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
 
     private func makeAsset(
         for node: ImageRenderedNode,
+        setNode: ImageComponentSetRenderedNode,
         format: ImageFormat,
         preserveVectorData: Bool,
         folderPath: Path
     ) -> ImageAsset {
-        let name = node.base.name.camelized
+        let name = setNode.isSingleComponent ? node.base.name.camelized : "\(setNode.name) \(node.base.name)".camelized
+        let folderPath = setNode.isSingleComponent ? folderPath : folderPath.appending(setNode.name.camelized)
 
         let filePaths = node.urls.keys.reduce(into: [:]) { result, scale in
             result[scale] = folderPath
@@ -38,23 +40,29 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
     }
 
     private func makeAssets(
-        for nodes: [ImageRenderedNode],
+        for nodes: [ImageComponentSetRenderedNode],
         format: ImageFormat,
         preserveVectorData: Bool,
         folderPath: Path
-    ) -> [ImageRenderedNode: ImageAsset] {
-        var assets: [ImageRenderedNode: ImageAsset] = [:]
+    ) -> [ImageComponentSetAsset] {
+        nodes.map { setNode in
+            var assets: [ImageRenderedNode: ImageAsset] = [:]
 
-        nodes.forEach { node in
-            assets[node] = makeAsset(
-                for: node,
-                format: format,
-                preserveVectorData: preserveVectorData,
-                folderPath: folderPath
+            setNode.components.forEach { node in
+                assets[node] = makeAsset(
+                    for: node,
+                    setNode: setNode,
+                    format: format,
+                    preserveVectorData: preserveVectorData,
+                    folderPath: folderPath
+                )
+            }
+
+            return ImageComponentSetAsset(
+                name: setNode.name,
+                assets: assets
             )
         }
-
-        return assets
     }
 
     private func makeAssetImageSet(for asset: ImageAsset) -> AssetImageSet {
@@ -83,9 +91,31 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
         return when(fulfilled: promises)
     }
 
-    private func saveImageFiles(assets: [ImageRenderedNode: ImageAsset]) -> Promise<Void> {
-        let promises = assets.map { node, asset in
-            saveImageFiles(node: node, asset: asset)
+    private func saveAssetFolders(
+        assets: [ImageComponentSetAsset: AssetFolder],
+        in folderPath: String
+    ) throws -> Promise<Void> {
+        let folderPath = Path(folderPath)
+
+        if folderPath.exists {
+            try folderPath.delete()
+        }
+
+        let promises = assets.map { asset, folder in
+            assetsProvider.saveAssetFolder(
+                folder,
+                in: (asset.isSingleComponent ? folderPath : folderPath.appending(asset.name.camelized)).string
+            )
+        }
+
+        return when(fulfilled: promises).asVoid()
+    }
+
+    private func saveImageFiles(assets: [ImageComponentSetAsset]) -> Promise<Void> {
+        let promises = assets.flatMap { setAsset in
+            setAsset.assets.map { node, asset in
+                saveImageFiles(node: node, asset: asset)
+            }
         }
 
         return when(fulfilled: promises)
@@ -94,11 +124,11 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
     // MARK: -
 
     func saveImages(
-        nodes: [ImageRenderedNode],
+        nodes: [ImageComponentSetRenderedNode],
         format: ImageFormat,
         preserveVectorData: Bool,
         in folderPath: String
-    ) -> Promise<[ImageRenderedNode: ImageAsset]> {
+    ) -> Promise<[ImageComponentSetAsset]> {
         perform(on: DispatchQueue.global(qos: .userInitiated)) {
             self.makeAssets(
                 for: nodes,
@@ -108,12 +138,14 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider {
             )
         }.nest { assets in
             perform(on: DispatchQueue.global(qos: .userInitiated)) {
-                AssetFolder(
-                    imageSets: self.makeAssetImageSets(for: assets),
-                    contents: AssetFolderContents(info: .defaultFigmaGen)
-                )
-            }.then { folder in
-                self.assetsProvider.saveAssetFolder(folder, in: folderPath)
+                assets.reduce(into: [:]) { result, asset in
+                    result[asset] = AssetFolder(
+                        imageSets: self.makeAssetImageSets(for: asset.assets),
+                        contents: AssetFolderContents(info: .defaultFigmaGen)
+                    )
+                }
+            }.then { assets in
+                try self.saveAssetFolders(assets: assets, in: folderPath)
             }.then {
                 self.saveImageFiles(assets: assets)
             }
