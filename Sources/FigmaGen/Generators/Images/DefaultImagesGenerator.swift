@@ -60,6 +60,7 @@ extension ImagesConfiguration {
             scales: scales,
             assets: assets,
             resources: resources,
+            postProcessor: postProcessor,
             onlyExportables: onlyExportables,
             useAbsoluteBounds: useAbsoluteBounds,
             preserveVectorData: preserveVectorData,

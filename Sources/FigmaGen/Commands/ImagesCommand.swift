@@ -66,7 +66,16 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
         "--resources",
         "-r",
         description: """
-            Optional path to Xcode-assets folder to store images.
+            Optional path to folder to store images.
+            """
+    )
+
+    let postProcessor = Key<String>(
+        "--postProcessor",
+        "-p",
+        description: """
+            The path to the bash script to make operations with generated images.
+            Only executes for generated images from --resources folder.
             """
     )
 
@@ -187,6 +196,7 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             generatation: generationConfiguration,
             assets: assets.value,
             resources: resources.value,
+            postProcessor: postProcessor.value,
             format: resolveImageFormat(),
             scales: resolveImageScales(),
             onlyExportables: onlyExportables.value,

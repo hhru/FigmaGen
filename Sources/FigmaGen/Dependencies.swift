@@ -38,7 +38,8 @@ enum Dependencies {
     )
 
     static let imageResourcesProvider: ImageResourcesProvider = DefaultImageResourcesProvider(
-        dataProvider: dataProvider
+        dataProvider: dataProvider,
+        postProcessor: ImageResourcesPostProcessor()
     )
 
     static let imagesProvider: ImagesProvider = DefaultImagesProvider(

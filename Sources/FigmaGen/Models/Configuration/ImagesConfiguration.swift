@@ -7,6 +7,7 @@ struct ImagesConfiguration: Decodable {
     private enum CodingKeys: String, CodingKey {
         case assets
         case resources
+        case postProcessor
         case format
         case scales
         case onlyExportables
@@ -20,6 +21,7 @@ struct ImagesConfiguration: Decodable {
     let generatation: GenerationConfiguration
     let assets: String?
     let resources: String?
+    let postProcessor: String?
     let format: ImageFormat
     let scales: [ImageScale]
     let onlyExportables: Bool
@@ -33,6 +35,7 @@ struct ImagesConfiguration: Decodable {
         generatation: GenerationConfiguration,
         assets: String?,
         resources: String?,
+        postProcessor: String?,
         format: ImageFormat,
         scales: [ImageScale],
         onlyExportables: Bool,
@@ -43,6 +46,7 @@ struct ImagesConfiguration: Decodable {
         self.generatation = generatation
         self.assets = assets
         self.resources = resources
+        self.postProcessor = postProcessor
         self.format = format
         self.scales = scales
         self.onlyExportables = onlyExportables
@@ -57,6 +61,7 @@ struct ImagesConfiguration: Decodable {
         assets = try container.decodeIfPresent(forKey: .assets)
         resources = try container.decodeIfPresent(forKey: .resources)
 
+        postProcessor = try container.decodeIfPresent(forKey: .postProcessor)
         format = try container.decodeIfPresent(forKey: .format) ?? .pdf
         scales = try container.decodeIfPresent(forKey: .scales) ?? [.none]
         onlyExportables = try container.decodeIfPresent(forKey: .onlyExportables) ?? false
@@ -74,6 +79,7 @@ struct ImagesConfiguration: Decodable {
             generatation: generatation.resolve(base: base),
             assets: assets,
             resources: resources,
+            postProcessor: postProcessor,
             format: format,
             scales: scales,
             onlyExportables: onlyExportables,
