@@ -18,9 +18,8 @@ final class ImageResourcesPostProcessor {
         try task.run()
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        let output = String(data: data, encoding: .utf8)
 
-        return output
+        return String(data: data, encoding: .utf8)
     }
 
     // MARK: -
