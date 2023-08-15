@@ -58,3 +58,6 @@ fastlane/test_output
 Demo/figmagen
 Demo/Templates
 figmagen-*.zip
+
+# Intellij IDEA
+.idea

@@ -177,6 +177,30 @@ final class TokensCommand: AsyncExecutableCommand {
             """
     )
 
+    let spacingTemplate = Key<String>(
+        "--spacing-template",
+        description: """
+            Path to the template file.
+            If no template is passed a default template will be used.
+            """
+    )
+
+    let spacingTemplateOptions = VariadicKey<String>(
+        "--spacing-options",
+        description: #"""
+             An option that will be merged with template context, and overwrite any values of the same name.
+             Can be repeated multiple times and must be in the format: -o "name:value".
+             """#
+    )
+
+    let spacingDestination = Key<String>(
+        "--spacing-destination",
+        description: """
+             The path to the file to generate.
+             By default, generated code will be printed on stdout.
+             """
+    )
+
     // MARK: - Initializers
 
     init(generator: TokensGenerator) {
@@ -233,6 +257,11 @@ extension TokensCommand {
                     template: themeTemplate.value,
                     templateOptions: resolveTemplateOptions(themeTemplateOptions.value),
                     destination: themeDestination.value
+                ),
+                spacing: TokensTemplateConfiguration.Template(
+                    template: spacingTemplate.value,
+                    templateOptions: resolveTemplateOptions(spacingTemplateOptions.value),
+                    destination: spacingDestination.value
                 )
             )
         )

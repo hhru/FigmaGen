@@ -14,6 +14,7 @@ struct TokensGenerationParameters {
         let typographyRender: RenderParameters?
         let boxShadowRender: RenderParameters?
         let themeRender: RenderParameters?
+        let spacingRender: RenderParameters?
     }
 
     // MARK: - Instance Properties

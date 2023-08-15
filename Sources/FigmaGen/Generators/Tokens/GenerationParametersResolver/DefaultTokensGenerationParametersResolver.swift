@@ -107,6 +107,11 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             nativeTemplateName: "Theme"
         )
 
+        let spacingRender = resolveRenderParameters(
+            template: configuration.templates?.spacing,
+            nativeTemplateName: "SpacingTokens"
+        )
+
         return TokensGenerationParameters(
             file: file,
             tokens: TokensGenerationParameters.TokensParameters(
@@ -115,7 +120,8 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
                 fontFamilyRender: fontFamilyRender,
                 typographyRender: typographyRender,
                 boxShadowRender: boxShadowRender,
-                themeRender: themeRender
+                themeRender: themeRender,
+                spacingRender: spacingRender
             )
         )
     }

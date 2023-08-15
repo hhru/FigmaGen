@@ -56,6 +56,10 @@ tokens:
       templateOptions:
         publicAccess: true
         shadowTypeName: ShadowToken
+    spacing:
+      destination: FigmaGenDemo/Generated/SpacingTokens.swift
+      templateOptions:
+        publicAccess: true
     theme:
       destination: FigmaGenDemo/Generated/Theme.swift
       templateOptions:
