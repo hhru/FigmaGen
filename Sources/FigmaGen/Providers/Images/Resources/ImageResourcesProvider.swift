@@ -10,6 +10,7 @@ protocol ImageResourcesProvider {
         groupByFrame: Bool,
         format: ImageFormat,
         postProcessor: String?,
+        namingStyle: ImageNamingStyle,
         in folderPath: String
     ) -> Promise<[ImageRenderedNode: ImageResource]>
 }

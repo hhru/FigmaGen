@@ -156,6 +156,15 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             """
     )
 
+    let namingStyle = Key<String>(
+        "--naming-style",
+        "-s",
+        description: """
+            Optional image output naming style, can be 'camelCase' or 'snakeCase'.
+            Defaults to 'camelCase'.
+            """
+    )
+
     // MARK: - Initializers
 
     init(generator: ImagesGenerator) {
@@ -191,6 +200,20 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             } ?? [.none]
     }
 
+    private func resolveNamingStyle() -> ImageNamingStyle {
+        switch namingStyle.value {
+        case nil:
+            return .camelCase
+
+        case let rawNamingStyle?:
+            guard let format = ImageNamingStyle(rawValue: rawNamingStyle) else {
+                fail(message: "Failed to generated images: Invalid naming style (\(rawNamingStyle))")
+            }
+
+            return format
+        }
+    }
+
     private func resolveImagesConfiguration() -> ImagesConfiguration {
         ImagesConfiguration(
             generatation: generationConfiguration,
@@ -202,7 +225,8 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             onlyExportables: onlyExportables.value,
             useAbsoluteBounds: useAbsoluteBounds.value,
             preserveVectorData: preserveVectorData.value,
-            groupByFrame: groupByFrame.value
+            groupByFrame: groupByFrame.value,
+            namingStyle: resolveNamingStyle()
         )
     }
 

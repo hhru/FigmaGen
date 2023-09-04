@@ -19,15 +19,32 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
 
     // MARK: - Instance Methods
 
+    private func resolveName(
+        for node: ImageRenderedNode,
+        setNode: ImageComponentSetRenderedNode,
+        namingStyle: ImageNamingStyle
+    ) -> String {
+        let name = setNode.isSingleComponent ? node.base.name : "\(setNode.name) \(node.base.name)"
+
+        switch namingStyle {
+        case .camelCase:
+            return name.camelized
+
+        case .snakeCase:
+            return name.snakeCased
+        }
+    }
+
     private func makeAsset(
         for node: ImageRenderedNode,
         setNode: ImageComponentSetRenderedNode,
         format: ImageFormat,
         preserveVectorData: Bool,
         groupByFrame: Bool,
+        namingStyle: ImageNamingStyle,
         folderPath: Path
     ) -> ImageAsset {
-        let name = setNode.isSingleComponent ? node.base.name.camelized : "\(setNode.name) \(node.base.name)".camelized
+        let name = resolveName(for: node, setNode: setNode, namingStyle: namingStyle)
         let folderPath = resolveFolderPath(groupByFrame: groupByFrame, setNode: setNode, folderPath: folderPath)
 
         let filePaths = node.urls.keys.reduce(into: [:]) { result, scale in
@@ -45,6 +62,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
         format: ImageFormat,
         preserveVectorData: Bool,
         groupByFrame: Bool,
+        namingStyle: ImageNamingStyle,
         folderPath: Path
     ) -> [ImageComponentSetAsset] {
         nodes.map { setNode in
@@ -57,6 +75,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
                     format: format,
                     preserveVectorData: preserveVectorData,
                     groupByFrame: groupByFrame,
+                    namingStyle: namingStyle,
                     folderPath: folderPath
                 )
             }
@@ -133,6 +152,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
         format: ImageFormat,
         preserveVectorData: Bool,
         groupByFrame: Bool,
+        namingStyle: ImageNamingStyle,
         in folderPath: String
     ) -> Promise<[ImageComponentSetAsset]> {
         perform(on: DispatchQueue.global(qos: .userInitiated)) {
@@ -141,6 +161,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
                 format: format,
                 preserveVectorData: preserveVectorData,
                 groupByFrame: groupByFrame,
+                namingStyle: namingStyle,
                 folderPath: Path(folderPath)
             )
         }.nest { assets in

@@ -19,17 +19,31 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
 
     // MARK: - Instance Methods
 
+    private func resolveFileName(
+        for node: ImageRenderedNode,
+        setNode: ImageComponentSetRenderedNode,
+        namingStyle: ImageNamingStyle
+    ) -> String {
+        let fileName = setNode.isSingleComponent ? node.base.name : "\(setNode.name) \(node.base.name)"
+
+        switch namingStyle {
+        case .camelCase:
+            return fileName.camelized
+
+        case .snakeCase:
+            return fileName.snakeCased
+        }
+    }
+
     private func makeResource(
         for node: ImageRenderedNode,
         setNode: ImageComponentSetRenderedNode,
         groupByFrame: Bool,
         format: ImageFormat,
+        namingStyle: ImageNamingStyle,
         folderPath: Path
     ) -> ImageResource {
-        let fileName = setNode.isSingleComponent
-            ? node.base.name.camelized
-            : "\(setNode.name) \(node.base.name)".camelized
-
+        let fileName = resolveFileName(for: node, setNode: setNode, namingStyle: namingStyle)
         let folderPath = resolveFolderPath(groupByFrame: groupByFrame, setNode: setNode, folderPath: folderPath)
         let fileExtension = format.fileExtension
 
@@ -46,6 +60,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
         for nodes: [ImageComponentSetRenderedNode],
         groupByFrame: Bool,
         format: ImageFormat,
+        namingStyle: ImageNamingStyle,
         folderPath: Path
     ) -> [ImageRenderedNode: ImageResource] {
         var resources: [ImageRenderedNode: ImageResource] = [:]
@@ -57,6 +72,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
                     setNode: setNode,
                     groupByFrame: groupByFrame,
                     format: format,
+                    namingStyle: namingStyle,
                     folderPath: folderPath
                 )
             }
@@ -108,6 +124,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
         groupByFrame: Bool,
         format: ImageFormat,
         postProcessor: String?,
+        namingStyle: ImageNamingStyle,
         in folderPath: String
     ) -> Promise<[ImageRenderedNode: ImageResource]> {
         perform(on: DispatchQueue.global(qos: .userInitiated)) {
@@ -115,6 +132,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
                 for: nodes,
                 groupByFrame: groupByFrame,
                 format: format,
+                namingStyle: namingStyle,
                 folderPath: Path(folderPath)
             )
         }.nest { resources in

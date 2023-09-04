@@ -10,6 +10,7 @@ protocol ImageAssetsProvider {
         format: ImageFormat,
         preserveVectorData: Bool,
         groupByFrame: Bool,
+        namingStyle: ImageNamingStyle,
         in folderPath: String
     ) -> Promise<[ImageComponentSetAsset]>
 }

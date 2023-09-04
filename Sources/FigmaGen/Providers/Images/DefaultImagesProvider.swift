@@ -152,6 +152,7 @@ final class DefaultImagesProvider: ImagesProvider {
         format: ImageFormat,
         preserveVectorData: Bool,
         groupByFrame: Bool,
+        namingStyle: ImageNamingStyle,
         in assets: String?
     ) -> Promise<[ImageComponentSetAsset]> {
         assets.map { folderPath in
@@ -160,6 +161,7 @@ final class DefaultImagesProvider: ImagesProvider {
                 format: format,
                 preserveVectorData: preserveVectorData,
                 groupByFrame: groupByFrame,
+                namingStyle: namingStyle,
                 in: folderPath
             )
         } ?? .value([])
@@ -170,6 +172,7 @@ final class DefaultImagesProvider: ImagesProvider {
         groupByFrame: Bool,
         format: ImageFormat,
         postProcessor: String?,
+        namingStyle: ImageNamingStyle,
         in resources: String?
     ) -> Promise<[ImageRenderedNode: ImageResource]> {
         resources.map { folderPath in
@@ -178,6 +181,7 @@ final class DefaultImagesProvider: ImagesProvider {
                 groupByFrame: groupByFrame,
                 format: format,
                 postProcessor: postProcessor,
+                namingStyle: namingStyle,
                 in: folderPath
             )
         } ?? .value([:])
@@ -193,6 +197,7 @@ final class DefaultImagesProvider: ImagesProvider {
                 format: parameters.format,
                 preserveVectorData: parameters.preserveVectorData,
                 groupByFrame: parameters.groupByFrame,
+                namingStyle: parameters.namingStyle,
                 in: parameters.assets
             ),
             self.saveResourceImagesIfNeeded(
@@ -200,6 +205,7 @@ final class DefaultImagesProvider: ImagesProvider {
                 groupByFrame: parameters.groupByFrame,
                 format: parameters.format,
                 postProcessor: parameters.postProcessor,
+                namingStyle: parameters.namingStyle,
                 in: parameters.resources
             )
         )
