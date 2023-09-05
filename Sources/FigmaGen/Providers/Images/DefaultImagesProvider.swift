@@ -163,19 +163,13 @@ final class DefaultImagesProvider: ImagesProvider {
 
     private func saveResourceImagesIfNeeded(
         nodes: [ImageComponentSetRenderedNode],
-        groupByFrame: Bool,
-        format: ImageFormat,
-        postProcessor: String?,
-        namingStyle: ImageNamingStyle,
+        parameters: ImagesParameters,
         in resources: String?
     ) -> Promise<[ImageRenderedNode: ImageResource]> {
         resources.map { folderPath in
             imageResourcesProvider.saveImages(
                 nodes: nodes,
-                groupByFrame: groupByFrame,
-                format: format,
-                postProcessor: postProcessor,
-                namingStyle: namingStyle,
+                parameters: parameters,
                 in: folderPath
             )
         } ?? .value([:])
@@ -193,10 +187,7 @@ final class DefaultImagesProvider: ImagesProvider {
             ),
             self.saveResourceImagesIfNeeded(
                 nodes: nodes,
-                groupByFrame: parameters.groupByFrame,
-                format: parameters.format,
-                postProcessor: parameters.postProcessor,
-                namingStyle: parameters.namingStyle,
+                parameters: parameters,
                 in: parameters.resources
             )
         )

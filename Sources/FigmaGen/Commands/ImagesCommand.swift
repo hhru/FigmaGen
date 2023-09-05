@@ -152,7 +152,17 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
     let groupByFrame = Flag(
         "--groupByFrame",
         description: """
-            Groupу generated assets and resources into folders with name of parent frame.
+            Group generated assets and resources into folders with name of parent frame.
+            By default without grouping.
+            """
+    )
+
+    let groupByComponentSet = Flag(
+        "--groupByComponentSet",
+        description: """
+            Group generated assets and resources into folders with name of component set.
+            Only for components with variants.
+            By default without grouping.
             """
     )
 
@@ -226,6 +236,7 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             useAbsoluteBounds: useAbsoluteBounds.value,
             preserveVectorData: preserveVectorData.value,
             groupByFrame: groupByFrame.value,
+            groupByComponentSet: groupByComponentSet.value,
             namingStyle: resolveNamingStyle()
         )
     }

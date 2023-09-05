@@ -7,10 +7,7 @@ protocol ImageResourcesProvider {
 
     func saveImages(
         nodes: [ImageComponentSetRenderedNode],
-        groupByFrame: Bool,
-        format: ImageFormat,
-        postProcessor: String?,
-        namingStyle: ImageNamingStyle,
+        parameters: ImagesParameters,
         in folderPath: String
     ) -> Promise<[ImageRenderedNode: ImageResource]>
 }

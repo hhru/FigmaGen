@@ -7,6 +7,7 @@ protocol ImagesFolderPathResolving {
 
     func resolveFolderPath(
         groupByFrame: Bool,
+        groupByComponentSet: Bool,
         parentNodeName: String?,
         isSingleComponent: Bool,
         nodeName: String,
@@ -20,6 +21,7 @@ extension ImagesFolderPathResolving {
 
     func resolveFolderPath(
         groupByFrame: Bool,
+        groupByComponentSet: Bool,
         parentNodeName: String?,
         isSingleComponent: Bool,
         nodeName: String,
@@ -31,7 +33,7 @@ extension ImagesFolderPathResolving {
             folderPath = folderPath.appending(name.camelized)
         }
 
-        if !isSingleComponent {
+        if groupByComponentSet, !isSingleComponent {
             folderPath = folderPath.appending(nodeName.camelized)
         }
 
@@ -40,11 +42,13 @@ extension ImagesFolderPathResolving {
 
     func resolveFolderPath(
         groupByFrame: Bool,
+        groupByComponentSet: Bool,
         setNode: ImageComponentSetRenderedNode,
         folderPath: Path
     ) -> Path {
         resolveFolderPath(
             groupByFrame: groupByFrame,
+            groupByComponentSet: groupByComponentSet,
             parentNodeName: setNode.parentName,
             isSingleComponent: setNode.isSingleComponent,
             nodeName: setNode.name,
@@ -54,11 +58,13 @@ extension ImagesFolderPathResolving {
 
     func resolveFolderPath(
         groupByFrame: Bool,
+        groupByComponentSet: Bool,
         setAsset: ImageComponentSetAsset,
         folderPath: Path
     ) -> Path {
         resolveFolderPath(
             groupByFrame: groupByFrame,
+            groupByComponentSet: groupByComponentSet,
             parentNodeName: setAsset.parentName,
             isSingleComponent: setAsset.isSingleComponent,
             nodeName: setAsset.name,

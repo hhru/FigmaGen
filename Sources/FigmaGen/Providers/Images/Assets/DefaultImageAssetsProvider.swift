@@ -45,6 +45,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
 
         let folderPath = resolveFolderPath(
             groupByFrame: parameters.groupByFrame,
+            groupByComponentSet: parameters.groupByComponentSet,
             setNode: setNode,
             folderPath: folderPath
         )
@@ -113,6 +114,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
     private func saveAssetFolders(
         assets: [ImageComponentSetAsset: AssetFolder],
         groupByFrame: Bool,
+        groupByComponentSet: Bool,
         in folderPath: String
     ) throws -> Promise<Void> {
         let folderPath = Path(folderPath)
@@ -124,7 +126,12 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
         let promises = assets.map { asset, folder in
             assetsProvider.saveAssetFolder(
                 folder,
-                in: resolveFolderPath(groupByFrame: groupByFrame, setAsset: asset, folderPath: folderPath).string
+                in: resolveFolderPath(
+                    groupByFrame: groupByFrame,
+                    groupByComponentSet: groupByComponentSet,
+                    setAsset: asset,
+                    folderPath: folderPath
+                ).string
             )
         }
 
@@ -163,7 +170,12 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
                     )
                 }
             }.then { assets in
-                try self.saveAssetFolders(assets: assets, groupByFrame: parameters.groupByFrame, in: folderPath)
+                try self.saveAssetFolders(
+                    assets: assets,
+                    groupByFrame: parameters.groupByFrame,
+                    groupByComponentSet: parameters.groupByComponentSet,
+                    in: folderPath
+                )
             }.then {
                 self.saveImageFiles(assets: assets)
             }

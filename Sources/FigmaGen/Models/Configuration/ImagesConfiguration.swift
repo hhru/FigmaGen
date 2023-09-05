@@ -14,6 +14,7 @@ struct ImagesConfiguration: Decodable {
         case useAbsoluteBounds
         case preserveVectorData
         case groupByFrame
+        case groupByComponentSet
         case namingStyle
     }
 
@@ -29,6 +30,7 @@ struct ImagesConfiguration: Decodable {
     let useAbsoluteBounds: Bool
     let preserveVectorData: Bool
     let groupByFrame: Bool
+    let groupByComponentSet: Bool
     let namingStyle: ImageNamingStyle
 
     // MARK: - Initializers
@@ -44,6 +46,7 @@ struct ImagesConfiguration: Decodable {
         useAbsoluteBounds: Bool,
         preserveVectorData: Bool,
         groupByFrame: Bool,
+        groupByComponentSet: Bool,
         namingStyle: ImageNamingStyle
     ) {
         self.generatation = generatation
@@ -56,6 +59,7 @@ struct ImagesConfiguration: Decodable {
         self.useAbsoluteBounds = useAbsoluteBounds
         self.preserveVectorData = preserveVectorData
         self.groupByFrame = groupByFrame
+        self.groupByComponentSet = groupByComponentSet
         self.namingStyle = namingStyle
     }
 
@@ -72,6 +76,7 @@ struct ImagesConfiguration: Decodable {
         useAbsoluteBounds = try container.decodeIfPresent(forKey: .useAbsoluteBounds) ?? false
         preserveVectorData = try container.decodeIfPresent(forKey: .preserveVectorData) ?? false
         groupByFrame = try container.decodeIfPresent(forKey: .groupByFrame) ?? false
+        groupByComponentSet = try container.decodeIfPresent(forKey: .groupByComponentSet) ?? false
         namingStyle = try container.decodeIfPresent(forKey: .namingStyle) ?? .camelCase
 
         generatation = try GenerationConfiguration(from: decoder)
@@ -91,6 +96,7 @@ struct ImagesConfiguration: Decodable {
             useAbsoluteBounds: useAbsoluteBounds,
             preserveVectorData: preserveVectorData,
             groupByFrame: groupByFrame,
+            groupByComponentSet: groupByComponentSet,
             namingStyle: namingStyle
         )
     }

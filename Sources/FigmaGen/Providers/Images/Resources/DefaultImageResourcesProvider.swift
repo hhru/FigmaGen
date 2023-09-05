@@ -38,14 +38,19 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
     private func makeResource(
         for node: ImageRenderedNode,
         setNode: ImageComponentSetRenderedNode,
-        groupByFrame: Bool,
-        format: ImageFormat,
-        namingStyle: ImageNamingStyle,
+        parameters: ImagesParameters,
         folderPath: Path
     ) -> ImageResource {
-        let fileName = resolveFileName(for: node, setNode: setNode, namingStyle: namingStyle)
-        let folderPath = resolveFolderPath(groupByFrame: groupByFrame, setNode: setNode, folderPath: folderPath)
-        let fileExtension = format.fileExtension
+        let fileName = resolveFileName(for: node, setNode: setNode, namingStyle: parameters.namingStyle)
+
+        let folderPath = resolveFolderPath(
+            groupByFrame: parameters.groupByFrame,
+            groupByComponentSet: parameters.groupByComponentSet,
+            setNode: setNode,
+            folderPath: folderPath
+        )
+
+        let fileExtension = parameters.format.fileExtension
 
         let filePaths = node.urls.keys.reduce(into: [:]) { result, scale in
             result[scale] = folderPath
@@ -58,9 +63,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
 
     private func makeResources(
         for nodes: [ImageComponentSetRenderedNode],
-        groupByFrame: Bool,
-        format: ImageFormat,
-        namingStyle: ImageNamingStyle,
+        parameters: ImagesParameters,
         folderPath: Path
     ) -> [ImageRenderedNode: ImageResource] {
         var resources: [ImageRenderedNode: ImageResource] = [:]
@@ -70,9 +73,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
                 resources[node] = makeResource(
                     for: node,
                     setNode: setNode,
-                    groupByFrame: groupByFrame,
-                    format: format,
-                    namingStyle: namingStyle,
+                    parameters: parameters,
                     folderPath: folderPath
                 )
             }
@@ -121,22 +122,17 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
 
     func saveImages(
         nodes: [ImageComponentSetRenderedNode],
-        groupByFrame: Bool,
-        format: ImageFormat,
-        postProcessor: String?,
-        namingStyle: ImageNamingStyle,
+        parameters: ImagesParameters,
         in folderPath: String
     ) -> Promise<[ImageRenderedNode: ImageResource]> {
         perform(on: DispatchQueue.global(qos: .userInitiated)) {
             self.makeResources(
                 for: nodes,
-                groupByFrame: groupByFrame,
-                format: format,
-                namingStyle: namingStyle,
+                parameters: parameters,
                 folderPath: Path(folderPath)
             )
         }.nest { resources in
-            try self.saveImageFiles(resources: resources, postProcessor: postProcessor, in: Path(folderPath))
+            try self.saveImageFiles(resources: resources, postProcessor: parameters.postProcessor, in: Path(folderPath))
         }
     }
 }
