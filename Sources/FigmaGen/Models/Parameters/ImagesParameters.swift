@@ -13,5 +13,6 @@ struct ImagesParameters {
     let useAbsoluteBounds: Bool
     let preserveVectorData: Bool
     let groupByFrame: Bool
+    let groupByComponentSet: Bool
     let namingStyle: ImageNamingStyle
 }
