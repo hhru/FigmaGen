@@ -29,7 +29,9 @@ final class DefaultImagesGenerator: ImagesGenerator, GenerationParametersResolvi
                 parameters: imagesParameters
             )
         }.map { imageSets in
-            ImagesContext(imageSets: imageSets)
+            ImagesContext(
+                imageSets: imageSets.sorted { $0.name.lowercased() < $1.name.lowercased() }
+            )
         }.done { context in
             try self.templateRenderer.renderTemplate(
                 parameters.render.template,
