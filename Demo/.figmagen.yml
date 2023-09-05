@@ -27,6 +27,7 @@ images:
   assets: FigmaGenDemo/Resources/Images.xcassets/Generated
   destination: FigmaGenDemo/Generated/Images.swift
   groupByFrame: true
+  groupByComponentSet: true
   templateOptions:
     publicAccess: true
 
