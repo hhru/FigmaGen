@@ -1,4 +1,5 @@
 import Foundation
+import PathKit
 
 final class ImageResourcesPostProcessor {
 
@@ -25,6 +26,9 @@ final class ImageResourcesPostProcessor {
     // MARK: -
 
     func execute(postProcessorPath: String, filePath: String) throws {
+        let postProcessorPath = Path(postProcessorPath).absolute()
+        let filePath = Path(filePath).absolute()
+
         try shell("\(postProcessorPath) --filePath \(filePath)")
     }
 }

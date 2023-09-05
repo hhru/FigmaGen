@@ -26,6 +26,13 @@ extension String {
             .joined()
     }
 
+    public var snakeCased: String {
+        components(separatedBy: CharacterSet.alphanumerics.inverted)
+            .filter { !$0.isEmpty }
+            .map { $0.lowercased() }
+            .joined(separator: "_")
+    }
+
     // MARK: - Instance Methods
 
     public func slice(

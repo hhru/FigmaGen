@@ -19,32 +19,49 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
 
     // MARK: - Instance Methods
 
+    private func resolveName(
+        for node: ImageRenderedNode,
+        setNode: ImageComponentSetRenderedNode,
+        namingStyle: ImageNamingStyle
+    ) -> String {
+        let name = setNode.isSingleComponent ? node.base.name : "\(setNode.name) \(node.base.name)"
+
+        switch namingStyle {
+        case .camelCase:
+            return name.camelized
+
+        case .snakeCase:
+            return name.snakeCased
+        }
+    }
+
     private func makeAsset(
         for node: ImageRenderedNode,
         setNode: ImageComponentSetRenderedNode,
-        format: ImageFormat,
-        preserveVectorData: Bool,
-        groupByFrame: Bool,
+        parameters: ImagesParameters,
         folderPath: Path
     ) -> ImageAsset {
-        let name = setNode.isSingleComponent ? node.base.name.camelized : "\(setNode.name) \(node.base.name)".camelized
-        let folderPath = resolveFolderPath(groupByFrame: groupByFrame, setNode: setNode, folderPath: folderPath)
+        let name = resolveName(for: node, setNode: setNode, namingStyle: parameters.namingStyle)
+
+        let folderPath = resolveFolderPath(
+            groupByFrame: parameters.groupByFrame,
+            setNode: setNode,
+            folderPath: folderPath
+        )
 
         let filePaths = node.urls.keys.reduce(into: [:]) { result, scale in
             result[scale] = folderPath
                 .appending(fileName: name, extension: AssetImageSet.pathExtension)
-                .appending(fileName: name.appending(scale.fileNameSuffix), extension: format.fileExtension)
+                .appending(fileName: name.appending(scale.fileNameSuffix), extension: parameters.format.fileExtension)
                 .string
         }
 
-        return ImageAsset(name: name, filePaths: filePaths, preserveVectorData: preserveVectorData)
+        return ImageAsset(name: name, filePaths: filePaths, preserveVectorData: parameters.preserveVectorData)
     }
 
     private func makeAssets(
         for nodes: [ImageComponentSetRenderedNode],
-        format: ImageFormat,
-        preserveVectorData: Bool,
-        groupByFrame: Bool,
+        parameters: ImagesParameters,
         folderPath: Path
     ) -> [ImageComponentSetAsset] {
         nodes.map { setNode in
@@ -54,9 +71,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
                 assets[node] = makeAsset(
                     for: node,
                     setNode: setNode,
-                    format: format,
-                    preserveVectorData: preserveVectorData,
-                    groupByFrame: groupByFrame,
+                    parameters: parameters,
                     folderPath: folderPath
                 )
             }
@@ -130,17 +145,13 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
 
     func saveImages(
         nodes: [ImageComponentSetRenderedNode],
-        format: ImageFormat,
-        preserveVectorData: Bool,
-        groupByFrame: Bool,
+        parameters: ImagesParameters,
         in folderPath: String
     ) -> Promise<[ImageComponentSetAsset]> {
         perform(on: DispatchQueue.global(qos: .userInitiated)) {
             self.makeAssets(
                 for: nodes,
-                format: format,
-                preserveVectorData: preserveVectorData,
-                groupByFrame: groupByFrame,
+                parameters: parameters,
                 folderPath: Path(folderPath)
             )
         }.nest { assets in
@@ -152,7 +163,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
                     )
                 }
             }.then { assets in
-                try self.saveAssetFolders(assets: assets, groupByFrame: groupByFrame, in: folderPath)
+                try self.saveAssetFolders(assets: assets, groupByFrame: parameters.groupByFrame, in: folderPath)
             }.then {
                 self.saveImageFiles(assets: assets)
             }

@@ -7,9 +7,7 @@ protocol ImageAssetsProvider {
 
     func saveImages(
         nodes: [ImageComponentSetRenderedNode],
-        format: ImageFormat,
-        preserveVectorData: Bool,
-        groupByFrame: Bool,
+        parameters: ImagesParameters,
         in folderPath: String
     ) -> Promise<[ImageComponentSetAsset]>
 }

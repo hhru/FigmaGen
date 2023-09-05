@@ -149,17 +149,13 @@ final class DefaultImagesProvider: ImagesProvider {
 
     private func saveAssetImagesIfNeeded(
         nodes: [ImageComponentSetRenderedNode],
-        format: ImageFormat,
-        preserveVectorData: Bool,
-        groupByFrame: Bool,
+        parameters: ImagesParameters,
         in assets: String?
     ) -> Promise<[ImageComponentSetAsset]> {
         assets.map { folderPath in
             imageAssetsProvider.saveImages(
                 nodes: nodes,
-                format: format,
-                preserveVectorData: preserveVectorData,
-                groupByFrame: groupByFrame,
+                parameters: parameters,
                 in: folderPath
             )
         } ?? .value([])
@@ -170,6 +166,7 @@ final class DefaultImagesProvider: ImagesProvider {
         groupByFrame: Bool,
         format: ImageFormat,
         postProcessor: String?,
+        namingStyle: ImageNamingStyle,
         in resources: String?
     ) -> Promise<[ImageRenderedNode: ImageResource]> {
         resources.map { folderPath in
@@ -178,6 +175,7 @@ final class DefaultImagesProvider: ImagesProvider {
                 groupByFrame: groupByFrame,
                 format: format,
                 postProcessor: postProcessor,
+                namingStyle: namingStyle,
                 in: folderPath
             )
         } ?? .value([:])
@@ -190,9 +188,7 @@ final class DefaultImagesProvider: ImagesProvider {
         when(
             fulfilled: self.saveAssetImagesIfNeeded(
                 nodes: nodes,
-                format: parameters.format,
-                preserveVectorData: parameters.preserveVectorData,
-                groupByFrame: parameters.groupByFrame,
+                parameters: parameters,
                 in: parameters.assets
             ),
             self.saveResourceImagesIfNeeded(
@@ -200,6 +196,7 @@ final class DefaultImagesProvider: ImagesProvider {
                 groupByFrame: parameters.groupByFrame,
                 format: parameters.format,
                 postProcessor: parameters.postProcessor,
+                namingStyle: parameters.namingStyle,
                 in: parameters.resources
             )
         )
