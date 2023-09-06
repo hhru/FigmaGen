@@ -1,6 +1,11 @@
 // swiftlint:disable all
 // Generated using FigmaGen - https://github.com/hhru/FigmaGen
-import CoreGraphics
+
+#if canImport(UIKit)
+import UIKit
+#else
+import AppKit
+#endif
 
 public struct SpacingTokens {
 
@@ -81,5 +86,47 @@ public struct SpacingTokens {
     /// Value: 80
     public var spacing10: CGFloat {
         80
+    }
+
+    /// spacing.xs
+    ///
+    /// Value: 4
+    public var spacingXs: CGFloat {
+        4
+    }
+
+    /// spacing.sm
+    ///
+    /// Value: 8
+    public var spacingSm: CGFloat {
+        8
+    }
+
+    /// spacing.md
+    ///
+    /// Value: 16
+    public var spacingMd: CGFloat {
+        16
+    }
+
+    /// spacing.lg
+    ///
+    /// Value: 32
+    public var spacingLg: CGFloat {
+        32
+    }
+
+    /// spacing.xl
+    ///
+    /// Value: 64
+    public var spacingXl: CGFloat {
+        64
+    }
+
+    /// spacing.multi-value
+    ///
+    /// Value: 8 64
+    public var spacingMultiValue: UIEdgeInsets {
+        UIEdgeInsets(top: 8, left: 64, bottom: 8, right: 64)
     }
 }
