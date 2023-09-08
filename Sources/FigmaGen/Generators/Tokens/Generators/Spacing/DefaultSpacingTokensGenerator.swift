@@ -30,12 +30,21 @@ final class DefaultSpacingTokensGenerator: SpacingTokensGenerator {
     // MARK: -
 
     func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws {
-        let spacings = try tokenValues.semantic.compactMap { try makeSpacingToken(from: $0, tokenValues: tokenValues) }
+        let coreSpacings = try tokenValues.core.compactMap { value in
+            try makeSpacingToken(from: value, tokenValues: tokenValues)
+        }
+
+        let semanticSpacings = try tokenValues.semantic.compactMap { value in
+            try makeSpacingToken(from: value, tokenValues: tokenValues)
+        }
 
         try templateRenderer.renderTemplate(
             renderParameters.template,
             to: renderParameters.destination,
-            context: ["spacings": spacings]
+            context: [
+                "coreSpacings": coreSpacings,
+                "semanticSpacings": semanticSpacings
+            ]
         )
     }
 }

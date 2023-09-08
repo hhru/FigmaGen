@@ -1,21 +1,47 @@
 {% include "FileHeader.stencil" %}
-{% if spacings %}
+{% if semanticSpacings or coreSpacings %}
 {% set accessModifier %}{% if options.publicAccess %}public{% else %}internal{% endif %}{% endset %}
 {% set tokenTypeName %}{{ options.tokenTypeName|default:"SpacingTokens" }}{% endset %}
+{% set edgeInsetsTypeName %}{{ options.edgeInsetsTypeName|default:"UIEdgeInsets" }}{% endset %}
 {% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
-import CoreGraphics
+{% macro spacingProperty spacing %}
+    /// {{ spacing.path|join:"." }}
+    ///
+    /// Value: {{ spacing.value }}
+    {% set values spacing.value|split:" " %}
+    {% if values.count == 1 %}
+    {{ accessModifier }} var {% call propertyName spacing.path|join:"_" %}: CGFloat {
+        {{ spacing.value }}
+    }
+    {% elif values.count > 1 %}
+    {{ accessModifier }} var {% call propertyName spacing.path|join:"_" %}: {{ edgeInsetsTypeName }} {
+        {% if values.count == 2 %}
+        {{ edgeInsetsTypeName }}(top: {{ values.0 }}, left: {{ values.1 }}, bottom: {{ values.0 }}, right: {{ values.1 }})
+        {% elif values.count == 3 %}
+        {{ edgeInsetsTypeName }}(top: {{ values.0 }}, left: {{ values.1 }}, bottom: {{ values.2 }}, right: {{ values.1 }})
+        {% elif values.count == 4 %}
+        {{ edgeInsetsTypeName }}(top: {{ values.0 }}, left: {{ values.3 }}, bottom: {{ values.2 }}, right: {{ values.1 }})
+        {% endif %}
+    }
+    {% endif %}
+{% endmacro %}
+
+#if canImport(UIKit)
+import UIKit
+#else
+import AppKit
+#endif
 
 {{ accessModifier }} struct {{ tokenTypeName }} {
 
     // MARK: - Instance Properties
-    {% for spacing in spacings %}
+    {% for spacing in semanticSpacings %}
 
-    /// {{ spacing.path|join:"." }}
-    ///
-    /// Value: {{ spacing.value }}
-    {{ accessModifier }} var {% call propertyName spacing.path|join:"_" %}: CGFloat {
-        {{ spacing.value }}
-    }
+    {% call spacingProperty spacing %}
+    {% endfor %}
+    {% for spacing in coreSpacings %}
+
+    {% call spacingProperty spacing %}
     {% endfor %}
 }
 {% else %}
