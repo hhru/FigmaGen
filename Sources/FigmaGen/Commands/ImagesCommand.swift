@@ -149,6 +149,14 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             """
     )
 
+    let renderAs = Key<String>(
+        "--renderAs",
+        description: """
+            Set rendering mode in Xcode assets, can be 'original' or 'template'.
+            By default, Xcode assets will be generated with default rendering mode.
+            """
+    )
+
     let groupByFrame = Flag(
         "--groupByFrame",
         description: """
@@ -210,6 +218,20 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             } ?? [.none]
     }
 
+    private func resolveRenderingMode() -> ImageRenderingMode? {
+        switch renderAs.value {
+        case nil:
+            return nil
+
+        case let rawRenderingMode?:
+            guard let mode = ImageRenderingMode(rawValue: rawRenderingMode) else {
+                fail(message: "Failed to generated images: Invalid rendering mode (\(rawRenderingMode)")
+            }
+
+            return mode
+        }
+    }
+
     private func resolveNamingStyle() -> ImageNamingStyle {
         switch namingStyle.value {
         case nil:
@@ -235,6 +257,7 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             onlyExportables: onlyExportables.value,
             useAbsoluteBounds: useAbsoluteBounds.value,
             preserveVectorData: preserveVectorData.value,
+            renderAs: resolveRenderingMode(),
             groupByFrame: groupByFrame.value,
             groupByComponentSet: groupByComponentSet.value,
             namingStyle: resolveNamingStyle()

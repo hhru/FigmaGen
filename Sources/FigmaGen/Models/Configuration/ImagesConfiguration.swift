@@ -13,6 +13,7 @@ struct ImagesConfiguration: Decodable {
         case onlyExportables
         case useAbsoluteBounds
         case preserveVectorData
+        case renderAs
         case groupByFrame
         case groupByComponentSet
         case namingStyle
@@ -29,6 +30,7 @@ struct ImagesConfiguration: Decodable {
     let onlyExportables: Bool
     let useAbsoluteBounds: Bool
     let preserveVectorData: Bool
+    let renderAs: ImageRenderingMode?
     let groupByFrame: Bool
     let groupByComponentSet: Bool
     let namingStyle: ImageNamingStyle
@@ -45,6 +47,7 @@ struct ImagesConfiguration: Decodable {
         onlyExportables: Bool,
         useAbsoluteBounds: Bool,
         preserveVectorData: Bool,
+        renderAs: ImageRenderingMode?,
         groupByFrame: Bool,
         groupByComponentSet: Bool,
         namingStyle: ImageNamingStyle
@@ -58,6 +61,7 @@ struct ImagesConfiguration: Decodable {
         self.onlyExportables = onlyExportables
         self.useAbsoluteBounds = useAbsoluteBounds
         self.preserveVectorData = preserveVectorData
+        self.renderAs = renderAs
         self.groupByFrame = groupByFrame
         self.groupByComponentSet = groupByComponentSet
         self.namingStyle = namingStyle
@@ -75,6 +79,7 @@ struct ImagesConfiguration: Decodable {
         onlyExportables = try container.decodeIfPresent(forKey: .onlyExportables) ?? false
         useAbsoluteBounds = try container.decodeIfPresent(forKey: .useAbsoluteBounds) ?? false
         preserveVectorData = try container.decodeIfPresent(forKey: .preserveVectorData) ?? false
+        renderAs = try container.decodeIfPresent(forKey: .renderAs)
         groupByFrame = try container.decodeIfPresent(forKey: .groupByFrame) ?? false
         groupByComponentSet = try container.decodeIfPresent(forKey: .groupByComponentSet) ?? false
         namingStyle = try container.decodeIfPresent(forKey: .namingStyle) ?? .camelCase
@@ -95,6 +100,7 @@ struct ImagesConfiguration: Decodable {
             onlyExportables: onlyExportables,
             useAbsoluteBounds: useAbsoluteBounds,
             preserveVectorData: preserveVectorData,
+            renderAs: renderAs,
             groupByFrame: groupByFrame,
             groupByComponentSet: groupByComponentSet,
             namingStyle: namingStyle

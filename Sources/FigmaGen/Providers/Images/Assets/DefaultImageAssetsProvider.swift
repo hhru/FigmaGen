@@ -57,7 +57,12 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
                 .string
         }
 
-        return ImageAsset(name: name, filePaths: filePaths, preserveVectorData: parameters.preserveVectorData)
+        return ImageAsset(
+            name: name,
+            filePaths: filePaths,
+            preserveVectorData: parameters.preserveVectorData,
+            renderAs: parameters.renderAs
+        )
     }
 
     private func makeAssets(
@@ -207,9 +212,22 @@ extension ImageScale {
 extension AssetImageProperties {
 
     fileprivate init?(from imageAsset: ImageAsset) {
-        guard imageAsset.preserveVectorData else {
-            return nil
+        self.init(
+            templateRenderingIntent: imageAsset.renderAs.map { AssetImageTemplateRenderingIntent(from: $0) },
+            preserveVectorRepresentation: imageAsset.preserveVectorData
+        )
+    }
+}
+
+extension AssetImageTemplateRenderingIntent {
+
+    fileprivate init(from renderingIntent: ImageRenderingMode) {
+        switch renderingIntent {
+        case .original:
+            self = .original
+
+        case .template:
+            self = .template
         }
-        self.init(preserveVectorRepresentation: imageAsset.preserveVectorData)
     }
 }
