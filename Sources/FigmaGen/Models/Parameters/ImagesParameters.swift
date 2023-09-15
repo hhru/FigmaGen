@@ -12,6 +12,7 @@ struct ImagesParameters {
     let onlyExportables: Bool
     let useAbsoluteBounds: Bool
     let preserveVectorData: Bool
+    let renderAs: ImageRenderingMode?
     let groupByFrame: Bool
     let groupByComponentSet: Bool
     let namingStyle: ImageNamingStyle

@@ -66,6 +66,7 @@ extension ImagesConfiguration {
             onlyExportables: onlyExportables,
             useAbsoluteBounds: useAbsoluteBounds,
             preserveVectorData: preserveVectorData,
+            renderAs: renderAs,
             groupByFrame: groupByFrame,
             groupByComponentSet: groupByComponentSet,
             namingStyle: namingStyle
