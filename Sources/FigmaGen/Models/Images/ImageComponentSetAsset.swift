@@ -7,8 +7,5 @@ struct ImageComponentSetAsset: Encodable, Hashable {
     let name: String
     let parentName: String?
     let assets: [ImageRenderedNode: ImageAsset]
-
-    var isSingleComponent: Bool {
-        assets.count == 1
-    }
+    let nodeType: ImageNodeType
 }

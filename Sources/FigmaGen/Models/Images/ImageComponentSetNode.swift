@@ -7,6 +7,7 @@ struct ImageComponentSetNode: Encodable, Hashable {
     let name: String
     let parentName: String?
     let components: [ImageNode]
+    let type: ImageNodeType
 
     // MARK: - Initializers
 
@@ -14,11 +15,13 @@ struct ImageComponentSetNode: Encodable, Hashable {
         self.name = name
         self.parentName = parentName
         self.components = components
+        self.type = .componentSet
     }
 
     init(name: String, parentName: String?, component: ImageNode) {
         self.name = name
         self.parentName = parentName
         self.components = [component]
+        self.type = .component
     }
 }

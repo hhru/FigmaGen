@@ -24,7 +24,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
         setNode: ImageComponentSetRenderedNode,
         namingStyle: ImageNamingStyle
     ) -> String {
-        let fileName = setNode.isSingleComponent ? node.base.name : "\(setNode.name) \(node.base.name)"
+        let fileName = setNode.type == .component ? node.base.name : "\(setNode.name) \(node.base.name)"
 
         switch namingStyle {
         case .camelCase:
