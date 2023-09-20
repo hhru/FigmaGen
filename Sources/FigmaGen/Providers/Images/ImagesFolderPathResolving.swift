@@ -50,7 +50,7 @@ extension ImagesFolderPathResolving {
             groupByFrame: groupByFrame,
             groupByComponentSet: groupByComponentSet,
             parentNodeName: setNode.parentName,
-            isSingleComponent: setNode.isSingleComponent,
+            isSingleComponent: setNode.type == .component,
             nodeName: setNode.name,
             folderPath: folderPath
         )
@@ -66,7 +66,7 @@ extension ImagesFolderPathResolving {
             groupByFrame: groupByFrame,
             groupByComponentSet: groupByComponentSet,
             parentNodeName: setAsset.parentName,
-            isSingleComponent: setAsset.isSingleComponent,
+            isSingleComponent: setAsset.nodeType == .component,
             nodeName: setAsset.name,
             folderPath: folderPath
         )

@@ -24,7 +24,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
         setNode: ImageComponentSetRenderedNode,
         namingStyle: ImageNamingStyle
     ) -> String {
-        let name = setNode.isSingleComponent ? node.base.name : "\(setNode.name) \(node.base.name)"
+        let name = setNode.type == .component ? node.base.name : "\(setNode.name) \(node.base.name)"
 
         switch namingStyle {
         case .camelCase:
@@ -85,7 +85,8 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
             return ImageComponentSetAsset(
                 name: setNode.name,
                 parentName: setNode.parentName,
-                assets: assets
+                assets: assets,
+                nodeType: setNode.type
             )
         }
     }
