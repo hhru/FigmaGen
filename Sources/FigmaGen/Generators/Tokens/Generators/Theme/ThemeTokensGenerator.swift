@@ -1,5 +1,4 @@
 import Foundation
 
-protocol ThemeTokensGenerator : BaseTokenGenerator {
-
+protocol ThemeTokensGenerator: BaseTokenGenerator {
 }

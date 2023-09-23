@@ -1,5 +1,4 @@
 import Foundation
 
-protocol BoxShadowTokensGenerator : BaseTokenGenerator {
-
+protocol BoxShadowTokensGenerator: BaseTokenGenerator {
 }

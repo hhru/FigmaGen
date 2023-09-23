@@ -1,5 +1,4 @@
 import Foundation
 
-protocol SpacingTokensGenerator : BaseTokenGenerator {
-
+protocol SpacingTokensGenerator: BaseTokenGenerator {
 }
