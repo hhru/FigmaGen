@@ -59,6 +59,31 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
         return RenderParameters(template: template, destination: destination)
     }
 
+    private func resolveRenderParameters(
+        templates: [TokensTemplateConfiguration.Template]?,
+        nativeTemplateName: String
+    ) -> [RenderParameters]? {
+        guard let templateConfigurations = templates else {
+            return nil
+        }
+
+        return templateConfigurations.map { template -> RenderParameters in
+            let templateType = resolveTemplateType(
+                template: template,
+                nativeTemplateName: nativeTemplateName
+            )
+
+            let destination = resolveDestination(template: template)
+
+            let template = RenderTemplate(
+                type: templateType,
+                options: template.templateOptions ?? [:]
+            )
+
+            return RenderParameters(template: template, destination: destination)
+        }
+    }
+
     // MARK: -
 
     // swiftlint:disable:next function_body_length
@@ -107,8 +132,8 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             nativeTemplateName: "Theme"
         )
 
-        let spacingRender = resolveRenderParameters(
-            template: configuration.templates?.spacing,
+        let spacingRenderParameters = resolveRenderParameters(
+            templates: configuration.templates?.spacing,
             nativeTemplateName: "SpacingTokens"
         )
 
@@ -121,7 +146,7 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
                 typographyRender: typographyRender,
                 boxShadowRender: boxShadowRender,
                 themeRender: themeRender,
-                spacingRender: spacingRender
+                spacingRenderParameters: spacingRenderParameters
             )
         )
     }

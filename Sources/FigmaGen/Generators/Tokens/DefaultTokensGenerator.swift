@@ -55,11 +55,13 @@ final class DefaultTokensGenerator: TokensGenerator {
     }
 
     private func generateSpacingTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
-        if let spacingRenderParameters = parameters.tokens.spacingRender {
-            try spacingTokensGenerator.generate(
-                renderParameters: spacingRenderParameters,
-                tokenValues: tokenValues
-            )
+        if let spacingRenderParameters = parameters.tokens.spacingRenderParameters {
+            for renderParameters in spacingRenderParameters {
+                try spacingTokensGenerator.generate(
+                    renderParameters: renderParameters,
+                    tokenValues: tokenValues
+                )
+            }
         }
     }
 

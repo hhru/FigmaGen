@@ -258,11 +258,13 @@ extension TokensCommand {
                     templateOptions: resolveTemplateOptions(themeTemplateOptions.value),
                     destination: themeDestination.value
                 ),
-                spacing: TokensTemplateConfiguration.Template(
-                    template: spacingTemplate.value,
-                    templateOptions: resolveTemplateOptions(spacingTemplateOptions.value),
-                    destination: spacingDestination.value
-                )
+                spacing: [
+                    TokensTemplateConfiguration.Template(
+                        template: spacingTemplate.value,
+                        templateOptions: resolveTemplateOptions(spacingTemplateOptions.value),
+                        destination: spacingDestination.value
+                    )
+                ]
             )
         )
     }
