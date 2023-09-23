@@ -1,8 +1,5 @@
 import Foundation
 
-protocol FontFamilyTokensGenerator {
+protocol FontFamilyTokensGenerator : BaseTokenGenerator {
 
-    // MARK: - Instance Methods
-
-    func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws
 }

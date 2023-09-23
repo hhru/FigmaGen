@@ -1,8 +1,5 @@
 import Foundation
 
-protocol ThemeTokensGenerator {
+protocol ThemeTokensGenerator : BaseTokenGenerator {
 
-    // MARK: - Instance Methods
-
-    func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws
 }

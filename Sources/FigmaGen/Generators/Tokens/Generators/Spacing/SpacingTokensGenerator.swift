@@ -1,8 +1,5 @@
 import Foundation
 
-protocol SpacingTokensGenerator {
+protocol SpacingTokensGenerator : BaseTokenGenerator {
 
-    // MARK: - Instance Methods
-
-    func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws
 }

@@ -1,8 +1,5 @@
 import Foundation
 
-protocol ColorTokensGenerator {
+protocol ColorTokensGenerator : BaseTokenGenerator {
 
-    // MARK: - Instance Methods
-
-    func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws
 }
