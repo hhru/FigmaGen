@@ -28,12 +28,12 @@ struct TokensTemplateConfiguration: Decodable {
 
     // MARK: - Instance Properties
 
-    let colors: Template?
-    let baseColors: Template?
-    let fontFamilies: Template?
-    let typographies: Template?
-    let boxShadows: Template?
-    let theme: Template?
+    let colors: [Template]?
+    let baseColors: [Template]?
+    let fontFamilies: [Template]?
+    let typographies: [Template]?
+    let boxShadows: [Template]?
+    let theme: [Template]?
     let spacing: [Template]?
 }
 

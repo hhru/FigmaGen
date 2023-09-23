@@ -223,41 +223,55 @@ extension TokensCommand {
 
     // MARK: - Instance Properties
 
+    // !!! Important note !!!
+    // For CLI usage of FigmaGen we don't support multiple templates for any token type.
     var configuration: TokensConfiguration {
         TokensConfiguration(
             file: resolveFileConfiguration(),
             accessToken: resolveAccessTokenConfiguration(),
             templates: TokensTemplateConfiguration(
-                colors: TokensTemplateConfiguration.Template(
-                    template: colorsTemplate.value,
-                    templateOptions: resolveTemplateOptions(colorsTemplateOptions.value),
-                    destination: colorsDestination.value
-                ),
-                baseColors: TokensTemplateConfiguration.Template(
-                    template: baseColorsTemplate.value,
-                    templateOptions: resolveTemplateOptions(baseColorsTemplateOptions.value),
-                    destination: baseColorsDestination.value
-                ),
-                fontFamilies: TokensTemplateConfiguration.Template(
-                    template: fontFamiliesTemplate.value,
-                    templateOptions: resolveTemplateOptions(fontFamiliesTemplateOptions.value),
-                    destination: fontFamiliesDestination.value
-                ),
-                typographies: TokensTemplateConfiguration.Template(
-                    template: typographiesTemplate.value,
-                    templateOptions: resolveTemplateOptions(typographiesTemplateOptions.value),
-                    destination: typographiesDestination.value
-                ),
-                boxShadows: TokensTemplateConfiguration.Template(
-                    template: boxShadowsTemplate.value,
-                    templateOptions: resolveTemplateOptions(boxShadowsTemplateOptions.value),
-                    destination: boxShadowsDestination.value
-                ),
-                theme: TokensTemplateConfiguration.Template(
-                    template: themeTemplate.value,
-                    templateOptions: resolveTemplateOptions(themeTemplateOptions.value),
-                    destination: themeDestination.value
-                ),
+                colors: [
+                    TokensTemplateConfiguration.Template(
+                        template: colorsTemplate.value,
+                        templateOptions: resolveTemplateOptions(colorsTemplateOptions.value),
+                        destination: colorsDestination.value
+                    )
+                ],
+                baseColors: [
+                    TokensTemplateConfiguration.Template(
+                        template: baseColorsTemplate.value,
+                        templateOptions: resolveTemplateOptions(baseColorsTemplateOptions.value),
+                        destination: baseColorsDestination.value
+                    )
+                ],
+                fontFamilies: [
+                    TokensTemplateConfiguration.Template(
+                        template: fontFamiliesTemplate.value,
+                        templateOptions: resolveTemplateOptions(fontFamiliesTemplateOptions.value),
+                        destination: fontFamiliesDestination.value
+                    )
+                ],
+                typographies: [
+                    TokensTemplateConfiguration.Template(
+                        template: typographiesTemplate.value,
+                        templateOptions: resolveTemplateOptions(typographiesTemplateOptions.value),
+                        destination: typographiesDestination.value
+                    )
+                ],
+                boxShadows: [
+                    TokensTemplateConfiguration.Template(
+                        template: boxShadowsTemplate.value,
+                        templateOptions: resolveTemplateOptions(boxShadowsTemplateOptions.value),
+                        destination: boxShadowsDestination.value
+                    )
+                ],
+                theme: [
+                    TokensTemplateConfiguration.Template(
+                        template: themeTemplate.value,
+                        templateOptions: resolveTemplateOptions(themeTemplateOptions.value),
+                        destination: themeDestination.value
+                    )
+                ],
                 spacing: [
                     TokensTemplateConfiguration.Template(
                         template: spacingTemplate.value,
