@@ -8,5 +8,8 @@
   "info" : {
     "version" : 1,
     "author" : "FigmaGen"
+  },
+  "properties" : {
+    "preserves-vector-representation" : false
   }
 }
