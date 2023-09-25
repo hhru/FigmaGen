@@ -45,29 +45,29 @@ tokens:
         templateOptions:
           publicAccess: true
     baseColors:
-      - destination: FigmaGenDemo/Generated/BaseColorTokens.swift
-        templateOptions:
-          publicAccess: true
+      destination: FigmaGenDemo/Generated/BaseColorTokens.swift
+      templateOptions:
+        publicAccess: true
     fontFamilies:
-      - destination: FigmaGenDemo/Generated/FontFamilyTokens.swift
-        templateOptions:
-          publicAccess: true
+      destination: FigmaGenDemo/Generated/FontFamilyTokens.swift
+      templateOptions:
+        publicAccess: true
     typographies:
-      - destination: FigmaGenDemo/Generated/TypographyTokens.swift
-        templateOptions:
-          publicAccess: true
-          styleTypeName: Typography
+      destination: FigmaGenDemo/Generated/TypographyTokens.swift
+      templateOptions:
+        publicAccess: true
+        styleTypeName: Typography
     boxShadows:
-      - destination: FigmaGenDemo/Generated/BoxShadowTokens.swift
-        templateOptions:
-          publicAccess: true
-          shadowTypeName: ShadowToken
+      destination: FigmaGenDemo/Generated/BoxShadowTokens.swift
+      templateOptions:
+        publicAccess: true
+        shadowTypeName: ShadowToken
     spacing:
-      - destination: FigmaGenDemo/Generated/SpacingTokens.swift
-        templateOptions:
-          publicAccess: true
+      destination: FigmaGenDemo/Generated/SpacingTokens.swift
+      templateOptions:
+        publicAccess: true
     theme:
-      - destination: FigmaGenDemo/Generated/Theme.swift
-        templateOptions:
-          publicAccess: true
-          shadowTypeName: ShadowToken
+      destination: FigmaGenDemo/Generated/Theme.swift
+      templateOptions:
+        publicAccess: true
+        shadowTypeName: ShadowToken
