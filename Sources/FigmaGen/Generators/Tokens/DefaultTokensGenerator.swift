@@ -55,65 +55,73 @@ final class DefaultTokensGenerator: TokensGenerator {
     }
 
     private func generateSpacingTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
-        if let spacingRenderParameters = parameters.tokens.spacingRender {
-            try spacingTokensGenerator.generate(
-                renderParameters: spacingRenderParameters,
-                tokenValues: tokenValues
-            )
-        }
+        try generateTokens(
+            spacingTokensGenerator,
+            renderParameters: parameters.tokens.spacingRenderParameters,
+            tokenValues: tokenValues
+        )
     }
 
     private func generateThemeTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
-        if let themeRenderParameters = parameters.tokens.themeRender {
-            try themeTokensGenerator.generate(
-                renderParameters: themeRenderParameters,
-                tokenValues: tokenValues
-            )
-        }
+        try generateTokens(
+            themeTokensGenerator,
+            renderParameters: parameters.tokens.themeRenderParameters,
+            tokenValues: tokenValues
+        )
     }
 
     private func generateBoxShadowTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
-        if let boxShadowRenderParameters = parameters.tokens.boxShadowRender {
-            try boxShadowTokensGenerator.generate(
-                renderParameters: boxShadowRenderParameters,
-                tokenValues: tokenValues
-            )
-        }
+        try generateTokens(
+            boxShadowTokensGenerator,
+            renderParameters: parameters.tokens.boxShadowRenderParameters,
+            tokenValues: tokenValues
+        )
     }
 
     private func generateTypographyTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
-        if let typographyRenderParameters = parameters.tokens.typographyRender {
-            try typographyTokensGenerator.generate(
-                renderParameters: typographyRenderParameters,
-                tokenValues: tokenValues
-            )
-        }
+        try generateTokens(
+            typographyTokensGenerator,
+            renderParameters: parameters.tokens.typographyRenderParameters,
+            tokenValues: tokenValues
+        )
     }
 
     private func generateFontFamilyTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
-        if let fontFamilyRenderParameters = parameters.tokens.fontFamilyRender {
-            try fontFamilyTokensGenerator.generate(
-                renderParameters: fontFamilyRenderParameters,
-                tokenValues: tokenValues
-            )
-        }
+        try generateTokens(
+            fontFamilyTokensGenerator,
+            renderParameters: parameters.tokens.fontFamilyRenderParameters,
+            tokenValues: tokenValues
+        )
     }
 
     private func generateBaseColorsTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
-        if let baseColorRenderParameters = parameters.tokens.baseColorRender {
-            try baseColorTokensGenerator.generate(
-                renderParameters: baseColorRenderParameters,
-                tokenValues: tokenValues
-            )
-        }
+        try generateTokens(
+            baseColorTokensGenerator,
+            renderParameters: parameters.tokens.baseColorRenderParameters,
+            tokenValues: tokenValues
+        )
     }
 
     private func generateColorsTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
-        if let colorRenderParameters = parameters.tokens.colorRender {
-            try colorTokensGenerator.generate(
-                renderParameters: colorRenderParameters,
-                tokenValues: tokenValues
-            )
+        try generateTokens(
+            colorTokensGenerator,
+            renderParameters: parameters.tokens.colorRenderParameters,
+            tokenValues: tokenValues
+        )
+    }
+
+    private func generateTokens(
+        _ generator: BaseTokenGenerator,
+        renderParameters: [RenderParameters]?,
+        tokenValues: TokenValues
+    ) throws {
+        if let renderParametersList = renderParameters {
+            for params in renderParametersList {
+                try generator.generate(
+                    renderParameters: params,
+                    tokenValues: tokenValues
+                )
+            }
         }
     }
 

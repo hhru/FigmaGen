@@ -41,9 +41,9 @@ tokens:
   file: https://www.figma.com/file/W6dy4CFSZWUVpVnSzNZIxA/FigmaGen-Tokens-Demo
   templates:
     colors:
-      destination: FigmaGenDemo/Generated/ColorTokens.swift
-      templateOptions:
-        publicAccess: true
+      - destination: FigmaGenDemo/Generated/ColorTokens.swift
+        templateOptions:
+          publicAccess: true
     baseColors:
       destination: FigmaGenDemo/Generated/BaseColorTokens.swift
       templateOptions:

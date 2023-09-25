@@ -37,26 +37,28 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
     }
 
     private func resolveRenderParameters(
-        template: TokensTemplateConfiguration.Template?,
+        templates: [TokensTemplateConfiguration.Template]?,
         nativeTemplateName: String
-    ) -> RenderParameters? {
-        guard let templateConfiguration = template else {
+    ) -> [RenderParameters]? {
+        guard let templateConfigurations = templates else {
             return nil
         }
 
-        let templateType = resolveTemplateType(
-            template: templateConfiguration,
-            nativeTemplateName: nativeTemplateName
-        )
+        return templateConfigurations.map { template -> RenderParameters in
+            let templateType = resolveTemplateType(
+                template: template,
+                nativeTemplateName: nativeTemplateName
+            )
 
-        let destination = resolveDestination(template: templateConfiguration)
+            let destination = resolveDestination(template: template)
 
-        let template = RenderTemplate(
-            type: templateType,
-            options: templateConfiguration.templateOptions ?? [:]
-        )
+            let template = RenderTemplate(
+                type: templateType,
+                options: template.templateOptions ?? [:]
+            )
 
-        return RenderParameters(template: template, destination: destination)
+            return RenderParameters(template: template, destination: destination)
+        }
     }
 
     // MARK: -
@@ -77,51 +79,51 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             accessToken: accessToken
         )
 
-        let colorRender = resolveRenderParameters(
-            template: configuration.templates?.colors,
+        let colorRenderParameters = resolveRenderParameters(
+            templates: configuration.templates?.colors,
             nativeTemplateName: "ColorTokens"
         )
 
-        let baseColorRender = resolveRenderParameters(
-            template: configuration.templates?.baseColors,
+        let baseColorRenderParameters = resolveRenderParameters(
+            templates: configuration.templates?.baseColors,
             nativeTemplateName: "BaseColorTokens"
         )
 
-        let fontFamilyRender = resolveRenderParameters(
-            template: configuration.templates?.fontFamilies,
+        let fontFamilyRenderParameters = resolveRenderParameters(
+            templates: configuration.templates?.fontFamilies,
             nativeTemplateName: "FontFamilyTokens"
         )
 
-        let typographyRender = resolveRenderParameters(
-            template: configuration.templates?.typographies,
+        let typographyRenderParameters = resolveRenderParameters(
+            templates: configuration.templates?.typographies,
             nativeTemplateName: "TypographyTokens"
         )
 
-        let boxShadowRender = resolveRenderParameters(
-            template: configuration.templates?.boxShadows,
+        let boxShadowRenderParameters = resolveRenderParameters(
+            templates: configuration.templates?.boxShadows,
             nativeTemplateName: "BoxShadowTokens"
         )
 
-        let themeRender = resolveRenderParameters(
-            template: configuration.templates?.theme,
+        let themeRenderParameters = resolveRenderParameters(
+            templates: configuration.templates?.theme,
             nativeTemplateName: "Theme"
         )
 
-        let spacingRender = resolveRenderParameters(
-            template: configuration.templates?.spacing,
+        let spacingRenderParameters = resolveRenderParameters(
+            templates: configuration.templates?.spacing,
             nativeTemplateName: "SpacingTokens"
         )
 
         return TokensGenerationParameters(
             file: file,
             tokens: TokensGenerationParameters.TokensParameters(
-                colorRender: colorRender,
-                baseColorRender: baseColorRender,
-                fontFamilyRender: fontFamilyRender,
-                typographyRender: typographyRender,
-                boxShadowRender: boxShadowRender,
-                themeRender: themeRender,
-                spacingRender: spacingRender
+                colorRenderParameters: colorRenderParameters,
+                baseColorRenderParameters: baseColorRenderParameters,
+                fontFamilyRenderParameters: fontFamilyRenderParameters,
+                typographyRenderParameters: typographyRenderParameters,
+                boxShadowRenderParameters: boxShadowRenderParameters,
+                themeRenderParameters: themeRenderParameters,
+                spacingRenderParameters: spacingRenderParameters
             )
         )
     }
