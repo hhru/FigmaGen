@@ -15,7 +15,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
     // MARK: - Instance Methods
 
     private func fallbackWarning(tokenName: String) {
-        print("[⚠️] Night value for token '\(tokenName)' not found, using day value.")
+        logger.warning("Night value for token '\(tokenName)' not found, using day value.")
     }
 
     private func resolveNightValue(

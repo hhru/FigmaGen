@@ -35,6 +35,7 @@ extension TokenValue: Decodable {
         case textCase
         case textDecoration
         case typography
+        case unknown
     }
 
     fileprivate enum CodingKeys: String, CodingKey {
@@ -51,7 +52,8 @@ extension TokenValue: Decodable {
 
         self.name = try container.decode(forKey: .name)
 
-        let rawType = try container.decode(RawType.self, forKey: .type)
+        let rawTypeValue = try container.decode(String.self, forKey: .type)
+        let rawType = RawType(rawValue: rawTypeValue) ?? .unknown
 
         switch rawType {
         case .a11yScales:
@@ -113,6 +115,9 @@ extension TokenValue: Decodable {
 
         case .typography:
             self.type = .typography(value: try container.decode(forKey: .value))
+
+        case .unknown:
+            self.type = .unknown
         }
     }
 }
@@ -189,6 +194,9 @@ extension TokenValue: Encodable {
 
         case let .typography(value):
             try container.encode(value, forKey: .value)
+
+        case .unknown:
+            try container.encodeNil(forKey: .value)
         }
     }
 }
