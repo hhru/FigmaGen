@@ -24,6 +24,7 @@ enum TokenValueType: Hashable {
     case textCase(value: String)
     case textDecoration(value: String)
     case typography(value: TokenTypographyValue)
+    case unknown
 
     // MARK: - Instance Properties
 
@@ -48,7 +49,7 @@ enum TokenValueType: Hashable {
              let .textDecoration(value):
             return value
 
-        case .animation, .boxShadow, .typography:
+        case .animation, .boxShadow, .typography, .unknown:
             return nil
         }
     }
