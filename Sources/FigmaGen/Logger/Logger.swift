@@ -66,11 +66,11 @@ struct Logger {
 
 // MARK: -
 
-private extension Sequence {
+extension Sequence {
 
     // MARK: - Instance Methods
 
-    func joinedDescription(separator: String) -> String {
+    fileprivate func joinedDescription(separator: String) -> String {
         map { "\($0)" }.joined(separator: separator)
     }
 }
