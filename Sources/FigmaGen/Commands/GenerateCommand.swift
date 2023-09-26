@@ -18,6 +18,14 @@ final class GenerateCommand: AsyncExecutableCommand {
             """
     )
 
+    let verbose = Flag(
+        "--verbose",
+        description: """
+            Enable verbose logging for debuging.
+            By default is disabled.
+            """
+    )
+
     let generator: LibraryGenerator
 
     // MARK: - Initializers
@@ -29,6 +37,10 @@ final class GenerateCommand: AsyncExecutableCommand {
     // MARK: - Instance Methods
 
     func executeAsyncAndExit() throws {
+        if verbose.value {
+            setenv(Logger.verboseLogKey, "YES", 1)
+        }
+
         let configurationPath = self.configurationPath.value ?? .defaultConfigurationPath
 
         firstly {

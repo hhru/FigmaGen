@@ -7,6 +7,7 @@ Path.current = Path(#file).appending("../../../Demo")
 #endif
 
 let version = "2.0.0-beta.11"
+let logger = Logger()
 
 let figmagen = CLI(
     name: "figmagen",
