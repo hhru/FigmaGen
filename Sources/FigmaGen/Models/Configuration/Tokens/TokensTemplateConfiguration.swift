@@ -79,13 +79,13 @@ extension TokensTemplateConfiguration: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.colors = try container.decode(TemplateWrapper.self, forKey: .colors).templates
-        self.baseColors = try container.decode(TemplateWrapper.self, forKey: .baseColors).templates
-        self.fontFamilies = try container.decode(TemplateWrapper.self, forKey: .fontFamilies).templates
-        self.typographies = try container.decode(TemplateWrapper.self, forKey: .typographies).templates
-        self.boxShadows = try container.decode(TemplateWrapper.self, forKey: .boxShadows).templates
-        self.theme = try container.decode(TemplateWrapper.self, forKey: .theme).templates
-        self.spacing = try container.decode(TemplateWrapper.self, forKey: .spacing).templates
+        self.colors = try container.decodeIfPresent(TemplateWrapper.self, forKey: .colors)?.templates
+        self.baseColors = try container.decodeIfPresent(TemplateWrapper.self, forKey: .baseColors)?.templates
+        self.fontFamilies = try container.decodeIfPresent(TemplateWrapper.self, forKey: .fontFamilies)?.templates
+        self.typographies = try container.decodeIfPresent(TemplateWrapper.self, forKey: .typographies)?.templates
+        self.boxShadows = try container.decodeIfPresent(TemplateWrapper.self, forKey: .boxShadows)?.templates
+        self.theme = try container.decodeIfPresent(TemplateWrapper.self, forKey: .theme)?.templates
+        self.spacing = try container.decodeIfPresent(TemplateWrapper.self, forKey: .spacing)?.templates
     }
 }
 
