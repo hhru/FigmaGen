@@ -1,6 +1,6 @@
 import Foundation
 
-struct Template {
+struct TemplateConfiguration {
 
     // MARK: - Instance Properties
 
@@ -23,7 +23,7 @@ struct Template {
 
 // MARK: - Decodable
 
-extension Template: Decodable {
+extension TemplateConfiguration: Decodable {
 
     // MARK: - Nested Types
 

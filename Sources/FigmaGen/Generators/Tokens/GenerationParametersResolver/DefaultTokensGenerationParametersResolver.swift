@@ -18,7 +18,7 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
     }
 
     private func resolveTemplateType(
-        template: Template,
+        template: TemplateConfiguration,
         nativeTemplateName: String
     ) -> RenderTemplateType {
         if let templatePath = template.template {
@@ -28,7 +28,7 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
         return .native(name: nativeTemplateName)
     }
 
-    private func resolveDestination(template: Template) -> RenderDestination {
+    private func resolveDestination(template: TemplateConfiguration) -> RenderDestination {
         if let destinationPath = template.destination {
             return .file(path: destinationPath)
         }
@@ -37,7 +37,7 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
     }
 
     private func resolveRenderParameters(
-        templates: [Template]?,
+        templates: [TemplateConfiguration]?,
         nativeTemplateName: String
     ) -> [RenderParameters]? {
         guard let templateConfigurations = templates else {

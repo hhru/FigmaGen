@@ -1,10 +1,10 @@
 import Foundation
 
-struct TemplateWrapper: Decodable {
+struct TemplateConfigurationWrapper: Decodable {
 
     // MARK: - Instance Properties
 
-    let templates: [Template]?
+    let templates: [TemplateConfiguration]?
 
     // MARK: - Initializers
 
@@ -13,10 +13,10 @@ struct TemplateWrapper: Decodable {
 
         if container.decodeNil() {
             self.templates = nil
-        } else if let singleValue = try? container.decode(Template.self) {
+        } else if let singleValue = try? container.decode(TemplateConfiguration.self) {
             self.templates = [singleValue]
         } else {
-            self.templates = try container.decode([Template].self)
+            self.templates = try container.decode([TemplateConfiguration].self)
         }
     }
 }

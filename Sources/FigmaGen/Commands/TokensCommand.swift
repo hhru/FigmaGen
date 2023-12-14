@@ -231,49 +231,49 @@ extension TokensCommand {
             accessToken: resolveAccessTokenConfiguration(),
             templates: TokensTemplateConfiguration(
                 colors: [
-                    Template(
+                    TemplateConfiguration(
                         template: colorsTemplate.value,
                         templateOptions: resolveTemplateOptions(colorsTemplateOptions.value),
                         destination: colorsDestination.value
                     )
                 ],
                 baseColors: [
-                    Template(
+                    TemplateConfiguration(
                         template: baseColorsTemplate.value,
                         templateOptions: resolveTemplateOptions(baseColorsTemplateOptions.value),
                         destination: baseColorsDestination.value
                     )
                 ],
                 fontFamilies: [
-                    Template(
+                    TemplateConfiguration(
                         template: fontFamiliesTemplate.value,
                         templateOptions: resolveTemplateOptions(fontFamiliesTemplateOptions.value),
                         destination: fontFamiliesDestination.value
                     )
                 ],
                 typographies: [
-                    Template(
+                    TemplateConfiguration(
                         template: typographiesTemplate.value,
                         templateOptions: resolveTemplateOptions(typographiesTemplateOptions.value),
                         destination: typographiesDestination.value
                     )
                 ],
                 boxShadows: [
-                    Template(
+                    TemplateConfiguration(
                         template: boxShadowsTemplate.value,
                         templateOptions: resolveTemplateOptions(boxShadowsTemplateOptions.value),
                         destination: boxShadowsDestination.value
                     )
                 ],
                 theme: [
-                    Template(
+                    TemplateConfiguration(
                         template: themeTemplate.value,
                         templateOptions: resolveTemplateOptions(themeTemplateOptions.value),
                         destination: themeDestination.value
                     )
                 ],
                 spacing: [
-                    Template(
+                    TemplateConfiguration(
                         template: spacingTemplate.value,
                         templateOptions: resolveTemplateOptions(spacingTemplateOptions.value),
                         destination: spacingDestination.value
