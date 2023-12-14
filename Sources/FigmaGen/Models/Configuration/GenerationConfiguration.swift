@@ -9,11 +9,6 @@ struct GenerationConfiguration: Decodable {
         case file
         case accessToken
         case templates
-
-        // TODO [MOB-35468] Remove template, templateOptions, destination
-        case template
-        case templateOptions
-        case destination
     }
 
     // MARK: - Instance Properties
@@ -22,30 +17,16 @@ struct GenerationConfiguration: Decodable {
     let accessToken: AccessTokenConfiguration?
     let templates: [TemplateConfiguration]?
 
-    // TODO [MOB-35468] Remove template, templateOptions, destination
-    let template: String?
-    let templateOptions: [String: Any]?
-    let destination: String?
-
     // MARK: - Initializers
 
     init(
         file: FileConfiguration?,
         accessToken: AccessTokenConfiguration?,
-        templates: [TemplateConfiguration]?,
-        // TODO [MOB-35468] Remove template, templateOptions, destination
-        template: String?,
-        templateOptions: [String: Any]?,
-        destination: String?
+        templates: [TemplateConfiguration]?
     ) {
         self.file = file
         self.accessToken = accessToken
         self.templates = templates
-
-        // TODO [MOB-35468] Remove template, templateOptions, destination
-        self.template = template
-        self.templateOptions = templateOptions
-        self.destination = destination
     }
 
     init(from decoder: Decoder) throws {
@@ -57,15 +38,6 @@ struct GenerationConfiguration: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         templates = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .templates)?.templates
-
-        // TODO [MOB-35468] Remove template, templateOptions, destination
-        template = try container.decodeIfPresent(forKey: .template)
-
-        templateOptions = try container
-            .decodeIfPresent([String: AnyCodable].self, forKey: .templateOptions)?
-            .mapValues { $0.value }
-
-        destination = try container.decodeIfPresent(forKey: .destination)
     }
 
     // MARK: - Instance Methods
@@ -78,11 +50,7 @@ struct GenerationConfiguration: Decodable {
         return Self(
             file: file ?? base.file,
             accessToken: accessToken ?? base.accessToken,
-            templates: templates,
-            // TODO [MOB-35468] Remove template, templateOptions, destination
-            template: template,
-            templateOptions: templateOptions,
-            destination: destination
+            templates: templates
         )
     }
 }

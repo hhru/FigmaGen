@@ -23,6 +23,8 @@ extension GenerationConfigurableCommand {
 
     // MARK: - Instance Properties
 
+    // !!! Important note !!!
+    // For CLI usage of FigmaGen we don't support multiple templates for any token type.
     var generationConfiguration: GenerationConfiguration {
         GenerationConfiguration(
             file: resolveFileConfiguration(),
@@ -33,10 +35,7 @@ extension GenerationConfigurableCommand {
                     templateOptions: resolveTemplateOptions(),
                     destination: destination.value
                 )
-            ],
-            template: template.value,
-            templateOptions: resolveTemplateOptions(),
-            destination: destination.value
+            ]
         )
     }
 
