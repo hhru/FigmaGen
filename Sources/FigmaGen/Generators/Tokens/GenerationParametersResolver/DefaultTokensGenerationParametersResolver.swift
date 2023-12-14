@@ -5,26 +5,16 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
     // MARK: - Instance Properties
 
     let renderParametersResolver: RenderParametersResolver
+    let accessTokenResolver: AccessTokenResolver
 
     // MARK: - Initializers
 
-    init(renderParametersResolver: RenderParametersResolver) {
+    init(
+        renderParametersResolver: RenderParametersResolver,
+        accessTokenResolver: AccessTokenResolver
+    ) {
         self.renderParametersResolver = renderParametersResolver
-    }
-
-    // MARK: - Instance Methods
-
-    private func resolveAccessToken(configuration: TokensConfiguration) -> String? {
-        switch configuration.accessToken {
-        case let .value(accessToken):
-            return accessToken
-
-        case let .environmentVariable(environmentVariable):
-            return ProcessInfo.processInfo.environment[environmentVariable]
-
-        case nil:
-            return nil
-        }
+        self.accessTokenResolver = accessTokenResolver
     }
 
     // MARK: -
@@ -35,7 +25,7 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             throw GenerationParametersError.invalidFileConfiguration
         }
 
-        guard let accessToken = resolveAccessToken(configuration: configuration) else {
+        guard let accessToken = accessTokenResolver.resolveAccessToken(from: configuration.accessToken) else {
             throw GenerationParametersError.invalidAccessToken
         }
 

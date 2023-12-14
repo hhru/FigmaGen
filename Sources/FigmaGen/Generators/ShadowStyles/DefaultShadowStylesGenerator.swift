@@ -8,15 +8,21 @@ final class DefaultShadowStylesGenerator: ShadowStylesGenerator, GenerationParam
 
     let shadowStylesProvider: ShadowStylesProvider
     let templateRenderer: TemplateRenderer
+    let accessTokenResolver: AccessTokenResolver
 
     let defaultTemplateType: RenderTemplateType = .native(name: "ShadowStyles")
     let defaultDestination: RenderDestination = .console
 
     // MARK: - Initializers
 
-    init(shadowStylesProvider: ShadowStylesProvider, templateRenderer: TemplateRenderer) {
+    init(
+        shadowStylesProvider: ShadowStylesProvider,
+        templateRenderer: TemplateRenderer,
+        accessTokenResolver: AccessTokenResolver
+    ) {
         self.shadowStylesProvider = shadowStylesProvider
         self.templateRenderer = templateRenderer
+        self.accessTokenResolver = accessTokenResolver
     }
 
     // MARK: - Instance Methods

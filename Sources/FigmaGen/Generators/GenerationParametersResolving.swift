@@ -4,6 +4,10 @@ protocol GenerationParametersResolving {
 
     // MARK: - Instance Properties
 
+    let accessTokenResolver: AccessTokenResolver
+
+    // MARK: - Instance Properties
+
     var defaultTemplateType: RenderTemplateType { get }
     var defaultDestination: RenderDestination { get }
 
@@ -15,19 +19,6 @@ protocol GenerationParametersResolving {
 extension GenerationParametersResolving {
 
     // MARK: - Instance Methods
-
-    private func resolveAccessToken(configuration: GenerationConfiguration) -> String? {
-        switch configuration.accessToken {
-        case let .value(accessToken):
-            return accessToken
-
-        case let .environmentVariable(environmentVariable):
-            return ProcessInfo.processInfo.environment[environmentVariable]
-
-        case nil:
-            return nil
-        }
-    }
 
     private func resolveTemplateType(configuration: GenerationConfiguration) -> RenderTemplateType {
         if let templatePath = configuration.template {
@@ -52,7 +43,9 @@ extension GenerationParametersResolving {
             throw GenerationParametersError.invalidFileConfiguration
         }
 
-        guard let accessToken = resolveAccessToken(configuration: configuration), !accessToken.isEmpty else {
+        guard let accessToken = accessTokenResolver.resolveAccessToken(
+            from: configuration.accessToken
+        ), !accessToken.isEmpty else {
             throw GenerationParametersError.invalidAccessToken
         }
 

@@ -8,15 +8,20 @@ final class DefaultColorStylesGenerator: ColorStylesGenerator, GenerationParamet
 
     let colorStylesProvider: ColorStylesProvider
     let templateRenderer: TemplateRenderer
-
+    let accessTokenResolver: AccessTokenResolver
     let defaultTemplateType = RenderTemplateType.native(name: "ColorStyles")
     let defaultDestination = RenderDestination.console
 
     // MARK: - Initializers
 
-    init(colorStylesProvider: ColorStylesProvider, templateRenderer: TemplateRenderer) {
+    init(
+        colorStylesProvider: ColorStylesProvider,
+        templateRenderer: TemplateRenderer,
+        accessTokenResolver: AccessTokenResolver
+    ) {
         self.colorStylesProvider = colorStylesProvider
         self.templateRenderer = templateRenderer
+        self.accessTokenResolver = accessTokenResolver
     }
 
     // MARK: - Instance Methods

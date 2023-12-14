@@ -8,15 +8,20 @@ final class DefaultTextStylesGenerator: TextStylesGenerator, GenerationParameter
 
     let textStylesProvider: TextStylesProvider
     let templateRenderer: TemplateRenderer
-
+    let accessTokenResolver: AccessTokenResolver
     let defaultTemplateType = RenderTemplateType.native(name: "TextStyles")
     let defaultDestination = RenderDestination.console
 
     // MARK: - Initializers
 
-    init(textStylesProvider: TextStylesProvider, templateRenderer: TemplateRenderer) {
+    init(
+        textStylesProvider: TextStylesProvider,
+        templateRenderer: TemplateRenderer,
+        accessTokenResolver: AccessTokenResolver
+    ) {
         self.textStylesProvider = textStylesProvider
         self.templateRenderer = templateRenderer
+        self.accessTokenResolver = accessTokenResolver
     }
 
     // MARK: - Instance Methods
