@@ -3,29 +3,6 @@ import FigmaGenTools
 
 struct TokensTemplateConfiguration {
 
-    // MARK: - Nested Types
-
-    struct Template {
-
-        // MARK: - Instance Properties
-
-        let template: String?
-        let templateOptions: [String: Any]?
-        let destination: String?
-
-        // MARK: - Initializers
-
-        init(
-            template: String?,
-            templateOptions: [String: Any]?,
-            destination: String?
-        ) {
-            self.template = template
-            self.templateOptions = templateOptions
-            self.destination = destination
-        }
-    }
-
     // MARK: - Instance Properties
 
     let colors: [Template]?
@@ -53,27 +30,6 @@ extension TokensTemplateConfiguration: Decodable {
         case spacing
     }
 
-    private struct TemplateWrapper: Decodable {
-
-        // MARK: - Instance Properties
-
-        let templates: [Template]?
-
-        // MARK: - Initializers
-
-        init(from decoder: Decoder) throws {
-            let container = try decoder.singleValueContainer()
-
-            if container.decodeNil() {
-                self.templates = nil
-            } else if let singleValue = try? container.decode(Template.self) {
-                self.templates = [singleValue]
-            } else {
-                self.templates = try container.decode([Template].self)
-            }
-        }
-    }
-
     // MARK: - Initializers
 
     init(from decoder: Decoder) throws {
@@ -86,32 +42,5 @@ extension TokensTemplateConfiguration: Decodable {
         self.boxShadows = try container.decodeIfPresent(TemplateWrapper.self, forKey: .boxShadows)?.templates
         self.theme = try container.decodeIfPresent(TemplateWrapper.self, forKey: .theme)?.templates
         self.spacing = try container.decodeIfPresent(TemplateWrapper.self, forKey: .spacing)?.templates
-    }
-}
-
-// MARK: -
-
-extension TokensTemplateConfiguration.Template: Decodable {
-
-    // MARK: - Nested Types
-
-    private enum CodingKeys: String, CodingKey {
-        case template
-        case templateOptions
-        case destination
-    }
-
-    // MARK: - Initializers
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        self.template = try container.decodeIfPresent(forKey: .template)
-
-        self.templateOptions = try container
-            .decodeIfPresent([String: AnyCodable].self, forKey: .templateOptions)?
-            .mapValues { $0.value }
-
-        self.destination = try container.decodeIfPresent(forKey: .destination)
     }
 }

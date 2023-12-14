@@ -231,49 +231,49 @@ extension TokensCommand {
             accessToken: resolveAccessTokenConfiguration(),
             templates: TokensTemplateConfiguration(
                 colors: [
-                    TokensTemplateConfiguration.Template(
+                    Template(
                         template: colorsTemplate.value,
                         templateOptions: resolveTemplateOptions(colorsTemplateOptions.value),
                         destination: colorsDestination.value
                     )
                 ],
                 baseColors: [
-                    TokensTemplateConfiguration.Template(
+                    Template(
                         template: baseColorsTemplate.value,
                         templateOptions: resolveTemplateOptions(baseColorsTemplateOptions.value),
                         destination: baseColorsDestination.value
                     )
                 ],
                 fontFamilies: [
-                    TokensTemplateConfiguration.Template(
+                    Template(
                         template: fontFamiliesTemplate.value,
                         templateOptions: resolveTemplateOptions(fontFamiliesTemplateOptions.value),
                         destination: fontFamiliesDestination.value
                     )
                 ],
                 typographies: [
-                    TokensTemplateConfiguration.Template(
+                    Template(
                         template: typographiesTemplate.value,
                         templateOptions: resolveTemplateOptions(typographiesTemplateOptions.value),
                         destination: typographiesDestination.value
                     )
                 ],
                 boxShadows: [
-                    TokensTemplateConfiguration.Template(
+                    Template(
                         template: boxShadowsTemplate.value,
                         templateOptions: resolveTemplateOptions(boxShadowsTemplateOptions.value),
                         destination: boxShadowsDestination.value
                     )
                 ],
                 theme: [
-                    TokensTemplateConfiguration.Template(
+                    Template(
                         template: themeTemplate.value,
                         templateOptions: resolveTemplateOptions(themeTemplateOptions.value),
                         destination: themeDestination.value
                     )
                 ],
                 spacing: [
-                    TokensTemplateConfiguration.Template(
+                    Template(
                         template: spacingTemplate.value,
                         templateOptions: resolveTemplateOptions(spacingTemplateOptions.value),
                         destination: spacingDestination.value
