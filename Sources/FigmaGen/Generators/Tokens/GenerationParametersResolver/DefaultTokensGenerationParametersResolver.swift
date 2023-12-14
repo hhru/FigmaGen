@@ -2,6 +2,16 @@ import Foundation
 
 final class DefaultTokensGenerationParametersResolver: TokensGenerationParametersResolver {
 
+    // MARK: - Instance Properties
+
+    let renderParametersResolver: RenderParametersResolver
+
+    // MARK: - Initializers
+
+    init(renderParametersResolver: RenderParametersResolver) {
+        self.renderParametersResolver = renderParametersResolver
+    }
+
     // MARK: - Instance Methods
 
     private func resolveAccessToken(configuration: TokensConfiguration) -> String? {
@@ -14,50 +24,6 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
 
         case nil:
             return nil
-        }
-    }
-
-    private func resolveTemplateType(
-        template: TemplateConfiguration,
-        nativeTemplateName: String
-    ) -> RenderTemplateType {
-        if let templatePath = template.template {
-            return .custom(path: templatePath)
-        }
-
-        return .native(name: nativeTemplateName)
-    }
-
-    private func resolveDestination(template: TemplateConfiguration) -> RenderDestination {
-        if let destinationPath = template.destination {
-            return .file(path: destinationPath)
-        }
-
-        return .console
-    }
-
-    private func resolveRenderParameters(
-        templates: [TemplateConfiguration]?,
-        nativeTemplateName: String
-    ) -> [RenderParameters]? {
-        guard let templateConfigurations = templates else {
-            return nil
-        }
-
-        return templateConfigurations.map { template -> RenderParameters in
-            let templateType = resolveTemplateType(
-                template: template,
-                nativeTemplateName: nativeTemplateName
-            )
-
-            let destination = resolveDestination(template: template)
-
-            let template = RenderTemplate(
-                type: templateType,
-                options: template.templateOptions ?? [:]
-            )
-
-            return RenderParameters(template: template, destination: destination)
         }
     }
 
@@ -79,37 +45,37 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             accessToken: accessToken
         )
 
-        let colorRenderParameters = resolveRenderParameters(
+        let colorRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.colors,
             nativeTemplateName: "ColorTokens"
         )
 
-        let baseColorRenderParameters = resolveRenderParameters(
+        let baseColorRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.baseColors,
             nativeTemplateName: "BaseColorTokens"
         )
 
-        let fontFamilyRenderParameters = resolveRenderParameters(
+        let fontFamilyRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.fontFamilies,
             nativeTemplateName: "FontFamilyTokens"
         )
 
-        let typographyRenderParameters = resolveRenderParameters(
+        let typographyRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.typographies,
             nativeTemplateName: "TypographyTokens"
         )
 
-        let boxShadowRenderParameters = resolveRenderParameters(
+        let boxShadowRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.boxShadows,
             nativeTemplateName: "BoxShadowTokens"
         )
 
-        let themeRenderParameters = resolveRenderParameters(
+        let themeRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.theme,
             nativeTemplateName: "Theme"
         )
 
-        let spacingRenderParameters = resolveRenderParameters(
+        let spacingRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.spacing,
             nativeTemplateName: "SpacingTokens"
         )
