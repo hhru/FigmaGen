@@ -8,6 +8,9 @@ struct GenerationConfiguration: Decodable {
     private enum CodingKeys: String, CodingKey {
         case file
         case accessToken
+        case templates
+
+        // TODO [MOB-35468] Remove template, templateOptions, destination
         case template
         case templateOptions
         case destination
@@ -17,6 +20,9 @@ struct GenerationConfiguration: Decodable {
 
     let file: FileConfiguration?
     let accessToken: AccessTokenConfiguration?
+    let templates: [TemplateConfiguration]?
+
+    // TODO [MOB-35468] Remove template, templateOptions, destination
     let template: String?
     let templateOptions: [String: Any]?
     let destination: String?
@@ -26,12 +32,17 @@ struct GenerationConfiguration: Decodable {
     init(
         file: FileConfiguration?,
         accessToken: AccessTokenConfiguration?,
+        templates: [TemplateConfiguration]?,
+        // TODO [MOB-35468] Remove template, templateOptions, destination
         template: String?,
         templateOptions: [String: Any]?,
         destination: String?
     ) {
         self.file = file
         self.accessToken = accessToken
+        self.templates = templates
+
+        // TODO [MOB-35468] Remove template, templateOptions, destination
         self.template = template
         self.templateOptions = templateOptions
         self.destination = destination
@@ -45,6 +56,9 @@ struct GenerationConfiguration: Decodable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
+        templates = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .templates)?.templates
+
+        // TODO [MOB-35468] Remove template, templateOptions, destination
         template = try container.decodeIfPresent(forKey: .template)
 
         templateOptions = try container
@@ -64,6 +78,8 @@ struct GenerationConfiguration: Decodable {
         return Self(
             file: file ?? base.file,
             accessToken: accessToken ?? base.accessToken,
+            templates: templates,
+            // TODO [MOB-35468] Remove template, templateOptions, destination
             template: template,
             templateOptions: templateOptions,
             destination: destination
