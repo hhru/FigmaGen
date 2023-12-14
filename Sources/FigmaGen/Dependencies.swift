@@ -113,25 +113,29 @@ enum Dependencies {
     static let colorStylesGenerator: ColorStylesGenerator = DefaultColorStylesGenerator(
         colorStylesProvider: colorStylesProvider,
         templateRenderer: templateRenderer,
-        accessTokenResolver: accessTokenResolver
+        accessTokenResolver: accessTokenResolver,
+        renderParametersResolver: renderParametersResolver
     )
 
     static let textStylesGenerator: TextStylesGenerator = DefaultTextStylesGenerator(
         textStylesProvider: textStylesProvider,
         templateRenderer: templateRenderer,
-        accessTokenResolver: accessTokenResolver
+        accessTokenResolver: accessTokenResolver,
+        renderParametersResolver: renderParametersResolver
     )
 
     static let imagesGenerator: ImagesGenerator = DefaultImagesGenerator(
         imagesProvider: imagesProvider,
         templateRenderer: templateRenderer,
-        accessTokenResolver: accessTokenResolver
+        accessTokenResolver: accessTokenResolver,
+        renderParametersResolver: renderParametersResolver
     )
 
     static let shadowStylesGenerator: ShadowStylesGenerator = DefaultShadowStylesGenerator(
         shadowStylesProvider: shadowStylesProvider,
         templateRenderer: templateRenderer,
-        accessTokenResolver: accessTokenResolver
+        accessTokenResolver: accessTokenResolver,
+        renderParametersResolver: renderParametersResolver
     )
 
     static let colorTokensGenerator: ColorTokensGenerator = DefaultColorTokensGenerator(

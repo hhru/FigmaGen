@@ -5,6 +5,7 @@ protocol GenerationParametersResolving {
     // MARK: - Instance Properties
 
     let accessTokenResolver: AccessTokenResolver
+    let renderParametersResolver: RenderParametersResolver
 
     // MARK: - Instance Properties
 
@@ -17,24 +18,6 @@ protocol GenerationParametersResolving {
 }
 
 extension GenerationParametersResolving {
-
-    // MARK: - Instance Methods
-
-    private func resolveTemplateType(configuration: GenerationConfiguration) -> RenderTemplateType {
-        if let templatePath = configuration.template {
-            return .custom(path: templatePath)
-        }
-
-        return defaultTemplateType
-    }
-
-    private func resolveDestination(configuration: GenerationConfiguration) -> RenderDestination {
-        if let destinationPath = configuration.destination {
-            return .file(path: destinationPath)
-        }
-
-        return defaultDestination
-    }
 
     // MARK: -
 
@@ -60,16 +43,16 @@ extension GenerationParametersResolving {
             excludedIDs: fileConfiguration.excludedNodes
         )
 
-        let templateType = resolveTemplateType(configuration: configuration)
-        let destination = resolveDestination(configuration: configuration)
-
-        let template = RenderTemplate(
-            type: templateType,
-            options: configuration.templateOptions ?? [:]
+        let renderParametersList = renderParametersResolver.resolveRenderParameters(
+            templates: configuration.templates,
+            defaultTemplateType: defaultTemplateType,
+            defaultDestination: defaultDestination
         )
 
-        let render = RenderParameters(template: template, destination: destination)
-
-        return GenerationParameters(file: file, nodes: nodes, render: render)
+        return GenerationParameters(
+            file: file,
+            nodes: nodes,
+            renderParameters: renderParametersList
+        )
     }
 }

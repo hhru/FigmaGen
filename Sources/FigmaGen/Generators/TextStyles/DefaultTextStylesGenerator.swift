@@ -9,6 +9,8 @@ final class DefaultTextStylesGenerator: TextStylesGenerator, GenerationParameter
     let textStylesProvider: TextStylesProvider
     let templateRenderer: TemplateRenderer
     let accessTokenResolver: AccessTokenResolver
+    let renderParametersResolver: RenderParametersResolver
+
     let defaultTemplateType = RenderTemplateType.native(name: "TextStyles")
     let defaultDestination = RenderDestination.console
 
@@ -17,11 +19,13 @@ final class DefaultTextStylesGenerator: TextStylesGenerator, GenerationParameter
     init(
         textStylesProvider: TextStylesProvider,
         templateRenderer: TemplateRenderer,
-        accessTokenResolver: AccessTokenResolver
+        accessTokenResolver: AccessTokenResolver,
+        renderParametersResolver: RenderParametersResolver
     ) {
         self.textStylesProvider = textStylesProvider
         self.templateRenderer = templateRenderer
         self.accessTokenResolver = accessTokenResolver
+        self.renderParametersResolver = renderParametersResolver
     }
 
     // MARK: - Instance Methods
@@ -32,11 +36,15 @@ final class DefaultTextStylesGenerator: TextStylesGenerator, GenerationParameter
         }.map { textStyles in
             TextStylesContext(textStyles: textStyles)
         }.done { context in
-            try self.templateRenderer.renderTemplate(
-                parameters.render.template,
-                to: parameters.render.destination,
-                context: context
-            )
+            if let renderParametersList = parameters.renderParameters {
+                for params in renderParametersList {
+                    try self.templateRenderer.renderTemplate(
+                        params.template,
+                        to: params.destination,
+                        context: context
+                    )
+                }
+            }
         }
     }
 

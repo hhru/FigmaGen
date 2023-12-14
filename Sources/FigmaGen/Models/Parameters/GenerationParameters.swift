@@ -6,5 +6,5 @@ struct GenerationParameters {
 
     let file: FileParameters
     let nodes: NodesParameters
-    let render: RenderParameters
+    let renderParameters: [RenderParameters]?
 }

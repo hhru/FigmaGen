@@ -9,6 +9,7 @@ final class DefaultShadowStylesGenerator: ShadowStylesGenerator, GenerationParam
     let shadowStylesProvider: ShadowStylesProvider
     let templateRenderer: TemplateRenderer
     let accessTokenResolver: AccessTokenResolver
+    let renderParametersResolver: RenderParametersResolver
 
     let defaultTemplateType: RenderTemplateType = .native(name: "ShadowStyles")
     let defaultDestination: RenderDestination = .console
@@ -18,11 +19,13 @@ final class DefaultShadowStylesGenerator: ShadowStylesGenerator, GenerationParam
     init(
         shadowStylesProvider: ShadowStylesProvider,
         templateRenderer: TemplateRenderer,
-        accessTokenResolver: AccessTokenResolver
+        accessTokenResolver: AccessTokenResolver,
+        renderParametersResolver: RenderParametersResolver
     ) {
         self.shadowStylesProvider = shadowStylesProvider
         self.templateRenderer = templateRenderer
         self.accessTokenResolver = accessTokenResolver
+        self.renderParametersResolver = renderParametersResolver
     }
 
     // MARK: - Instance Methods
@@ -33,11 +36,15 @@ final class DefaultShadowStylesGenerator: ShadowStylesGenerator, GenerationParam
         }.map { shadowStyles in
             ShadowStylesContext(shadowStyles: shadowStyles)
         }.done { context in
-            try self.templateRenderer.renderTemplate(
-                parameters.render.template,
-                to: parameters.render.destination,
-                context: context
-            )
+            if let renderParametersList = parameters.renderParameters {
+                for params in renderParametersList {
+                    try self.templateRenderer.renderTemplate(
+                        params.template,
+                        to: params.destination,
+                        context: context
+                    )
+                }
+            }
         }
     }
 
