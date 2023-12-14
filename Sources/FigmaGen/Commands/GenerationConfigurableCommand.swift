@@ -27,6 +27,13 @@ extension GenerationConfigurableCommand {
         GenerationConfiguration(
             file: resolveFileConfiguration(),
             accessToken: resolveAccessTokenConfiguration(),
+            templates: [
+                TemplateConfiguration(
+                    template: template.value,
+                    templateOptions: resolveTemplateOptions(),
+                    destination: destination.value
+                )
+            ],
             template: template.value,
             templateOptions: resolveTemplateOptions(),
             destination: destination.value

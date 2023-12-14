@@ -1,4 +1,5 @@
 import Foundation
+import FigmaGenTools
 
 struct TemplateConfiguration {
 

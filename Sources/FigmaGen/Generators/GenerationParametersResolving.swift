@@ -4,8 +4,8 @@ protocol GenerationParametersResolving {
 
     // MARK: - Instance Properties
 
-    let accessTokenResolver: AccessTokenResolver
-    let renderParametersResolver: RenderParametersResolver
+    var accessTokenResolver: AccessTokenResolver { get }
+    var renderParametersResolver: RenderParametersResolver { get }
 
     // MARK: - Instance Properties
 

@@ -69,7 +69,8 @@ enum Dependencies {
 
     static let tokensGenerationParametersResolver: TokensGenerationParametersResolver =
         DefaultTokensGenerationParametersResolver(
-            renderParametersResolver: renderParametersResolver
+            renderParametersResolver: renderParametersResolver,
+            accessTokenResolver: accessTokenResolver
         )
 
     static let colorTokensContextProvider: ColorTokensContextProvider = DefaultColorTokensContextProvider(
