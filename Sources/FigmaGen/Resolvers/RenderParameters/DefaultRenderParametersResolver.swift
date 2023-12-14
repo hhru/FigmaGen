@@ -6,26 +6,30 @@ final class DefaultRenderParametersResolver: RenderParametersResolver {
 
     private func resolveTemplateType(
         template: TemplateConfiguration,
-        nativeTemplateName: String
+        defaultTemplateType: RenderTemplateType
     ) -> RenderTemplateType {
         if let templatePath = template.template {
             return .custom(path: templatePath)
         }
 
-        return .native(name: nativeTemplateName)
+        return defaultTemplateType
     }
 
-    private func resolveDestination(template: TemplateConfiguration) -> RenderDestination {
+    private func resolveDestination(
+        template: TemplateConfiguration,
+        defaultDestination: RenderDestination
+    ) -> RenderDestination {
         if let destinationPath = template.destination {
             return .file(path: destinationPath)
         }
 
-        return .console
+        return defaultDestination
     }
 
     func resolveRenderParameters(
         templates: [TemplateConfiguration]?,
-        nativeTemplateName: String
+        defaultTemplateType: RenderTemplateType,
+        defaultDestination: RenderDestination
     ) -> [RenderParameters]? {
         guard let templateConfigurations = templates else {
             return nil
@@ -34,10 +38,13 @@ final class DefaultRenderParametersResolver: RenderParametersResolver {
         return templateConfigurations.map { template -> RenderParameters in
             let templateType = resolveTemplateType(
                 template: template,
-                nativeTemplateName: nativeTemplateName
+                defaultTemplateType: defaultTemplateType
             )
 
-            let destination = resolveDestination(template: template)
+            let destination = resolveDestination(
+                template: template,
+                defaultDestination: defaultDestination
+            )
 
             let template = RenderTemplate(
                 type: templateType,

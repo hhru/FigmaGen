@@ -37,37 +37,37 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
 
         let colorRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.colors,
-            nativeTemplateName: "ColorTokens"
+            defaultTemplateType: .native(name: "ColorTokens")
         )
 
         let baseColorRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.baseColors,
-            nativeTemplateName: "BaseColorTokens"
+            defaultTemplateType: .native(name: "BaseColorTokens")
         )
 
         let fontFamilyRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.fontFamilies,
-            nativeTemplateName: "FontFamilyTokens"
+            defaultTemplateType: .native(name: "FontFamilyTokens")
         )
 
         let typographyRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.typographies,
-            nativeTemplateName: "TypographyTokens"
+            defaultTemplateType: .native(name: "TypographyTokens")
         )
 
         let boxShadowRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.boxShadows,
-            nativeTemplateName: "BoxShadowTokens"
+            defaultTemplateType: .native(name: "BoxShadowTokens")
         )
 
         let themeRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.theme,
-            nativeTemplateName: "Theme"
+            defaultTemplateType: .native(name: "Theme")
         )
 
         let spacingRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.spacing,
-            nativeTemplateName: "SpacingTokens"
+            defaultTemplateType: .native(name: "SpacingTokens")
         )
 
         return TokensGenerationParameters(
