@@ -54,5 +54,4 @@ final class DefaultRenderParametersResolver: RenderParametersResolver {
             return RenderParameters(template: template, destination: destination)
         }
     }
-
 }

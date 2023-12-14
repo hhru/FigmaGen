@@ -35,12 +35,18 @@ extension TokensTemplateConfiguration: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.colors = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .colors)?.templates
-        self.baseColors = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .baseColors)?.templates
-        self.fontFamilies = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .fontFamilies)?.templates
-        self.typographies = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .typographies)?.templates
-        self.boxShadows = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .boxShadows)?.templates
-        self.theme = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .theme)?.templates
-        self.spacing = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .spacing)?.templates
+        colors = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .colors)?.templates
+        baseColors = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .baseColors)?.templates
+        fontFamilies = try container.decodeIfPresent(
+            TemplateConfigurationWrapper.self,
+            forKey: .fontFamilies
+        )?.templates
+        typographies = try container.decodeIfPresent(
+            TemplateConfigurationWrapper.self,
+            forKey: .typographies
+        )?.templates
+        boxShadows = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .boxShadows)?.templates
+        theme = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .theme)?.templates
+        spacing = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .spacing)?.templates
     }
 }

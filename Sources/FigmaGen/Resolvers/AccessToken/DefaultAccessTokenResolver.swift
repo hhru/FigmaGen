@@ -1,6 +1,6 @@
 import Foundation
 
-final class DefaultAccessTokenResolver : AccessTokenResolver {
+final class DefaultAccessTokenResolver: AccessTokenResolver {
 
     func resolveAccessToken(from configuration: AccessTokenConfiguration?) -> String? {
         switch configuration {
@@ -14,5 +14,4 @@ final class DefaultAccessTokenResolver : AccessTokenResolver {
             return nil
         }
     }
-
 }

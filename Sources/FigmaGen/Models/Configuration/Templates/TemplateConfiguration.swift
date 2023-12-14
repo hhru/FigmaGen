@@ -43,9 +43,7 @@ extension TemplateConfiguration: Decodable {
 
         self.templateOptions = try container
             .decodeIfPresent([String: AnyCodable].self, forKey: .templateOptions)?
-            .mapValues {
-                $0.value
-            }
+            .mapValues { $0.value }
 
         self.destination = try container.decodeIfPresent(forKey: .destination)
     }

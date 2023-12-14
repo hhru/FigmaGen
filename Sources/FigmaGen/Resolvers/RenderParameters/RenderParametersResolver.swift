@@ -7,7 +7,6 @@ protocol RenderParametersResolver {
         defaultTemplateType: RenderTemplateType,
         defaultDestination: RenderDestination
     ) -> [RenderParameters]?
-
 }
 
 extension RenderParametersResolver {
@@ -23,5 +22,4 @@ extension RenderParametersResolver {
             defaultDestination: defaultDestination
         )
     }
-
 }
