@@ -4,6 +4,11 @@ protocol GenerationParametersResolving {
 
     // MARK: - Instance Properties
 
+    var accessTokenResolver: AccessTokenResolver { get }
+    var renderParametersResolver: RenderParametersResolver { get }
+
+    // MARK: - Instance Properties
+
     var defaultTemplateType: RenderTemplateType { get }
     var defaultDestination: RenderDestination { get }
 
@@ -14,37 +19,6 @@ protocol GenerationParametersResolving {
 
 extension GenerationParametersResolving {
 
-    // MARK: - Instance Methods
-
-    private func resolveAccessToken(configuration: GenerationConfiguration) -> String? {
-        switch configuration.accessToken {
-        case let .value(accessToken):
-            return accessToken
-
-        case let .environmentVariable(environmentVariable):
-            return ProcessInfo.processInfo.environment[environmentVariable]
-
-        case nil:
-            return nil
-        }
-    }
-
-    private func resolveTemplateType(configuration: GenerationConfiguration) -> RenderTemplateType {
-        if let templatePath = configuration.template {
-            return .custom(path: templatePath)
-        }
-
-        return defaultTemplateType
-    }
-
-    private func resolveDestination(configuration: GenerationConfiguration) -> RenderDestination {
-        if let destinationPath = configuration.destination {
-            return .file(path: destinationPath)
-        }
-
-        return defaultDestination
-    }
-
     // MARK: -
 
     func resolveGenerationParameters(from configuration: GenerationConfiguration) throws -> GenerationParameters {
@@ -52,7 +26,9 @@ extension GenerationParametersResolving {
             throw GenerationParametersError.invalidFileConfiguration
         }
 
-        guard let accessToken = resolveAccessToken(configuration: configuration), !accessToken.isEmpty else {
+        let accessToken = accessTokenResolver.resolveAccessToken(from: configuration.accessToken)
+
+        guard let accessToken, !accessToken.isEmpty else {
             throw GenerationParametersError.invalidAccessToken
         }
 
@@ -67,16 +43,16 @@ extension GenerationParametersResolving {
             excludedIDs: fileConfiguration.excludedNodes
         )
 
-        let templateType = resolveTemplateType(configuration: configuration)
-        let destination = resolveDestination(configuration: configuration)
-
-        let template = RenderTemplate(
-            type: templateType,
-            options: configuration.templateOptions ?? [:]
+        let renderParametersList = renderParametersResolver.resolveRenderParameters(
+            templates: configuration.templates,
+            defaultTemplateType: defaultTemplateType,
+            defaultDestination: defaultDestination
         )
 
-        let render = RenderParameters(template: template, destination: destination)
-
-        return GenerationParameters(file: file, nodes: nodes, render: render)
+        return GenerationParameters(
+            file: file,
+            nodes: nodes,
+            renderParameters: renderParametersList
+        )
     }
 }

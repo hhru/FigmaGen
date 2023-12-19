@@ -8,22 +8,31 @@ final class DefaultColorStylesGenerator: ColorStylesGenerator, GenerationParamet
 
     let colorStylesProvider: ColorStylesProvider
     let templateRenderer: TemplateRenderer
+    let accessTokenResolver: AccessTokenResolver
+    let renderParametersResolver: RenderParametersResolver
 
     let defaultTemplateType = RenderTemplateType.native(name: "ColorStyles")
     let defaultDestination = RenderDestination.console
 
     // MARK: - Initializers
 
-    init(colorStylesProvider: ColorStylesProvider, templateRenderer: TemplateRenderer) {
+    init(
+        colorStylesProvider: ColorStylesProvider,
+        templateRenderer: TemplateRenderer,
+        accessTokenResolver: AccessTokenResolver,
+        renderParametersResolver: RenderParametersResolver
+    ) {
         self.colorStylesProvider = colorStylesProvider
         self.templateRenderer = templateRenderer
+        self.accessTokenResolver = accessTokenResolver
+        self.renderParametersResolver = renderParametersResolver
     }
 
     // MARK: - Instance Methods
 
     private func generate(parameters: GenerationParameters, assets: String?) -> Promise<Void> {
         firstly {
-            self.colorStylesProvider.fetchColorStyles(
+            colorStylesProvider.fetchColorStyles(
                 from: parameters.file,
                 nodes: parameters.nodes,
                 assets: assets
@@ -31,11 +40,13 @@ final class DefaultColorStylesGenerator: ColorStylesGenerator, GenerationParamet
         }.map { colorStyles in
             ColorStylesContext(colorStyles: colorStyles)
         }.done { context in
-            try self.templateRenderer.renderTemplate(
-                parameters.render.template,
-                to: parameters.render.destination,
-                context: context
-            )
+            try parameters.renderParameters.forEach { params in
+                try self.templateRenderer.renderTemplate(
+                    params.template,
+                    to: params.destination,
+                    context: context
+                )
+            }
         }
     }
 

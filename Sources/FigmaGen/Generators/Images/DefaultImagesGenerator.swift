@@ -8,15 +8,24 @@ final class DefaultImagesGenerator: ImagesGenerator, GenerationParametersResolvi
 
     let imagesProvider: ImagesProvider
     let templateRenderer: TemplateRenderer
+    let accessTokenResolver: AccessTokenResolver
+    let renderParametersResolver: RenderParametersResolver
 
     let defaultTemplateType = RenderTemplateType.native(name: "Images")
     let defaultDestination = RenderDestination.console
 
     // MARK: - Initializers
 
-    init(imagesProvider: ImagesProvider, templateRenderer: TemplateRenderer) {
+    init(
+        imagesProvider: ImagesProvider,
+        templateRenderer: TemplateRenderer,
+        accessTokenResolver: AccessTokenResolver,
+        renderParametersResolver: RenderParametersResolver
+    ) {
         self.imagesProvider = imagesProvider
         self.templateRenderer = templateRenderer
+        self.accessTokenResolver = accessTokenResolver
+        self.renderParametersResolver = renderParametersResolver
     }
 
     // MARK: - Instance Methods
@@ -33,11 +42,13 @@ final class DefaultImagesGenerator: ImagesGenerator, GenerationParametersResolvi
                 imageSets: imageSets.sorted { $0.name.lowercased() < $1.name.lowercased() }
             )
         }.done { context in
-            try self.templateRenderer.renderTemplate(
-                parameters.render.template,
-                to: parameters.render.destination,
-                context: context
-            )
+            try parameters.renderParameters.forEach { params in
+                try self.templateRenderer.renderTemplate(
+                    params.template,
+                    to: params.destination,
+                    context: context
+                )
+            }
         }
     }
 

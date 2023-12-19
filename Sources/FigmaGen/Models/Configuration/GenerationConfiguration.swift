@@ -8,33 +8,25 @@ struct GenerationConfiguration: Decodable {
     private enum CodingKeys: String, CodingKey {
         case file
         case accessToken
-        case template
-        case templateOptions
-        case destination
+        case templates
     }
 
     // MARK: - Instance Properties
 
     let file: FileConfiguration?
     let accessToken: AccessTokenConfiguration?
-    let template: String?
-    let templateOptions: [String: Any]?
-    let destination: String?
+    let templates: [TemplateConfiguration]?
 
     // MARK: - Initializers
 
     init(
         file: FileConfiguration?,
         accessToken: AccessTokenConfiguration?,
-        template: String?,
-        templateOptions: [String: Any]?,
-        destination: String?
+        templates: [TemplateConfiguration]?
     ) {
         self.file = file
         self.accessToken = accessToken
-        self.template = template
-        self.templateOptions = templateOptions
-        self.destination = destination
+        self.templates = templates
     }
 
     init(from decoder: Decoder) throws {
@@ -45,13 +37,7 @@ struct GenerationConfiguration: Decodable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        template = try container.decodeIfPresent(forKey: .template)
-
-        templateOptions = try container
-            .decodeIfPresent([String: AnyCodable].self, forKey: .templateOptions)?
-            .mapValues { $0.value }
-
-        destination = try container.decodeIfPresent(forKey: .destination)
+        templates = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .templates)?.templates
     }
 
     // MARK: - Instance Methods
@@ -64,9 +50,7 @@ struct GenerationConfiguration: Decodable {
         return Self(
             file: file ?? base.file,
             accessToken: accessToken ?? base.accessToken,
-            template: template,
-            templateOptions: templateOptions,
-            destination: destination
+            templates: templates
         )
     }
 }

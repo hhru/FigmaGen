@@ -64,9 +64,14 @@ enum Dependencies {
     // MARK: -
 
     static let tokensResolver: TokensResolver = DefaultTokensResolver()
+    static let renderParametersResolver: RenderParametersResolver = DefaultRenderParametersResolver()
+    static let accessTokenResolver: AccessTokenResolver = DefaultAccessTokenResolver()
 
-    static let tokensGenerationParametersResolver: TokensGenerationParametersResolver
-        = DefaultTokensGenerationParametersResolver()
+    static let tokensGenerationParametersResolver: TokensGenerationParametersResolver =
+        DefaultTokensGenerationParametersResolver(
+            renderParametersResolver: renderParametersResolver,
+            accessTokenResolver: accessTokenResolver
+        )
 
     static let colorTokensContextProvider: ColorTokensContextProvider = DefaultColorTokensContextProvider(
         tokensResolver: tokensResolver
@@ -108,22 +113,30 @@ enum Dependencies {
 
     static let colorStylesGenerator: ColorStylesGenerator = DefaultColorStylesGenerator(
         colorStylesProvider: colorStylesProvider,
-        templateRenderer: templateRenderer
+        templateRenderer: templateRenderer,
+        accessTokenResolver: accessTokenResolver,
+        renderParametersResolver: renderParametersResolver
     )
 
     static let textStylesGenerator: TextStylesGenerator = DefaultTextStylesGenerator(
         textStylesProvider: textStylesProvider,
-        templateRenderer: templateRenderer
+        templateRenderer: templateRenderer,
+        accessTokenResolver: accessTokenResolver,
+        renderParametersResolver: renderParametersResolver
     )
 
     static let imagesGenerator: ImagesGenerator = DefaultImagesGenerator(
         imagesProvider: imagesProvider,
-        templateRenderer: templateRenderer
+        templateRenderer: templateRenderer,
+        accessTokenResolver: accessTokenResolver,
+        renderParametersResolver: renderParametersResolver
     )
 
     static let shadowStylesGenerator: ShadowStylesGenerator = DefaultShadowStylesGenerator(
         shadowStylesProvider: shadowStylesProvider,
-        templateRenderer: templateRenderer
+        templateRenderer: templateRenderer,
+        accessTokenResolver: accessTokenResolver,
+        renderParametersResolver: renderParametersResolver
     )
 
     static let colorTokensGenerator: ColorTokensGenerator = DefaultColorTokensGenerator(

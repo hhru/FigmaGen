@@ -2,63 +2,19 @@ import Foundation
 
 final class DefaultTokensGenerationParametersResolver: TokensGenerationParametersResolver {
 
-    // MARK: - Instance Methods
+    // MARK: - Instance Properties
 
-    private func resolveAccessToken(configuration: TokensConfiguration) -> String? {
-        switch configuration.accessToken {
-        case let .value(accessToken):
-            return accessToken
+    let renderParametersResolver: RenderParametersResolver
+    let accessTokenResolver: AccessTokenResolver
 
-        case let .environmentVariable(environmentVariable):
-            return ProcessInfo.processInfo.environment[environmentVariable]
+    // MARK: - Initializers
 
-        case nil:
-            return nil
-        }
-    }
-
-    private func resolveTemplateType(
-        template: TokensTemplateConfiguration.Template,
-        nativeTemplateName: String
-    ) -> RenderTemplateType {
-        if let templatePath = template.template {
-            return .custom(path: templatePath)
-        }
-
-        return .native(name: nativeTemplateName)
-    }
-
-    private func resolveDestination(template: TokensTemplateConfiguration.Template) -> RenderDestination {
-        if let destinationPath = template.destination {
-            return .file(path: destinationPath)
-        }
-
-        return .console
-    }
-
-    private func resolveRenderParameters(
-        templates: [TokensTemplateConfiguration.Template]?,
-        nativeTemplateName: String
-    ) -> [RenderParameters]? {
-        guard let templateConfigurations = templates else {
-            return nil
-        }
-
-        return templateConfigurations.map { template -> RenderParameters in
-            let templateType = resolveTemplateType(
-                template: template,
-                nativeTemplateName: nativeTemplateName
-            )
-
-            let destination = resolveDestination(template: template)
-
-            let template = RenderTemplate(
-                type: templateType,
-                options: template.templateOptions ?? [:]
-            )
-
-            return RenderParameters(template: template, destination: destination)
-        }
+    init(
+        renderParametersResolver: RenderParametersResolver,
+        accessTokenResolver: AccessTokenResolver
+    ) {
+        self.renderParametersResolver = renderParametersResolver
+        self.accessTokenResolver = accessTokenResolver
     }
 
     // MARK: -
@@ -69,7 +25,7 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             throw GenerationParametersError.invalidFileConfiguration
         }
 
-        guard let accessToken = resolveAccessToken(configuration: configuration) else {
+        guard let accessToken = accessTokenResolver.resolveAccessToken(from: configuration.accessToken) else {
             throw GenerationParametersError.invalidAccessToken
         }
 
@@ -79,39 +35,39 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             accessToken: accessToken
         )
 
-        let colorRenderParameters = resolveRenderParameters(
+        let colorRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.colors,
-            nativeTemplateName: "ColorTokens"
+            defaultTemplateType: .native(name: "ColorTokens")
         )
 
-        let baseColorRenderParameters = resolveRenderParameters(
+        let baseColorRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.baseColors,
-            nativeTemplateName: "BaseColorTokens"
+            defaultTemplateType: .native(name: "BaseColorTokens")
         )
 
-        let fontFamilyRenderParameters = resolveRenderParameters(
+        let fontFamilyRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.fontFamilies,
-            nativeTemplateName: "FontFamilyTokens"
+            defaultTemplateType: .native(name: "FontFamilyTokens")
         )
 
-        let typographyRenderParameters = resolveRenderParameters(
+        let typographyRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.typographies,
-            nativeTemplateName: "TypographyTokens"
+            defaultTemplateType: .native(name: "TypographyTokens")
         )
 
-        let boxShadowRenderParameters = resolveRenderParameters(
+        let boxShadowRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.boxShadows,
-            nativeTemplateName: "BoxShadowTokens"
+            defaultTemplateType: .native(name: "BoxShadowTokens")
         )
 
-        let themeRenderParameters = resolveRenderParameters(
+        let themeRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.theme,
-            nativeTemplateName: "Theme"
+            defaultTemplateType: .native(name: "Theme")
         )
 
-        let spacingRenderParameters = resolveRenderParameters(
+        let spacingRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.spacing,
-            nativeTemplateName: "SpacingTokens"
+            defaultTemplateType: .native(name: "SpacingTokens")
         )
 
         return TokensGenerationParameters(
