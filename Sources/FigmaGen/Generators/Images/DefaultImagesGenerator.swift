@@ -42,14 +42,12 @@ final class DefaultImagesGenerator: ImagesGenerator, GenerationParametersResolvi
                 imageSets: imageSets.sorted { $0.name.lowercased() < $1.name.lowercased() }
             )
         }.done { context in
-            if let renderParametersList = parameters.renderParameters {
-                for params in renderParametersList {
-                    try self.templateRenderer.renderTemplate(
-                        params.template,
-                        to: params.destination,
-                        context: context
-                    )
-                }
+            try parameters.renderParameters.forEach { params in
+                try self.templateRenderer.renderTemplate(
+                    params.template,
+                    to: params.destination,
+                    context: context
+                )
             }
         }
     }

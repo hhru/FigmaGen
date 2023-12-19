@@ -30,12 +30,20 @@ final class DefaultRenderParametersResolver: RenderParametersResolver {
         templates: [TemplateConfiguration]?,
         defaultTemplateType: RenderTemplateType,
         defaultDestination: RenderDestination
-    ) -> [RenderParameters]? {
-        guard let templateConfigurations = templates else {
-            return nil
+    ) -> [RenderParameters] {
+        let defaultRenderParameters = RenderParameters(
+            template: RenderTemplate(
+                type: defaultTemplateType,
+                options: [:]
+            ),
+            destination: defaultDestination
+        )
+
+        guard let templates else {
+            return [defaultRenderParameters]
         }
 
-        return templateConfigurations.map { template -> RenderParameters in
+        return templates.map { template in
             let templateType = resolveTemplateType(
                 template: template,
                 defaultTemplateType: defaultTemplateType

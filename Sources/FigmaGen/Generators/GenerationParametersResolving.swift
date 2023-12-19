@@ -26,9 +26,9 @@ extension GenerationParametersResolving {
             throw GenerationParametersError.invalidFileConfiguration
         }
 
-        guard let accessToken = accessTokenResolver.resolveAccessToken(
-            from: configuration.accessToken
-        ), !accessToken.isEmpty else {
+        let accessToken = accessTokenResolver.resolveAccessToken(from: configuration.accessToken)
+
+        guard let accessToken, !accessToken.isEmpty else {
             throw GenerationParametersError.invalidAccessToken
         }
 

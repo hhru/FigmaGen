@@ -6,20 +6,19 @@ protocol RenderParametersResolver {
         templates: [TemplateConfiguration]?,
         defaultTemplateType: RenderTemplateType,
         defaultDestination: RenderDestination
-    ) -> [RenderParameters]?
+    ) -> [RenderParameters]
 }
 
 extension RenderParametersResolver {
 
     func resolveRenderParameters(
         templates: [TemplateConfiguration]?,
-        defaultTemplateType: RenderTemplateType,
-        defaultDestination: RenderDestination = .console
-    ) -> [RenderParameters]? {
+        defaultTemplateType: RenderTemplateType
+    ) -> [RenderParameters] {
         resolveRenderParameters(
             templates: templates,
             defaultTemplateType: defaultTemplateType,
-            defaultDestination: defaultDestination
+            defaultDestination: .console
         )
     }
 }

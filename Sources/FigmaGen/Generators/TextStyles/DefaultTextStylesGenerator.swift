@@ -36,14 +36,12 @@ final class DefaultTextStylesGenerator: TextStylesGenerator, GenerationParameter
         }.map { textStyles in
             TextStylesContext(textStyles: textStyles)
         }.done { context in
-            if let renderParametersList = parameters.renderParameters {
-                for params in renderParametersList {
-                    try self.templateRenderer.renderTemplate(
-                        params.template,
-                        to: params.destination,
-                        context: context
-                    )
-                }
+            try parameters.renderParameters.forEach { params in
+                try self.templateRenderer.renderTemplate(
+                    params.template,
+                    to: params.destination,
+                    context: context
+                )
             }
         }
     }

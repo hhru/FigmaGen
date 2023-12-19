@@ -40,14 +40,12 @@ final class DefaultColorStylesGenerator: ColorStylesGenerator, GenerationParamet
         }.map { colorStyles in
             ColorStylesContext(colorStyles: colorStyles)
         }.done { context in
-            if let renderParametersList = parameters.renderParameters {
-                for params in renderParametersList {
-                    try self.templateRenderer.renderTemplate(
-                        params.template,
-                        to: params.destination,
-                        context: context
-                    )
-                }
+            try parameters.renderParameters.forEach { params in
+                try self.templateRenderer.renderTemplate(
+                    params.template,
+                    to: params.destination,
+                    context: context
+                )
             }
         }
     }
