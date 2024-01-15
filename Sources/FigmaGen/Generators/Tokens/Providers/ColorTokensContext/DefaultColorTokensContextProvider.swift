@@ -33,7 +33,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
             return fallbackValue
         }
 
-        return try tokensResolver.resolveHexColorValue(nightValue, tokenValues: tokenValues)
+        return try tokensResolver.resolveHexColorValue(nightValue, tokenValues: tokenValues, theme: .night)
     }
 
     private func resolveNightReference(
@@ -60,9 +60,11 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
         tokenValues: TokenValues,
         path: [String]
     ) throws -> ColorToken {
+        
         let dayHexColorValue = try tokensResolver.resolveHexColorValue(
             dayValue,
-            tokenValues: tokenValues
+            tokenValues: tokenValues,
+            theme: .day
         )
 
         return ColorToken(

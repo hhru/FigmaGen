@@ -23,7 +23,7 @@ final class DefaultBaseColorTokensGenerator: BaseColorTokensGenerator {
 
         return BaseColorToken(
             path: token.name.components(separatedBy: "."),
-            value: try tokensResolver.resolveHexColorValue(value, tokenValues: tokenValues)
+            value: try tokensResolver.resolveHexColorValue(value, tokenValues: tokenValues, theme: .undefined)
         )
     }
 
