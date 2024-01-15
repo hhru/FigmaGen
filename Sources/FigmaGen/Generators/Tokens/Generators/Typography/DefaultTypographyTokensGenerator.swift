@@ -21,7 +21,11 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
         tokenValues: TokenValues
     ) throws -> TypographyToken.LineHeightToken {
         let lineHeightValue = value.lineHeight
-        let lineHeightResolvedValue = try tokensResolver.resolveValue(lineHeightValue, tokenValues: tokenValues, theme: .undefined)
+        let lineHeightResolvedValue = try tokensResolver.resolveValue(
+            lineHeightValue,
+            tokenValues: tokenValues,
+            theme: .undefined
+        )
 
         guard lineHeightResolvedValue.hasSuffix("%") else {
             return TypographyToken.LineHeightToken(
@@ -30,7 +34,9 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
             )
         }
 
-        let fontSize = Double(try tokensResolver.resolveValue(value.fontSize, tokenValues: tokenValues, theme: .undefined))
+        let fontSize = Double(
+            try tokensResolver.resolveValue(value.fontSize, tokenValues: tokenValues, theme: .undefined)
+        )
         let lineHeight = Double(lineHeightResolvedValue.dropLast()).map { $0 / 100.0 }
 
         guard let fontSize else {

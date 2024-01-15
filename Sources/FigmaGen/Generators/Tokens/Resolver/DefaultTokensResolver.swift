@@ -72,7 +72,7 @@ final class DefaultTokensResolver: TokensResolver {
 
     func resolveValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> String {
         let themeTokens = tokenValues.getThemeTokenValues(theme: theme)
-        
+
         let resolvedValue = try value.replacingOccurrences(matchingPattern: #"\{.*?\}"#) { referenceName in
             let referenceName = String(
                 referenceName
@@ -94,7 +94,6 @@ final class DefaultTokensResolver: TokensResolver {
         return evaluteValue(resolvedValue)
     }
 
-    
     func resolveRGBAColorValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> Color {
         let components = try resolveValue(value, tokenValues: tokenValues, theme: theme)
             .slice(from: "(", to: ")", includingBounds: false)?
