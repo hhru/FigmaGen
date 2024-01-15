@@ -131,7 +131,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
 
             let path = token.name.components(separatedBy: ".")
 
-            guard path[0] != "gradient" else {
+            guard path[0] != "gradient" && !dayValue.contains("gradient") else {
                 return nil
             }
 
