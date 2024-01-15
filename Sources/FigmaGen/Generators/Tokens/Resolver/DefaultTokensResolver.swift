@@ -56,7 +56,7 @@ final class DefaultTokensResolver: TokensResolver {
             )
 
         default:
-            throw TokensGeneratorError(code: .invalidHEXComponent(hex: hex, tokenName: tokenName))
+            throw TokensGeneratorError(code: .invalidHEXComponent(hex: hex))
         }
     }
 

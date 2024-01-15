@@ -62,9 +62,8 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
             return initialReferenceName
         }
 
-        guard let replaceValue = themeColorTokenValues.first(where: {
-            initialReferenceName.contains($0.name)
-        })?.type.stringValue else {
+        guard let replaceValue = themeColorTokenValues.first(where:{initialReferenceName.contains($0.name)})?.type
+            .stringValue else {
             return initialReferenceName
         }
 
