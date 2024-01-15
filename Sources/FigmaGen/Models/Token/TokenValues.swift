@@ -19,10 +19,10 @@ struct TokenValues: Codable, Hashable {
         switch theme {
         case .day:
             return [day, core, semantic, colors, typography].flatMap { $0 }
-            
+ 
         case .night:
             return [night, core, semantic, colors, typography].flatMap { $0 }
-            
+
         case .undefined:
             return [core, semantic, colors, typography, day, night].flatMap { $0 }
         }
