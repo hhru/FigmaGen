@@ -197,8 +197,8 @@ final class TokensResolverTests: XCTestCase {
         let value2 = "rgba( {color.base.gray.5} , {semantic.opacity.disabled})"
         let expectedHexColor2 = "#1111117A"
 
-        let actualHexColor1 = try tokensResolver.resolveHexColorValue(value1, tokenValues: tokenValues, theme: .day))
-        let actualHexColor2 = try tokensResolver.resolveHexColorValue(value2, tokenValues: tokenValues, theme: .day))
+        let actualHexColor1 = try tokensResolver.resolveHexColorValue(value1, tokenValues: tokenValues, theme: .day)
+        let actualHexColor2 = try tokensResolver.resolveHexColorValue(value2, tokenValues: tokenValues, theme: .day)
 
         XCTAssertEqual(actualHexColor1, expectedHexColor1)
         XCTAssertEqual(actualHexColor2, expectedHexColor2)
