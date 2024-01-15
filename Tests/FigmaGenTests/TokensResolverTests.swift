@@ -27,7 +27,7 @@ final class TokensResolverTests: XCTestCase {
         let value = "{core.space.1-x} + {core.space.1-x} / 2"
         let expectedValue = "6"
 
-        let actualValue = try tokensResolver.resolveValue(value, tokenValues: tokenValues)
+        let actualValue = try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: .day)
 
         XCTAssertEqual(actualValue, expectedValue)
     }
@@ -39,11 +39,11 @@ final class TokensResolverTests: XCTestCase {
         let pixelValue = "0px"
         let colorValue = "#ffffff"
 
-        let actualNumberValue = try tokensResolver.resolveValue(numberValue, tokenValues: .empty)
-        let actualPercentValue = try tokensResolver.resolveValue(percentValue, tokenValues: .empty)
-        let actualTextValue = try tokensResolver.resolveValue(textValue, tokenValues: .empty)
-        let actualPixelValue = try tokensResolver.resolveValue(pixelValue, tokenValues: .empty)
-        let actualColorValue = try tokensResolver.resolveValue(colorValue, tokenValues: .empty)
+        let actualNumberValue = try tokensResolver.resolveValue(numberValue, tokenValues: .empty, theme: .day)
+        let actualPercentValue = try tokensResolver.resolveValue(percentValue, tokenValues: .empty, theme: .day)
+        let actualTextValue = try tokensResolver.resolveValue(textValue, tokenValues: .empty, theme: .day)
+        let actualPixelValue = try tokensResolver.resolveValue(pixelValue, tokenValues: .empty, theme: .day)
+        let actualColorValue = try tokensResolver.resolveValue(colorValue, tokenValues: .empty, theme: .day)
 
         XCTAssertEqual(actualNumberValue, numberValue)
         XCTAssertEqual(actualPercentValue, percentValue)
@@ -71,7 +71,7 @@ final class TokensResolverTests: XCTestCase {
         let value = "rgba({color.base.white}, {semantic.opacity.disabled})"
         let expectedColor = Color(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.48)
 
-        let actualColor = try tokensResolver.resolveRGBAColorValue(value, tokenValues: tokenValues)
+        let actualColor = try tokensResolver.resolveRGBAColorValue(value, tokenValues: tokenValues, theme: .day)
 
         XCTAssertEqual(actualColor, expectedColor)
     }
@@ -80,7 +80,7 @@ final class TokensResolverTests: XCTestCase {
         let value = "rgba(#FFFFFF, 48%)"
         let expectedColor = Color(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.48)
 
-        let actualColor = try tokensResolver.resolveRGBAColorValue(value, tokenValues: .empty)
+        let actualColor = try tokensResolver.resolveRGBAColorValue(value, tokenValues: .empty, theme: .day)
 
         XCTAssertEqual(actualColor, expectedColor)
     }
@@ -131,7 +131,8 @@ final class TokensResolverTests: XCTestCase {
 
         let actualLinearGradient = try tokensResolver.resolveLinearGradientValue(
             value,
-            tokenValues: tokenValues
+            tokenValues: tokenValues,
+            theme: .day
         )
 
         XCTAssertEqual(actualLinearGradient, expectedLinearGradient)
@@ -166,7 +167,8 @@ final class TokensResolverTests: XCTestCase {
 
         let actualLinearGradient = try tokensResolver.resolveLinearGradientValue(
             value,
-            tokenValues: .empty
+            tokenValues: .empty,
+            theme: .day
         )
 
         XCTAssertEqual(actualLinearGradient, expectedLinearGradient)
@@ -195,8 +197,8 @@ final class TokensResolverTests: XCTestCase {
         let value2 = "rgba( {color.base.gray.5} , {semantic.opacity.disabled})"
         let expectedHexColor2 = "#1111117A"
 
-        let actualHexColor1 = try tokensResolver.resolveHexColorValue(value1, tokenValues: tokenValues)
-        let actualHexColor2 = try tokensResolver.resolveHexColorValue(value2, tokenValues: tokenValues)
+        let actualHexColor1 = try tokensResolver.resolveHexColorValue(value1, tokenValues: tokenValues, theme: .day))
+        let actualHexColor2 = try tokensResolver.resolveHexColorValue(value2, tokenValues: tokenValues, theme: .day))
 
         XCTAssertEqual(actualHexColor1, expectedHexColor1)
         XCTAssertEqual(actualHexColor2, expectedHexColor2)
@@ -206,7 +208,7 @@ final class TokensResolverTests: XCTestCase {
         let value = "rgba(#FFFFFF, 48%)"
         let expectedHexColor = "#FFFFFF7A"
 
-        let actualHexColor = try tokensResolver.resolveHexColorValue(value, tokenValues: .empty)
+        let actualHexColor = try tokensResolver.resolveHexColorValue(value, tokenValues: .empty, theme: .day)
 
         XCTAssertEqual(actualHexColor, expectedHexColor)
     }
