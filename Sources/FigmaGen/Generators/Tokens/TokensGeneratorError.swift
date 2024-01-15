@@ -10,7 +10,7 @@ struct TokensGeneratorError: Error, CustomStringConvertible {
         case expressionFailed(expression: String)
         case invalidRGBAColorValue(rgba: String)
         case invalidAlphaComponent(alpha: String)
-        case invalidHEXComponent(hex: String)
+        case invalidHEXComponent(hex: String, tokenName: String)
         case failedToExtractLinearGradientParams(linearGradient: String)
 
         case nightColorNotFound(tokenName: String)
@@ -39,8 +39,8 @@ struct TokensGeneratorError: Error, CustomStringConvertible {
         case .invalidAlphaComponent(let alpha):
             return "Failed to convert alpha to float: \(alpha)"
 
-        case .invalidHEXComponent(let hex):
-            return "Invalid hex value: \(hex)"
+        case .invalidHEXComponent(let hex, let tokenName):
+            return "Invalid hex value: \(hex) for tokenName \(tokenName)"
 
         case .failedToExtractLinearGradientParams(let linearGradient):
             return "Failed to extract linear gradient parameters: \(linearGradient)"
