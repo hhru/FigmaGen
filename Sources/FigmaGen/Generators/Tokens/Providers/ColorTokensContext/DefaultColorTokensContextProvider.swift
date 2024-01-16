@@ -54,7 +54,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
             fallbackWarning(tokenName: tokenName)
             return fallbackRefence
         }
-    
+
         return try tokensResolver.resolveBaseReference(nightValue, tokenValues: tokenValues.night)
     }
 
