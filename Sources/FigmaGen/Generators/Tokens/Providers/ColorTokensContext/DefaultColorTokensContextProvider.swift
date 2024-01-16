@@ -33,14 +33,18 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
             return fallbackValue
         }
 
-        return try tokensResolver.resolveHexColorValue(nightValue, tokenValues: tokenValues, theme: .night)
+        return try tokensResolver.resolveHexColorValue(
+            nightValue,
+            tokenValues: tokenValues,
+            theme: .night
+        )
     }
 
     private func resolveNightReference(
         tokenName: String,
         fallbackRefence: String,
         tokenValues: TokenValues
-    ) -> String {
+    ) throws -> String {
         guard let nightToken = tokenValues.night.first(where: { $0.name == tokenName }) else {
             fallbackWarning(tokenName: tokenName)
             return fallbackRefence
@@ -50,35 +54,8 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
             fallbackWarning(tokenName: tokenName)
             return fallbackRefence
         }
-
-        return resolveReference(initialReferenceName: nightValue, themeColorTokenValues: tokenValues.night)
-    }
-
-    private func resolveReference(
-        initialReferenceName: String,
-        themeColorTokenValues: [TokenValue]
-    ) -> String {
-        if initialReferenceName.contains("color.base") {
-            return initialReferenceName
-        }
-
-        guard let replaceValue = themeColorTokenValues.first(where: { initialReferenceName.contains($0.name) })?
-            .type.stringValue else {
-            return initialReferenceName
-        }
-
-        let nsString = initialReferenceName as NSString
-        guard
-            let tokenRegex = try? NSRegularExpression(pattern: #"\{.*?\}"#),
-            let firstArgument = tokenRegex.firstMatch(
-                in: initialReferenceName,
-                range: NSRange(location: 0, length: initialReferenceName.count)
-            )
-        else {
-            return initialReferenceName
-        }
-
-        return nsString.replacingCharacters(in: firstArgument.range, with: replaceValue) as String
+    
+        return try tokensResolver.resolveBaseReference(nightValue, tokenValues: tokenValues.night)
     }
 
     private func makeColorToken(
@@ -93,23 +70,26 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
             theme: .day
         )
 
+        let dayReference = try tokensResolver.resolveBaseReference(
+            dayValue,
+            tokenValues: tokenValues.day
+        )
+
+        let nightReference = try resolveNightReference(
+            tokenName: tokenName,
+            fallbackRefence: dayValue,
+            tokenValues: tokenValues
+        )
+
+        let nightHexColorValue = try resolveNightValue(
+            tokenName: tokenName,
+            fallbackValue: dayHexColorValue,
+            tokenValues: tokenValues
+        )
+
         return ColorToken(
-            dayTheme: ColorToken.Theme(
-                value: dayHexColorValue,
-                reference: resolveReference(initialReferenceName: dayValue, themeColorTokenValues: tokenValues.day)
-            ),
-            nightTheme: ColorToken.Theme(
-                value: try resolveNightValue(
-                    tokenName: tokenName,
-                    fallbackValue: dayHexColorValue,
-                    tokenValues: tokenValues
-                ),
-                reference: resolveNightReference(
-                    tokenName: tokenName,
-                    fallbackRefence: dayValue,
-                    tokenValues: tokenValues
-                )
-            ),
+            dayTheme: ColorToken.Theme(value: dayHexColorValue, reference: dayReference),
+            nightTheme: ColorToken.Theme(value: nightHexColorValue, reference:  nightReference),
             name: tokenName,
             path: path
         )

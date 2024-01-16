@@ -13,8 +13,8 @@ struct TokenValues: Codable, Hashable {
 
     // MARK: - Instance Properties
 
-    // Возвращает набор токенов для определенной темы.
-    // Для undefined возвращается полный набор токенов. Нужен для Spacer, Font и других независимых от темы параметров.
+    /// Возвращает набор токенов для определенной темы.
+    /// Для undefined возвращается полный набор токенов. Нужен для Spacer, Font и других независимых от темы параметров.
     func getThemeTokenValues(theme: Theme) -> [TokenValue] {
         switch theme {
         case .day:

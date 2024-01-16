@@ -212,6 +212,56 @@ final class TokensResolverTests: XCTestCase {
 
         XCTAssertEqual(actualHexColor, expectedHexColor)
     }
+
+    func testResolveBaseReference() throws {
+        let tokenValues = TokenValues(
+            core: [],
+            semantic: [],
+            colors: [
+                TokenValue(type: .color(value: "#000000"), name: "color.base.black")
+            ],
+            typography: [],
+            day: [],
+            night: [
+                TokenValue(type: .color(value: "{color.base.black}"), name: "color.background.primary"),
+                TokenValue(type: .color(value: "{color.background.primary}"), name: "color.background.primary.nested")
+            ]
+        )
+
+        let value = "{color.background.primary.nested}"
+        let expectedBaseReference = "{color.base.black}"
+
+        let actualBaseReference = try tokensResolver.resolveBaseReference(value, tokenValues: tokenValues.night)
+
+        XCTAssertEqual(actualBaseReference, expectedBaseReference)
+    }
+
+    func testResolveBaseReferenceWithOpacity() throws {
+        let tokenValues = TokenValues(
+            core: [
+                TokenValue(type: .opacity(value: "48%"), name: "core.opacity.48")
+            ],
+            semantic: [
+                TokenValue(type: .opacity(value: "{core.opacity.48}"), name: "semantic.opacity.disabled")
+            ],
+            colors: [
+                TokenValue(type: .color(value: "#000000"), name: "color.base.black")
+            ],
+            typography: [],
+            day: [],
+            night: [
+                TokenValue(type: .color(value: "{color.base.black}"), name: "color.background.primary"),
+                TokenValue(type: .color(value: "{color.background.primary}"), name: "color.background.primary.nested")
+            ]
+        )
+
+        let value = "rgba( {color.background.primary.nested}, {semantic.opacity.disabled})"
+        let expectedBaseReference = "rgba( {color.base.black}, {semantic.opacity.disabled})"
+
+        let actualBaseReference = try tokensResolver.resolveBaseReference(value, tokenValues: tokenValues.night)
+
+        XCTAssertEqual(actualBaseReference, expectedBaseReference)
+    }
 }
 
 extension TokenValues {
