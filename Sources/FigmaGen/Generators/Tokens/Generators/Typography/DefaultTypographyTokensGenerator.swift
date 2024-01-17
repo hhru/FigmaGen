@@ -21,7 +21,11 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
         tokenValues: TokenValues
     ) throws -> TypographyToken.LineHeightToken {
         let lineHeightValue = value.lineHeight
-        let lineHeightResolvedValue = try tokensResolver.resolveValue(lineHeightValue, tokenValues: tokenValues)
+        let lineHeightResolvedValue = try tokensResolver.resolveValue(
+            lineHeightValue,
+            tokenValues: tokenValues,
+            theme: .undefined
+        )
 
         guard lineHeightResolvedValue.hasSuffix("%") else {
             return TypographyToken.LineHeightToken(
@@ -30,7 +34,9 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
             )
         }
 
-        let fontSize = Double(try tokensResolver.resolveValue(value.fontSize, tokenValues: tokenValues))
+        let fontSize = Double(
+            try tokensResolver.resolveValue(value.fontSize, tokenValues: tokenValues, theme: .undefined)
+        )
         let lineHeight = Double(lineHeightResolvedValue.dropLast()).map { $0 / 100.0 }
 
         guard let fontSize else {
@@ -59,12 +65,12 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
 
         let letterSpacing = Double(
             try tokensResolver
-                .resolveValue(letterSpacingValue, tokenValues: tokenValues)
+                .resolveValue(letterSpacingValue, tokenValues: tokenValues, theme: .undefined)
                 .removingFirst("%")
         ).map { $0 / 100.0 }
 
         let fontSize = Double(
-            try tokensResolver.resolveValue(value.fontSize, tokenValues: tokenValues)
+            try tokensResolver.resolveValue(value.fontSize, tokenValues: tokenValues, theme: .undefined)
         )
 
         guard let fontSize else {
@@ -86,7 +92,7 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
     private func makeContextToken(value: String, tokenValues: TokenValues) throws -> ContextToken {
         ContextToken(
             path: value.components(separatedBy: "."),
-            value: try tokensResolver.resolveValue(value, tokenValues: tokenValues)
+            value: try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: .undefined)
         )
     }
 

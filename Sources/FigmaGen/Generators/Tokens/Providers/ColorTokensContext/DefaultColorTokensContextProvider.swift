@@ -33,14 +33,18 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
             return fallbackValue
         }
 
-        return try tokensResolver.resolveHexColorValue(nightValue, tokenValues: tokenValues)
+        return try tokensResolver.resolveHexColorValue(
+            nightValue,
+            tokenValues: tokenValues,
+            theme: .night
+        )
     }
 
     private func resolveNightReference(
         tokenName: String,
         fallbackRefence: String,
         tokenValues: TokenValues
-    ) -> String {
+    ) throws -> String {
         guard let nightToken = tokenValues.night.first(where: { $0.name == tokenName }) else {
             fallbackWarning(tokenName: tokenName)
             return fallbackRefence
@@ -51,7 +55,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
             return fallbackRefence
         }
 
-        return nightValue
+        return try tokensResolver.resolveBaseReference(nightValue, tokenValues: tokenValues.night)
     }
 
     private func makeColorToken(
@@ -62,26 +66,30 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
     ) throws -> ColorToken {
         let dayHexColorValue = try tokensResolver.resolveHexColorValue(
             dayValue,
+            tokenValues: tokenValues,
+            theme: .day
+        )
+
+        let dayReference = try tokensResolver.resolveBaseReference(
+            dayValue,
+            tokenValues: tokenValues.day
+        )
+
+        let nightReference = try resolveNightReference(
+            tokenName: tokenName,
+            fallbackRefence: dayValue,
+            tokenValues: tokenValues
+        )
+
+        let nightHexColorValue = try resolveNightValue(
+            tokenName: tokenName,
+            fallbackValue: dayHexColorValue,
             tokenValues: tokenValues
         )
 
         return ColorToken(
-            dayTheme: ColorToken.Theme(
-                value: dayHexColorValue,
-                reference: dayValue
-            ),
-            nightTheme: ColorToken.Theme(
-                value: try resolveNightValue(
-                    tokenName: tokenName,
-                    fallbackValue: dayHexColorValue,
-                    tokenValues: tokenValues
-                ),
-                reference: resolveNightReference(
-                    tokenName: tokenName,
-                    fallbackRefence: dayValue,
-                    tokenValues: tokenValues
-                )
-            ),
+            dayTheme: ColorToken.Theme(value: dayHexColorValue, reference: dayReference),
+            nightTheme: ColorToken.Theme(value: nightHexColorValue, reference:  nightReference),
             name: tokenName,
             path: path
         )
@@ -131,7 +139,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
 
             let path = token.name.components(separatedBy: ".")
 
-            guard path[0] != "gradient" else {
+            guard path[0] != "gradient" && !dayValue.contains("gradient") else {
                 return nil
             }
 

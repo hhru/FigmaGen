@@ -60,9 +60,9 @@ final class DefaultTokensResolver: TokensResolver {
         }
     }
 
-    private func resolveColorValue(_ value: String, tokenValues: TokenValues) throws -> Color {
+    private func resolveColorValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> Color {
         if value.hasPrefix("rgba") {
-            return try resolveRGBAColorValue(value, tokenValues: tokenValues)
+            return try resolveRGBAColorValue(value, tokenValues: tokenValues, theme: theme)
         }
 
         return try makeColor(hex: value, alpha: 1.0)
@@ -70,8 +70,8 @@ final class DefaultTokensResolver: TokensResolver {
 
     // MARK: - TokensResolver
 
-    func resolveValue(_ value: String, tokenValues: TokenValues) throws -> String {
-        let allTokens = tokenValues.all
+    func resolveValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> String {
+        let themeTokens = tokenValues.getThemeTokenValues(theme: theme)
 
         let resolvedValue = try value.replacingOccurrences(matchingPattern: #"\{.*?\}"#) { referenceName in
             let referenceName = String(
@@ -80,7 +80,7 @@ final class DefaultTokensResolver: TokensResolver {
                     .dropLast()
             )
 
-            guard let token = allTokens.first(where: { $0.name == referenceName }) else {
+            guard let token = themeTokens.first(where: { $0.name == referenceName }) else {
                 throw TokensGeneratorError(code: .referenceNotFound(name: referenceName))
             }
 
@@ -88,14 +88,42 @@ final class DefaultTokensResolver: TokensResolver {
                 throw TokensGeneratorError(code: .unexpectedTokenValueType(name: referenceName))
             }
 
-            return try resolveValue(value, tokenValues: tokenValues)
+            return try resolveValue(value, tokenValues: tokenValues, theme: theme)
         }
 
         return evaluteValue(resolvedValue)
     }
 
-    func resolveRGBAColorValue(_ value: String, tokenValues: TokenValues) throws -> Color {
-        let components = try resolveValue(value, tokenValues: tokenValues)
+    func resolveBaseReference(_ reference: String, tokenValues: [TokenValue]) throws -> String {
+        try reference.replacingOccurrences(matchingPattern: #"\{.*?\}"#) { referenceName in
+            if referenceName.contains("color.base") {
+                return referenceName
+            }
+
+            guard referenceName.contains("color.") else {
+                return referenceName
+            }
+
+            let referenceName = String(
+                referenceName
+                    .dropFirst()
+                    .dropLast()
+            )
+
+            guard let token = tokenValues.first(where: { $0.name == referenceName }) else {
+                throw TokensGeneratorError(code: .referenceNotFound(name: referenceName))
+            }
+
+            guard let value = token.type.stringValue else {
+                throw TokensGeneratorError(code: .unexpectedTokenValueType(name: referenceName))
+            }
+
+            return try resolveBaseReference(value, tokenValues: tokenValues)
+        }
+    }
+
+    func resolveRGBAColorValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> Color {
+        let components = try resolveValue(value, tokenValues: tokenValues, theme: theme)
             .slice(from: "(", to: ")", includingBounds: false)?
             .components(separatedBy: ", ")
 
@@ -113,18 +141,17 @@ final class DefaultTokensResolver: TokensResolver {
         return try makeColor(hex: hex, alpha: alpha / 100.0)
     }
 
-    func resolveHexColorValue(_ value: String, tokenValues: TokenValues) throws -> String {
-        let resolvedValue = try resolveValue(value, tokenValues: tokenValues)
+    func resolveHexColorValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> String {
+        let resolvedValue = try resolveValue(value, tokenValues: tokenValues, theme: theme)
 
         if resolvedValue.hasPrefix("#") {
             return resolvedValue
         }
-
-        return try resolveColorValue(resolvedValue, tokenValues: tokenValues).hexString
+        return try resolveColorValue(resolvedValue, tokenValues: tokenValues, theme: theme).hexString
     }
 
-    func resolveLinearGradientValue(_ value: String, tokenValues: TokenValues) throws -> LinearGradient {
-        let value = try resolveValue(value, tokenValues: tokenValues)
+    func resolveLinearGradientValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> LinearGradient {
+        let value = try resolveValue(value, tokenValues: tokenValues, theme: theme)
 
         guard let startFunctionIndex = value.firstIndex(of: "("), let endFunctionIndex = value.lastIndex(of: ")") else {
             throw TokensGeneratorError(code: .failedToExtractLinearGradientParams(linearGradient: value))
@@ -148,7 +175,7 @@ final class DefaultTokensResolver: TokensResolver {
 
                 let percentage = String(rawColorStop[separatorRange.upperBound...])
                 let rawColor = String(rawColorStop[...separatorRange.lowerBound])
-                let color = try resolveColorValue(rawColor, tokenValues: tokenValues)
+                let color = try resolveColorValue(rawColor, tokenValues: tokenValues, theme: theme)
 
                 return LinearGradient.LinearColorStop(color: color, percentage: percentage)
             }
