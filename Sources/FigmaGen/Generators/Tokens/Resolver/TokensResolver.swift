@@ -17,11 +17,11 @@ protocol TokensResolver {
     /// - Returns: Resolved value.
     func resolveValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> String
 
-    /// Resolving references and mathematical expressions in `value` from `tokenValues`.
+    /// Resolving `reference` from `tokenValues`.
     ///
-    /// Reference example: `{core.space.1-x} + {core.space.1-x} / 2`
-    /// where `core.space.1-x == 1` the resolved value would be `1 + 1 / 2`
-    /// and after evaluating the mathematical expression, the function will return `1.5`
+    /// Example: If reference `{color.background.primary}` and `tokenValues` has token with name
+    /// `color.background.primary` and reference `{color.base.black}`,
+    /// the function will return  `{color.base.black}` else `{color.background.primary}`.
     ///
     /// - Parameters:
     ///   - reference: String reference to resolve
