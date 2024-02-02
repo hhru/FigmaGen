@@ -96,7 +96,7 @@ final class DefaultTokensResolver: TokensResolver {
 
     func resolveBaseReference(_ reference: String, tokenValues: [TokenValue]) throws -> String {
         try reference.replacingOccurrences(matchingPattern: #"\{.*?\}"#) { referenceName in
-            if referenceName.contains("color.base") {
+            if referenceName.contains(".base.") || referenceName.contains(".service.") {
                 return referenceName
             }
 
