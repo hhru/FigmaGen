@@ -6,7 +6,7 @@ import PathKit
 Path.current = Path(#file).appending("../../../Demo")
 #endif
 
-let version = "2.0.0-beta.15"
+let version = "2.0.0-beta.16"
 let logger = Logger()
 
 let figmagen = CLI(
