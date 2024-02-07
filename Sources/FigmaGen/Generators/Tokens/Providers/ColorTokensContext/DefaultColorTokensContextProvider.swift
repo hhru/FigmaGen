@@ -114,13 +114,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
             dayValue,
             tokenValues: tokenValues.hhDay
         )
-
-        let nightReference = try resolveNightReference(
-            tokenName: tokenName,
-            fallbackRefence: dayValue,
-            tokenValues: tokenValues
-        )
-
+        
         let nightHexColorValue = try resolveNightValue(
             tokenName: tokenName,
             fallbackValue: dayHexColorValue,
