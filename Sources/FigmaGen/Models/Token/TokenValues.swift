@@ -1,6 +1,6 @@
 import Foundation
 
-struct TokenValues: Codable, Hashable {
+struct TokenValues: Hashable {
 
     // MARK: - Instance Properties
 
@@ -8,8 +8,9 @@ struct TokenValues: Codable, Hashable {
     let semantic: [TokenValue]
     let colors: [TokenValue]
     let typography: [TokenValue]
-    let day: [TokenValue]
-    let night: [TokenValue]
+    let hhDay: [TokenValue]
+    let hhNight: [TokenValue]
+    let zpDay: [TokenValue]
 
     // MARK: - Instance Properties
 
@@ -18,13 +19,33 @@ struct TokenValues: Codable, Hashable {
     func getThemeTokenValues(theme: Theme) -> [TokenValue] {
         switch theme {
         case .day:
-            return [day, core, semantic, colors, typography].flatMap { $0 }
+            return [hhDay, core, semantic, colors, typography].flatMap { $0 }
 
         case .night:
-            return [night, core, semantic, colors, typography].flatMap { $0 }
+            return [hhNight, core, semantic, colors, typography].flatMap { $0 }
 
         case .undefined:
-            return [core, semantic, colors, typography, day, night].flatMap { $0 }
+            return [core, semantic, colors, typography, hhDay, hhNight].flatMap { $0 }
         }
+    }
+}
+
+// MARK: - Codable
+
+extension TokenValues: Codable {
+
+    // MARK: - Nested Types
+
+    private enum CodingKeys: String, CodingKey {
+
+        // MARK: - Enumeration Cases
+
+        case core
+        case semantic
+        case colors
+        case typography
+        case hhDay = "hh-day"
+        case hhNight = "hh-night"
+        case zpDay = "zp-day"
     }
 }

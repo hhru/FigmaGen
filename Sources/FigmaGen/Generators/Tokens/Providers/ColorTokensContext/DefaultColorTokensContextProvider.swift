@@ -23,7 +23,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
         fallbackValue: String,
         tokenValues: TokenValues
     ) throws -> String {
-        guard let nightToken = tokenValues.night.first(where: { $0.name == tokenName }) else {
+        guard let nightToken = tokenValues.hhNight.first(where: { $0.name == tokenName }) else {
             fallbackWarning(tokenName: tokenName)
             return fallbackValue
         }
@@ -45,7 +45,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
         fallbackRefence: String,
         tokenValues: TokenValues
     ) throws -> String {
-        guard let nightToken = tokenValues.night.first(where: { $0.name == tokenName }) else {
+        guard let nightToken = tokenValues.hhNight.first(where: { $0.name == tokenName }) else {
             fallbackWarning(tokenName: tokenName)
             return fallbackRefence
         }
@@ -55,7 +55,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
             return fallbackRefence
         }
 
-        return try tokensResolver.resolveBaseReference(nightValue, tokenValues: tokenValues.night)
+        return try tokensResolver.resolveBaseReference(nightValue, tokenValues: tokenValues.hhNight)
     }
 
     private func makeColorToken(
@@ -72,7 +72,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
 
         let dayReference = try tokensResolver.resolveBaseReference(
             dayValue,
-            tokenValues: tokenValues.day
+            tokenValues: tokenValues.hhDay
         )
 
         let nightReference = try resolveNightReference(
@@ -132,7 +132,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
     // MARK: -
 
     func fetchColorTokensContext(from tokenValues: TokenValues) throws -> [String: Any] {
-        let colors: [ColorToken] = try tokenValues.day.compactMap { (token: TokenValue) in
+        let colors: [ColorToken] = try tokenValues.hhDay.compactMap { (token: TokenValue) in
             guard case .color(let dayValue) = token.type else {
                 return nil
             }
