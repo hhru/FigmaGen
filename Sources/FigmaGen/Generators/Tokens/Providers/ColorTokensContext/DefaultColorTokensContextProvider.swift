@@ -14,8 +14,8 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
 
     // MARK: - Instance Methods
 
-    private func fallbackWarning(tokenName: String) {
-        logger.warning("Night value for token '\(tokenName)' not found, using day value.")
+    private func fallbackWarning(warningPrefix: String, tokenName: String) {
+        logger.warning("\(warningPrefix) value for token '\(tokenName)' not found, using day value.")
     }
 
     private func resolveNightValue(
@@ -24,12 +24,12 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
         tokenValues: TokenValues
     ) throws -> String {
         guard let nightToken = tokenValues.hhNight.first(where: { $0.name == tokenName }) else {
-            fallbackWarning(tokenName: tokenName)
+            fallbackWarning(warningPrefix: "Night", tokenName: tokenName)
             return fallbackValue
         }
 
         guard case .color(let nightValue) = nightToken.type else {
-            fallbackWarning(tokenName: tokenName)
+            fallbackWarning(warningPrefix: "Night", tokenName: tokenName)
             return fallbackValue
         }
 
@@ -46,12 +46,12 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
         tokenValues: TokenValues
     ) throws -> String {
         guard let nightToken = tokenValues.hhNight.first(where: { $0.name == tokenName }) else {
-            fallbackWarning(tokenName: tokenName)
+            fallbackWarning(warningPrefix: "Night", tokenName: tokenName)
             return fallbackRefence
         }
 
         guard case .color(let nightValue) = nightToken.type else {
-            fallbackWarning(tokenName: tokenName)
+            fallbackWarning(warningPrefix: "Night", tokenName: tokenName)
             return fallbackRefence
         }
 
@@ -64,12 +64,12 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
         tokenValues: TokenValues
     ) throws -> String {
         guard let zpDayToken = tokenValues.hhNight.first(where: { $0.name == tokenName }) else {
-            fallbackWarning(tokenName: tokenName)
+            fallbackWarning(warningPrefix: "ZpDay", tokenName: tokenName)
             return fallbackValue
         }
 
         guard case .color(let zpDayValue) = zpDayToken.type else {
-            fallbackWarning(tokenName: tokenName)
+            fallbackWarning(warningPrefix: "ZpDay", tokenName: tokenName)
             return fallbackValue
         }
 
@@ -86,12 +86,12 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
         tokenValues: TokenValues
     ) throws -> String {
         guard let zpDayToken = tokenValues.zpDay.first(where: { $0.name == tokenName }) else {
-            fallbackWarning(tokenName: tokenName)
+            fallbackWarning(warningPrefix: "ZpDay", tokenName: tokenName)
             return fallbackRefence
         }
 
         guard case .color(let zpDayValue) = zpDayToken.type else {
-            fallbackWarning(tokenName: tokenName)
+            fallbackWarning(warningPrefix: "ZpDay", tokenName: tokenName)
             return fallbackRefence
         }
 
