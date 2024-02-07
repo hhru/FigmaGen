@@ -28,7 +28,7 @@ struct TokenValues: Hashable {
             return [zpDay, core, semantic, colors, typography].flatMap { $0 }
 
         case .undefined:
-            return [core, semantic, colors, typography, hhDay, hhNight].flatMap { $0 }
+            return [core, semantic, colors, typography, hhDay, hhNight, zpDay].flatMap { $0 }
         }
     }
 }
