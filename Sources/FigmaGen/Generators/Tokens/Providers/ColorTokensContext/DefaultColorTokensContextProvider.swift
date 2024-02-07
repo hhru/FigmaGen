@@ -57,6 +57,46 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
 
         return try tokensResolver.resolveBaseReference(nightValue, tokenValues: tokenValues.hhNight)
     }
+    
+    private func resolveZpDayValue(
+        tokenName: String,
+        fallbackValue: String,
+        tokenValues: TokenValues
+    ) throws -> String {
+        guard let zpDayToken = tokenValues.hhNight.first(where: { $0.name == tokenName }) else {
+            fallbackWarning(tokenName: tokenName)
+            return fallbackValue
+        }
+
+        guard case .color(let zpDayValue) = zpDayToken.type else {
+            fallbackWarning(tokenName: tokenName)
+            return fallbackValue
+        }
+
+        return try tokensResolver.resolveHexColorValue(
+            zpDayValue,
+            tokenValues: tokenValues,
+            theme: .zpDay
+        )
+    }
+
+    private func resolveZpDayReference(
+        tokenName: String,
+        fallbackRefence: String,
+        tokenValues: TokenValues
+    ) throws -> String {
+        guard let zpDayToken = tokenValues.zpDay.first(where: { $0.name == tokenName }) else {
+            fallbackWarning(tokenName: tokenName)
+            return fallbackRefence
+        }
+
+        guard case .color(let zpDayValue) = zpDayToken.type else {
+            fallbackWarning(tokenName: tokenName)
+            return fallbackRefence
+        }
+
+        return try tokensResolver.resolveBaseReference(zpDayValue, tokenValues: tokenValues.zpDay)
+    }
 
     private func makeColorToken(
         dayValue: String,
@@ -87,9 +127,28 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
             tokenValues: tokenValues
         )
 
+        let nightReference = try resolveNightReference(
+            tokenName: tokenName,
+            fallbackRefence: dayValue,
+            tokenValues: tokenValues
+        )
+
+        let zpDayHexColorValue = try resolveZpDayValue(
+            tokenName: tokenName,
+            fallbackValue: dayHexColorValue,
+            tokenValues: tokenValues
+        )
+
+        let zpDayReference = try resolveZpDayReference(
+            tokenName: tokenName,
+            fallbackRefence: dayValue,
+            tokenValues: tokenValues
+        )
+
         return ColorToken(
             dayTheme: ColorToken.Theme(value: dayHexColorValue, reference: dayReference),
             nightTheme: ColorToken.Theme(value: nightHexColorValue, reference:  nightReference),
+            zpDayTheme: ColorToken.Theme(value: zpDayHexColorValue, reference:  zpDayReference),
             name: tokenName,
             path: path
         )
