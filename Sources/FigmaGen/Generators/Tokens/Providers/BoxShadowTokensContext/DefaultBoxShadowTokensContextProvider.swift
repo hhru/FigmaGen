@@ -23,7 +23,7 @@ final class DefaultBoxShadowTokensContextProvider: BoxShadowTokensContextProvide
             return nil
         }
 
-        guard let nightTokenValue = tokenValues.night.first(where: { $0.name == dayTokenValue.name }) else {
+        guard let nightTokenValue = tokenValues.hhNight.first(where: { $0.name == dayTokenValue.name }) else {
             throw BoxShadowTokensContextProviderError(code: .nightValueNotFound(tokenName: dayTokenValue.name))
         }
 
@@ -41,7 +41,7 @@ final class DefaultBoxShadowTokensContextProvider: BoxShadowTokensContextProvide
     // MARK: -
 
     func fetchBoxShadowTokensContext(from tokenValues: TokenValues) throws -> [BoxShadowToken] {
-        try tokenValues.day
+        try tokenValues.hhDay
             .compactMap { try makeBoxShadowToken(from: $0, tokenValues: tokenValues) }
             .sorted { $0.path.joined() < $1.path.joined() }
     }
