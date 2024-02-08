@@ -14,48 +14,50 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
 
     // MARK: - Instance Methods
 
-    private func fallbackWarning(tokenName: String) {
-        logger.warning("Night value for token '\(tokenName)' not found, using day value.")
+    private func fallbackWarning(warningPrefix: String, tokenName: String) {
+        logger.warning("\(warningPrefix) value for token '\(tokenName)' not found, using day value.")
     }
 
-    private func resolveNightValue(
+    private func resolveColorToken(
         tokenName: String,
-        fallbackValue: String,
-        tokenValues: TokenValues
-    ) throws -> String {
-        guard let nightToken = tokenValues.hhNight.first(where: { $0.name == tokenName }) else {
-            fallbackWarning(tokenName: tokenName)
-            return fallbackValue
+        fallbackColorToken: ColorToken.Theme,
+        tokenValues: TokenValues,
+        theme: Theme
+    ) throws -> ColorToken.Theme {
+        // Resolve theme data
+        let themeData: (tokenValues: [TokenValue], warningPrefix: String) = switch theme {
+        case .night:
+            (tokenValues.hhNight, "Night")
+
+        case .zpDay:
+            (tokenValues.zpDay, "ZpDay")
+
+        case .day, .undefined:
+            ([], "")
         }
 
-        guard case .color(let nightValue) = nightToken.type else {
-            fallbackWarning(tokenName: tokenName)
-            return fallbackValue
+        // Resolve token and value
+        guard let themeToken = themeData.tokenValues.first(where: { $0.name == tokenName }) else {
+            fallbackWarning(warningPrefix: themeData.warningPrefix, tokenName: tokenName)
+            return fallbackColorToken
         }
 
-        return try tokensResolver.resolveHexColorValue(
-            nightValue,
+        guard case .color(let themeValue) = themeToken.type else {
+            fallbackWarning(warningPrefix: themeData.warningPrefix, tokenName: tokenName)
+            return fallbackColorToken
+        }
+
+        // Resolve hex color value
+        let themeHexColorValue = try tokensResolver.resolveHexColorValue(
+            themeValue,
             tokenValues: tokenValues,
-            theme: .night
+            theme: theme
         )
-    }
 
-    private func resolveNightReference(
-        tokenName: String,
-        fallbackRefence: String,
-        tokenValues: TokenValues
-    ) throws -> String {
-        guard let nightToken = tokenValues.hhNight.first(where: { $0.name == tokenName }) else {
-            fallbackWarning(tokenName: tokenName)
-            return fallbackRefence
-        }
+        // Resolve reference
+        let themeReference = try tokensResolver.resolveBaseReference(themeValue, tokenValues: themeData.tokenValues)
 
-        guard case .color(let nightValue) = nightToken.type else {
-            fallbackWarning(tokenName: tokenName)
-            return fallbackRefence
-        }
-
-        return try tokensResolver.resolveBaseReference(nightValue, tokenValues: tokenValues.hhNight)
+        return ColorToken.Theme(value: themeHexColorValue, reference: themeReference)
     }
 
     private func makeColorToken(
@@ -64,32 +66,35 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
         tokenValues: TokenValues,
         path: [String]
     ) throws -> ColorToken {
-        let dayHexColorValue = try tokensResolver.resolveHexColorValue(
-            dayValue,
+        let dayColorToken = ColorToken.Theme(
+            value: try tokensResolver.resolveHexColorValue(
+                dayValue,
+                tokenValues: tokenValues,
+                theme: .day
+            ),
+            reference: try tokensResolver.resolveBaseReference(
+                dayValue,
+                tokenValues: tokenValues.hhDay
+            )
+        )
+
+        let nightColorToken = try resolveColorToken(
+            tokenName: tokenName,
+            fallbackColorToken: dayColorToken,
             tokenValues: tokenValues,
-            theme: .day
+            theme: .night
         )
-
-        let dayReference = try tokensResolver.resolveBaseReference(
-            dayValue,
-            tokenValues: tokenValues.hhDay
-        )
-
-        let nightReference = try resolveNightReference(
+        let zpDayColorToken = try resolveColorToken(
             tokenName: tokenName,
-            fallbackRefence: dayValue,
-            tokenValues: tokenValues
-        )
-
-        let nightHexColorValue = try resolveNightValue(
-            tokenName: tokenName,
-            fallbackValue: dayHexColorValue,
-            tokenValues: tokenValues
+            fallbackColorToken: dayColorToken,
+            tokenValues: tokenValues,
+            theme: .zpDay
         )
 
         return ColorToken(
-            dayTheme: ColorToken.Theme(value: dayHexColorValue, reference: dayReference),
-            nightTheme: ColorToken.Theme(value: nightHexColorValue, reference:  nightReference),
+            dayTheme: dayColorToken,
+            nightTheme: nightColorToken,
+            zpDayTheme: zpDayColorToken,
             name: tokenName,
             path: path
         )

@@ -16,6 +16,7 @@ struct ColorToken: Encodable {
 
     let dayTheme: Theme
     let nightTheme: Theme
+    let zpDayTheme: Theme
     let name: String
     let path: [String]
 }
