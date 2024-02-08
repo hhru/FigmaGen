@@ -23,7 +23,7 @@ struct TokenValues: Hashable {
 
         case .night:
             return [hhNight, core, semantic, colors, typography].flatMap { $0 }
-            
+
         case .zpDay:
             return [zpDay, core, semantic, colors, typography].flatMap { $0 }
 

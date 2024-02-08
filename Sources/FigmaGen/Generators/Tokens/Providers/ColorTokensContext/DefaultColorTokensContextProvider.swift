@@ -17,7 +17,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
     private func fallbackWarning(warningPrefix: String, tokenName: String) {
         logger.warning("\(warningPrefix) value for token '\(tokenName)' not found, using day value.")
     }
-    
+
     private func resolveColorToken(
         tokenName: String,
         fallbackColorToken: ColorToken.Theme,
@@ -28,38 +28,37 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
         let themeData: (tokenValues: [TokenValue], warningPrefix: String) = switch theme {
         case .night:
             (tokenValues.hhNight, "Night")
-            
+
         case .zpDay:
             (tokenValues.zpDay, "ZpDay")
-            
+
         case .day, .undefined:
             ([], "")
         }
-        
+
         // Resolve token and value
         guard let themeToken = themeData.tokenValues.first(where: { $0.name == tokenName }) else {
             fallbackWarning(warningPrefix: themeData.warningPrefix, tokenName: tokenName)
             return fallbackColorToken
         }
-        
+
         guard case .color(let themeValue) = themeToken.type else {
             fallbackWarning(warningPrefix: themeData.warningPrefix, tokenName: tokenName)
             return fallbackColorToken
         }
-        
+
         // Resolve hex color value
         let themeHexColorValue = try tokensResolver.resolveHexColorValue(
             themeValue,
             tokenValues: tokenValues,
             theme: theme
         )
-        
+
         // Resolve reference
         let themeReference = try tokensResolver.resolveBaseReference(themeValue, tokenValues: themeData.tokenValues)
-        
+
         return ColorToken.Theme(value: themeHexColorValue, reference: themeReference)
     }
-
 
     private func makeColorToken(
         dayValue: String,
@@ -78,7 +77,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
                 tokenValues: tokenValues.hhDay
             )
         )
-        
+
         let nightColorToken = try resolveColorToken(
             tokenName: tokenName,
             fallbackColorToken: dayColorToken,
