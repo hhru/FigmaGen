@@ -30,11 +30,20 @@ final class DefaultBoxShadowTokensContextProvider: BoxShadowTokensContextProvide
         guard case let .boxShadow(nightValue) = nightTokenValue.type else {
             throw BoxShadowTokensContextProviderError(code: .nightValueNotFound(tokenName: dayTokenValue.name))
         }
+        
+        guard let zpDayTokenValue = tokenValues.zpDay.first(where: { $0.name == dayTokenValue.name }) else {
+            throw BoxShadowTokensContextProviderError(code: .nightValueNotFound(tokenName: dayTokenValue.name))
+        }
+
+        guard case let .boxShadow(zpDayValue) = zpDayTokenValue.type else {
+            throw BoxShadowTokensContextProviderError(code: .zpValueNotFound(tokenName: dayTokenValue.name))
+        }
 
         return BoxShadowToken(
             path: dayTokenValue.name.components(separatedBy: "."),
             dayTheme: makeTheme(value: dayValue),
-            nightTheme: makeTheme(value: nightValue)
+            nightTheme: makeTheme(value: nightValue),
+            zpDayTheme: makeTheme(value: zpDayValue)
         )
     }
 

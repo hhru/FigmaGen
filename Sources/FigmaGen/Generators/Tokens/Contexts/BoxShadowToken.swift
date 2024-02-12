@@ -21,4 +21,5 @@ struct BoxShadowToken {
     let path: [String]
     let dayTheme: Theme
     let nightTheme: Theme
+    let zpDayTheme: Theme
 }

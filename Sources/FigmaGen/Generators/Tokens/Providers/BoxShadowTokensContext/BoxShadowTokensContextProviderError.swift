@@ -9,6 +9,7 @@ struct BoxShadowTokensContextProviderError: Error, CustomStringConvertible {
         // MARK: - Enumeration Cases
 
         case nightValueNotFound(tokenName: String)
+        case zpValueNotFound(tokenName: String)
     }
 
     // MARK: - Instance Properties
@@ -21,6 +22,8 @@ struct BoxShadowTokensContextProviderError: Error, CustomStringConvertible {
         switch code {
         case .nightValueNotFound(let tokenName):
             return "Night value for token '\(tokenName)' not found"
+        case .zpValueNotFound(let tokenName):
+            return "ZpDay value for token '\(tokenName)' not found"
         }
     }
 }
