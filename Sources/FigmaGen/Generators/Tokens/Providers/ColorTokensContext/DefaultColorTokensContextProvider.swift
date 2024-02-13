@@ -25,15 +25,16 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
         theme: Theme
     ) throws -> ColorToken.Theme {
         // Resolve theme data
-        let themeData: (tokenValues: [TokenValue], warningPrefix: String) = switch theme {
+        let themeData: (tokenValues: [TokenValue], warningPrefix: String)
+        switch theme {
         case .night:
-            (tokenValues.hhNight, "Night")
+            themeData = (tokenValues.hhNight, "Night")
 
         case .zpDay:
-            (tokenValues.zpDay, "ZpDay")
+            themeData = (tokenValues.zpDay, "ZpDay")
 
         case .day, .undefined:
-            ([], "")
+            themeData = ([], "")
         }
 
         // Resolve token and value
