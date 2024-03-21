@@ -15,7 +15,9 @@ struct TokensStudioPluginData: Codable, Hashable {
         let activeTheme: String
         let themes: String
         let collapsedTokenSets: String
-        let checkForChanges: String
+        let checkForChanges: String?
+        let persistentNodesCache: String?
+        let storageType: String?
     }
 
     // MARK: - Instance Properties
