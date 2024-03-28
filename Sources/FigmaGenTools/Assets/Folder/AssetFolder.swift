@@ -96,7 +96,7 @@ public struct AssetFolder {
         try saveNodes(imageSets, in: folderPath)
         try saveFolders(in: folderPath)
 
-        let contentsEncoder = JSONEncoder(outputFormatting: .prettyPrinted)
+        let contentsEncoder = JSONEncoder(outputFormatting: [.prettyPrinted, .sortedKeys])
         let contentsData = try contentsEncoder.encode(contents)
         let contentsPath = folderPath.appending(.contentsPath)
 
