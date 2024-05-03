@@ -7,6 +7,8 @@ protocol GenerationConfigurableCommand: Command {
 
     var fileKey: Key<String> { get }
     var fileVersion: Key<String> { get }
+    var remoteRepoKey: Key<String> { get }
+    var remoteRepoAccessTokenKey: Key<String> { get }
     var includedNodes: VariadicKey<String> { get }
     var excludedNodes: VariadicKey<String> { get }
 
@@ -28,6 +30,7 @@ extension GenerationConfigurableCommand {
     var generationConfiguration: GenerationConfiguration {
         GenerationConfiguration(
             file: resolveFileConfiguration(),
+            remoteRepoConfig: resolveRemoteRepoConfiguration(),
             accessToken: resolveAccessTokenConfiguration(),
             templates: [
                 TemplateConfiguration(
@@ -51,6 +54,20 @@ extension GenerationConfigurableCommand {
             version: fileVersion.value,
             includedNodes: includedNodes.value,
             excludedNodes: excludedNodes.value
+        )
+    }
+
+    private func resolveRemoteRepoConfiguration() -> RemoteRepoConfiguration? {
+        guard
+            let remoteRepoPath = remoteRepoKey.value,
+            let remoteRepoAccessToken = remoteRepoAccessTokenKey.value
+        else {
+            return nil
+        }
+
+        return RemoteRepoConfiguration(
+            repoPath: remoteRepoPath,
+            accessToken: remoteRepoAccessToken
         )
     }
 

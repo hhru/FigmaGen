@@ -7,6 +7,7 @@ struct GenerationConfiguration: Decodable {
 
     private enum CodingKeys: String, CodingKey {
         case file
+        case remoteRepoConfig
         case accessToken
         case templates
     }
@@ -14,6 +15,7 @@ struct GenerationConfiguration: Decodable {
     // MARK: - Instance Properties
 
     let file: FileConfiguration?
+    let remoteRepoConfig: RemoteRepoConfiguration?
     let accessToken: AccessTokenConfiguration?
     let templates: [TemplateConfiguration]?
 
@@ -21,10 +23,12 @@ struct GenerationConfiguration: Decodable {
 
     init(
         file: FileConfiguration?,
+        remoteRepoConfig: RemoteRepoConfiguration?,
         accessToken: AccessTokenConfiguration?,
         templates: [TemplateConfiguration]?
     ) {
         self.file = file
+        self.remoteRepoConfig = remoteRepoConfig
         self.accessToken = accessToken
         self.templates = templates
     }
@@ -33,6 +37,7 @@ struct GenerationConfiguration: Decodable {
         let base = try BaseConfiguration(from: decoder)
 
         file = base.file
+        remoteRepoConfig = base.remoteRepoConfig
         accessToken = base.accessToken
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -49,6 +54,7 @@ struct GenerationConfiguration: Decodable {
 
         return Self(
             file: file ?? base.file,
+            remoteRepoConfig: remoteRepoConfig ?? base.remoteRepoConfig,
             accessToken: accessToken ?? base.accessToken,
             templates: templates
         )

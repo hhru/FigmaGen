@@ -7,4 +7,5 @@ struct BaseConfiguration: Decodable {
 
     let file: FileConfiguration?
     let accessToken: AccessTokenConfiguration?
+    let remoteRepoConfig: RemoteRepoConfiguration?
 }

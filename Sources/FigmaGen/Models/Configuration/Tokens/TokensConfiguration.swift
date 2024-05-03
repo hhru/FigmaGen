@@ -11,6 +11,7 @@ struct TokensConfiguration: Decodable {
     // MARK: - Instance Properties
 
     let file: FileConfiguration?
+    let remoteRepoConfig: RemoteRepoConfiguration?
     let accessToken: AccessTokenConfiguration?
     let templates: TokensTemplateConfiguration?
 
@@ -21,6 +22,7 @@ struct TokensConfiguration: Decodable {
 
         self.file = base.file
         self.accessToken = base.accessToken
+        self.remoteRepoConfig = base.remoteRepoConfig
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -29,10 +31,12 @@ struct TokensConfiguration: Decodable {
 
     init(
         file: FileConfiguration?,
+        remoteRepoConfig: RemoteRepoConfiguration?,
         accessToken: AccessTokenConfiguration?,
         templates: TokensTemplateConfiguration?
     ) {
         self.file = file
+        self.remoteRepoConfig = remoteRepoConfig
         self.accessToken = accessToken
         self.templates = templates
     }
@@ -46,6 +50,7 @@ struct TokensConfiguration: Decodable {
 
         return Self(
             file: file ?? base.file,
+            remoteRepoConfig: remoteRepoConfig ?? base.remoteRepoConfig,
             accessToken: accessToken ?? base.accessToken,
             templates: templates
         )

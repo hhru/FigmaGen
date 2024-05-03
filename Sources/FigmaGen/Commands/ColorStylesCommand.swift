@@ -27,6 +27,20 @@ final class ColorStylesCommand: AsyncExecutableCommand, GenerationConfigurableCo
             """
     )
 
+    let remoteRepoKey = Key<String>(
+        "--remoteRepoKey",
+        description: """
+            Remote Repo key to generate text styles from.
+            """
+    )
+
+    let remoteRepoAccessTokenKey = Key<String>(
+        "--remoteRepoAccessTokenKey",
+        description: """
+            Remote Repo personal access token to make requests to the GitHub.
+            """
+    )
+
     let includedNodes = VariadicKey<String>(
         "--includingNodes",
         "-i",
