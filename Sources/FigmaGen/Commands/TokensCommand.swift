@@ -25,8 +25,8 @@ final class TokensCommand: AsyncExecutableCommand {
             """
     )
 
-    let remoteRepoKey = Key<String>(
-        "--remoteRepoKey",
+    let remoteFilePathKey = Key<String>(
+        "--remoteFilePathKey",
         description: """
             Remote Repo key to generate text styles from.
             """
@@ -315,14 +315,14 @@ extension TokensCommand {
 
     private func resolveRemoteRepoConfiguration() -> RemoteRepoConfiguration? {
         guard
-            let repoPath = remoteRepoKey.value,
+            let filePath = remoteFilePathKey.value,
             let remoteRepoAccessToken = remoteRepoAccessTokenKey.value
         else {
             return nil
         }
 
         return RemoteRepoConfiguration(
-            repoPath: repoPath,
+            filePath: filePath,
             accessToken: remoteRepoAccessToken
         )
     }
