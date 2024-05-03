@@ -8,7 +8,7 @@ enum Dependencies {
     static let dataProvider: DataProvider = DefaultDataProvider()
 
     static let gitHubHTTPService: GitHubHTTPService = HTTPService()
-    static let gitHubAPIProvider: RemoteRepoProvider = GitHubAPIProviderImp(httpService: gitHubHTTPService)
+    static let gitHubAPIProvider: RemoteRepoProvider = GitHubAPIProvider(httpService: gitHubHTTPService)
 
     static let figmaHTTPService: FigmaHTTPService = HTTPService()
     static let figmaAPIProvider: FigmaAPIProvider = DefaultFigmaAPIProvider(httpService: figmaHTTPService)

@@ -2,7 +2,7 @@ import Foundation
 import PromiseKit
 import FigmaGenTools
 
-final class GitHubAPIProviderImp: RemoteRepoProvider {
+final class GitHubAPIProvider: RemoteRepoProvider {
 
     // MARK: - Instance Properties
 
@@ -75,7 +75,7 @@ final class GitHubAPIProviderImp: RemoteRepoProvider {
 }
 
 // MARK: - RemoteRepoProvider
-extension GitHubAPIProviderImp {
+extension GitHubAPIProvider {
 
     func request<Route: GitHubAPIRoute>(route: Route) -> Promise<Route.Response> {
         Promise { seal in

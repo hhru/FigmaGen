@@ -22,34 +22,33 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
     // swiftlint:disable:next function_body_length
     func resolveGenerationParameters(from configuration: TokensConfiguration) throws -> TokensGenerationParameters {
 
-        let file: FileParameters?
-        let remoteFile: RemoteFileParameters?
-
-        if let fileConfiguration = configuration.file {
+        let file = try configuration.file.map { fileConfiguration in
             guard let accessToken = accessTokenResolver.resolveAccessToken(from: configuration.accessToken) else {
                 throw GenerationParametersError.invalidAccessToken
             }
 
-            file = FileParameters(
+            return FileParameters(
                 key: fileConfiguration.key,
                 version: fileConfiguration.version,
                 accessToken: accessToken
             )
-            remoteFile = nil
-        } else if let remoteFileConfiguration = configuration.remoteRepoConfig {
+        }
+
+        let remoteFile = try configuration.remoteRepoConfig.map { remoteFileConfiguration in
             guard let accessToken = remoteFileConfiguration.accessToken else {
                 throw GenerationParametersError.invalidAccessToken
             }
 
-            file = nil
-            remoteFile = RemoteFileParameters(
+            return RemoteFileParameters(
                 owner: remoteFileConfiguration.owner,
                 repo: remoteFileConfiguration.repo,
                 branch: remoteFileConfiguration.branch,
                 filePath: remoteFileConfiguration.filePath,
                 accessToken: accessToken
             )
-        } else {
+        }
+
+        if file.isNil && remoteFile.isNil {
             throw GenerationParametersError.invalidFileConfiguration
         }
 
