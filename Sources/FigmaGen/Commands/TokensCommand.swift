@@ -25,6 +25,20 @@ final class TokensCommand: AsyncExecutableCommand {
             """
     )
 
+    let remoteFilePathKey = Key<String>(
+        "--remoteFilePathKey",
+        description: """
+            Remote Repo key to generate text styles from.
+            """
+    )
+
+    let remoteRepoAccessTokenKey = Key<String>(
+        "--remoteRepoAccessTokenKey",
+        description: """
+            Remote Repo personal access token to make requests to the GitHub.
+            """
+    )
+
     let accessToken = Key<String>(
         "--accessToken",
         description: """
@@ -228,6 +242,7 @@ extension TokensCommand {
     var configuration: TokensConfiguration {
         TokensConfiguration(
             file: resolveFileConfiguration(),
+            remoteRepoConfig: resolveRemoteRepoConfiguration(),
             accessToken: resolveAccessTokenConfiguration(),
             templates: TokensTemplateConfiguration(
                 colors: [
@@ -295,6 +310,20 @@ extension TokensCommand {
             version: fileVersion.value,
             includedNodes: nil,
             excludedNodes: nil
+        )
+    }
+
+    private func resolveRemoteRepoConfiguration() -> RemoteRepoConfiguration? {
+        guard
+            let filePath = remoteFilePathKey.value,
+            let remoteRepoAccessToken = remoteRepoAccessTokenKey.value
+        else {
+            return nil
+        }
+
+        return RemoteRepoConfiguration(
+            filePath: filePath,
+            accessToken: remoteRepoAccessToken
         )
     }
 
