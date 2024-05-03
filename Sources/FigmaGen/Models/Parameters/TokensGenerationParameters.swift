@@ -19,6 +19,7 @@ struct TokensGenerationParameters {
 
     // MARK: - Instance Properties
 
-    let file: FileParameters
+    let file: FileParameters?
+    let remoteFile: RemoteFileParameters?
     let tokens: TokensParameters
 }

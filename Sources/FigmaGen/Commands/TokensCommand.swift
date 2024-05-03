@@ -25,10 +25,31 @@ final class TokensCommand: AsyncExecutableCommand {
             """
     )
 
+    let remoteFileOwnerKey = Key<String>(
+        "--remoteFileOwnerKey",
+        description: """
+            Remote Repo owner key to generate text styles from.
+            """
+    )
+
+    let remoteFileRepoKey = Key<String>(
+        "--remoteFileRepoKey",
+        description: """
+            Remote Repo key to generate text styles from.
+            """
+    )
+
+    let remoteFileBranchKey = Key<String>(
+        "--remoteFileBranchKey",
+        description: """
+            Remote Repo branch to generate text styles from.
+            """
+    )
+
     let remoteFilePathKey = Key<String>(
         "--remoteFilePathKey",
         description: """
-            Remote Repo key to generate text styles from.
+            Remote Repo file key to generate text styles from.
             """
     )
 
@@ -315,6 +336,9 @@ extension TokensCommand {
 
     private func resolveRemoteRepoConfiguration() -> RemoteRepoConfiguration? {
         guard
+            let fileOwner = remoteFileOwnerKey.value,
+            let fileRepo = remoteFileRepoKey.value,
+            let fileBranch = remoteFileBranchKey.value,
             let filePath = remoteFilePathKey.value,
             let remoteRepoAccessToken = remoteRepoAccessTokenKey.value
         else {
@@ -322,6 +346,9 @@ extension TokensCommand {
         }
 
         return RemoteRepoConfiguration(
+            owner: fileOwner,
+            repo: fileRepo,
+            branch: fileBranch,
             filePath: filePath,
             accessToken: remoteRepoAccessToken
         )

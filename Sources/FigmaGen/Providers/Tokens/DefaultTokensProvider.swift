@@ -5,15 +5,17 @@ final class DefaultTokensProvider: TokensProvider {
 
     // MARK: - Instance Properties
 
-    let apiProvider: FigmaAPIProvider
+    let figmaApiProvider: FigmaAPIProvider
+    let gitHubApiProvider: RemoteRepoProvider
 
     let dictionaryDecoder = DictionaryDecoder()
     let jsonDecoder = JSONDecoder()
 
     // MARK: - Initializers
 
-    init(apiProvider: FigmaAPIProvider) {
-        self.apiProvider = apiProvider
+    init(figmaApiProvider: FigmaAPIProvider, gitHubApiProvider: RemoteRepoProvider) {
+        self.figmaApiProvider = figmaApiProvider
+        self.gitHubApiProvider = gitHubApiProvider
     }
 
     // MARK: - Instance Methods
@@ -46,6 +48,10 @@ final class DefaultTokensProvider: TokensProvider {
         return try jsonDecoder.decode(TokenValues.self, from: valuesData)
     }
 
+    private func extractTokens(from file: GitHubFile) throws -> TokenValues {
+        TokenValues(core: [], semantic: [], colors: [], typography: [], hhDay: [], hhNight: [], zpDay: [])
+    }
+
     private func fetchFile(_ file: FileParameters) async throws -> FigmaFile {
         let route = FigmaAPIFileRoute(
             accessToken: file.accessToken,
@@ -55,7 +61,21 @@ final class DefaultTokensProvider: TokensProvider {
             pluginData: "shared"
         )
 
-        return try await apiProvider
+        return try await figmaApiProvider
+            .request(route: route)
+            .async()
+    }
+
+    private func fetchFile(_ file: RemoteFileParameters) async throws -> GitHubFile {
+        let route = GitHubAPIFileRoute(
+            owner: file.owner,
+            repo: file.repo,
+            branch: file.branch,
+            filePath: file.filePath,
+            accessToken: file.accessToken
+        )
+
+        return try await gitHubApiProvider
             .request(route: route)
             .async()
     }
@@ -66,5 +86,11 @@ final class DefaultTokensProvider: TokensProvider {
         let figmaFile = try await fetchFile(file)
 
         return try extractTokens(from: figmaFile)
+    }
+
+    func fetchTokens(from remoteFile: RemoteFileParameters) async throws -> TokenValues {
+        let gitHubFile = try await fetchFile(remoteFile)
+
+        return try extractTokens(from: gitHubFile)
     }
 }
