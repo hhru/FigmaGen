@@ -17,7 +17,9 @@ extension TokenValue: Decodable {
     private enum RawType: String, Decodable {
         case a11yScales
         case animation
+        case border
         case borderRadius
+        case borderWidth
         case boxShadow
         case color
         case core
@@ -35,6 +37,7 @@ extension TokenValue: Decodable {
         case textCase
         case textDecoration
         case typography
+
         case unknown
     }
 
@@ -62,8 +65,14 @@ extension TokenValue: Decodable {
         case .animation:
             self.type = .animation(value: try container.decode(forKey: .value))
 
+        case .border:
+            self.type = .border(value: try container.decode(forKey: .value))
+
         case .borderRadius:
             self.type = .borderRadius(value: try container.decode(forKey: .value))
+
+        case .borderWidth:
+            self.type = .borderWidth(value: try container.decode(forKey: .value))
 
         case .boxShadow:
             self.type = .boxShadow(value: try container.decode(forKey: .value))
@@ -141,7 +150,13 @@ extension TokenValue: Encodable {
         case let .animation(value):
             try container.encode(value, forKey: .value)
 
+        case let .border(value):
+            try container.encode(value, forKey: .value)
+
         case let .borderRadius(value):
+            try container.encode(value, forKey: .value)
+
+        case let .borderWidth(value):
             try container.encode(value, forKey: .value)
 
         case let .boxShadow(value):
