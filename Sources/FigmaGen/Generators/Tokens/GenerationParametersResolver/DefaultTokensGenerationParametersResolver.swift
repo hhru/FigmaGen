@@ -21,19 +21,36 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
 
     // swiftlint:disable:next function_body_length
     func resolveGenerationParameters(from configuration: TokensConfiguration) throws -> TokensGenerationParameters {
-        guard let fileConfiguration = configuration.file else {
+
+        let file = try configuration.file.map { fileConfiguration in
+            guard let accessToken = accessTokenResolver.resolveAccessToken(from: configuration.accessToken) else {
+                throw GenerationParametersError.invalidAccessToken
+            }
+
+            return FileParameters(
+                key: fileConfiguration.key,
+                version: fileConfiguration.version,
+                accessToken: accessToken
+            )
+        }
+
+        let remoteFile = try configuration.remoteRepoConfig.map { remoteFileConfiguration in
+            guard let accessToken = remoteFileConfiguration.accessToken else {
+                throw GenerationParametersError.invalidAccessToken
+            }
+
+            return RemoteFileParameters(
+                owner: remoteFileConfiguration.owner,
+                repo: remoteFileConfiguration.repo,
+                branch: remoteFileConfiguration.branch,
+                filePath: remoteFileConfiguration.filePath,
+                accessToken: accessToken
+            )
+        }
+
+        if file.isNil && remoteFile.isNil {
             throw GenerationParametersError.invalidFileConfiguration
         }
-
-        guard let accessToken = accessTokenResolver.resolveAccessToken(from: configuration.accessToken) else {
-            throw GenerationParametersError.invalidAccessToken
-        }
-
-        let file = FileParameters(
-            key: fileConfiguration.key,
-            version: fileConfiguration.version,
-            accessToken: accessToken
-        )
 
         let colorRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.colors,
@@ -72,6 +89,7 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
 
         return TokensGenerationParameters(
             file: file,
+            remoteFile: remoteFile,
             tokens: TokensGenerationParameters.TokensParameters(
                 colorRenderParameters: colorRenderParameters,
                 baseColorRenderParameters: baseColorRenderParameters,
