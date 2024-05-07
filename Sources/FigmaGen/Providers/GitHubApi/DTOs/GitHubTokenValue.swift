@@ -1,20 +1,30 @@
 import Foundation
 
-struct TokenValue: Hashable {
+struct GitHubTokenValue: Hashable {
 
     // MARK: - Instance Properties
 
+    let name: String?
     let type: TokenValueType
-    let name: String
+    let typeName: String
+
+    func copyWith(name: String? = nil, type: TokenValueType? = nil, typeName: String? = nil) -> Self {
+        Self(
+            name: name ?? self.name,
+            type: type ?? self.type,
+            typeName: typeName ?? self.typeName
+        )
+    }
 }
 
 // MARK: - Decodable
 
-extension TokenValue: Decodable {
+extension GitHubTokenValue: Decodable {
 
     // MARK: - Nested Types
 
     private enum RawType: String, Decodable {
+
         case a11yScales
         case animation
         case border
@@ -53,10 +63,10 @@ extension TokenValue: Decodable {
         // swiftlint:disable:previous function_body_length
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.name = try container.decode(forKey: .name)
+        self.name = try container.decodeIfPresent(forKey: .name)
 
-        let rawTypeValue = try container.decode(String.self, forKey: .type)
-        let rawType = RawType(rawValue: rawTypeValue) ?? .unknown
+        self.typeName = try container.decode(String.self, forKey: .type)
+        let rawType = RawType(rawValue: typeName) ?? .unknown
 
         switch rawType {
         case .a11yScales:
@@ -65,14 +75,8 @@ extension TokenValue: Decodable {
         case .animation:
             self.type = .animation(value: try container.decode(forKey: .value))
 
-        case .border:
-            self.type = .border(value: try container.decode(forKey: .value))
-
         case .borderRadius:
             self.type = .borderRadius(value: try container.decode(forKey: .value))
-
-        case .borderWidth:
-            self.type = .borderWidth(value: try container.decode(forKey: .value))
 
         case .boxShadow:
             self.type = .boxShadow(value: try container.decode(forKey: .value))
@@ -125,6 +129,12 @@ extension TokenValue: Decodable {
         case .typography:
             self.type = .typography(value: try container.decode(forKey: .value))
 
+        case .borderWidth:
+            self.type = .borderWidth(value: try container.decode(forKey: .value))
+
+        case .border:
+            self.type = .border(value: try container.decode(forKey: .value))
+
         case .unknown:
             self.type = .unknown
         }
@@ -133,7 +143,7 @@ extension TokenValue: Decodable {
 
 // MARK: - Encodable
 
-extension TokenValue: Encodable {
+extension GitHubTokenValue: Encodable {
 
     // MARK: - Instance Methods
 
@@ -142,6 +152,7 @@ extension TokenValue: Encodable {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encode(name, forKey: .name)
+        try container.encode(typeName, forKey: .type)
 
         switch type {
         case let .a11yScales(value):
@@ -150,13 +161,7 @@ extension TokenValue: Encodable {
         case let .animation(value):
             try container.encode(value, forKey: .value)
 
-        case let .border(value):
-            try container.encode(value, forKey: .value)
-
         case let .borderRadius(value):
-            try container.encode(value, forKey: .value)
-
-        case let .borderWidth(value):
             try container.encode(value, forKey: .value)
 
         case let .boxShadow(value):
@@ -208,6 +213,12 @@ extension TokenValue: Encodable {
             try container.encode(value, forKey: .value)
 
         case let .typography(value):
+            try container.encode(value, forKey: .value)
+
+        case let  .borderWidth(value):
+            try container.encode(value, forKey: .value)
+
+        case let  .border(value):
             try container.encode(value, forKey: .value)
 
         case .unknown:

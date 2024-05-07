@@ -82,13 +82,13 @@ extension GitHubAPIProvider {
 
             let task = httpService.request(route: makeHTTPRoute(for: route))
 
-            task.responseJSON { response in
+            task.responseDecodable(type: Route.Response.self, decoder: responseDecoder) { response in
                 switch response.result {
                 case let .failure(error):
                     seal.reject(self.handleHTTPError(error))
 
                 case let .success(value):
-                    print(value)
+                    seal.fulfill(value)
                 }
             }
         }

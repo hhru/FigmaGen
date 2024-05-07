@@ -49,7 +49,19 @@ final class DefaultTokensProvider: TokensProvider {
     }
 
     private func extractTokens(from file: GitHubFile) throws -> TokenValues {
-        TokenValues(core: [], semantic: [], colors: [], typography: [], hhDay: [], hhNight: [], zpDay: [])
+        guard let valuesData = try? JSONEncoder().encode(file) else {
+            throw TokensProviderError(code: .failedCreateData)
+        }
+
+
+        let json = try? JSONSerialization.jsonObject(with: valuesData, options: .mutableContainers)
+
+        let jsonData = json.flatMap { try? JSONSerialization.data(withJSONObject: $0, options: .prettyPrinted) }
+        if let jsonData {
+            logger.debug(String(decoding: jsonData, as: UTF8.self))
+        }
+
+        return try jsonDecoder.decode(TokenValues.self, from: valuesData)
     }
 
     private func fetchFile(_ file: FileParameters) async throws -> FigmaFile {
