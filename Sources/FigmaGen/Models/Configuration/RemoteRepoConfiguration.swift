@@ -6,5 +6,5 @@ struct RemoteRepoConfiguration: Decodable {
     let repo: String
     let branch: String
     let filePath: String
-    let accessToken: String?
+    let accessToken: AccessTokenConfiguration?
 }

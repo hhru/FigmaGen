@@ -350,7 +350,7 @@ extension TokensCommand {
             repo: fileRepo,
             branch: fileBranch,
             filePath: filePath,
-            accessToken: remoteRepoAccessToken
+            accessToken: .value(remoteRepoAccessToken)
         )
     }
 

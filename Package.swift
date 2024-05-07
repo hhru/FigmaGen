@@ -19,7 +19,8 @@ let package = Package(
         .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", from: "2.7.2"),
         .package(url: "https://github.com/mxcl/PromiseKit.git", from: "8.0.0"),
         .package(url: "https://github.com/almazrafi/DictionaryCoder.git", from: "1.0.0"),
-        .package(url: "https://github.com/nicklockwood/Expression.git", from: "0.13.0")
+        .package(url: "https://github.com/nicklockwood/Expression.git", from: "0.13.0"),
+        .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2")
     ],
     targets: [
         .executableTarget(
@@ -34,7 +35,8 @@ let package = Package(
                 "PromiseKit",
                 "DictionaryCoder",
                 "FigmaGenTools",
-                "Expression"
+                "Expression",
+                "KeychainAccess"
             ],
             path: "Sources/FigmaGen"
         ),
