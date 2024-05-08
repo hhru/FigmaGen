@@ -35,7 +35,9 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
         }
 
         let remoteFile = try configuration.remoteRepoConfig.map { remoteFileConfiguration in
-            guard let accessToken = remoteFileConfiguration.accessToken else {
+            guard
+                let accessToken = accessTokenResolver.resolveAccessToken(from: remoteFileConfiguration.accessToken)
+            else {
                 throw GenerationParametersError.invalidAccessToken
             }
 
