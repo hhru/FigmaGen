@@ -33,6 +33,8 @@ Currently, FigmaGen supports the following entities:
 - [Text styles](#text-styles)
 - [Shadow styles](#shadow-styles)
 - [Images](#images)
+- [Tokens](#tokens)
+- [Working on FigmaGen](#Working-on-FigmaGen)
 - [Communication](#communication)
 - [License](#license)
 
@@ -490,6 +492,113 @@ Key  | Type | Default value | Description
 `imagesEnumName` | String | Images | Name of a generated enum with static image fields
 `imageTypeName` | String | UIImage | Image type name. If the target platform is macOS, specify `NSImage`.
 `publicAccess` | Boolean | false | Adds `public` access modifier to the declarations in the generated file.
+
+## Tokens
+
+Configuration sections for generationg Tokens:
+- `accessToken`: an access token string that is needed to execute Figma API requests (see [Figma access token](#figma-access-token)).
+- `file`: URL of a Figma file, which data will be used to generate code (see [Figma file](#figma-file)).
+- `remoteRepoConfig`: parameters that will be used to generate tokens from remote file (see [Remote repository parameters](#remote-repository-parameters))
+- `templates`: parameters of styles for generation (see [Parameters of styles](#parameters-of-styles-for-generation)) 
+
+### Token parameters
+Sample configuration:
+```yaml
+tokens:
+  accessToken: 25961-4ac9fbc9-3bd8-4c43-bbe2-95e477f8a067
+  file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/FigmaGen-Demo
+  remoteRepoConfig: { [remote repository parameters](#remote-repository-parameters) }
+  templates:
+    colors: 
+        { standard configuration set}
+    baseColors: 
+        { standard configuration set }
+    fontFamilies: 
+        { standard configuration set }
+    typographies: 
+        { standard configuration set }
+    boxShadows: 
+        { standard configuration set }
+    spacing: 
+        { standard configuration set }
+    theme: 
+        { standard configuration set }
+```
+
+### Parameters of styles for generation
+
+Sample configuratio for color styles:
+```yaml
+    colors:
+      destination: ./Generated/ColorTokens.swift
+      templateOptions:
+        publicAccess: true
+```
+
+### Remote repository parameters
+
+Remote repository section:
+- `owner`: owner of the remote repository
+- `repo`: name of the remote repository
+- `branch`: name of the branch in remote repository
+- `filePath`: file name or path to the file in remote repository
+- `accessToken`: an access token string or object that is needed to execute GitHub API requests 
+
+Remote repository parameters structure:
+```yaml
+  remoteRepoConfig: 
+    owner: { your repository owner }
+    repo: { your repository name }
+    branch: { your repository branch }
+    filePath: { your repository file path }
+    accessToken: { your repository file path }
+    # OR
+    accessToken:
+      env: { your repository environment }
+      keychain:
+        service: { service name }
+        key: { key_name }
+```
+
+Sample configuration for remote repository parameters with string `accessToken`:
+```yaml
+  remoteRepoConfig: 
+    owner: hhru
+    repo: FigmaGen
+    branch: master
+    filePath: tokens.json
+    accessToken: ghp_259614ac9fbc93bd84c43bbe2bt53m0TaM4A
+```
+
+Sample configuration for remote repository parameters with object `accessToken`:
+```yaml
+  remoteRepoConfig: 
+    owner: hhru
+    repo: FigmaGen
+    branch: master
+    filePath: tokens.json
+    accessToken:
+      env: FIGMAGEN_API
+      keychain:
+        service: FigmaGen Token
+        key: hh
+```
+
+## Working on FigmaGen
+
+To work on FigmaGen you need to open the `Package.swift file`, select the `figmagen` scheme and edit the scheme 
+
+####
+![](Docs/Choose_and_Edit_Scheme.png)
+
+#### Arguments for generating tokens with FigmaGen from file configurations
+![](Docs/Generate_from_config.png)
+
+#### Arguments for generating tokens with FigmaGen using a Figma file
+![](Docs/Generate_tokens_from_Figma.png)
+
+#### Arguments for generating tokens with FigmaGen using a Github file
+![](Docs/Generate_tokens_from_GitHub_file.png)
 
 ---
 
