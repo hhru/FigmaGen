@@ -527,7 +527,7 @@ tokens:
 
 ### Parameters of styles for generation
 
-Sample configuratio for color styles:
+Sample configuration for color styles:
 ```yaml
     colors:
       destination: ./Generated/ColorTokens.swift
@@ -551,13 +551,13 @@ Remote repository parameters structure:
     repo: { your repository name }
     branch: { your repository branch }
     filePath: { your repository file path }
-    accessToken: { your repository file path }
+    accessToken: { your GitHub access token }
     # OR
     accessToken:
       env: { your repository environment }
       keychain:
         service: { service name }
-        key: { key_name }
+        key: { key name }
 ```
 
 Sample configuration for remote repository parameters with string `accessToken`:
@@ -578,15 +578,15 @@ Sample configuration for remote repository parameters with object `accessToken`:
     branch: master
     filePath: tokens.json
     accessToken:
-      env: FIGMAGEN_API
+      env: GITHUB_API
       keychain:
-        service: FigmaGen Token
+        service: GitHub Token
         key: hh
 ```
 
 ## Working on FigmaGen
 
-To work on FigmaGen you need to open the `Package.swift file`, select the `figmagen` scheme and edit the scheme 
+To work on FigmaGen you need to open the `Package.swift` file, select the `figmagen` scheme and edit the scheme 
 
 ####
 ![](Docs/Choose_and_Edit_Scheme.png)
