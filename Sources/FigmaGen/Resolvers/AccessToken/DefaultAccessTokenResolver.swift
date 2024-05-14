@@ -4,8 +4,8 @@ import KeychainAccess
 final class DefaultAccessTokenResolver: AccessTokenResolver {
 
     func resolveAccessToken(from configuration: AccessTokenConfiguration?) -> String? {
-        if let accesToken = configuration?.value {
-            return accesToken
+        if let accessToken = configuration?.value {
+            return accessToken
         } else if let environmentVariable = configuration?.environmentVariable,
                   let accessToken = ProcessInfo.processInfo.environment[environmentVariable] {
             return accessToken
