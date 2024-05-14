@@ -6,6 +6,7 @@ enum GenerationParametersError: Error, CustomStringConvertible {
 
     case invalidFileConfiguration
     case invalidAccessToken
+    case invalidGitHubAccessToken
 
     // MARK: - Instance Properties
 
@@ -16,6 +17,9 @@ enum GenerationParametersError: Error, CustomStringConvertible {
 
         case .invalidAccessToken:
             return "Figma access token cannot be empty or nil"
+
+        case .invalidGitHubAccessToken:
+            return "GitHiub access token cannot be empty or nil"
         }
     }
 }

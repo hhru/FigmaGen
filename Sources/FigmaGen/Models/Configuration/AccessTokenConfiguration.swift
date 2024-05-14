@@ -1,6 +1,6 @@
 import Foundation
 
-enum AccessTokenConfiguration: Decodable {
+struct AccessTokenConfiguration: Decodable {
 
     // MARK: - Nested Types
 
@@ -21,23 +21,31 @@ enum AccessTokenConfiguration: Decodable {
 
     // MARK: - Enumeration Cases
 
-    case environmentVariable(String)
-    case value(String)
-    case keychainParameters(KeychainParameters)
+    let value: String?
+    let environmentVariable: String?
+    let keychainParameters: KeychainParameters?
 
     // MARK: - Initializers
 
     init(from decoder: Decoder) throws {
         if let container = try? decoder.container(keyedBy: CodingKeys.self) {
-            if let environmentVariable = try? container.decode(String.self, forKey: .environmentVariable) {
-                self = .environmentVariable(environmentVariable)
-            } else if let keychainVariable = try? container.decode(KeychainParameters.self, forKey: .keychain) {
-                self = .keychainParameters(keychainVariable)
-            } else {
-                throw AccessTokenError.failedCreateAccessToken
-            }
+            self.value = nil
+            self.environmentVariable = try container.decodeIfPresent(forKey: .environmentVariable)
+            self.keychainParameters = try container.decodeIfPresent(forKey: .keychain)
         } else {
-            self = .value(try String(from: decoder))
+            self.value = try String(from: decoder)
+            self.environmentVariable = nil
+            self.keychainParameters = nil
         }
+    }
+
+    init(
+        value: String? = nil,
+        environmentVariable: String? = nil,
+        keychainParameters: KeychainParameters? = nil
+    ) {
+        self.value = value
+        self.environmentVariable = environmentVariable
+        self.keychainParameters = keychainParameters
     }
 }

@@ -45,7 +45,8 @@ let package = Package(
             dependencies: [
                 "SwiftCLI",
                 "PathKit",
-                "PromiseKit"
+                "PromiseKit",
+                "KeychainAccess"
             ],
             path: "Sources/FigmaGenTools"
         ),

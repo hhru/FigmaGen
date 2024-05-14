@@ -59,7 +59,7 @@ extension GenerationConfigurableCommand {
             return nil
         }
 
-        return .value(accessToken)
+        return AccessTokenConfiguration(value: accessToken)
     }
 
     private func resolveTemplateOptions() -> [String: Any] {

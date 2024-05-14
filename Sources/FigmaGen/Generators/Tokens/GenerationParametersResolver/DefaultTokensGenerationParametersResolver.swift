@@ -38,7 +38,7 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             guard
                 let accessToken = accessTokenResolver.resolveAccessToken(from: remoteFileConfiguration.accessToken)
             else {
-                throw GenerationParametersError.invalidAccessToken
+                throw GenerationParametersError.invalidGitHubAccessToken
             }
 
             return RemoteFileParameters(
