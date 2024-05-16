@@ -17,7 +17,7 @@ struct GitHubFile: Codable, Hashable {
                 let parametersForKey = try? container.decodeIfPresent([String: AnyCodable].self, forKey: key)
                 let tokenValues = parametersForKey?
                     .map { key, value in
-                        let result = value
+                        let result: [GitHubTokenValue] = value
                             .getAllGitHubTokenValues()
                             .map { githubValue in
                                 var name = key
@@ -26,6 +26,7 @@ struct GitHubFile: Codable, Hashable {
                                 }
                                 return githubValue.copyWith(name: name)
                             }
+                            .sorted(by: { $0.name ?? "" < $1.name ?? "" })
                         return result
                     }
                     .flatMap { $0 }

@@ -53,7 +53,6 @@ final class DefaultTokensProvider: TokensProvider {
             throw TokensProviderError(code: .failedCreateData)
         }
 
-
         let json = try? JSONSerialization.jsonObject(with: valuesData, options: .mutableContainers)
 
         let jsonData = json.flatMap { try? JSONSerialization.data(withJSONObject: $0, options: .prettyPrinted) }
