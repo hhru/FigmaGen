@@ -101,12 +101,18 @@ final class DefaultImageRenderProvider: ImageRenderProvider {
             return .value([])
         }
 
-        let promises = scales.map { scale in
-            renderImages(of: file, nodes: nodes, format: format, scale: scale, useAbsoluteBounds: useAbsoluteBounds)
-                .map { imageURLs in
-                    (scale: scale, imageURLs: imageURLs)
-                }
-        }
+        let promises = scales
+            .map { scale in
+                nodes
+                    .chunked(size: 100)
+                    .map { nodesPars in
+                        renderImages(of: file, nodes: nodesPars, format: format, scale: scale, useAbsoluteBounds: useAbsoluteBounds)
+                            .map { imageURLs in
+                                (scale: scale, imageURLs: imageURLs)
+                            }
+                    }
+            }
+            .flatMap { $0 }
 
         return firstly {
             when(fulfilled: promises)
