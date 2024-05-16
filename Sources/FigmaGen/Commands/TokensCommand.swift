@@ -350,7 +350,7 @@ extension TokensCommand {
             repo: fileRepo,
             branch: fileBranch,
             filePath: filePath,
-            accessToken: .value(remoteRepoAccessToken)
+            accessToken: AccessTokenConfiguration(value: remoteRepoAccessToken)
         )
     }
 
@@ -359,7 +359,7 @@ extension TokensCommand {
             return nil
         }
 
-        return .value(accessToken)
+        return AccessTokenConfiguration(value: accessToken)
     }
 
     private func resolveTemplateOptions(_ templateOptionsValues: [String]) -> [String: Any] {

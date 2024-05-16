@@ -4,23 +4,15 @@ import KeychainAccess
 final class DefaultAccessTokenResolver: AccessTokenResolver {
 
     func resolveAccessToken(from configuration: AccessTokenConfiguration?) -> String? {
-        switch configuration {
-        case let .value(accessToken):
+        if let accessToken = configuration?.value {
             return accessToken
-
-        case let .environmentVariable(environmentVariable):
-            return ProcessInfo.processInfo.environment[environmentVariable]
-            
-        case let .keychainParameters(value):
-            let keychain = Keychain(service: value.service)
-
-            guard let token = try? keychain.getString(value.key) else {
-                return nil
-            }
-            
-            return token
-
-        case nil:
+        } else if let environmentVariable = configuration?.environmentVariable,
+                  let accessToken = ProcessInfo.processInfo.environment[environmentVariable] {
+            return accessToken
+        } else if let parameters = configuration?.keychainParameters,
+                  let accessToken = try? Keychain(service: parameters.service).getString(parameters.key) {
+            return accessToken
+        } else {
             return nil
         }
     }
