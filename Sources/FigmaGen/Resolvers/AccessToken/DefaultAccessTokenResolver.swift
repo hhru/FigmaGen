@@ -1,5 +1,5 @@
 import Foundation
-#if canImport(KeychainAccess)
+#if !os(Linux)
 import KeychainAccess
 #endif
 
@@ -12,7 +12,7 @@ final class DefaultAccessTokenResolver: AccessTokenResolver {
                   let accessToken = ProcessInfo.processInfo.environment[environmentVariable] {
             return accessToken
         } else if let parameters = configuration?.keychainParameters {
-        #if canImport(KeychainAccess)
+        #if !os(Linux)
             let accessToken = try? Keychain(service: parameters.service).getString(parameters.key)
             return accessToken
         #else
