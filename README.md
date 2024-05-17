@@ -43,7 +43,7 @@ Currently, FigmaGen supports the following entities:
 ### CocoaPods
 To install FigmaGen using [CocoaPods](http://cocoapods.org) dependency manager, add this line to your `Podfile`:
 ```ruby
-pod 'FigmaGen', '~> 2.0.0-beta.21'
+pod 'FigmaGen', '~> 2.0.0-beta.22'
 ```
 
 Then run this command:
@@ -73,7 +73,7 @@ $ brew install hhru/tap/figmagen
 For [Mint](https://github.com/yonaskolb/mint) package manager installation, run:
 
 ```sh
-$ mint install hhru/FigmaGen@2.0.0-beta.21
+$ mint install hhru/FigmaGen@2.0.0-beta.22
 ```
 
 ### ZIP archive
