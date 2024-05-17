@@ -52,12 +52,14 @@ let package = Package(
         ),
         .testTarget(
             name: "FigmaGenTests",
-            dependencies: ["FigmaGen"],
+            dependencies: ["FigmaGen",
+                           "KeychainAccess"],
             path: "Tests/FigmaGenTests"
         ),
         .testTarget(
             name: "FigmaGenToolsTests",
-            dependencies: ["FigmaGenTools"],
+            dependencies: ["FigmaGenTools",
+                           "KeychainAccess"],
             path: "Tests/FigmaGenToolsTests"
         )
     ],
