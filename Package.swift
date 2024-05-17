@@ -36,7 +36,11 @@ let package = Package(
                 "DictionaryCoder",
                 "FigmaGenTools",
                 "Expression",
-                "KeychainAccess"
+                .product(
+                    name: "KeychainAccess",
+                    package: "KeychainAccess",
+                    condition: .when(platforms: [.macOS])
+                )
             ],
             path: "Sources/FigmaGen"
         ),
@@ -46,7 +50,11 @@ let package = Package(
                 "SwiftCLI",
                 "PathKit",
                 "PromiseKit",
-                "KeychainAccess"
+                .product(
+                    name: "KeychainAccess",
+                    package: "KeychainAccess",
+                    condition: .when(platforms: [.macOS])
+                )
             ],
             path: "Sources/FigmaGenTools"
         ),
