@@ -25,6 +25,41 @@ final class TokensCommand: AsyncExecutableCommand {
             """
     )
 
+    let remoteFileOwnerKey = Key<String>(
+        "--remoteFileOwner",
+        description: """
+            Remote Repo owner key to generate text styles from.
+            """
+    )
+
+    let remoteFileRepoKey = Key<String>(
+        "--remoteFileRepo",
+        description: """
+            Remote Repo key to generate text styles from.
+            """
+    )
+
+    let remoteFileBranchKey = Key<String>(
+        "--remoteFileBranch",
+        description: """
+            Remote Repo branch to generate text styles from.
+            """
+    )
+
+    let remoteFilePathKey = Key<String>(
+        "--remoteFilePath",
+        description: """
+            Remote Repo file key to generate text styles from.
+            """
+    )
+
+    let remoteRepoAccessTokenKey = Key<String>(
+        "--remoteRepoAccessToken",
+        description: """
+            Remote Repo personal access token to make requests to the GitHub.
+            """
+    )
+
     let accessToken = Key<String>(
         "--accessToken",
         description: """
@@ -228,6 +263,7 @@ extension TokensCommand {
     var configuration: TokensConfiguration {
         TokensConfiguration(
             file: resolveFileConfiguration(),
+            remoteRepoConfig: resolveRemoteRepoConfiguration(),
             accessToken: resolveAccessTokenConfiguration(),
             templates: TokensTemplateConfiguration(
                 colors: [
@@ -298,12 +334,32 @@ extension TokensCommand {
         )
     }
 
+    private func resolveRemoteRepoConfiguration() -> RemoteRepoConfiguration? {
+        guard
+            let fileOwner = remoteFileOwnerKey.value,
+            let fileRepo = remoteFileRepoKey.value,
+            let fileBranch = remoteFileBranchKey.value,
+            let filePath = remoteFilePathKey.value,
+            let remoteRepoAccessToken = remoteRepoAccessTokenKey.value
+        else {
+            return nil
+        }
+
+        return RemoteRepoConfiguration(
+            owner: fileOwner,
+            repo: fileRepo,
+            branch: fileBranch,
+            filePath: filePath,
+            accessToken: AccessTokenConfiguration(value: remoteRepoAccessToken)
+        )
+    }
+
     private func resolveAccessTokenConfiguration() -> AccessTokenConfiguration? {
         guard let accessToken = accessToken.value else {
             return nil
         }
 
-        return .value(accessToken)
+        return AccessTokenConfiguration(value: accessToken)
     }
 
     private func resolveTemplateOptions(_ templateOptionsValues: [String]) -> [String: Any] {

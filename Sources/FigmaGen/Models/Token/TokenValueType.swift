@@ -6,7 +6,9 @@ enum TokenValueType: Hashable {
 
     case a11yScales(value: String)
     case animation(value: TokenAnimationValue)
+    case border(value: TokenBorderValue)
     case borderRadius(value: String)
+    case borderWidth(value: String)
     case boxShadow(value: TokenBoxShadowValue)
     case color(value: String)
     case core(value: String)
@@ -24,6 +26,7 @@ enum TokenValueType: Hashable {
     case textCase(value: String)
     case textDecoration(value: String)
     case typography(value: TokenTypographyValue)
+
     case unknown
 
     // MARK: - Instance Properties
@@ -31,6 +34,7 @@ enum TokenValueType: Hashable {
     var stringValue: String? {
         switch self {
         case let .a11yScales(value),
+             let .borderWidth(value),
              let .borderRadius(value),
              let .color(value),
              let .core(value),
@@ -49,7 +53,7 @@ enum TokenValueType: Hashable {
              let .textDecoration(value):
             return value
 
-        case .animation, .boxShadow, .typography, .unknown:
+        case .animation, .boxShadow, .typography, .unknown, .border:
             return nil
         }
     }

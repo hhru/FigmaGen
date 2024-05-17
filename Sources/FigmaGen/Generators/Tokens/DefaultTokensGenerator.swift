@@ -43,7 +43,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     // MARK: - Instance Methods
 
     private func generate(parameters: TokensGenerationParameters) async throws {
-        let tokenValues = try await tokensProvider.fetchTokens(from: parameters.file)
+        let tokenValues = try await fetchTokens(from: parameters)
 
         try generateColorsTokens(parameters: parameters, tokenValues: tokenValues)
         try generateBaseColorsTokens(parameters: parameters, tokenValues: tokenValues)
@@ -52,6 +52,16 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateBoxShadowTokens(parameters: parameters, tokenValues: tokenValues)
         try generateThemeTokens(parameters: parameters, tokenValues: tokenValues)
         try generateSpacingTokens(parameters: parameters, tokenValues: tokenValues)
+    }
+
+    private func fetchTokens(from parameters: TokensGenerationParameters) async throws -> TokenValues {
+        if let file = parameters.file {
+            return try await tokensProvider.fetchTokens(from: file)
+        } else if let remoteFile = parameters.remoteFile {
+            return try await tokensProvider.fetchTokens(from: remoteFile)
+        } else {
+            throw GenerationParametersError.invalidFileConfiguration
+        }
     }
 
     private func generateSpacingTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
