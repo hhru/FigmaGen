@@ -45,21 +45,18 @@ let package = Package(
             dependencies: [
                 "SwiftCLI",
                 "PathKit",
-                "PromiseKit",
-                "KeychainAccess"
+                "PromiseKit"
             ],
             path: "Sources/FigmaGenTools"
         ),
         .testTarget(
             name: "FigmaGenTests",
-            dependencies: ["FigmaGen",
-                           "KeychainAccess"],
+            dependencies: ["FigmaGen"],
             path: "Tests/FigmaGenTests"
         ),
         .testTarget(
             name: "FigmaGenToolsTests",
-            dependencies: ["FigmaGenTools",
-                           "KeychainAccess"],
+            dependencies: ["FigmaGenTools"],
             path: "Tests/FigmaGenToolsTests"
         )
     ],
