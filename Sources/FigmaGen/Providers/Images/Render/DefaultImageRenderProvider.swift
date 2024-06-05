@@ -117,7 +117,10 @@ final class DefaultImageRenderProvider: ImageRenderProvider {
         return firstly {
             when(fulfilled: promises)
         }.map(on: DispatchQueue.global(qos: .userInitiated)) { imageURLs in
-            Dictionary(imageURLs) { $1 }
+            imageURLs.reduce(into: [ImageScale: [ImageNode: URL]]()) { result, next in
+                result[next.scale] = result[next.scale]?.merging(next.imageURLs, uniquingKeysWith: { $1 })
+                ?? next.imageURLs
+            }
         }.map(on: DispatchQueue.global(qos: .userInitiated)) { imageURLs in
             nodes.map { self.makeImageSetRenderedNode(for: $0, imageURLs: imageURLs) }
         }
