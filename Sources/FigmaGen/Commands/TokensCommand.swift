@@ -236,6 +236,31 @@ final class TokensCommand: AsyncExecutableCommand {
              """
     )
 
+    let bordersTemplate = Key<String>(
+        "--borders-template",
+        description: """
+        Path to the template file.
+        If no template is passed a default template will be used.
+        """
+    )
+
+    // TODO: - @nschpy Обновить description ???
+    let bordersTemplateOptions = VariadicKey<String>(
+        "--borders-options",
+        description: """
+            An option that will be merged with template context, and overwrite any values of the same name.
+            Can be repeated multiple times and must be in the format: -o "name:value".
+            """
+    )
+
+    let bordersDestination = Key<String>(
+        "--borders-destination",
+        description: """
+            The path to the file to generate.
+            By default, generated code will be printed on stdout.
+            """
+    )
+
     // MARK: - Initializers
 
     init(generator: TokensGenerator) {
@@ -313,6 +338,13 @@ extension TokensCommand {
                         template: spacingTemplate.value,
                         templateOptions: resolveTemplateOptions(spacingTemplateOptions.value),
                         destination: spacingDestination.value
+                    )
+                ],
+                borders: [
+                    TemplateConfiguration(
+                        template: bordersTemplate.value,
+                        templateOptions: resolveTemplateOptions(bordersTemplateOptions.value),
+                        destination: bordersDestination.value
                     )
                 ]
             )

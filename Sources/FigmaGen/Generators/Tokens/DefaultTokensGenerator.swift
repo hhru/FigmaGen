@@ -15,6 +15,8 @@ final class DefaultTokensGenerator: TokensGenerator {
     let boxShadowTokensGenerator: BoxShadowTokensGenerator
     let themeTokensGenerator: ThemeTokensGenerator
     let spacingTokensGenerator: SpacingTokensGenerator
+    let bordersTokensGenerator: BorderTokensGenerator
+
 
     // MARK: - Initializers
 
@@ -27,7 +29,8 @@ final class DefaultTokensGenerator: TokensGenerator {
         typographyTokensGenerator: TypographyTokensGenerator,
         boxShadowTokensGenerator: BoxShadowTokensGenerator,
         themeTokensGenerator: ThemeTokensGenerator,
-        spacingTokensGenerator: SpacingTokensGenerator
+        spacingTokensGenerator: SpacingTokensGenerator,
+        bordersTokensGenerator: BorderTokensGenerator
     ) {
         self.tokensProvider = tokensProvider
         self.tokensGenerationParametersResolver = tokensGenerationParametersResolver
@@ -38,6 +41,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         self.boxShadowTokensGenerator = boxShadowTokensGenerator
         self.themeTokensGenerator = themeTokensGenerator
         self.spacingTokensGenerator = spacingTokensGenerator
+        self.bordersTokensGenerator = bordersTokensGenerator
     }
 
     // MARK: - Instance Methods
@@ -52,6 +56,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateBoxShadowTokens(parameters: parameters, tokenValues: tokenValues)
         try generateThemeTokens(parameters: parameters, tokenValues: tokenValues)
         try generateSpacingTokens(parameters: parameters, tokenValues: tokenValues)
+        try generateBorderTokens(parameters: parameters, tokenValues: tokenValues)
     }
 
     private func fetchTokens(from parameters: TokensGenerationParameters) async throws -> TokenValues {
@@ -116,6 +121,14 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateTokens(
             colorTokensGenerator,
             renderParameters: parameters.tokens.colorRenderParameters,
+            tokenValues: tokenValues
+        )
+    }
+
+    private func generateBorderTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
+        try generateTokens(
+            bordersTokensGenerator,
+            renderParameters: parameters.tokens.bordersRenderParameters,
             tokenValues: tokenValues
         )
     }

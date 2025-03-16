@@ -1,0 +1,39 @@
+{% include "FileHeader.stencil" %}
+{% if semanticBorders or coreBorders %}
+{% set accessModifier %}{% if options.publicAccess %}public{% else %}internal{% endif %}{% endset %}
+{% set tokenTypeName %}{{ options.tokenTypeName|default:"BorderTokens" }}{% endset %}
+{% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
+{% macro borderProperty border %}
+    /// {{ border.path|join:"." }}
+    ///
+    /// Width: {{ border.width }}
+    /// Style: {{ border.style|default:"solid" }}
+    {{ accessModifier }} var {% call propertyName border.path|join:"_" %}: BorderToken {
+        BorderToken(
+            width: {{ border.width }},
+            style: "{{ border.style|default:"solid" }}"
+        )
+    }
+{% endmacro %}
+
+#if canImport(UIKit)
+import UIKit
+#else
+import AppKit
+#endif
+
+{{ accessModifier }} struct {{ tokenTypeName }} {
+
+    // MARK: - Instance Properties
+    {% for border in semanticBorders %}
+    {% call borderProperty border %}
+    {% endfor %}
+
+    {% for border in coreBorders %}
+    {% call borderProperty border %}
+    {% endfor %}
+}
+{% else %}
+// No border tokens found
+{% endif %}
+
