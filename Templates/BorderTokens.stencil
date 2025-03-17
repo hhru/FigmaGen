@@ -22,6 +22,16 @@ import UIKit
 import AppKit
 #endif
 
+public struct BorderToken: Hashable {
+    public let width: CGFloat
+    public let style: String
+
+    public init(width: CGFloat, style: String) {
+        self.width = width
+        self.style = style
+    }
+}
+
 {{ accessModifier }} struct {{ tokenTypeName }} {
 
     // MARK: - Instance Properties

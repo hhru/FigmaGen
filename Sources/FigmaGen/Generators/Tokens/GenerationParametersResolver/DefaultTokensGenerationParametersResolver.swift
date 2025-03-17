@@ -89,10 +89,9 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             defaultTemplateType: .native(name: "SpacingTokens")
         )
 
-        // TODO: Borders
         let borderRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.borders,
-            defaultTemplateType: .native(name: "Borders")
+            defaultTemplateType: .native(name: "BorderTokens")
         )
 
         return TokensGenerationParameters(

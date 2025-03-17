@@ -50,8 +50,6 @@ extension TokensTemplateConfiguration: Decodable {
         boxShadows = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .boxShadows)?.templates
         theme = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .theme)?.templates
         spacing = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .spacing)?.templates
-
-        // Borders, value
-        borders = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .borders)?.templates
+        borders = try? container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .borders)?.templates
     }
 }
