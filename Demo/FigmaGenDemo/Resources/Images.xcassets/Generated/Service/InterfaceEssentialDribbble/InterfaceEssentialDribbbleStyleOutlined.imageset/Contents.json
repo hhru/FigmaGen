@@ -1,13 +1,13 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "filename" : "InterfaceEssentialDribbbleStyleOutlined.pdf"
+      "filename" : "InterfaceEssentialDribbbleStyleOutlined.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "FigmaGen"
+    "author" : "FigmaGen",
+    "version" : 1
   },
   "properties" : {
     "preserves-vector-representation" : false
