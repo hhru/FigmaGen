@@ -66,6 +66,10 @@ tokens:
       destination: FigmaGenDemo/Generated/SpacingTokens.swift
       templateOptions:
         publicAccess: true
+    borders:
+      destination: FigmaGenDemo/Generated/BorderTokens.swift
+      templateOptions:
+        publicAccess: true
     theme:
       destination: FigmaGenDemo/Generated/Theme.swift
       templateOptions:

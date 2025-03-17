@@ -18,8 +18,8 @@ public struct BorderToken: Hashable {
 }
 
 internal struct BorderTokens {
-
     // MARK: - Instance Properties
+
     /// semantic.border.applied
     ///
     /// Width: 2
@@ -30,6 +30,7 @@ internal struct BorderTokens {
             style: "solid"
         )
     }
+
     /// semantic.border.checkable
     ///
     /// Width: 1.5
@@ -40,6 +41,7 @@ internal struct BorderTokens {
             style: "solid"
         )
     }
+
     /// semantic.border.dashed-default
     ///
     /// Width: 2
@@ -50,6 +52,7 @@ internal struct BorderTokens {
             style: "dashed"
         )
     }
+
     /// semantic.border.dashed-focused
     ///
     /// Width: 2
@@ -60,6 +63,7 @@ internal struct BorderTokens {
             style: "dashed"
         )
     }
+
     /// semantic.border.default
     ///
     /// Width: 1
@@ -70,6 +74,7 @@ internal struct BorderTokens {
             style: "solid"
         )
     }
+
     /// semantic.border.disabled
     ///
     /// Width: 1
@@ -80,6 +85,7 @@ internal struct BorderTokens {
             style: "solid"
         )
     }
+
     /// semantic.border.focused
     ///
     /// Width: 2
@@ -90,6 +96,7 @@ internal struct BorderTokens {
             style: "solid"
         )
     }
+
     /// semantic.border.hovered
     ///
     /// Width: 1
@@ -100,6 +107,7 @@ internal struct BorderTokens {
             style: "solid"
         )
     }
+
     /// semantic.border.invalid
     ///
     /// Width: 1
@@ -110,6 +118,7 @@ internal struct BorderTokens {
             style: "solid"
         )
     }
+
     /// semantic.border.selected
     ///
     /// Width: 2
@@ -120,6 +129,7 @@ internal struct BorderTokens {
             style: "solid"
         )
     }
+
     /// semantic.border.tab-focused
     ///
     /// Width: 4
@@ -130,6 +140,4 @@ internal struct BorderTokens {
             style: "solid"
         )
     }
-
 }
-

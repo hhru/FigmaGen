@@ -38,11 +38,11 @@ struct DefaultBorderTokensGenerator: BorderTokensGenerator {
     // MARK: - BorderTokensGenerator
 
     func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws {
-        let semanticBorders = try tokenValues.semantic.map { tokenValue in
+        let semanticBorders = try tokenValues.semantic.compactMap { tokenValue in
             try getBorderToken(from: tokenValue, tokens: tokenValues)
         }
 
-        let coreBorders = try tokenValues.core.map { tokenValue in
+        let coreBorders = try tokenValues.core.compactMap { tokenValue in
             try getBorderToken(from: tokenValue, tokens: tokenValues)
         }
 

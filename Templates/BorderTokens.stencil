@@ -1,9 +1,9 @@
 {% include "FileHeader.stencil" %}
-{% if semanticBorders or coreBorders %}
+{% if semanticBorders or coreBorders -%}
 {% set accessModifier %}{% if options.publicAccess %}public{% else %}internal{% endif %}{% endset %}
 {% set tokenTypeName %}{{ options.tokenTypeName|default:"BorderTokens" }}{% endset %}
 {% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
-{% macro borderProperty border %}
+{% macro borderProperty border -%}
     /// {{ border.path|join:"." }}
     ///
     /// Width: {{ border.width }}
@@ -14,7 +14,7 @@
             style: "{{ border.style|default:"solid" }}"
         )
     }
-{% endmacro %}
+{%- endmacro %}
 
 #if canImport(UIKit)
 import UIKit
@@ -36,14 +36,14 @@ public struct BorderToken: Hashable {
 
     // MARK: - Instance Properties
     {% for border in semanticBorders %}
+
     {% call borderProperty border %}
     {% endfor %}
-
     {% for border in coreBorders %}
+
     {% call borderProperty border %}
     {% endfor %}
 }
-{% else %}
+{%- else -%}
 // No border tokens found
-{% endif %}
-
+{%- endif %}
