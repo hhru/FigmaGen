@@ -89,6 +89,11 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             defaultTemplateType: .native(name: "SpacingTokens")
         )
 
+        let borderRenderParameters = renderParametersResolver.resolveRenderParameters(
+            templates: configuration.templates?.borders,
+            defaultTemplateType: .native(name: "BorderTokens")
+        )
+
         return TokensGenerationParameters(
             file: file,
             remoteFile: remoteFile,
@@ -99,7 +104,8 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
                 typographyRenderParameters: typographyRenderParameters,
                 boxShadowRenderParameters: boxShadowRenderParameters,
                 themeRenderParameters: themeRenderParameters,
-                spacingRenderParameters: spacingRenderParameters
+                spacingRenderParameters: spacingRenderParameters,
+                bordersRenderParameters: borderRenderParameters
             )
         )
     }

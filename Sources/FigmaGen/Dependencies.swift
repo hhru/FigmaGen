@@ -179,6 +179,11 @@ enum Dependencies {
         templateRenderer: templateRenderer
     )
 
+    static let borderTokensGenerator: BorderTokensGenerator = DefaultBorderTokensGenerator(
+        tokensResolver: tokensResolver,
+        templateRenderer: templateRenderer
+    )
+
     static let tokensGenerator: TokensGenerator = DefaultTokensGenerator(
         tokensProvider: tokensProvider,
         tokensGenerationParametersResolver: tokensGenerationParametersResolver,
@@ -188,7 +193,8 @@ enum Dependencies {
         typographyTokensGenerator: typographyTokensGenerator,
         boxShadowTokensGenerator: boxShadowTokensGenerator,
         themeTokensGenerator: themeTokensGenerator,
-        spacingTokensGenerator: spacingTokensGenerator
+        spacingTokensGenerator: spacingTokensGenerator,
+        bordersTokensGenerator: borderTokensGenerator
     )
 
     static let libraryGenerator: LibraryGenerator = DefaultLibraryGenerator(
