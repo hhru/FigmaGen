@@ -244,7 +244,6 @@ final class TokensCommand: AsyncExecutableCommand {
         """
     )
 
-    // TODO: - @nschpy Обновить description ???
     let bordersTemplateOptions = VariadicKey<String>(
         "--borders-options",
         description: """
