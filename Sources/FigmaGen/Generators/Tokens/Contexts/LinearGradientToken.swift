@@ -2,20 +2,21 @@ import Foundation
 
 struct LinearGradientToken: Encodable {
 
-    struct Stop: Encodable {
-        let color: ColorToken
-        let location: String
+    struct ColorStop: Encodable {
+        let color: String
+        let percentage: CGFloat
     }
 
-    struct ThemeValue: Encodable {
-        let stops: [Stop]
-        let angle: String
+    struct GradientThemeValue: Encodable {
+        let stops: [ColorStop]
+        let startPoint: CGPoint
+        let endPoint: CGPoint
     }
 
     let path: [String]
     let name: String
 
-    let dayTheme: ThemeValue
-    let nightTheme: ThemeValue
-    let zpDayTheme: ThemeValue
+    let dayTheme: GradientThemeValue
+    let nightTheme: GradientThemeValue
+    let zpDayTheme: GradientThemeValue
 }

@@ -83,7 +83,9 @@ enum Dependencies {
 
     static let boxShadowTokensContextProvider: BoxShadowTokensContextProvider = DefaultBoxShadowTokensContextProvider()
 
-    static let gradientTokensContextProvider: GradientTokensContextProvider = DefaultGradientTokensContextProvider()
+    static let gradientTokensContextProvider: GradientTokensContextProvider = DefaultGradientTokensContextProvider(
+        tokensResolver: tokensResolver
+    )
 
     // MARK: -
 
