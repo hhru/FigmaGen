@@ -1,6 +1,6 @@
 import Foundation
 
-struct LinearGradientToken: Encodable {
+struct LinearGradientToken: TokenProtocol, Encodable {
 
     struct ColorStop: Encodable {
         let color: String

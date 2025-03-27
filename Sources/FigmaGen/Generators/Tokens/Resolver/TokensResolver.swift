@@ -34,6 +34,7 @@ protocol TokensResolver {
     ///
     /// Supported formats:
     /// - `rgba(hex_color, alpha-value-percentage)`
+    /// – `rgba(red, green, blue, alpha-value-percentage)`
     /// - TO DO: Support more formats
     ///
     /// [Color tokens examples and should be supported later](https://docs.tokens.studio/available-tokens/color-tokens#solid-colors)

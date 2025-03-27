@@ -53,6 +53,6 @@ extension TokensTemplateConfiguration: Decodable {
         theme = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .theme)?.templates
         spacing = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .spacing)?.templates
         borders = try? container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .borders)?.templates
-        gradient = try? container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .borders)?.templates
+        gradient = try? container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .gradient)?.templates
     }
 }

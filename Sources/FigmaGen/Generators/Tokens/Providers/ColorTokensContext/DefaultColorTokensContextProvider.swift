@@ -101,43 +101,9 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
         )
     }
 
-    private func structure(tokenColors: [ColorToken], atNamePath namePath: [String] = []) -> [String: Any] {
-        var structuredColors: [String: Any] = [:]
-
-        if let name = namePath.last {
-            structuredColors["name"] = name
-        }
-
-        if !namePath.isEmpty {
-            structuredColors["path"] = namePath
-        }
-
-        let colors = tokenColors
-            .filter { $0.path.count == namePath.count + 1 }
-            .sorted { $0.name.lowercased() < $1.name.lowercased() }
-
-        if !colors.isEmpty {
-            structuredColors["colors"] = colors
-        }
-
-        let childTokenColors = tokenColors.filter { $0.path.count > namePath.count + 1 }
-
-        let children = Dictionary(grouping: childTokenColors) { $0.path[namePath.count] }
-            .sorted { $0.key < $1.key }
-            .map { name, colors in
-                structure(tokenColors: colors, atNamePath: namePath + [name])
-            }
-
-        if !children.isEmpty {
-            structuredColors["children"] = children
-        }
-
-        return structuredColors
-    }
-
     // MARK: -
 
-    func fetchColorTokensContext(from tokenValues: TokenValues) throws -> [String: Any] {
+    func extractTokenContext(from tokenValues: TokenValues) throws -> [String: Any] {
         let colors: [ColorToken] = try tokenValues.hhDay.compactMap { (token: TokenValue) in
             guard case .color(let dayValue) = token.type else {
                 return nil
@@ -157,6 +123,6 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
             )
         }
 
-        return structure(tokenColors: colors)
+        return structure(tokens: colors, contextName: "colors")
     }
 }

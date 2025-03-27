@@ -83,7 +83,7 @@ enum Dependencies {
 
     static let boxShadowTokensContextProvider: BoxShadowTokensContextProvider = DefaultBoxShadowTokensContextProvider()
 
-    static let gradientTokensContextProvider: GradientTokensContextProvider = DefaultGradientTokensContextProvider(
+    static let gradientTokensContextProvider: ColorTokensContextProvider = DefaultGradientTokensContextProvider(
         tokensResolver: tokensResolver
     )
 
@@ -174,6 +174,7 @@ enum Dependencies {
 
     static let themeTokensGenerator: ThemeTokensGenerator = DefaultThemeTokensGenerator(
         colorTokensContextProvider: colorTokensContextProvider,
+        gradientTokensContextProvider: gradientTokensContextProvider,
         boxShadowsContextProvider: boxShadowTokensContextProvider,
         templateRenderer: templateRenderer
     )
@@ -190,7 +191,7 @@ enum Dependencies {
 
     static let gradientTokensGenerator: GradientTokensGenerator = DefaultGradientTokensGenerator(
         templateRenderer: templateRenderer,
-        provider: gradientTokensContextProvider
+        gradientProvider: gradientTokensContextProvider
     )
 
     static let tokensGenerator: TokensGenerator = DefaultTokensGenerator(

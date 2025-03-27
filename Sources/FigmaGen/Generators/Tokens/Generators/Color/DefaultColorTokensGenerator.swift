@@ -20,7 +20,7 @@ final class DefaultColorTokensGenerator: ColorTokensGenerator {
     // MARK: - Instance Methods
 
     func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws {
-        let context = try colorTokensContextProvider.fetchColorTokensContext(from: tokenValues)
+        let context = try colorTokensContextProvider.extractTokenContext(from: tokenValues)
 
         try templateRenderer.renderTemplate(
             renderParameters.template,

@@ -1,6 +1,6 @@
 import Foundation
 
-struct DefaultGradientTokensContextProvider: GradientTokensContextProvider {
+struct DefaultGradientTokensContextProvider: ColorTokensContextProvider {
 
     let tokensResolver: TokensResolver
 
@@ -49,7 +49,8 @@ struct DefaultGradientTokensContextProvider: GradientTokensContextProvider {
 
         return LinearGradientToken.GradientThemeValue(
             stops: gradient.colorStopList.compactMap { stop in
-                guard let percentage = Double(stop.percentage) else {
+                let percentage = stop.percentage.replacingOccurrences(of: "%", with: "")
+                guard let percentage = Double(percentage) else {
                     return nil
                 }
 
@@ -101,9 +102,9 @@ struct DefaultGradientTokensContextProvider: GradientTokensContextProvider {
     private func createGradientToken(
         _ gradientValue: String,
         tokenName: String,
+        path: [String],
         tokenValues: TokenValues
     ) throws -> LinearGradientToken? {
-        let path = tokenName.components(separatedBy: ".")
         let dayGradient = try tokensResolver.resolveLinearGradientValue(
             gradientValue,
             tokenValues: tokenValues,
@@ -142,20 +143,31 @@ struct DefaultGradientTokensContextProvider: GradientTokensContextProvider {
         from token: TokenValue,
         tokenValues: TokenValues
     ) throws -> LinearGradientToken? {
-        guard case .color(let dayValue) = token.type, dayValue.contains("gradient") else {
+        let path = token.name.components(separatedBy: ".")
+
+        guard
+            case .color(let dayValue) = token.type,
+            dayValue.contains("gradient"),
+            path[0] != "color"
+        else {
             return nil
         }
 
-        return try createGradientToken(dayValue, tokenName: token.name, tokenValues: tokenValues)
+        return try createGradientToken(
+            dayValue,
+            tokenName: token.name,
+            path: path,
+            tokenValues: tokenValues
+        )
     }
 
     // MARK: - GradientTokensContextProvider
 
-    func extractContext(from tokenValues: TokenValues) throws -> [String : Any] {
+    func extractTokenContext(from tokenValues: TokenValues) throws -> [String : Any] {
         let gradient = try tokenValues.hhDay.compactMap {
             try extractGradientToken(from: $0, tokenValues: tokenValues)
         }
 
-        return [:] // TODO: Make structure
+        return structure(tokens: gradient, contextName: "gradient")
     }
 }
