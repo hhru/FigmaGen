@@ -59,8 +59,14 @@ struct DefaultGradientTokensContextProvider: ColorTokensContextProvider {
                     percentage: percentage
                 )
             },
-            startPoint: points.start,
-            endPoint: points.end
+            startPoint: LinearGradientToken.Point(
+                x: points.start.x,
+                y: points.start.y
+            ),
+            endPoint: LinearGradientToken.Point(
+                x: points.end.x,
+                y: points.end.y
+            )
         )
     }
 
@@ -168,6 +174,6 @@ struct DefaultGradientTokensContextProvider: ColorTokensContextProvider {
             try extractGradientToken(from: $0, tokenValues: tokenValues)
         }
 
-        return structure(tokens: gradient, contextName: "gradient")
+        return structure(tokens: gradient, contextName: "gradients")
     }
 }
