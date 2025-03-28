@@ -56,7 +56,7 @@ struct DefaultGradientTokensContextProvider: ColorTokensContextProvider {
 
                 return .init(
                     color: stop.color.hexString,
-                    percentage: percentage
+                    percentage: percentage / 100
                 )
             },
             startPoint: LinearGradientToken.Point(
