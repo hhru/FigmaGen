@@ -4,7 +4,7 @@
 {% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
 {% macro typeName name %}{{ name|swiftIdentifier:"pretty"|upperFirstLetter|escapeReservedKeywords }}{% endmacro %}
 {% macro recursiveBlock item %}
-    {% for gradient in item.gradient %}
+    {% for gradient in item.gradients %}
 
     /// {{ gradient.name }}
     ///
@@ -36,11 +36,7 @@
 import SwiftUI
 
 public struct Gradients {
-    {% if gradients %}
     {% call recursiveBlock gradients %}
-    {% else %}
-    // No gradient tokens found
-    {% endif %}
 }
 {% else %}
 // No color tokens found
