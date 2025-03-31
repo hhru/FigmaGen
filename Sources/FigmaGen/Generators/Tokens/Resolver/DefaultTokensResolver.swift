@@ -60,7 +60,7 @@ final class DefaultTokensResolver: TokensResolver {
         }
     }
 
-    private func resolveColorValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> Color {
+    private func resolveColorValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> Color {
         if value.hasPrefix("rgba") {
             return try resolveRGBAColorValue(value, tokenValues: tokenValues, theme: theme)
         }
@@ -109,7 +109,7 @@ final class DefaultTokensResolver: TokensResolver {
 
     // MARK: - TokensResolver
 
-    func resolveValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> String {
+    func resolveValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> String {
         let themeTokens = tokenValues.getThemeTokenValues(theme: theme)
 
         let resolvedValue = try value.replacingOccurrences(matchingPattern: #"\{.*?\}"#) { referenceName in
@@ -161,7 +161,7 @@ final class DefaultTokensResolver: TokensResolver {
         }
     }
 
-    func resolveRGBAColorValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> Color {
+    func resolveRGBAColorValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> Color {
         let components = try resolveValue(value, tokenValues: tokenValues, theme: theme)
             .slice(from: "(", to: ")", includingBounds: false)?
             .components(separatedBy: ", ")
@@ -190,7 +190,7 @@ final class DefaultTokensResolver: TokensResolver {
         }
     }
 
-    func resolveHexColorValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> String {
+    func resolveHexColorValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> String {
         let resolvedValue = try resolveValue(value, tokenValues: tokenValues, theme: theme)
 
         if resolvedValue.hasPrefix("#") {
@@ -199,7 +199,7 @@ final class DefaultTokensResolver: TokensResolver {
         return try resolveColorValue(resolvedValue, tokenValues: tokenValues, theme: theme).hexString
     }
 
-    func resolveLinearGradientValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> LinearGradient {
+    func resolveLinearGradientValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> LinearGradient {
         let value = try resolveValue(value, tokenValues: tokenValues, theme: theme)
 
         guard let startFunctionIndex = value.firstIndex(of: "("), let endFunctionIndex = value.lastIndex(of: ")") else {

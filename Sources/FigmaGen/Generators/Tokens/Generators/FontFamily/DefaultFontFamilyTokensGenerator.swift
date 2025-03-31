@@ -44,7 +44,12 @@ final class DefaultFontFamilyTokensGenerator: FontFamilyTokensGenerator {
 
     // MARK: -
 
-    func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws {
+    func generate(
+        renderParameters: RenderParameters,
+        tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
+    ) throws {
         let fontFamilyTokens = try makeFontFamilyTokens(tokenValues: tokenValues)
         let fontWeightTokens = try makeFontWightTokens(tokenValues: tokenValues)
 

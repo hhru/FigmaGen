@@ -17,8 +17,17 @@ struct DefaultGradientTokensGenerator: GradientTokensGenerator {
 
     // MARK: - GradientTokensGenerator
 
-    func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws {
-        let gradientContext = try provider.extractTokenContext(from: tokenValues)
+    func generate(
+        renderParameters: RenderParameters,
+        tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
+    ) throws {
+        let gradientContext = try provider.extractTokenContext(
+            from: tokenValues,
+            themes: themes,
+            fallbackTheme: fallbackTheme
+        )
 
         try templateRenderer.renderTemplate(
             renderParameters.template,

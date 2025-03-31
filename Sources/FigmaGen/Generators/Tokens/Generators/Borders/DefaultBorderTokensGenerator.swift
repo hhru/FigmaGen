@@ -29,7 +29,7 @@ struct DefaultBorderTokensGenerator: BorderTokensGenerator {
             width: try tokensResolver.resolveValue(
                 value.width,
                 tokenValues: tokens,
-                theme: .undefined
+                theme: nil
             ),
             style: value.style
         )
@@ -48,7 +48,7 @@ struct DefaultBorderTokensGenerator: BorderTokensGenerator {
             value: try tokensResolver.resolveValue(
                 value,
                 tokenValues: tokens,
-                theme: .undefined
+                theme: nil
             )
         )
     }
@@ -74,7 +74,12 @@ struct DefaultBorderTokensGenerator: BorderTokensGenerator {
 
     // MARK: - BorderTokensGenerator
 
-    func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws {
+    func generate(
+        renderParameters: RenderParameters,
+        tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
+    ) throws {
         let coreBorderData = try extractBorderData(from: tokenValues.core, tokenValues: tokenValues)
         let semanticBorderData = try extractBorderData(from: tokenValues.semantic, tokenValues: tokenValues)
 

@@ -23,5 +23,7 @@ struct TokensGenerationParameters {
 
     let file: FileParameters?
     let remoteFile: RemoteFileParameters?
+    let themes: [Theme]
+    let fallbackTheme: Theme
     let tokens: TokensParameters
 }

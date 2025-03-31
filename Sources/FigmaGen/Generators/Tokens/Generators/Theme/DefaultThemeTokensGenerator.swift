@@ -25,10 +25,23 @@ final class DefaultThemeTokensGenerator: ThemeTokensGenerator {
 
     // MARK: - Instance Methods
 
-    func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws {
-        let colorsContext = try colorTokensContextProvider.extractTokenContext(from: tokenValues)
+    func generate(
+        renderParameters: RenderParameters,
+        tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
+    ) throws {
+        let colorsContext = try colorTokensContextProvider.extractTokenContext(
+            from: tokenValues,
+            themes: themes,
+            fallbackTheme: fallbackTheme
+        )
+        let gradientsContext = try gradientTokensContextProvider.extractTokenContext(
+            from: tokenValues,
+            themes: themes,
+            fallbackTheme: fallbackTheme
+        )
         let boxShadowsContext = try boxShadowsContextProvider.fetchBoxShadowTokensContext(from: tokenValues)
-        let gradientsContext = try gradientTokensContextProvider.extractTokenContext(from: tokenValues)
 
         try templateRenderer.renderTemplate(
             renderParameters.template,

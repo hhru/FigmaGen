@@ -23,13 +23,22 @@ final class DefaultBaseColorTokensGenerator: BaseColorTokensGenerator {
 
         return BaseColorToken(
             path: token.name.components(separatedBy: "."),
-            value: try tokensResolver.resolveHexColorValue(value, tokenValues: tokenValues, theme: .undefined)
+            value: try tokensResolver.resolveHexColorValue(
+                value,
+                tokenValues: tokenValues,
+                theme: nil
+            )
         )
     }
 
     // MARK: -
 
-    func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws {
+    func generate(
+        renderParameters: RenderParameters,
+        tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
+    ) throws {
         let colors = try tokenValues.colors.compactMap { try makeBaseColorToken(from: $0, tokenValues: tokenValues) }
 
         try templateRenderer.renderTemplate(

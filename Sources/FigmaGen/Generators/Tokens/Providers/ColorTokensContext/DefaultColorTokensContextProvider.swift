@@ -20,22 +20,12 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
 
     private func resolveColorToken(
         tokenName: String,
-        fallbackColorToken: ColorToken.Theme,
+        fallbackColorToken: ColorToken.ColorValue,
         tokenValues: TokenValues,
         theme: Theme
-    ) throws -> ColorToken.Theme {
-        // Resolve theme data
-        let themeData: (tokenValues: [TokenValue], warningPrefix: String)
-        switch theme {
-        case .night:
-            themeData = (tokenValues.hhNight, "Night")
-
-        case .zpDay:
-            themeData = (tokenValues.zpDay, "ZpDay")
-
-        case .day, .undefined:
-            themeData = ([], "")
-        }
+    ) throws -> ColorToken.ColorValue {
+        let tokens = tokenValues.tokens(for: theme)
+        let themeData: (tokenValues: [TokenValue], warningPrefix: String) = (tokens, theme.key)
 
         // Resolve token and value
         guard let themeToken = themeData.tokenValues.first(where: { $0.name == tokenName }) else {
@@ -58,53 +48,55 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
         // Resolve reference
         let themeReference = try tokensResolver.resolveBaseReference(themeValue, tokenValues: themeData.tokenValues)
 
-        return ColorToken.Theme(value: themeHexColorValue, reference: themeReference)
+        return ColorToken.ColorValue(value: themeHexColorValue, reference: themeReference)
     }
 
     private func makeColorToken(
-        dayValue: String,
+        baseTokenValue: String,
         tokenName: String,
         tokenValues: TokenValues,
-        path: [String]
+        path: [String],
+        themes: [Theme],
+        fallbackTheme: Theme
     ) throws -> ColorToken {
-        let dayColorToken = ColorToken.Theme(
+        let fallbackColorToken = ColorToken.ColorValue(
             value: try tokensResolver.resolveHexColorValue(
-                dayValue,
+                baseTokenValue,
                 tokenValues: tokenValues,
-                theme: .day
+                theme: fallbackTheme
             ),
             reference: try tokensResolver.resolveBaseReference(
-                dayValue,
-                tokenValues: tokenValues.hhDay
+                baseTokenValue,
+                tokenValues: tokenValues.tokens(for: fallbackTheme)
             )
         )
 
-        let nightColorToken = try resolveColorToken(
-            tokenName: tokenName,
-            fallbackColorToken: dayColorToken,
-            tokenValues: tokenValues,
-            theme: .night
-        )
-        let zpDayColorToken = try resolveColorToken(
-            tokenName: tokenName,
-            fallbackColorToken: dayColorToken,
-            tokenValues: tokenValues,
-            theme: .zpDay
-        )
+        let colors = try themes.map { theme in
+            guard theme != fallbackTheme else {
+                return (theme, fallbackColorToken)
+            }
+
+            let token = try resolveColorToken(
+                tokenName: tokenName,
+                fallbackColorToken: fallbackColorToken,
+                tokenValues: tokenValues,
+                theme: theme
+            )
+
+            return (theme, token)
+        }
 
         return ColorToken(
-            dayTheme: dayColorToken,
-            nightTheme: nightColorToken,
-            zpDayTheme: zpDayColorToken,
             name: tokenName,
-            path: path
+            path: path,
+            themedValue: [:]
         )
     }
 
     // MARK: -
 
-    func extractTokenContext(from tokenValues: TokenValues) throws -> [String: Any] {
-        let colors: [ColorToken] = try tokenValues.hhDay.compactMap { (token: TokenValue) in
+    func extractTokenContext(from tokenValues: TokenValues, themes: [Theme], fallbackTheme: Theme) throws -> [String: Any] {
+        let colors: [ColorToken] = try tokenValues.tokens(for: fallbackTheme).compactMap { (token: TokenValue) in
             guard case .color(let dayValue) = token.type else {
                 return nil
             }
@@ -116,10 +108,12 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
             }
 
             return try makeColorToken(
-                dayValue: dayValue,
+                baseTokenValue: dayValue,
                 tokenName: token.name,
                 tokenValues: tokenValues,
-                path: path
+                path: path,
+                themes: themes,
+                fallbackTheme: fallbackTheme
             )
         }
 

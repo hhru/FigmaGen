@@ -15,7 +15,7 @@ protocol TokensResolver {
     ///   - tokenValues: All token values
     ///   - theme: Theme
     /// - Returns: Resolved value.
-    func resolveValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> String
+    func resolveValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> String
 
     /// Resolving `reference` from `tokenValues`.
     ///
@@ -50,7 +50,7 @@ protocol TokensResolver {
     ///   - tokenValues: All token values
     ///   - theme: Theme
     /// - Returns: ``Color`` object with values resolved from `rgba()`
-    func resolveRGBAColorValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> Color
+    func resolveRGBAColorValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> Color
 
     /// Resolving references and mathematical expressions in `value` using ``resolveValue(_:tokenValues:)``
     /// and convert `rgba()` to hex value
@@ -69,7 +69,7 @@ protocol TokensResolver {
     ///   - tokenValues: All token values
     ///   - theme: Theme
     /// - Returns: Hex value of the color
-    func resolveHexColorValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> String
+    func resolveHexColorValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> String
 
     /// Resolving references and mathematical expressions in `value` using ``resolveValue(_:tokenValues:)``
     /// and convert `linear-gradient()` to ``LinearGradient`` object
@@ -91,5 +91,5 @@ protocol TokensResolver {
     ///   - tokenValues: All token values
     ///   - theme: Theme
     /// - Returns: ``LinearGradient`` object with values resolved from `linear-gradient()`
-    func resolveLinearGradientValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> LinearGradient
+    func resolveLinearGradientValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> LinearGradient
 }

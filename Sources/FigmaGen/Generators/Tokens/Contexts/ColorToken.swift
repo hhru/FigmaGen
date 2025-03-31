@@ -4,7 +4,7 @@ struct ColorToken: TokenProtocol, Encodable {
 
     // MARK: - Nested Types
 
-    struct Theme: Encodable {
+    struct ColorValue: Encodable {
 
         // MARK: - Instance Properties
 
@@ -14,9 +14,7 @@ struct ColorToken: TokenProtocol, Encodable {
 
     // MARK: - Instance Properties
 
-    let dayTheme: Theme
-    let nightTheme: Theme
-    let zpDayTheme: Theme
     let name: String
     let path: [String]
+    let themedValue: [Theme: ColorValue]
 }

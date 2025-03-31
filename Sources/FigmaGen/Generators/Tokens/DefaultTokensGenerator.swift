@@ -76,7 +76,9 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateTokens(
             spacingTokensGenerator,
             renderParameters: parameters.tokens.spacingRenderParameters,
-            tokenValues: tokenValues
+            tokenValues: tokenValues,
+            themes: parameters.themes,
+            fallbackTheme: parameters.fallbackTheme
         )
     }
 
@@ -84,7 +86,9 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateTokens(
             themeTokensGenerator,
             renderParameters: parameters.tokens.themeRenderParameters,
-            tokenValues: tokenValues
+            tokenValues: tokenValues,
+            themes: parameters.themes,
+            fallbackTheme: parameters.fallbackTheme
         )
     }
 
@@ -92,7 +96,9 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateTokens(
             boxShadowTokensGenerator,
             renderParameters: parameters.tokens.boxShadowRenderParameters,
-            tokenValues: tokenValues
+            tokenValues: tokenValues,
+            themes: parameters.themes,
+            fallbackTheme: parameters.fallbackTheme
         )
     }
 
@@ -100,7 +106,9 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateTokens(
             typographyTokensGenerator,
             renderParameters: parameters.tokens.typographyRenderParameters,
-            tokenValues: tokenValues
+            tokenValues: tokenValues,
+            themes: parameters.themes,
+            fallbackTheme: parameters.fallbackTheme
         )
     }
 
@@ -108,7 +116,9 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateTokens(
             fontFamilyTokensGenerator,
             renderParameters: parameters.tokens.fontFamilyRenderParameters,
-            tokenValues: tokenValues
+            tokenValues: tokenValues,
+            themes: parameters.themes,
+            fallbackTheme: parameters.fallbackTheme
         )
     }
 
@@ -116,7 +126,9 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateTokens(
             baseColorTokensGenerator,
             renderParameters: parameters.tokens.baseColorRenderParameters,
-            tokenValues: tokenValues
+            tokenValues: tokenValues,
+            themes: parameters.themes,
+            fallbackTheme: parameters.fallbackTheme
         )
     }
 
@@ -124,7 +136,9 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateTokens(
             colorTokensGenerator,
             renderParameters: parameters.tokens.colorRenderParameters,
-            tokenValues: tokenValues
+            tokenValues: tokenValues,
+            themes: parameters.themes,
+            fallbackTheme: parameters.fallbackTheme
         )
     }
 
@@ -132,7 +146,9 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateTokens(
             bordersTokensGenerator,
             renderParameters: parameters.tokens.bordersRenderParameters,
-            tokenValues: tokenValues
+            tokenValues: tokenValues,
+            themes: parameters.themes,
+            fallbackTheme: parameters.fallbackTheme
         )
     }
 
@@ -140,20 +156,26 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateTokens(
             gradientTokensGenerator,
             renderParameters: parameters.tokens.gradientRenderParameters,
-            tokenValues: tokenValues
+            tokenValues: tokenValues,
+            themes: parameters.themes,
+            fallbackTheme: parameters.fallbackTheme
         )
     }
 
     private func generateTokens(
         _ generator: BaseTokenGenerator,
         renderParameters: [RenderParameters]?,
-        tokenValues: TokenValues
+        tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
     ) throws {
         if let renderParametersList = renderParameters {
             for params in renderParametersList {
                 try generator.generate(
                     renderParameters: params,
-                    tokenValues: tokenValues
+                    tokenValues: tokenValues,
+                    themes: themes,
+                    fallbackTheme: fallbackTheme
                 )
             }
         }
