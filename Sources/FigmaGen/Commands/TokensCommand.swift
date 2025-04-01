@@ -260,6 +260,30 @@ final class TokensCommand: AsyncExecutableCommand {
             """
     )
 
+    let gradientTemplate = Key<String>(
+        "--gradient-template",
+        description: """
+        Path to the template file.
+        If no template is passed a default template will be used.
+        """
+    )
+
+    let gradientTemplateOptions = VariadicKey<String>(
+        "--gradient-options",
+        description: """
+            An option that will be merged with template context, and overwrite any values of the same name.
+            Can be repeated multiple times and must be in the format: -o "name:value".
+            """
+    )
+
+    let gradientDestination = Key<String>(
+        "--gradient-destination",
+        description: """
+            The path to the file to generate.
+            By default, generated code will be printed on stdout.
+            """
+    )
+
     // MARK: - Initializers
 
     init(generator: TokensGenerator) {
@@ -344,6 +368,13 @@ extension TokensCommand {
                         template: bordersTemplate.value,
                         templateOptions: resolveTemplateOptions(bordersTemplateOptions.value),
                         destination: bordersDestination.value
+                    )
+                ],
+                gradient: [
+                    TemplateConfiguration(
+                        template: gradientTemplate.value,
+                        templateOptions: resolveTemplateOptions(gradientTemplateOptions.value),
+                        destination: gradientDestination.value
                     )
                 ]
             )

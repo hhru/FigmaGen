@@ -94,6 +94,11 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             defaultTemplateType: .native(name: "BorderTokens")
         )
 
+        let gradientRenderParameters = renderParametersResolver.resolveRenderParameters(
+            templates: configuration.templates?.gradient,
+            defaultTemplateType: .native(name: "GradientTokens")
+        )
+
         return TokensGenerationParameters(
             file: file,
             remoteFile: remoteFile,
@@ -105,7 +110,8 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
                 boxShadowRenderParameters: boxShadowRenderParameters,
                 themeRenderParameters: themeRenderParameters,
                 spacingRenderParameters: spacingRenderParameters,
-                bordersRenderParameters: borderRenderParameters
+                bordersRenderParameters: borderRenderParameters,
+                gradientRenderParameters: gradientRenderParameters
             )
         )
     }

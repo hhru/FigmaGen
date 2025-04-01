@@ -1,6 +1,6 @@
 import Foundation
 
-struct ColorToken: Encodable {
+struct ColorToken: TokenProtocol, Encodable {
 
     // MARK: - Nested Types
 

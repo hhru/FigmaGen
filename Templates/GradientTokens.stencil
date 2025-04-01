@@ -1,0 +1,43 @@
+{% include "FileHeader.stencil" %}
+{% if gradients %}
+{% set gradientTypeName %}{{ options.colorTypeName|default:"LinearGradient" }}{% endset %}
+{% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
+{% macro typeName name %}{{ name|swiftIdentifier:"pretty"|upperFirstLetter|escapeReservedKeywords }}{% endmacro %}
+{% macro recursiveBlock item %}
+    {% for gradient in item.gradients %}
+
+    /// {{ gradient.name }}
+    ///
+    /// Day Theme:
+    {% for stop in gradient.dayTheme.stops %}
+    /// - {{ stop.color }} {{ stop.percentage }}%
+    {% endfor %}
+    /// Night Theme:
+    {% for stop in gradient.nightTheme.stops %}
+    /// - {{ stop.color }} {{ stop.percentage }}%
+    {% endfor %}
+    public let {% call propertyName gradient.path.last %}: {{ gradientTypeName }}
+    {% endfor %}
+    {% for child in item.children %}
+    {% if child.name == "gradient" %}
+    {% call recursiveBlock child %}
+    {% else %}
+    public struct {% call typeName child.name %} {
+        {% filter indent:4 %}
+        {% call recursiveBlock child %}
+        {% endfilter %}
+    }
+
+    public let {% call propertyName child.name %}: {% call typeName child.name %}
+    {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+import SwiftUI
+
+public struct Gradients {
+    {% call recursiveBlock gradients %}
+}
+{% else %}
+// No color tokens found
+{% endif %}

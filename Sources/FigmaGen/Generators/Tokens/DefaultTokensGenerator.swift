@@ -16,7 +16,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     let themeTokensGenerator: ThemeTokensGenerator
     let spacingTokensGenerator: SpacingTokensGenerator
     let bordersTokensGenerator: BorderTokensGenerator
-
+    let gradientTokensGenerator: GradientTokensGenerator
 
     // MARK: - Initializers
 
@@ -30,7 +30,8 @@ final class DefaultTokensGenerator: TokensGenerator {
         boxShadowTokensGenerator: BoxShadowTokensGenerator,
         themeTokensGenerator: ThemeTokensGenerator,
         spacingTokensGenerator: SpacingTokensGenerator,
-        bordersTokensGenerator: BorderTokensGenerator
+        bordersTokensGenerator: BorderTokensGenerator,
+        gradientTokensGenerator: GradientTokensGenerator
     ) {
         self.tokensProvider = tokensProvider
         self.tokensGenerationParametersResolver = tokensGenerationParametersResolver
@@ -42,6 +43,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         self.themeTokensGenerator = themeTokensGenerator
         self.spacingTokensGenerator = spacingTokensGenerator
         self.bordersTokensGenerator = bordersTokensGenerator
+        self.gradientTokensGenerator = gradientTokensGenerator
     }
 
     // MARK: - Instance Methods
@@ -57,6 +59,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateThemeTokens(parameters: parameters, tokenValues: tokenValues)
         try generateSpacingTokens(parameters: parameters, tokenValues: tokenValues)
         try generateBorderTokens(parameters: parameters, tokenValues: tokenValues)
+        try generateGradientTokens(parameters: parameters, tokenValues: tokenValues)
     }
 
     private func fetchTokens(from parameters: TokensGenerationParameters) async throws -> TokenValues {
@@ -129,6 +132,14 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateTokens(
             bordersTokensGenerator,
             renderParameters: parameters.tokens.bordersRenderParameters,
+            tokenValues: tokenValues
+        )
+    }
+
+    private func generateGradientTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
+        try generateTokens(
+            gradientTokensGenerator,
+            renderParameters: parameters.tokens.gradientRenderParameters,
             tokenValues: tokenValues
         )
     }
