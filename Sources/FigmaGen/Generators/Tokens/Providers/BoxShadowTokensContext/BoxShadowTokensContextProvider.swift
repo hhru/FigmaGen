@@ -4,5 +4,9 @@ protocol BoxShadowTokensContextProvider {
 
     // MARK: - Instance Methods
 
-    func fetchBoxShadowTokensContext(from tokenValues: TokenValues) throws -> [BoxShadowToken]
+    func fetchBoxShadowTokensContext(
+        from tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
+    ) throws -> [BoxShadowToken]
 }

@@ -41,7 +41,11 @@ final class DefaultThemeTokensGenerator: ThemeTokensGenerator {
             themes: themes,
             fallbackTheme: fallbackTheme
         )
-        let boxShadowsContext = try boxShadowsContextProvider.fetchBoxShadowTokensContext(from: tokenValues)
+        let boxShadowsContext = try boxShadowsContextProvider.fetchBoxShadowTokensContext(
+            from: tokenValues,
+            themes: themes,
+            fallbackTheme: fallbackTheme
+        )
 
         try templateRenderer.renderTemplate(
             renderParameters.template,

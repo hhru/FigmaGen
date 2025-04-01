@@ -4,8 +4,8 @@ final class DefaultBoxShadowTokensContextProvider: BoxShadowTokensContextProvide
 
     // MARK: - Instance Methods
 
-    private func makeTheme(value: TokenBoxShadowValue) -> BoxShadowToken.Theme {
-        BoxShadowToken.Theme(
+    private func makeTheme(value: TokenBoxShadowValue) -> BoxShadowToken.ShadowValue {
+        BoxShadowToken.ShadowValue(
             color: value.color,
             type: value.type,
             x: value.x,
@@ -16,42 +16,54 @@ final class DefaultBoxShadowTokensContextProvider: BoxShadowTokensContextProvide
     }
 
     private func makeBoxShadowToken(
-        from dayTokenValue: TokenValue,
-        tokenValues: TokenValues
+        from fallbackTokenValue: TokenValue,
+        tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
     ) throws -> BoxShadowToken? {
-        guard case let .boxShadow(dayValue) = dayTokenValue.type else {
+        guard case let .boxShadow(fallbackValue) = fallbackTokenValue.type else {
             return nil
         }
 
-        guard let nightTokenValue = tokenValues.hhNight.first(where: { $0.name == dayTokenValue.name }) else {
-            throw BoxShadowTokensContextProviderError(code: .nightValueNotFound(tokenName: dayTokenValue.name))
+        let shadows = try themes.map { theme in
+            guard theme != fallbackTheme else {
+                return (theme, makeTheme(value: fallbackValue))
+            }
+
+            guard let nightTokenValue = tokenValues.tokens(for: theme).first(where: { $0.name == fallbackTokenValue.name }) else {
+                throw BoxShadowTokensContextProviderError(code: .valueNotFound(tokenName: fallbackTokenValue.name, theme: theme.key))
+            }
+
+            guard case let .boxShadow(boxShadowValue) = nightTokenValue.type else {
+                throw BoxShadowTokensContextProviderError(code: .valueNotFound(tokenName: fallbackTokenValue.name, theme: theme.key))
+            }
+
+            return (theme, makeTheme(value: boxShadowValue))
         }
 
-        guard case let .boxShadow(nightValue) = nightTokenValue.type else {
-            throw BoxShadowTokensContextProviderError(code: .nightValueNotFound(tokenName: dayTokenValue.name))
-        }
-
-        guard let zpDayTokenValue = tokenValues.zpDay.first(where: { $0.name == dayTokenValue.name }) else {
-            throw BoxShadowTokensContextProviderError(code: .nightValueNotFound(tokenName: dayTokenValue.name))
-        }
-
-        guard case let .boxShadow(zpDayValue) = zpDayTokenValue.type else {
-            throw BoxShadowTokensContextProviderError(code: .zpValueNotFound(tokenName: dayTokenValue.name))
-        }
 
         return BoxShadowToken(
-            path: dayTokenValue.name.components(separatedBy: "."),
-            dayTheme: makeTheme(value: dayValue),
-            nightTheme: makeTheme(value: nightValue),
-            zpDayTheme: makeTheme(value: zpDayValue)
+            path: fallbackTokenValue.name.components(separatedBy: "."),
+            themedValue: Dictionary(uniqueKeysWithValues: shadows)
         )
     }
 
     // MARK: -
 
-    func fetchBoxShadowTokensContext(from tokenValues: TokenValues) throws -> [BoxShadowToken] {
-        try tokenValues.hhDay
-            .compactMap { try makeBoxShadowToken(from: $0, tokenValues: tokenValues) }
+    func fetchBoxShadowTokensContext(
+        from tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
+    ) throws -> [BoxShadowToken] {
+        try tokenValues.tokens(for: fallbackTheme)
+            .compactMap {
+                try makeBoxShadowToken(
+                    from: $0,
+                    tokenValues: tokenValues,
+                    themes: themes,
+                    fallbackTheme: fallbackTheme
+                )
+            }
             .sorted { $0.path.joined() < $1.path.joined() }
     }
 }

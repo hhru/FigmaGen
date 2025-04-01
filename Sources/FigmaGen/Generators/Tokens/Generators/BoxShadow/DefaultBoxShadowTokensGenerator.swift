@@ -22,7 +22,11 @@ final class DefaultBoxShadowTokensGenerator: BoxShadowTokensGenerator {
         themes: [Theme],
         fallbackTheme: Theme
     ) throws {
-        let boxShadows = try boxShadowTokensContextProvider.fetchBoxShadowTokensContext(from: tokenValues)
+        let boxShadows = try boxShadowTokensContextProvider.fetchBoxShadowTokensContext(
+            from: tokenValues,
+            themes: themes,
+            fallbackTheme: fallbackTheme
+        )
 
         try templateRenderer.renderTemplate(
             renderParameters.template,

@@ -24,7 +24,11 @@ final class DefaultFontFamilyTokensGenerator: FontFamilyTokensGenerator {
 
             return FontFamilyToken(
                 path: tokenValue.name.components(separatedBy: "."),
-                value: try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: .undefined)
+                value: try tokensResolver.resolveValue(
+                    value,
+                    tokenValues: tokenValues,
+                    theme: nil
+                )
             )
         }
     }
@@ -37,7 +41,11 @@ final class DefaultFontFamilyTokensGenerator: FontFamilyTokensGenerator {
 
             return FontWeightToken(
                 path: tokenValue.name.components(separatedBy: "."),
-                value: try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: .undefined)
+                value: try tokensResolver.resolveValue(
+                    value,
+                    tokenValues: tokenValues,
+                    theme: nil
+                )
             )
         }
     }

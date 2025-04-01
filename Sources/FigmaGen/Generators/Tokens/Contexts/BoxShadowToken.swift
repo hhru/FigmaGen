@@ -4,7 +4,7 @@ struct BoxShadowToken {
 
     // MARK: - Nested Types
 
-    struct Theme {
+    struct ShadowValue {
 
         // MARK: - Instance Properties
 
@@ -19,7 +19,5 @@ struct BoxShadowToken {
     // MARK: - Instance Properties
 
     let path: [String]
-    let dayTheme: Theme
-    let nightTheme: Theme
-    let zpDayTheme: Theme
+    let themedValue: [Theme: ShadowValue]
 }

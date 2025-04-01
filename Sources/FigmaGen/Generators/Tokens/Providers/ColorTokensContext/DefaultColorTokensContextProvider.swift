@@ -89,7 +89,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
         return ColorToken(
             name: tokenName,
             path: path,
-            themedValue: [:]
+            themedValue: Dictionary(uniqueKeysWithValues: colors)
         )
     }
 

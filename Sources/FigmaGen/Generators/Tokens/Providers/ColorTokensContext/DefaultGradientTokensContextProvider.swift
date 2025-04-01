@@ -76,17 +76,8 @@ struct DefaultGradientTokensContextProvider: ColorTokensContextProvider {
         tokenValues: TokenValues,
         theme: Theme
     ) throws -> LinearGradientToken.GradientThemeValue {
-        let themeData: (tokenValues: [TokenValue], warningPrefix: String)
-        switch theme {
-        case .night:
-            themeData = (tokenValues.hhNight, "Night")
-
-        case .zpDay:
-            themeData = (tokenValues.zpDay, "ZpDay")
-
-        case .day, .undefined:
-            themeData = ([], "")
-        }
+        let tokens = tokenValues.tokens(for: theme)
+        let themeData: (tokenValues: [TokenValue], warningPrefix: String) = (tokens, theme.key)
 
         guard let themeToken = themeData.tokenValues.first(where: { $0.name == tokenName }) else {
             return fallbackColorToken
@@ -109,69 +100,83 @@ struct DefaultGradientTokensContextProvider: ColorTokensContextProvider {
         _ gradientValue: String,
         tokenName: String,
         path: [String],
-        tokenValues: TokenValues
+        tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
     ) throws -> LinearGradientToken? {
-        let dayGradient = try tokensResolver.resolveLinearGradientValue(
+        let fallbackGradient = try tokensResolver.resolveLinearGradientValue(
             gradientValue,
             tokenValues: tokenValues,
-            theme: .day
+            theme: fallbackTheme
         )
 
-        guard let dayToken = resolveThemeValue(from: dayGradient, tokenName: tokenName) else {
+        guard let fallbackToken = resolveThemeValue(from: fallbackGradient, tokenName: tokenName) else {
             return nil
         }
 
-        let nightToken = try resolveGradientToken(
-            tokenName: tokenName,
-            fallbackColorToken: dayToken,
-            tokenValues: tokenValues,
-            theme: .night
-        )
+        let gradients = try themes.map { theme in
+            guard theme != fallbackTheme else {
+                return (theme, fallbackToken)
+            }
 
-        let zpDayToken = try resolveGradientToken(
-            tokenName: tokenName,
-            fallbackColorToken: dayToken,
-            tokenValues: tokenValues,
-            theme: .zpDay
-        )
+            let gradient = try resolveGradientToken(
+                tokenName: tokenName,
+                fallbackColorToken: fallbackToken,
+                tokenValues: tokenValues,
+                theme: theme
+            )
+
+            return (theme, gradient)
+        }
 
         return LinearGradientToken(
             path: path,
             name: tokenName,
-            dayTheme: dayToken,
-            nightTheme: nightToken,
-            zpDayTheme: zpDayToken
+            themedValue: Dictionary(uniqueKeysWithValues: gradients)
         )
     }
 
     // TODO: @mi.fedorov поддержать мульти-темы
     private func extractGradientToken(
         from token: TokenValue,
-        tokenValues: TokenValues
+        tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
     ) throws -> LinearGradientToken? {
         let path = token.name.components(separatedBy: ".")
 
         guard
-            case .color(let dayValue) = token.type,
-            dayValue.contains("gradient"),
+            case .color(let fallbackTokenValue) = token.type,
+            fallbackTokenValue.contains("gradient"),
             path[0] != "color"
         else {
             return nil
         }
 
         return try createGradientToken(
-            dayValue,
+            fallbackTokenValue,
             tokenName: token.name,
             path: path,
-            tokenValues: tokenValues
+            tokenValues: tokenValues,
+            themes: themes,
+            fallbackTheme: fallbackTheme
         )
     }
 
     // MARK: - GradientTokensContextProvider
 
-    func extractTokenContext(from tokenValues: TokenValues) throws -> [String : Any] {
-        let gradient = try tokenValues.hhDay.compactMap {
-            try extractGradientToken(from: $0, tokenValues: tokenValues)
+    func extractTokenContext(
+        from tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
+    ) throws -> [String : Any] {
+        let gradient = try tokenValues.tokens(for: fallbackTheme).compactMap {
+            try extractGradientToken(
+                from: $0,
+                tokenValues: tokenValues,
+                themes: themes,
+                fallbackTheme: fallbackTheme
+            )
         }
 
         return structure(tokens: gradient, contextName: "gradients")

@@ -68,6 +68,20 @@ final class TokensCommand: AsyncExecutableCommand {
             """
     )
 
+    let themes = VariadicKey<String>(
+        "--themes",
+        description: #"""
+            An option that will be merged with template context.
+            """#
+    )
+
+    let fallbackTheme = Key<String>(
+        "--fallbackTheme",
+        description: """
+            the default theme used when the requested theme is unavailable. Must be one of the values listed in themes.
+            """
+    )
+
     let colorsTemplate = Key<String>(
         "--colors-template",
         description: """
@@ -313,6 +327,7 @@ extension TokensCommand {
             file: resolveFileConfiguration(),
             remoteRepoConfig: resolveRemoteRepoConfiguration(),
             accessToken: resolveAccessTokenConfiguration(),
+            themesConfiguration: resolveTokenThemesConfiguration(),
             templates: TokensTemplateConfiguration(
                 colors: [
                     TemplateConfiguration(
@@ -436,5 +451,19 @@ extension TokensCommand {
         }
 
         return templateOptions
+    }
+
+    private func resolveTokenThemesConfiguration() -> TokenThemesConfiguration? {
+        let themes = themes.value
+        let fallbackTheme = fallbackTheme.value
+
+        guard let fallbackTheme, !themes.isEmpty else {
+            return nil
+        }
+
+        return TokenThemesConfiguration(
+            themes: themes.map { Theme(key: $0) },
+            fallbackTheme: Theme(key: fallbackTheme)
+        )
     }
 }
