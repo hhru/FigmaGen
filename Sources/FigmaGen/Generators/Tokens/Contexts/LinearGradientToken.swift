@@ -22,5 +22,5 @@ struct LinearGradientToken: TokenProtocol, Encodable {
     let path: [String]
     let name: String
 
-    let themedValue: [Theme: GradientThemeValue]
+    let themedValue: [String: GradientThemeValue]
 }

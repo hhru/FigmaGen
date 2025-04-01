@@ -462,8 +462,8 @@ extension TokensCommand {
         }
 
         return TokenThemesConfiguration(
-            themes: themes.map { Theme(key: $0) },
-            fallbackTheme: Theme(key: fallbackTheme)
+            themes: themes.map { Theme($0) },
+            fallbackTheme: Theme(fallbackTheme)
         )
     }
 }

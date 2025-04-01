@@ -8,7 +8,7 @@ struct Theme: Codable, Hashable {
 
     let key: String
 
-    init(key: String) {
+    init(_ key: String) {
         self.key = key
     }
 
@@ -22,14 +22,9 @@ struct Theme: Codable, Hashable {
             self.key = try container.decode(String.self, forKey: .key)
         }
     }
-
-    func encode(to encoder: any Encoder) throws {
-        var container = encoder.singleValueContainer()
-        return try container.encode(key)
-    }
 }
 
 extension Theme {
-    static let light = Theme(key: "light")
-    static let dark = Theme(key: "dark")
+    static let light = Theme("light")
+    static let dark = Theme("dark")
 }

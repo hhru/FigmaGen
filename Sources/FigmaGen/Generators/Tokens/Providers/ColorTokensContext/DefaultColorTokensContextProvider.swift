@@ -73,7 +73,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
 
         let colors = try themes.map { theme in
             guard theme != fallbackTheme else {
-                return (theme, fallbackColorToken)
+                return (theme.key, fallbackColorToken)
             }
 
             let token = try resolveColorToken(
@@ -83,7 +83,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
                 theme: theme
             )
 
-            return (theme, token)
+            return (theme.key, token)
         }
 
         return ColorToken(

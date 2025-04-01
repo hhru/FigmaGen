@@ -116,7 +116,7 @@ struct DefaultGradientTokensContextProvider: ColorTokensContextProvider {
 
         let gradients = try themes.map { theme in
             guard theme != fallbackTheme else {
-                return (theme, fallbackToken)
+                return (theme.key, fallbackToken)
             }
 
             let gradient = try resolveGradientToken(
@@ -126,7 +126,7 @@ struct DefaultGradientTokensContextProvider: ColorTokensContextProvider {
                 theme: theme
             )
 
-            return (theme, gradient)
+            return (theme.key, gradient)
         }
 
         return LinearGradientToken(

@@ -16,5 +16,5 @@ struct ColorToken: TokenProtocol, Encodable {
 
     let name: String
     let path: [String]
-    let themedValue: [Theme: ColorValue]
+    let themedValue: [String: ColorValue]
 }

@@ -19,5 +19,5 @@ struct BoxShadowToken {
     // MARK: - Instance Properties
 
     let path: [String]
-    let themedValue: [Theme: ShadowValue]
+    let themedValue: [String: ShadowValue]
 }

@@ -9,8 +9,9 @@
     {% for color in item.colors %}
     /// {{ color.name }}
     ///
-    /// Day: {{ color.dayTheme.value }}
-    /// Night: {{ color.nightTheme.value }}
+    {% for theme, token in color.themedValue %}
+    /// {{ theme }}: {{ token.value }}
+    {% endfor %}
     {{ accessModifier }} let {% call propertyName color.path.last %}: {{ colorTypeName }}
     {% endfor %}
     {% for child in item.children %}

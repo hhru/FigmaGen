@@ -42,7 +42,7 @@ extension TokenValues: Codable {
                 }
                 .map { key in
                     let tokens = try themedContainer.decode([TokenValue].self, forKey: key)
-                    let theme = Theme(key: key.stringValue)
+                    let theme = Theme(key.stringValue)
                     return (theme, tokens)
                 }
         )

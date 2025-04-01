@@ -11,7 +11,7 @@
 {% macro hexColor color %}{{ color|fullHex|uppercase|replace:"#","0x" }}{% endmacro %}
 {% macro argumentsBlock item theme parentTypeName %}
 {% for color in item.colors %}
-{% call propertyName color.path.last %}: {{ colorTypeName }}(hex: {% call hexColor color[theme].value %}){% if not forloop.last %},{% endif %}
+{% call propertyName color.path.last %}: {{ colorTypeName }}(hex: {% call hexColor color.themedValue[theme].value %}){% if not forloop.last %},{% endif %}
 {% endfor %}
 {% for child in item.children %}
 {% set childTypeName %}{% if parentTypeName %}{{ parentTypeName }}.{% endif %}{% call typeName child.name %}{% endset %}
@@ -36,9 +36,9 @@ colors: {{ colorTokensTypeName }}(
 shadows: {{ boxShadowTokensTypeName }}(
 {% for boxShadow in boxShadows %}
     {% call propertyName boxShadow.path.last %}: {{ shadowTypeName }}(
-        offset: CGSize(width: {{ boxShadow[theme].x }}, height: {{ boxShadow[theme].y }}),
+        offset: CGSize(width: {{ boxShadow.themedValue[theme].x }}, height: {{ boxShadow.themedValue[theme].y }}),
         radius: {{ boxShadow[theme].blur }},
-        color: {{ colorTypeName }}(hex: {% call hexColor boxShadow[theme].color %}),
+        color: {{ colorTypeName }}(hex: {% call hexColor boxShadow.themedValue[theme].color %}),
         opacity: 1.0
     ){% if not forloop.last %},{% endif %}
 {% endfor %}

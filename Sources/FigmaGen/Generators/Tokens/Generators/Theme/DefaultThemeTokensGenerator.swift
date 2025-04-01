@@ -53,7 +53,8 @@ final class DefaultThemeTokensGenerator: ThemeTokensGenerator {
             context: [
                 "colors": colorsContext,
                 "boxShadows": boxShadowsContext,
-                "gradients": gradientsContext
+                "gradients": gradientsContext,
+                "themes": themes.map { $0.key }
             ]
         )
     }

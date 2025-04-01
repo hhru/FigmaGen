@@ -27,7 +27,7 @@ final class DefaultBoxShadowTokensContextProvider: BoxShadowTokensContextProvide
 
         let shadows = try themes.map { theme in
             guard theme != fallbackTheme else {
-                return (theme, makeTheme(value: fallbackValue))
+                return (theme.key, makeTheme(value: fallbackValue))
             }
 
             guard let nightTokenValue = tokenValues.tokens(for: theme).first(where: { $0.name == fallbackTokenValue.name }) else {
@@ -38,7 +38,7 @@ final class DefaultBoxShadowTokensContextProvider: BoxShadowTokensContextProvide
                 throw BoxShadowTokensContextProviderError(code: .valueNotFound(tokenName: fallbackTokenValue.name, theme: theme.key))
             }
 
-            return (theme, makeTheme(value: boxShadowValue))
+            return (theme.key, makeTheme(value: boxShadowValue))
         }
 
 
