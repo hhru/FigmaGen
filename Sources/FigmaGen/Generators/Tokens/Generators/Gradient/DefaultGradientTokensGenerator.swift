@@ -32,7 +32,10 @@ struct DefaultGradientTokensGenerator: GradientTokensGenerator {
         try templateRenderer.renderTemplate(
             renderParameters.template,
             to: renderParameters.destination,
-            context: ["gradients": gradientContext]
+            context: [
+                "gradients": gradientContext,
+                "themes": themes.map { $0.key }
+            ]
         )
     }
 }

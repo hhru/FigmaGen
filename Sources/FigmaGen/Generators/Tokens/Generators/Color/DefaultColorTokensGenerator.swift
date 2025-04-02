@@ -29,7 +29,10 @@ final class DefaultColorTokensGenerator: ColorTokensGenerator {
         try templateRenderer.renderTemplate(
             renderParameters.template,
             to: renderParameters.destination,
-            context: ["colors": context]
+            context: [
+                "colors": context,
+                "themes": themes.map { $0.key }
+            ]
         )
     }
 }

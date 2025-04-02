@@ -62,7 +62,7 @@ final class DefaultTemplateRenderer: TemplateRenderer {
             try filePath.write(output)
 
         case .console:
-            print(output)
+            logger.info(output)
         }
     }
 

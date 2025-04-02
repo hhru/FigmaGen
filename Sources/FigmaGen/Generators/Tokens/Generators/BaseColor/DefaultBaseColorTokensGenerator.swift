@@ -44,7 +44,10 @@ final class DefaultBaseColorTokensGenerator: BaseColorTokensGenerator {
         try templateRenderer.renderTemplate(
             renderParameters.template,
             to: renderParameters.destination,
-            context: ["colors": colors]
+            context: [
+                "colors": colors,
+                "themes": themes
+            ]
         )
     }
 }

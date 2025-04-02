@@ -75,6 +75,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     private func generateSpacingTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
         try generateTokens(
             spacingTokensGenerator,
+            tokensName: "spacings",
             renderParameters: parameters.tokens.spacingRenderParameters,
             tokenValues: tokenValues,
             themes: parameters.themes,
@@ -85,6 +86,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     private func generateThemeTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
         try generateTokens(
             themeTokensGenerator,
+            tokensName: "theme",
             renderParameters: parameters.tokens.themeRenderParameters,
             tokenValues: tokenValues,
             themes: parameters.themes,
@@ -95,6 +97,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     private func generateBoxShadowTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
         try generateTokens(
             boxShadowTokensGenerator,
+            tokensName: "box shadow",
             renderParameters: parameters.tokens.boxShadowRenderParameters,
             tokenValues: tokenValues,
             themes: parameters.themes,
@@ -105,6 +108,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     private func generateTypographyTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
         try generateTokens(
             typographyTokensGenerator,
+            tokensName: "typogrphy",
             renderParameters: parameters.tokens.typographyRenderParameters,
             tokenValues: tokenValues,
             themes: parameters.themes,
@@ -115,6 +119,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     private func generateFontFamilyTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
         try generateTokens(
             fontFamilyTokensGenerator,
+            tokensName: "font family",
             renderParameters: parameters.tokens.fontFamilyRenderParameters,
             tokenValues: tokenValues,
             themes: parameters.themes,
@@ -125,6 +130,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     private func generateBaseColorsTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
         try generateTokens(
             baseColorTokensGenerator,
+            tokensName: "base colors",
             renderParameters: parameters.tokens.baseColorRenderParameters,
             tokenValues: tokenValues,
             themes: parameters.themes,
@@ -135,6 +141,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     private func generateColorsTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
         try generateTokens(
             colorTokensGenerator,
+            tokensName: "colors",
             renderParameters: parameters.tokens.colorRenderParameters,
             tokenValues: tokenValues,
             themes: parameters.themes,
@@ -145,6 +152,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     private func generateBorderTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
         try generateTokens(
             bordersTokensGenerator,
+            tokensName: "border",
             renderParameters: parameters.tokens.bordersRenderParameters,
             tokenValues: tokenValues,
             themes: parameters.themes,
@@ -155,6 +163,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     private func generateGradientTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
         try generateTokens(
             gradientTokensGenerator,
+            tokensName: "gradients",
             renderParameters: parameters.tokens.gradientRenderParameters,
             tokenValues: tokenValues,
             themes: parameters.themes,
@@ -164,6 +173,7 @@ final class DefaultTokensGenerator: TokensGenerator {
 
     private func generateTokens(
         _ generator: BaseTokenGenerator,
+        tokensName: String,
         renderParameters: [RenderParameters]?,
         tokenValues: TokenValues,
         themes: [Theme],
@@ -171,6 +181,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     ) throws {
         if let renderParametersList = renderParameters {
             for params in renderParametersList {
+                logger.info("📦 Generating \(tokensName) tokens...", highlighted: true)
                 try generator.generate(
                     renderParameters: params,
                     tokenValues: tokenValues,

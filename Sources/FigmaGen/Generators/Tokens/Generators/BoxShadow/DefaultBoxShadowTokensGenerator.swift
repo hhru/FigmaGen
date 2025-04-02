@@ -31,7 +31,10 @@ final class DefaultBoxShadowTokensGenerator: BoxShadowTokensGenerator {
         try templateRenderer.renderTemplate(
             renderParameters.template,
             to: renderParameters.destination,
-            context: ["boxShadows": boxShadows]
+            context: [
+                "boxShadows": boxShadows,
+                "themes": themes.map { $0.key }
+            ]
         )
     }
 }
