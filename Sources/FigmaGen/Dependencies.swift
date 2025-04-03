@@ -109,7 +109,8 @@ enum Dependencies {
         StencilCollectionDropLastModificator(),
         StencilCollectionRemovingFirstModificator(),
         StencilHexToAlphaFilter(),
-        StencilFullHexModificator()
+        StencilFullHexModificator(),
+        StencilRecursiveTokenFindModicator()
     ]
 
     static let templateRenderer: TemplateRenderer = DefaultTemplateRenderer(

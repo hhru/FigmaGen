@@ -60,8 +60,8 @@ final class DefaultThemeTokensGenerator: ThemeTokensGenerator {
                 "themedGradients": gradientsContext,
                 "dictThemedColors": dictionaryValue(from: colorsContext),
                 "dictThemedGradients": dictionaryValue(from: gradientsContext),
-                "dictBoxShadows": dictionaryValue(from: boxShadowsContext),
-                "themes": themes.map { $0.name },
+                "dictThemedBoxShadows": dictionaryValue(from: boxShadowsContext),
+                "themes": themes,
                 "fallbackTheme": fallbackTheme.name
             ]
         )

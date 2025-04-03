@@ -43,7 +43,7 @@ struct DefaultGradientTokensGenerator: GradientTokensGenerator {
                 "themedGradients": gradientsContext,
                 "dictThemedGradients": dictGradientsContext,
                 "themes": themes,
-                "fallbackTheme": fallbackTheme
+                "fallbackTheme": fallbackTheme.name
             ]
         )
     }

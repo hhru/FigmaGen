@@ -117,7 +117,15 @@ struct DefaultGradientTokensContextProvider: ColorTokensContextProvider {
         let resolvedToken = try resolveGradientToken(for: token, theme: theme, values: tokenValues)
 
         guard let fallbackToken else {
-            throw DefaultGradientTokensContextProviderError.fallbackTokenNotFound(token.name)
+            logger.warning("Fallback token not found for \(token.name)", isVerbose: true)
+            return nil
+        }
+
+        if resolvedToken.isNil {
+            logger.warning(
+                "\(theme.name) value for token '\(token.name)' not found, using \(fallbackTheme.name)",
+                isVerbose: true
+            )
         }
 
         return resolvedToken ?? fallbackToken
@@ -132,7 +140,7 @@ struct DefaultGradientTokensContextProvider: ColorTokensContextProvider {
     ) throws -> [TokenThemeValue<[String: Any]>] {
         return try themes.map { theme in
             let gradients = try tokenValues
-                .tokens(for: theme)
+                .tokens(for: fallbackTheme)
                 .compactMap { token in
                     try makeGradientToken(
                         from: token,

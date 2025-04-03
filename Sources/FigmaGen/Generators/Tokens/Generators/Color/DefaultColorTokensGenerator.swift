@@ -45,7 +45,7 @@ final class DefaultColorTokensGenerator: ColorTokensGenerator {
                 "themedColors": colorsContext,
                 "dictThemedColors": dictColorsContext,
                 "themes": themes,
-                "fallbackTheme": fallbackTheme
+                "fallbackTheme": fallbackTheme.name
             ]
         )
     }

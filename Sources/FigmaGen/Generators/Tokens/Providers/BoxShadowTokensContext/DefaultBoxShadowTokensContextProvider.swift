@@ -15,7 +15,7 @@ final class DefaultBoxShadowTokensContextProvider: BoxShadowTokensContextProvide
             return nil
         }
 
-        guard case let .boxShadow(boxShadowValue) = token.type else {
+        guard case let .boxShadow(boxShadowValue) = themedToken.type else {
             return nil
         }
 
@@ -44,7 +44,15 @@ final class DefaultBoxShadowTokensContextProvider: BoxShadowTokensContextProvide
         let resolvedToken = try resolveBoxShadowToken(token: token, values: tokenValues, theme: theme)
 
         guard let fallbackToken else {
-            throw BoxShadowTokensContextProviderError(code: .valueNotFound(tokenName: token.name, theme: theme.name))
+            logger.warning("Fallback token not found for \(token.name)", isVerbose: true)
+            return nil
+        }
+
+        if resolvedToken.isNil {
+            logger.warning(
+                "\(theme.name) value for token '\(token.name)' not found, using \(fallbackTheme.name)",
+                isVerbose: true
+            )
         }
 
         return resolvedToken ?? fallbackToken

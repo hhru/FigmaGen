@@ -73,15 +73,15 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
         let resolvedToken = try resolveColorToken(token: token, theme: theme, tokenValues: values)
 
         guard let fallbackToken else {
-            throw DefaultColorTokensContextProviderError.fallbackTokenNotFound(token.name)
+            logger.warning("Fallback token not found for \(token.name)", isVerbose: true)
+            return nil
         }
 
-        guard let resolvedToken else {
+        if resolvedToken.isNil {
             fallbackWarning(warningPrefix: theme.name, tokenName: token.name, fallbackTheme: fallbackTheme.name)
-            return fallbackToken
         }
 
-        return resolvedToken
+        return resolvedToken ?? fallbackToken
     }
 
     // MARK: -
@@ -93,7 +93,7 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
     ) throws -> [TokenThemeValue<[String: Any]>] {
         return try themes.map { theme in
             let colors = try tokenValues
-                .tokens(for: theme)
+                .tokens(for: fallbackTheme)
                 .compactMap { token in
                     try makeColorToken(
                         using: token,

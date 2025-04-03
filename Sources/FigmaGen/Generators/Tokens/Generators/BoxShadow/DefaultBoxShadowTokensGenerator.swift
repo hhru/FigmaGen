@@ -35,9 +35,9 @@ final class DefaultBoxShadowTokensGenerator: BoxShadowTokensGenerator {
             to: renderParameters.destination,
             context: [
                 "themedBoxShadows": boxShadows,
-                "dictBoxShadows": dictBoxShadows,
-                "themes": themes.map { $0.name },
-                "fallbackTheme": fallbackTheme
+                "dictThemedBoxShadows": dictBoxShadows,
+                "themes": themes,
+                "fallbackTheme": fallbackTheme.name
             ]
         )
     }
