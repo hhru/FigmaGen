@@ -23,18 +23,27 @@ struct DefaultGradientTokensGenerator: GradientTokensGenerator {
         themes: [Theme],
         fallbackTheme: Theme
     ) throws {
-        let gradientContext = try provider.extractTokenContext(
+        let gradientsContext = try provider.extractTokenContext(
             from: tokenValues,
             themes: themes,
             fallbackTheme: fallbackTheme
+        )
+
+        let dictGradientsContext = Dictionary(
+            uniqueKeysWithValues: gradientsContext
+                .map {
+                    ($0.themeName, $0.value)
+                }
         )
 
         try templateRenderer.renderTemplate(
             renderParameters.template,
             to: renderParameters.destination,
             context: [
-                "gradients": gradientContext,
-                "themes": themes.map { $0.key }
+                "themedGradients": gradientsContext,
+                "dictThemedGradients": dictGradientsContext,
+                "themes": themes,
+                "fallbackTheme": fallbackTheme
             ]
         )
     }

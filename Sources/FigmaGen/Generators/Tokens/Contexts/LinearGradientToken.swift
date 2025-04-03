@@ -13,14 +13,9 @@ struct LinearGradientToken: TokenProtocol, Encodable {
         let y: CGFloat
     }
 
-    struct GradientThemeValue: Encodable {
-        let stops: [ColorStop]
-        let startPoint: Point
-        let endPoint: Point
-    }
-
     let path: [String]
     let name: String
-
-    let themedValue: [String: GradientThemeValue]
+    let stops: [ColorStop]
+    let startPoint: Point
+    let endPoint: Point
 }

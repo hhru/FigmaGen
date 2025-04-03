@@ -2,22 +2,14 @@ import Foundation
 
 struct BoxShadowToken {
 
-    // MARK: - Nested Types
-
-    struct ShadowValue {
-
-        // MARK: - Instance Properties
-
-        let color: String
-        let type: String
-        let x: String
-        let y: String
-        let blur: String
-        let spread: String
-    }
-
     // MARK: - Instance Properties
 
     let path: [String]
-    let themedValue: [String: ShadowValue]
+
+    let color: String
+    let type: String
+    let x: String
+    let y: String
+    let blur: String
+    let spread: String
 }

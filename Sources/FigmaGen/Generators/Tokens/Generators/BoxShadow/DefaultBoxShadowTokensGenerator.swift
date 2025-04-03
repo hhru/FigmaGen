@@ -28,12 +28,16 @@ final class DefaultBoxShadowTokensGenerator: BoxShadowTokensGenerator {
             fallbackTheme: fallbackTheme
         )
 
+        let dictBoxShadows = Dictionary(uniqueKeysWithValues: boxShadows.map { ($0.themeName, $0.value) })
+
         try templateRenderer.renderTemplate(
             renderParameters.template,
             to: renderParameters.destination,
             context: [
-                "boxShadows": boxShadows,
-                "themes": themes.map { $0.key }
+                "themedBoxShadows": boxShadows,
+                "dictBoxShadows": dictBoxShadows,
+                "themes": themes.map { $0.name },
+                "fallbackTheme": fallbackTheme
             ]
         )
     }

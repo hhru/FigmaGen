@@ -19,19 +19,33 @@ final class DefaultColorTokensGenerator: ColorTokensGenerator {
 
     // MARK: - Instance Methods
 
-    func generate(renderParameters: RenderParameters, tokenValues: TokenValues, themes: [Theme], fallbackTheme: Theme) throws {
-        let context = try colorTokensContextProvider.extractTokenContext(
+    func generate(
+        renderParameters: RenderParameters,
+        tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
+    ) throws {
+        let colorsContext = try colorTokensContextProvider.extractTokenContext(
             from: tokenValues,
             themes: themes,
             fallbackTheme: fallbackTheme
+        )
+
+        let dictColorsContext = Dictionary(
+            uniqueKeysWithValues: colorsContext
+                .map {
+                    ($0.themeName, $0.value)
+                }
         )
 
         try templateRenderer.renderTemplate(
             renderParameters.template,
             to: renderParameters.destination,
             context: [
-                "colors": context,
-                "themes": themes.map { $0.key }
+                "themedColors": colorsContext,
+                "dictThemedColors": dictColorsContext,
+                "themes": themes,
+                "fallbackTheme": fallbackTheme
             ]
         )
     }

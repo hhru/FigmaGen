@@ -8,5 +8,5 @@ protocol BoxShadowTokensContextProvider {
         from tokenValues: TokenValues,
         themes: [Theme],
         fallbackTheme: Theme
-    ) throws -> [BoxShadowToken]
+    ) throws -> [TokenThemeValue<[BoxShadowToken]>]
 }

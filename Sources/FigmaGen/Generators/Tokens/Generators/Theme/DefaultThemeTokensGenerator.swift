@@ -25,6 +25,10 @@ final class DefaultThemeTokensGenerator: ThemeTokensGenerator {
 
     // MARK: - Instance Methods
 
+    func dictionaryValue<T>(from tokens: [TokenThemeValue<T>]) -> [String: T] {
+        Dictionary(uniqueKeysWithValues: tokens.map { ($0.themeName, $0.value) })
+    }
+
     func generate(
         renderParameters: RenderParameters,
         tokenValues: TokenValues,
@@ -51,10 +55,14 @@ final class DefaultThemeTokensGenerator: ThemeTokensGenerator {
             renderParameters.template,
             to: renderParameters.destination,
             context: [
-                "colors": colorsContext,
-                "boxShadows": boxShadowsContext,
-                "gradients": gradientsContext,
-                "themes": themes.map { $0.key }
+                "themedColors": colorsContext,
+                "themedBoxShadows": boxShadowsContext,
+                "themedGradients": gradientsContext,
+                "dictThemedColors": dictionaryValue(from: colorsContext),
+                "dictThemedGradients": dictionaryValue(from: gradientsContext),
+                "dictBoxShadows": dictionaryValue(from: boxShadowsContext),
+                "themes": themes.map { $0.name },
+                "fallbackTheme": fallbackTheme.name
             ]
         )
     }

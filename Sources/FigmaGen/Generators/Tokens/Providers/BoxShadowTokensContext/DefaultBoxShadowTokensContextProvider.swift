@@ -4,48 +4,50 @@ final class DefaultBoxShadowTokensContextProvider: BoxShadowTokensContextProvide
 
     // MARK: - Instance Methods
 
-    private func makeTheme(value: TokenBoxShadowValue) -> BoxShadowToken.ShadowValue {
-        BoxShadowToken.ShadowValue(
-            color: value.color,
-            type: value.type,
-            x: value.x,
-            y: value.y,
-            blur: value.blur,
-            spread: value.spread
+    private func resolveBoxShadowToken(
+        token: TokenValue,
+        values: TokenValues,
+        theme: Theme
+    ) throws -> BoxShadowToken? {
+        let tokens = values.tokens(for: theme)
+
+        guard let themedToken = tokens.first(where: { $0.name == token.name }) else {
+            return nil
+        }
+
+        guard case let .boxShadow(boxShadowValue) = token.type else {
+            return nil
+        }
+
+        return BoxShadowToken(
+            path: token.name.components(separatedBy: "."),
+            color: boxShadowValue.color,
+            type: boxShadowValue.type,
+            x: boxShadowValue.x,
+            y: boxShadowValue.y,
+            blur: boxShadowValue.blur,
+            spread: boxShadowValue.spread
         )
     }
 
     private func makeBoxShadowToken(
-        from fallbackTokenValue: TokenValue,
+        from token: TokenValue,
         tokenValues: TokenValues,
-        themes: [Theme],
+        theme: Theme,
         fallbackTheme: Theme
     ) throws -> BoxShadowToken? {
-        guard case let .boxShadow(fallbackValue) = fallbackTokenValue.type else {
+        guard case .boxShadow(_) = token.type else {
             return nil
         }
 
-        let shadows = try themes.map { theme in
-            guard theme != fallbackTheme else {
-                return (theme.key, makeTheme(value: fallbackValue))
-            }
+        let fallbackToken = try resolveBoxShadowToken(token: token, values: tokenValues, theme: fallbackTheme)
+        let resolvedToken = try resolveBoxShadowToken(token: token, values: tokenValues, theme: theme)
 
-            guard let nightTokenValue = tokenValues.tokens(for: theme).first(where: { $0.name == fallbackTokenValue.name }) else {
-                throw BoxShadowTokensContextProviderError(code: .valueNotFound(tokenName: fallbackTokenValue.name, theme: theme.key))
-            }
-
-            guard case let .boxShadow(boxShadowValue) = nightTokenValue.type else {
-                throw BoxShadowTokensContextProviderError(code: .valueNotFound(tokenName: fallbackTokenValue.name, theme: theme.key))
-            }
-
-            return (theme.key, makeTheme(value: boxShadowValue))
+        guard let fallbackToken else {
+            throw BoxShadowTokensContextProviderError(code: .valueNotFound(tokenName: token.name, theme: theme.name))
         }
 
-
-        return BoxShadowToken(
-            path: fallbackTokenValue.name.components(separatedBy: "."),
-            themedValue: Dictionary(uniqueKeysWithValues: shadows)
-        )
+        return resolvedToken ?? fallbackToken
     }
 
     // MARK: -
@@ -54,16 +56,15 @@ final class DefaultBoxShadowTokensContextProvider: BoxShadowTokensContextProvide
         from tokenValues: TokenValues,
         themes: [Theme],
         fallbackTheme: Theme
-    ) throws -> [BoxShadowToken] {
-        try tokenValues.tokens(for: fallbackTheme)
-            .compactMap {
-                try makeBoxShadowToken(
-                    from: $0,
-                    tokenValues: tokenValues,
-                    themes: themes,
-                    fallbackTheme: fallbackTheme
-                )
-            }
-            .sorted { $0.path.joined() < $1.path.joined() }
+    ) throws -> [TokenThemeValue<[BoxShadowToken]>] {
+        return try themes.map { theme in
+            let shadows = try tokenValues.tokens(for: fallbackTheme)
+                .compactMap {
+                    try makeBoxShadowToken(from: $0, tokenValues: tokenValues, theme: theme, fallbackTheme: fallbackTheme)
+                }
+                .sorted { $0.path.joined() < $1.path.joined() }
+
+            return TokenThemeValue(theme: theme.name, value: shadows)
+        }
     }
 }

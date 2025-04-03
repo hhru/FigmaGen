@@ -8,5 +8,5 @@ protocol ColorTokensContextProvider {
         from tokenValues: TokenValues,
         themes: [Theme],
         fallbackTheme: Theme
-    ) throws -> [String: Any]
+    ) throws -> [TokenThemeValue<[String: Any]>]
 }
