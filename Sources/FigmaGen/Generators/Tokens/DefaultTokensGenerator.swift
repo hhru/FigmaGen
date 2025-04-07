@@ -164,7 +164,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateTokens(
             gradientTokensGenerator,
             tokensName: "gradients",
-            renderParameters: parameters.tokens.gradientRenderParameters,
+            renderParameters: parameters.tokens.gradientsRenderParameters,
             tokenValues: tokenValues,
             themes: parameters.themes,
             fallbackTheme: parameters.fallbackTheme

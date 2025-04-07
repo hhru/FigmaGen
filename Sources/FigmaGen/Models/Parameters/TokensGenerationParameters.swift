@@ -16,7 +16,7 @@ struct TokensGenerationParameters {
         let themeRenderParameters: [RenderParameters]?
         let spacingRenderParameters: [RenderParameters]?
         let bordersRenderParameters: [RenderParameters]?
-        let gradientRenderParameters: [RenderParameters]?
+        let gradientsRenderParameters: [RenderParameters]?
     }
 
     // MARK: - Instance Properties

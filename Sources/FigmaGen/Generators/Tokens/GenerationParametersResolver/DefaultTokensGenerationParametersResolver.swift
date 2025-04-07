@@ -98,7 +98,7 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
         )
 
         let gradientRenderParameters = renderParametersResolver.resolveRenderParameters(
-            templates: configuration.templates?.gradient,
+            templates: configuration.templates?.gradients,
             defaultTemplateType: .native(name: "GradientTokens")
         )
 
@@ -116,7 +116,7 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
                 themeRenderParameters: themeRenderParameters,
                 spacingRenderParameters: spacingRenderParameters,
                 bordersRenderParameters: borderRenderParameters,
-                gradientRenderParameters: gradientRenderParameters
+                gradientsRenderParameters: gradientRenderParameters
             )
         )
     }

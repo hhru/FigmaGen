@@ -34,12 +34,12 @@ struct DefaultGradientTokensContextProvider: ColorTokensContextProvider {
         }
 
         let endPoint = CGPoint(
-            x: round((0.5 + t * ucos) * 10) / 10,
-            y: round((0.5 + t * usin) * 10) / 10
+            x: round((0.5 + t * ucos) * 1000) / 1000,
+            y: round((0.5 + t * usin) * 1000) / 1000
         )
         let startPoint = CGPoint(
-            x: round((0.5 - t * ucos) * 10) / 10,
-            y: round((0.5 - t * usin) * 10) / 10
+            x: round((0.5 - t * ucos) * 1000) / 1000,
+            y: round((0.5 - t * usin) * 1000) / 1000
         )
 
         return (start: startPoint, end: endPoint)
@@ -108,7 +108,7 @@ struct DefaultGradientTokensContextProvider: ColorTokensContextProvider {
         guard
             case .color(let fallbackTokenValue) = token.type,
             fallbackTokenValue.contains("gradient"),
-            path[0] != "color"
+            path.first != "color"
         else {
             return nil
         }

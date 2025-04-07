@@ -70,9 +70,9 @@ final class TokensCommand: AsyncExecutableCommand {
 
     let themes = VariadicKey<String>(
         "--themes",
-        description: #"""
+        description: """
             An option that will be merged with template context.
-            """#
+            """
     )
 
     let fallbackTheme = Key<String>(
@@ -385,7 +385,7 @@ extension TokensCommand {
                         destination: bordersDestination.value
                     )
                 ],
-                gradient: [
+                gradients: [
                     TemplateConfiguration(
                         template: gradientTemplate.value,
                         templateOptions: resolveTemplateOptions(gradientTemplateOptions.value),
