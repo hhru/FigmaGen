@@ -20,15 +20,13 @@ final class TokensResolverTests: XCTestCase {
             semantic: [],
             colors: [],
             typography: [],
-            hhDay: [],
-            hhNight: [],
-            zpDay: []
+            themedTokens: [:]
         )
 
         let value = "{core.space.1-x} + {core.space.1-x} / 2"
         let expectedValue = "6"
 
-        let actualValue = try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: .day)
+        let actualValue = try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: .light)
 
         XCTAssertEqual(actualValue, expectedValue)
     }
@@ -40,11 +38,11 @@ final class TokensResolverTests: XCTestCase {
         let pixelValue = "0px"
         let colorValue = "#ffffff"
 
-        let actualNumberValue = try tokensResolver.resolveValue(numberValue, tokenValues: .empty, theme: .day)
-        let actualPercentValue = try tokensResolver.resolveValue(percentValue, tokenValues: .empty, theme: .day)
-        let actualTextValue = try tokensResolver.resolveValue(textValue, tokenValues: .empty, theme: .day)
-        let actualPixelValue = try tokensResolver.resolveValue(pixelValue, tokenValues: .empty, theme: .day)
-        let actualColorValue = try tokensResolver.resolveValue(colorValue, tokenValues: .empty, theme: .day)
+        let actualNumberValue = try tokensResolver.resolveValue(numberValue, tokenValues: .empty, theme: .light)
+        let actualPercentValue = try tokensResolver.resolveValue(percentValue, tokenValues: .empty, theme: .light)
+        let actualTextValue = try tokensResolver.resolveValue(textValue, tokenValues: .empty, theme: .light)
+        let actualPixelValue = try tokensResolver.resolveValue(pixelValue, tokenValues: .empty, theme: .light)
+        let actualColorValue = try tokensResolver.resolveValue(colorValue, tokenValues: .empty, theme: .light)
 
         XCTAssertEqual(actualNumberValue, numberValue)
         XCTAssertEqual(actualPercentValue, percentValue)
@@ -65,15 +63,13 @@ final class TokensResolverTests: XCTestCase {
                 TokenValue(type: .core(value: "#ffffff"), name: "color.base.white")
             ],
             typography: [],
-            hhDay: [],
-            hhNight: [],
-            zpDay: []
+            themedTokens: [:]
         )
 
         let value = "rgba({color.base.white}, {semantic.opacity.disabled})"
         let expectedColor = Color(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.48)
 
-        let actualColor = try tokensResolver.resolveRGBAColorValue(value, tokenValues: tokenValues, theme: .day)
+        let actualColor = try tokensResolver.resolveRGBAColorValue(value, tokenValues: tokenValues, theme: .light)
 
         XCTAssertEqual(actualColor, expectedColor)
     }
@@ -82,7 +78,7 @@ final class TokensResolverTests: XCTestCase {
         let value = "rgba(#FFFFFF, 48%)"
         let expectedColor = Color(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.48)
 
-        let actualColor = try tokensResolver.resolveRGBAColorValue(value, tokenValues: .empty, theme: .day)
+        let actualColor = try tokensResolver.resolveRGBAColorValue(value, tokenValues: .empty, theme: .light)
 
         XCTAssertEqual(actualColor, expectedColor)
     }
@@ -99,9 +95,7 @@ final class TokensResolverTests: XCTestCase {
                 TokenValue(type: .color(value: "#d64030"), name: "color.base.red.50")
             ],
             typography: [],
-            hhDay: [],
-            hhNight: [],
-            zpDay: []
+            themedTokens: [:]
         )
 
         let firstColor = "rgba({color.base.red.50}, {semantic.opacity.transparent})"
@@ -135,7 +129,7 @@ final class TokensResolverTests: XCTestCase {
         let actualLinearGradient = try tokensResolver.resolveLinearGradientValue(
             value,
             tokenValues: tokenValues,
-            theme: .day
+            theme: .light
         )
 
         XCTAssertEqual(actualLinearGradient, expectedLinearGradient)
@@ -171,7 +165,7 @@ final class TokensResolverTests: XCTestCase {
         let actualLinearGradient = try tokensResolver.resolveLinearGradientValue(
             value,
             tokenValues: .empty,
-            theme: .day
+            theme: .light
         )
 
         XCTAssertEqual(actualLinearGradient, expectedLinearGradient)
@@ -190,9 +184,7 @@ final class TokensResolverTests: XCTestCase {
                 TokenValue(type: .color(value: "#111"), name: "color.base.gray.5")
             ],
             typography: [],
-            hhDay: [],
-            hhNight: [],
-            zpDay: []
+            themedTokens: [:]
         )
 
         let value1 = "rgba({color.base.white}, {semantic.opacity.disabled})"
@@ -201,8 +193,8 @@ final class TokensResolverTests: XCTestCase {
         let value2 = "rgba( {color.base.gray.5} , {semantic.opacity.disabled})"
         let expectedHexColor2 = "#1111117A"
 
-        let actualHexColor1 = try tokensResolver.resolveHexColorValue(value1, tokenValues: tokenValues, theme: .day)
-        let actualHexColor2 = try tokensResolver.resolveHexColorValue(value2, tokenValues: tokenValues, theme: .day)
+        let actualHexColor1 = try tokensResolver.resolveHexColorValue(value1, tokenValues: tokenValues, theme: .light)
+        let actualHexColor2 = try tokensResolver.resolveHexColorValue(value2, tokenValues: tokenValues, theme: .light)
 
         XCTAssertEqual(actualHexColor1, expectedHexColor1)
         XCTAssertEqual(actualHexColor2, expectedHexColor2)
@@ -212,7 +204,7 @@ final class TokensResolverTests: XCTestCase {
         let value = "rgba(#FFFFFF, 48%)"
         let expectedHexColor = "#FFFFFF7A"
 
-        let actualHexColor = try tokensResolver.resolveHexColorValue(value, tokenValues: .empty, theme: .day)
+        let actualHexColor = try tokensResolver.resolveHexColorValue(value, tokenValues: .empty, theme: .light)
 
         XCTAssertEqual(actualHexColor, expectedHexColor)
     }
@@ -225,18 +217,18 @@ final class TokensResolverTests: XCTestCase {
                 TokenValue(type: .color(value: "#000000"), name: "color.base.black")
             ],
             typography: [],
-            hhDay: [],
-            hhNight: [
-                TokenValue(type: .color(value: "{color.base.black}"), name: "color.background.primary"),
-                TokenValue(type: .color(value: "{color.background.primary}"), name: "color.background.primary.nested")
-            ],
-            zpDay: []
+            themedTokens: [
+                .dark: [
+                    TokenValue(type: .color(value: "{color.base.black}"), name: "color.background.primary"),
+                    TokenValue(type: .color(value: "{color.background.primary}"), name: "color.background.primary.nested")
+                ]
+            ]
         )
 
         let value = "{color.background.primary.nested}"
         let expectedBaseReference = "{color.base.black}"
 
-        let actualBaseReference = try tokensResolver.resolveBaseReference(value, tokenValues: tokenValues.hhNight)
+        let actualBaseReference = try tokensResolver.resolveBaseReference(value, tokenValues: tokenValues.tokens(for: .dark))
 
         XCTAssertEqual(actualBaseReference, expectedBaseReference)
     }
@@ -253,18 +245,18 @@ final class TokensResolverTests: XCTestCase {
                 TokenValue(type: .color(value: "#000000"), name: "color.base.black")
             ],
             typography: [],
-            hhDay: [],
-            hhNight: [
-                TokenValue(type: .color(value: "{color.base.black}"), name: "color.background.primary"),
-                TokenValue(type: .color(value: "{color.background.primary}"), name: "color.background.primary.nested")
-            ],
-            zpDay: []
+            themedTokens: [
+                .dark: [
+                    TokenValue(type: .color(value: "{color.base.black}"), name: "color.background.primary"),
+                    TokenValue(type: .color(value: "{color.background.primary}"), name: "color.background.primary.nested")
+                ]
+            ]
         )
 
         let value = "rgba( {color.background.primary.nested}, {semantic.opacity.disabled})"
         let expectedBaseReference = "rgba( {color.base.black}, {semantic.opacity.disabled})"
 
-        let actualBaseReference = try tokensResolver.resolveBaseReference(value, tokenValues: tokenValues.hhNight)
+        let actualBaseReference = try tokensResolver.resolveBaseReference(value, tokenValues: tokenValues.tokens(for: .dark))
 
         XCTAssertEqual(actualBaseReference, expectedBaseReference)
     }
@@ -279,9 +271,7 @@ extension TokenValues {
         semantic: [],
         colors: [],
         typography: [],
-        hhDay: [],
-        hhNight: [],
-        zpDay: []
+        themedTokens: [:]
     )
 }
 #endif
