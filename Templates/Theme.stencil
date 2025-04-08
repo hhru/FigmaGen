@@ -11,11 +11,7 @@
 {% macro hexColor color %}{{ color|fullHex|uppercase|replace:"#","0x" }}{% endmacro %}
 {% macro argumentsBlock item theme parentTypeName %}
 {% for color in item.colors %}
-{% if color.themedValue[theme] %}
-{% call propertyName color.path.last %}: {{ colorTypeName }}(hex: {% call hexColor color.themedValue[theme].value %}){% if not forloop.last %},{% endif %}
-{% else %}
-    {% continue %}
-{% endif %}
+{% call propertyName color.path.last %}: {{ colorTypeName }}(hex: {% call hexColor color.value %}){% if not forloop.last %},{% endif %}
 {% endfor %}
 {% for child in item.children %}
 {% set childTypeName %}{% if parentTypeName %}{{ parentTypeName }}.{% endif %}{% call typeName child.name %}{% endset %}
@@ -39,16 +35,12 @@ colors: {{ colorTokensTypeName }}(
 {% if boxShadows %}
 shadows: {{ boxShadowTokensTypeName }}(
 {% for boxShadow in boxShadows %}
-    {% if boxShadow.themedValue[theme] %}
     {% call propertyName boxShadow.path.last %}: {{ shadowTypeName }}(
-        offset: CGSize(width: {{ boxShadow.themedValue[theme].x }}, height: {{ boxShadow.themedValue[theme].y }}),
-        radius: {{ boxShadow[theme].blur }},
-        color: {{ colorTypeName }}(hex: {% call hexColor boxShadow.themedValue[theme].color %}),
+        offset: CGSize(width: {{ boxShadow.x }}, height: {{ boxShadow.y }}),
+        radius: {{ boxShadow.blur }},
+        color: {{ colorTypeName }}(hex: {% call hexColor boxShadow.color %}),
         opacity: 1.0
     ){% if not forloop.last %},{% endif %}
-    {% else %}
-        {% continue %}
-    {% endif %}
 {% endfor %}
 )
 {% endif %}
@@ -62,27 +54,27 @@ import AppKit
 
 {{ accessModifier }} struct {{ themeTypeName }} {
 
-    {% if colors %}
+    {% if dictThemedColors[fallbackTheme] %}
     {{ accessModifier }} let colors: {{ colorTokensTypeName }}
     {% endif %}
-    {% if boxShadows %}
+    {% if dictThemedBoxShadows[fallbackTheme] %}
     {{ accessModifier }} let shadows: {{ boxShadowTokensTypeName }}
     {% endif %}
     {{ accessModifier }} let typographies: {{ typographyTokensTypeName }}
 
     init(
-        {% if colors %}
+        {% if dictThemedColors[fallbackTheme] %}
         colors: {{ colorTokensTypeName }},
         {% endif %}
-        {% if boxShadows %}
+        {% if dictThemedBoxShadows[fallbackTheme] %}
         shadows: {{ boxShadowTokensTypeName }},
         {% endif %}
         typographies: {{ typographyTokensTypeName }} = {{ typographyTokensTypeName }}()
     ) {
-        {% if colors %}
+        {% if dictThemedColors[fallbackTheme] %}
         self.colors = colors
         {% endif %}
-        {% if boxShadows %}
+        {% if dictThemedBoxShadows[fallbackTheme] %}
         self.shadows = shadows
         {% endif %}
         self.typographies = typographies
@@ -92,17 +84,17 @@ import AppKit
 extension {{ themeTypeName }} {
 
     {% for theme in themes %}
-    {% set themePropertyName %}{{ theme||swiftIdentifier:"pretty"|lowerFirstWord }}{% endset %}
+    {% set themePropertyName %}{{ theme.name||swiftIdentifier:"pretty"|lowerFirstWord }}{% endset %}
     {{ accessModifier }} static let {{ themePropertyName }} = Self(
         {% filter indent:8 %}
-        {% call colorsArgumentsBlock colors theme %}
-        {% call shadowsArgumentsBlock boxShadows theme %}
+        {% call colorsArgumentsBlock dictThemedColors[theme.name] theme.name %}
+        {% call shadowsArgumentsBlock dictThemedBoxShadows[theme.name] theme.name %}
         {% endfilter %}
     )
     {% endfor %}
 }
 
-{% if colors or boxShadows %}
+{% if dictThemedColors or dictThemedBoxShadows %}
 private extension {{ colorTypeName }} {
 
     convenience init(hex: UInt32) {

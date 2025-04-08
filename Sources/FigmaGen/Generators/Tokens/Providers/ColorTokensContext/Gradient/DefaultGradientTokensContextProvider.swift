@@ -24,7 +24,7 @@ struct DefaultGradientTokensContextProvider: ColorTokensContextProvider {
         let ty = usin == 0 ? nil : (yedge - 0.5) / usin
 
         let t = [tx, ty]
-            .compactMap(\.self)
+            .compactMap { $0 }
             .filter { $0 > 0 }
             .min()
 

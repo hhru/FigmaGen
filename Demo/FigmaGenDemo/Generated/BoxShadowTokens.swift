@@ -8,25 +8,34 @@ import AppKit
 
 public struct BoxShadowTokens {
 
-    /// level-1
-    ///
-    /// Offset: day – x 0; y 4 / night – x 0; y 4
-    /// Radius: day – 12 / night – 12
-    /// Color: day – #7090b029 / night – #7090b029
+    /// - hh-day:
+    /// Offset: x 0; y 4
+    /// Radius: 12
+    /// Color: #7090b029
+    /// - hh-night:
+    /// Offset: x 0; y 4
+    /// Radius: 12
+    /// Color: #7090b029
     public let level1: ShadowToken
 
-    /// level-2
-    ///
-    /// Offset: day – x 0; y 8 / night – x 0; y 8
-    /// Radius: day – 16 / night – 16
-    /// Color: day – #7090b03d / night – #7090b03d
+    /// - hh-day:
+    /// Offset: x 0; y 8
+    /// Radius: 16
+    /// Color: #7090b03d
+    /// - hh-night:
+    /// Offset: x 0; y 8
+    /// Radius: 16
+    /// Color: #7090b03d
     public let level2: ShadowToken
 
-    /// level-3
-    ///
-    /// Offset: day – x 0; y 12 / night – x 0; y 12
-    /// Radius: day – 24 / night – 24
-    /// Color: day – #7090b052 / night – #7090b052
+    /// - hh-day:
+    /// Offset: x 0; y 12
+    /// Radius: 24
+    /// Color: #7090b052
+    /// - hh-night:
+    /// Offset: x 0; y 12
+    /// Radius: 24
+    /// Color: #7090b052
     public let level3: ShadowToken
 }
 

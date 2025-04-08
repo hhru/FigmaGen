@@ -11,18 +11,18 @@ public struct ColorTokens {
     public struct Accent {
         /// accent.bg
         ///
-        /// Day: #c3dafe
-        /// Night: #434190
+        /// hh-day: #c3dafe
+        /// hh-night: #434190
         public let bg: UIColor
         /// accent.default
         ///
-        /// Day: #7f9cf5
-        /// Night: #5a67d8
+        /// hh-day: #7f9cf5
+        /// hh-night: #5a67d8
         public let `default`: UIColor
         /// accent.onAccent
         ///
-        /// Day: #ffffff
-        /// Night: #ffffff
+        /// hh-day: #ffffff
+        /// hh-night: #ffffff
         public let onAccent: UIColor
     }
 
@@ -30,18 +30,18 @@ public struct ColorTokens {
     public struct Bg {
         /// bg.default
         ///
-        /// Day: #ffffff
-        /// Night: #1a202c
+        /// hh-day: #ffffff
+        /// hh-night: #1a202c
         public let `default`: UIColor
         /// bg.muted
         ///
-        /// Day: #f7fafc
-        /// Night: #4a5568
+        /// hh-day: #f7fafc
+        /// hh-night: #4a5568
         public let muted: UIColor
         /// bg.subtle
         ///
-        /// Day: #edf2f7
-        /// Night: #718096
+        /// hh-day: #edf2f7
+        /// hh-night: #718096
         public let subtle: UIColor
     }
 
@@ -49,18 +49,18 @@ public struct ColorTokens {
     public struct Fg {
         /// fg.default
         ///
-        /// Day: #000000
-        /// Night: #ffffff
+        /// hh-day: #000000
+        /// hh-night: #ffffff
         public let `default`: UIColor
         /// fg.muted
         ///
-        /// Day: #4a5568
-        /// Night: #e2e8f0
+        /// hh-day: #4a5568
+        /// hh-night: #e2e8f0
         public let muted: UIColor
         /// fg.subtle
         ///
-        /// Day: #a0aec0
-        /// Night: #a0aec0
+        /// hh-day: #a0aec0
+        /// hh-night: #a0aec0
         public let subtle: UIColor
     }
 
@@ -68,8 +68,8 @@ public struct ColorTokens {
     public struct Shadows {
         /// shadows.default
         ///
-        /// Day: #1a202c
-        /// Night: #00000000
+        /// hh-day: #1a202c
+        /// hh-night: #00000000
         public let `default`: UIColor
     }
 
