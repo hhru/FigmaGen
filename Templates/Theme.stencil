@@ -11,7 +11,11 @@
 {% macro hexColor color %}{{ color|fullHex|uppercase|replace:"#","0x" }}{% endmacro %}
 {% macro argumentsBlock item theme parentTypeName %}
 {% for color in item.colors %}
-{% call propertyName color.path.last %}: {{ colorTypeName }}(hex: {% call hexColor color[theme].value %}){% if not forloop.last %},{% endif %}
+{% if color.themedValue[theme] %}
+{% call propertyName color.path.last %}: {{ colorTypeName }}(hex: {% call hexColor color.themedValue[theme].value %}){% if not forloop.last %},{% endif %}
+{% else %}
+    {% continue %}
+{% endif %}
 {% endfor %}
 {% for child in item.children %}
 {% set childTypeName %}{% if parentTypeName %}{{ parentTypeName }}.{% endif %}{% call typeName child.name %}{% endset %}
@@ -35,12 +39,16 @@ colors: {{ colorTokensTypeName }}(
 {% if boxShadows %}
 shadows: {{ boxShadowTokensTypeName }}(
 {% for boxShadow in boxShadows %}
+    {% if boxShadow.themedValue[theme] %}
     {% call propertyName boxShadow.path.last %}: {{ shadowTypeName }}(
-        offset: CGSize(width: {{ boxShadow[theme].x }}, height: {{ boxShadow[theme].y }}),
+        offset: CGSize(width: {{ boxShadow.themedValue[theme].x }}, height: {{ boxShadow.themedValue[theme].y }}),
         radius: {{ boxShadow[theme].blur }},
-        color: {{ colorTypeName }}(hex: {% call hexColor boxShadow[theme].color %}),
+        color: {{ colorTypeName }}(hex: {% call hexColor boxShadow.themedValue[theme].color %}),
         opacity: 1.0
     ){% if not forloop.last %},{% endif %}
+    {% else %}
+        {% continue %}
+    {% endif %}
 {% endfor %}
 )
 {% endif %}
@@ -83,19 +91,15 @@ import AppKit
 
 extension {{ themeTypeName }} {
 
-    {{ accessModifier }} static let defaultLight = Self(
+    {% for theme in themes %}
+    {% set themePropertyName %}{{ theme||swiftIdentifier:"pretty"|lowerFirstWord }}{% endset %}
+    {{ accessModifier }} static let {{ themePropertyName }} = Self(
         {% filter indent:8 %}
-        {% call colorsArgumentsBlock colors "dayTheme" %}
-        {% call shadowsArgumentsBlock boxShadows "dayTheme" %}
+        {% call colorsArgumentsBlock colors theme %}
+        {% call shadowsArgumentsBlock boxShadows theme %}
         {% endfilter %}
     )
-
-    {{ accessModifier }} static let defaultDark = Self(
-        {% filter indent:8 %}
-        {% call colorsArgumentsBlock colors "nightTheme" %}
-        {% call shadowsArgumentsBlock boxShadows "nightTheme" %}
-        {% endfilter %}
-    )
+    {% endfor %}
 }
 
 {% if colors or boxShadows %}

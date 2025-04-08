@@ -50,6 +50,9 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             )
         }
 
+        let themes = configuration.themesConfiguration?.themes ?? [.light, .dark]
+        let fallbackTheme = configuration.themesConfiguration?.fallbackTheme ?? .light
+
         if file.isNil && remoteFile.isNil {
             throw GenerationParametersError.invalidFileConfiguration
         }
@@ -95,13 +98,15 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
         )
 
         let gradientRenderParameters = renderParametersResolver.resolveRenderParameters(
-            templates: configuration.templates?.gradient,
+            templates: configuration.templates?.gradients,
             defaultTemplateType: .native(name: "GradientTokens")
         )
 
         return TokensGenerationParameters(
             file: file,
             remoteFile: remoteFile,
+            themes: themes,
+            fallbackTheme: fallbackTheme,
             tokens: TokensGenerationParameters.TokensParameters(
                 colorRenderParameters: colorRenderParameters,
                 baseColorRenderParameters: baseColorRenderParameters,
@@ -111,7 +116,7 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
                 themeRenderParameters: themeRenderParameters,
                 spacingRenderParameters: spacingRenderParameters,
                 bordersRenderParameters: borderRenderParameters,
-                gradientRenderParameters: gradientRenderParameters
+                gradientsRenderParameters: gradientRenderParameters
             )
         )
     }

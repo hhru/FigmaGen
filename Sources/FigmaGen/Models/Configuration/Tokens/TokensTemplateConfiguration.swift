@@ -13,7 +13,7 @@ struct TokensTemplateConfiguration {
     let theme: [TemplateConfiguration]?
     let spacing: [TemplateConfiguration]?
     let borders: [TemplateConfiguration]?
-    let gradient: [TemplateConfiguration]?
+    let gradients: [TemplateConfiguration]?
 }
 
 // MARK: - Decodable
@@ -31,7 +31,7 @@ extension TokensTemplateConfiguration: Decodable {
         case theme
         case spacing
         case borders
-        case gradient
+        case gradients
     }
 
     // MARK: - Initializers
@@ -53,6 +53,6 @@ extension TokensTemplateConfiguration: Decodable {
         theme = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .theme)?.templates
         spacing = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .spacing)?.templates
         borders = try? container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .borders)?.templates
-        gradient = try? container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .gradient)?.templates
+        gradients = try? container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .gradients)?.templates
     }
 }

@@ -4,5 +4,9 @@ protocol ColorTokensContextProvider {
 
     // MARK: - Instance Methods
 
-    func extractTokenContext(from tokenValues: TokenValues) throws -> [String: Any]
+    func extractTokenContext(
+        from tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
+    ) throws -> [TokenThemeValue<[String: Any]>]
 }

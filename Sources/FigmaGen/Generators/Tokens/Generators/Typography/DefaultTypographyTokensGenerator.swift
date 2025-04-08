@@ -24,7 +24,7 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
         let lineHeightResolvedValue = try tokensResolver.resolveValue(
             lineHeightValue,
             tokenValues: tokenValues,
-            theme: .undefined
+            theme: nil
         )
 
         guard lineHeightResolvedValue.hasSuffix("%") else {
@@ -35,7 +35,7 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
         }
 
         let fontSize = Double(
-            try tokensResolver.resolveValue(value.fontSize, tokenValues: tokenValues, theme: .undefined)
+            try tokensResolver.resolveValue(value.fontSize, tokenValues: tokenValues, theme: nil)
         )
         let lineHeight = Double(lineHeightResolvedValue.dropLast()).map { $0 / 100.0 }
 
@@ -65,12 +65,12 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
 
         let letterSpacing = Double(
             try tokensResolver
-                .resolveValue(letterSpacingValue, tokenValues: tokenValues, theme: .undefined)
+                .resolveValue(letterSpacingValue, tokenValues: tokenValues, theme: nil)
                 .removingFirst("%")
         ).map { $0 / 100.0 }
 
         let fontSize = Double(
-            try tokensResolver.resolveValue(value.fontSize, tokenValues: tokenValues, theme: .undefined)
+            try tokensResolver.resolveValue(value.fontSize, tokenValues: tokenValues, theme: nil)
         )
 
         guard let fontSize else {
@@ -92,7 +92,7 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
     private func makeContextToken(value: String, tokenValues: TokenValues) throws -> ContextToken {
         ContextToken(
             path: value.components(separatedBy: "."),
-            value: try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: .undefined)
+            value: try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: nil)
         )
     }
 
@@ -164,7 +164,12 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
 
     // MARK: -
 
-    func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws {
+    func generate(
+        renderParameters: RenderParameters,
+        tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
+    ) throws {
         let tokens = try makeTypographyTokens(tokenValues: tokenValues)
 
         try templateRenderer.renderTemplate(

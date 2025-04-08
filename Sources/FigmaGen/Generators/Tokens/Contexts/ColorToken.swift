@@ -2,21 +2,10 @@ import Foundation
 
 struct ColorToken: TokenProtocol, Encodable {
 
-    // MARK: - Nested Types
-
-    struct Theme: Encodable {
-
-        // MARK: - Instance Properties
-
-        let value: String
-        let reference: String
-    }
-
     // MARK: - Instance Properties
 
-    let dayTheme: Theme
-    let nightTheme: Theme
-    let zpDayTheme: Theme
     let name: String
     let path: [String]
+    let value: String
+    let reference: String
 }

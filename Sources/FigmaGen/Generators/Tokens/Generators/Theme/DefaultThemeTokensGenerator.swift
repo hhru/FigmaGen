@@ -25,18 +25,44 @@ final class DefaultThemeTokensGenerator: ThemeTokensGenerator {
 
     // MARK: - Instance Methods
 
-    func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws {
-        let colorsContext = try colorTokensContextProvider.extractTokenContext(from: tokenValues)
-        let boxShadowsContext = try boxShadowsContextProvider.fetchBoxShadowTokensContext(from: tokenValues)
-        let gradientsContext = try gradientTokensContextProvider.extractTokenContext(from: tokenValues)
+    func dictionaryValue<T>(from tokens: [TokenThemeValue<T>]) -> [String: T] {
+        Dictionary(uniqueKeysWithValues: tokens.map { ($0.themeName, $0.value) })
+    }
+
+    func generate(
+        renderParameters: RenderParameters,
+        tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
+    ) throws {
+        let colorsContext = try colorTokensContextProvider.extractTokenContext(
+            from: tokenValues,
+            themes: themes,
+            fallbackTheme: fallbackTheme
+        )
+        let gradientsContext = try gradientTokensContextProvider.extractTokenContext(
+            from: tokenValues,
+            themes: themes,
+            fallbackTheme: fallbackTheme
+        )
+        let boxShadowsContext = try boxShadowsContextProvider.fetchBoxShadowTokensContext(
+            from: tokenValues,
+            themes: themes,
+            fallbackTheme: fallbackTheme
+        )
 
         try templateRenderer.renderTemplate(
             renderParameters.template,
             to: renderParameters.destination,
             context: [
-                "colors": colorsContext,
-                "boxShadows": boxShadowsContext,
-                "gradients": gradientsContext
+                "themedColors": colorsContext,
+                "themedBoxShadows": boxShadowsContext,
+                "themedGradients": gradientsContext,
+                "dictThemedColors": dictionaryValue(from: colorsContext),
+                "dictThemedGradients": dictionaryValue(from: gradientsContext),
+                "dictThemedBoxShadows": dictionaryValue(from: boxShadowsContext),
+                "themes": themes,
+                "fallbackTheme": fallbackTheme.name
             ]
         )
     }

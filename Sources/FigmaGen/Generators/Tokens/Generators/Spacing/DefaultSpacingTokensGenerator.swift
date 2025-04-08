@@ -23,13 +23,18 @@ final class DefaultSpacingTokensGenerator: SpacingTokensGenerator {
 
         return SpacingToken(
             path: token.name.components(separatedBy: "."),
-            value: try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: .undefined)
+            value: try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: nil)
         )
     }
 
     // MARK: -
 
-    func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws {
+    func generate(
+        renderParameters: RenderParameters,
+        tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
+    ) throws {
         let coreSpacings = try tokenValues.core.compactMap { value in
             try makeSpacingToken(from: value, tokenValues: tokenValues)
         }
