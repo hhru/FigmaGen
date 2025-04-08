@@ -1,5 +1,5 @@
 {% include "FileHeader.stencil" %}
-{% if gradients %}
+{% if dictThemedGradients[fallbackTheme] %}
 {% set gradientTypeName %}{{ options.colorTypeName|default:"LinearGradient" }}{% endset %}
 {% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
 {% macro typeName name %}{{ name|swiftIdentifier:"pretty"|upperFirstLetter|escapeReservedKeywords }}{% endmacro %}
@@ -8,13 +8,11 @@
 
     /// {{ gradient.name }}
     ///
-    /// Day Theme:
-    {% for stop in gradient.dayTheme.stops %}
-    /// - {{ stop.color }} {{ stop.percentage }}%
+    {% for theme, token in dictThemedGradients|findTokenInThemes:gradient.name,"gradients" %}
+    /// {{ theme }}:
+    {% for stop in token.stops %}
+    /// - {{ stop.color }} {{ stop.percentage }}
     {% endfor %}
-    /// Night Theme:
-    {% for stop in gradient.nightTheme.stops %}
-    /// - {{ stop.color }} {{ stop.percentage }}%
     {% endfor %}
     public let {% call propertyName gradient.path.last %}: {{ gradientTypeName }}
     {% endfor %}
@@ -36,7 +34,7 @@
 import SwiftUI
 
 public struct Gradients {
-    {% call recursiveBlock gradients %}
+    {% call recursiveBlock dictThemedGradients[fallbackTheme] %}
 }
 {% else %}
 // No color tokens found

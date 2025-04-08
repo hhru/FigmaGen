@@ -26,7 +26,7 @@ public struct Theme {
 
 extension Theme {
 
-    public static let defaultLight = Self(
+    public static let hhDay = Self(
         colors: ColorTokens(
             accent: ColorTokens.Accent(
                 bg: UIColor(hex: 0xC3DAFEFF),
@@ -68,8 +68,7 @@ extension Theme {
             )
         )
     )
-
-    public static let defaultDark = Self(
+    public static let hhNight = Self(
         colors: ColorTokens(
             accent: ColorTokens.Accent(
                 bg: UIColor(hex: 0x434190FF),
