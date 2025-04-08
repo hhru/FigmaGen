@@ -1,5 +1,5 @@
 {% include "FileHeader.stencil" %}
-{% if boxShadows %}
+{% if dictThemedBoxShadows[fallbackTheme] %}
 {% set accessModifier %}{% if options.publicAccess %}public{% else %}internal{% endif %}{% endset %}
 {% set tokenTypeName %}{{ options.tokenTypeName|default:"BoxShadowTokens" }}{% endset %}
 {% set shadowTypeName %}{{ options.shadowTypeName|default:"Shadow" }}{% endset %}
@@ -14,13 +14,18 @@ import AppKit
 #endif
 
 {{ accessModifier }} struct {{ tokenTypeName }} {
-    {% for boxShadow in boxShadows %}
+    {% outer: for boxShadow in dictThemedBoxShadows[fallbackTheme] %}
 
-    /// {{ boxShadow.path|dropFirst|join:" " }}
-    ///
-    /// Offset: day – x {{ boxShadow.dayTheme.x }}; y {{ boxShadow.nightTheme.y }} / night – x {{ boxShadow.nightTheme.x }}; y {{ boxShadow.nightTheme.y }}
-    /// Radius: day – {{ boxShadow.dayTheme.blur }} / night – {{ boxShadow.nightTheme.blur }}
-    /// Color: day – {{ boxShadow.dayTheme.color }} / night – {{ boxShadow.nightTheme.color }}
+    {% for themedValue in themedBoxShadows %}
+    {% for shadowToken in themedValue.value %}
+    {% if forloop.outer.counter == forloop.counter %}
+    /// - {{ themedValue.themeName }}:
+    /// Offset: x {{ shadowToken.x }}; y {{ shadowToken.y }}
+    /// Radius: {{ shadowToken.blur }}
+    /// Color: {{ shadowToken.color }}
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
     {{ accessModifier }} let {% call propertyName boxShadow.path.last %}: {{ shadowTypeName }}
     {% endfor %}
 }
