@@ -39,6 +39,10 @@ shadowStyles:
 
 tokens:
   file: https://www.figma.com/file/W6dy4CFSZWUVpVnSzNZIxA/FigmaGen-Tokens-Demo
+  themes:
+    - hh-day
+    - hh-night
+  fallbackTheme: hh-day
   templates:
     colors:
       - destination: FigmaGenDemo/Generated/ColorTokens.swift
@@ -64,6 +68,10 @@ tokens:
         shadowTypeName: ShadowToken
     spacing:
       destination: FigmaGenDemo/Generated/SpacingTokens.swift
+      templateOptions:
+        publicAccess: true
+    borders:
+      destination: FigmaGenDemo/Generated/BorderTokens.swift
       templateOptions:
         publicAccess: true
     theme:

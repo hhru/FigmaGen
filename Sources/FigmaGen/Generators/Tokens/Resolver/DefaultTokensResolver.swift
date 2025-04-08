@@ -60,7 +60,7 @@ final class DefaultTokensResolver: TokensResolver {
         }
     }
 
-    private func resolveColorValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> Color {
+    private func resolveColorValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> Color {
         if value.hasPrefix("rgba") {
             return try resolveRGBAColorValue(value, tokenValues: tokenValues, theme: theme)
         }
@@ -68,9 +68,48 @@ final class DefaultTokensResolver: TokensResolver {
         return try makeColor(hex: value, alpha: 1.0)
     }
 
+    private func resolveRGBAWithHex(
+        hex: String,
+        alphaPercent: String,
+        value: String
+    ) throws -> Color {
+        let alpha = alphaPercent.replacingOccurrences(of: "%", with: "")
+        guard let alpha = Double(alpha) else {
+            throw TokensGeneratorError(code: .invalidAlphaComponent(alpha: alphaPercent + value))
+        }
+
+        return try makeColor(hex: hex, alpha: alpha / 100.0)
+    }
+
+    private func resolveRGBA(
+        red: String,
+        green: String,
+        blue: String,
+        alpha: String,
+        rgbaValue: String
+    ) throws -> Color {
+        guard
+            let red = Double(red),
+            let green = Double(green),
+            let blue = Double(blue),
+            let alpha = Double(alpha)
+        else {
+            throw TokensGeneratorError(code: .invalidRGBAColorValue(rgba: rgbaValue))
+        }
+
+        let normalizationFactor: CGFloat = 255.0
+
+        return Color(
+            red: CGFloat(red) / normalizationFactor,
+            green: CGFloat(green) / normalizationFactor,
+            blue: CGFloat(blue) / normalizationFactor,
+            alpha: alpha
+        )
+    }
+
     // MARK: - TokensResolver
 
-    func resolveValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> String {
+    func resolveValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> String {
         let themeTokens = tokenValues.getThemeTokenValues(theme: theme)
 
         let resolvedValue = try value.replacingOccurrences(matchingPattern: #"\{.*?\}"#) { referenceName in
@@ -122,26 +161,36 @@ final class DefaultTokensResolver: TokensResolver {
         }
     }
 
-    func resolveRGBAColorValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> Color {
+    func resolveRGBAColorValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> Color {
         let components = try resolveValue(value, tokenValues: tokenValues, theme: theme)
             .slice(from: "(", to: ")", includingBounds: false)?
             .components(separatedBy: ", ")
 
-        guard let components, components.count == 2 else {
+        guard let components else {
             throw TokensGeneratorError(code: .invalidRGBAColorValue(rgba: value))
         }
 
-        let hex = components[0]
-        let alphaPercent = components[1]
-
-        guard let alpha = Double(alphaPercent.dropLast()) else {
-            throw TokensGeneratorError(code: .invalidAlphaComponent(alpha: alphaPercent))
+        switch components.count {
+        case .rgbaWithHex:
+            return try resolveRGBAWithHex(
+                hex: components[0],
+                alphaPercent: components[1],
+                value: value
+            )
+        case .rgba:
+            return try resolveRGBA(
+                red: components[0],
+                green: components[1],
+                blue: components[2],
+                alpha: components[3],
+                rgbaValue: value
+            )
+        default:
+            throw TokensGeneratorError(code: .invalidRGBAColorValue(rgba: value))
         }
-
-        return try makeColor(hex: hex, alpha: alpha / 100.0)
     }
 
-    func resolveHexColorValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> String {
+    func resolveHexColorValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> String {
         let resolvedValue = try resolveValue(value, tokenValues: tokenValues, theme: theme)
 
         if resolvedValue.hasPrefix("#") {
@@ -150,7 +199,7 @@ final class DefaultTokensResolver: TokensResolver {
         return try resolveColorValue(resolvedValue, tokenValues: tokenValues, theme: theme).hexString
     }
 
-    func resolveLinearGradientValue(_ value: String, tokenValues: TokenValues, theme: Theme) throws -> LinearGradient {
+    func resolveLinearGradientValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> LinearGradient {
         let value = try resolveValue(value, tokenValues: tokenValues, theme: theme)
 
         guard let startFunctionIndex = value.firstIndex(of: "("), let endFunctionIndex = value.lastIndex(of: ")") else {
@@ -193,4 +242,6 @@ extension Int {
 
     fileprivate static let rgb = 3
     fileprivate static let rrggbb = 6
+    fileprivate static let rgbaWithHex = 2
+    fileprivate static let rgba = 4
 }

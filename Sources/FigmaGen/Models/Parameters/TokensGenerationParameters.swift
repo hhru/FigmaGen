@@ -15,11 +15,15 @@ struct TokensGenerationParameters {
         let boxShadowRenderParameters: [RenderParameters]?
         let themeRenderParameters: [RenderParameters]?
         let spacingRenderParameters: [RenderParameters]?
+        let bordersRenderParameters: [RenderParameters]?
+        let gradientsRenderParameters: [RenderParameters]?
     }
 
     // MARK: - Instance Properties
 
     let file: FileParameters?
     let remoteFile: RemoteFileParameters?
+    let themes: [Theme]
+    let fallbackTheme: Theme
     let tokens: TokensParameters
 }

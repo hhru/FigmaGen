@@ -11,7 +11,7 @@
 {% macro hexColor color %}{{ color|fullHex|uppercase|replace:"#","0x" }}{% endmacro %}
 {% macro argumentsBlock item theme parentTypeName %}
 {% for color in item.colors %}
-{% call propertyName color.path.last %}: {{ colorTypeName }}(hex: {% call hexColor color[theme].value %}){% if not forloop.last %},{% endif %}
+{% call propertyName color.path.last %}: {{ colorTypeName }}(hex: {% call hexColor color.value %}){% if not forloop.last %},{% endif %}
 {% endfor %}
 {% for child in item.children %}
 {% set childTypeName %}{% if parentTypeName %}{{ parentTypeName }}.{% endif %}{% call typeName child.name %}{% endset %}
@@ -36,9 +36,9 @@ colors: {{ colorTokensTypeName }}(
 shadows: {{ boxShadowTokensTypeName }}(
 {% for boxShadow in boxShadows %}
     {% call propertyName boxShadow.path.last %}: {{ shadowTypeName }}(
-        offset: CGSize(width: {{ boxShadow[theme].x }}, height: {{ boxShadow[theme].y }}),
-        radius: {{ boxShadow[theme].blur }},
-        color: {{ colorTypeName }}(hex: {% call hexColor boxShadow[theme].color %}),
+        offset: CGSize(width: {{ boxShadow.x }}, height: {{ boxShadow.y }}),
+        radius: {{ boxShadow.blur }},
+        color: {{ colorTypeName }}(hex: {% call hexColor boxShadow.color %}),
         opacity: 1.0
     ){% if not forloop.last %},{% endif %}
 {% endfor %}
@@ -54,27 +54,27 @@ import AppKit
 
 {{ accessModifier }} struct {{ themeTypeName }} {
 
-    {% if colors %}
+    {% if dictThemedColors[fallbackTheme] %}
     {{ accessModifier }} let colors: {{ colorTokensTypeName }}
     {% endif %}
-    {% if boxShadows %}
+    {% if dictThemedBoxShadows[fallbackTheme] %}
     {{ accessModifier }} let shadows: {{ boxShadowTokensTypeName }}
     {% endif %}
     {{ accessModifier }} let typographies: {{ typographyTokensTypeName }}
 
     init(
-        {% if colors %}
+        {% if dictThemedColors[fallbackTheme] %}
         colors: {{ colorTokensTypeName }},
         {% endif %}
-        {% if boxShadows %}
+        {% if dictThemedBoxShadows[fallbackTheme] %}
         shadows: {{ boxShadowTokensTypeName }},
         {% endif %}
         typographies: {{ typographyTokensTypeName }} = {{ typographyTokensTypeName }}()
     ) {
-        {% if colors %}
+        {% if dictThemedColors[fallbackTheme] %}
         self.colors = colors
         {% endif %}
-        {% if boxShadows %}
+        {% if dictThemedBoxShadows[fallbackTheme] %}
         self.shadows = shadows
         {% endif %}
         self.typographies = typographies
@@ -83,22 +83,18 @@ import AppKit
 
 extension {{ themeTypeName }} {
 
-    {{ accessModifier }} static let defaultLight = Self(
+    {% for theme in themes %}
+    {% set themePropertyName %}{{ theme.name||swiftIdentifier:"pretty"|lowerFirstWord }}{% endset %}
+    {{ accessModifier }} static let {{ themePropertyName }} = Self(
         {% filter indent:8 %}
-        {% call colorsArgumentsBlock colors "dayTheme" %}
-        {% call shadowsArgumentsBlock boxShadows "dayTheme" %}
+        {% call colorsArgumentsBlock dictThemedColors[theme.name] theme.name %}
+        {% call shadowsArgumentsBlock dictThemedBoxShadows[theme.name] theme.name %}
         {% endfilter %}
     )
-
-    {{ accessModifier }} static let defaultDark = Self(
-        {% filter indent:8 %}
-        {% call colorsArgumentsBlock colors "nightTheme" %}
-        {% call shadowsArgumentsBlock boxShadows "nightTheme" %}
-        {% endfilter %}
-    )
+    {% endfor %}
 }
 
-{% if colors or boxShadows %}
+{% if dictThemedColors or dictThemedBoxShadows %}
 private extension {{ colorTypeName }} {
 
     convenience init(hex: UInt32) {

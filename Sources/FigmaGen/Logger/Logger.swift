@@ -43,9 +43,15 @@ struct Logger {
         print(message, terminator: terminator, isVerbose: isVerbose)
     }
 
-    func info(_ items: Any..., separator: String = " ", terminator: String = "\n", isVerbose: Bool = false) {
+    func info(
+        _ items: Any...,
+        separator: String = " ",
+        terminator: String = "\n",
+        highlighted: Bool = false,
+        isVerbose: Bool = false
+    ) {
         let message = items.joinedDescription(separator: separator)
-        print(message, terminator: terminator, isVerbose: isVerbose)
+        print(highlighted ? message.blue : message, terminator: terminator, isVerbose: isVerbose)
     }
 
     func warning(_ items: Any..., separator: String = " ", terminator: String = "\n", isVerbose: Bool = false) {

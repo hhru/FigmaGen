@@ -31,16 +31,8 @@ final class DefaultRenderParametersResolver: RenderParametersResolver {
         defaultTemplateType: RenderTemplateType,
         defaultDestination: RenderDestination
     ) -> [RenderParameters] {
-        let defaultRenderParameters = RenderParameters(
-            template: RenderTemplate(
-                type: defaultTemplateType,
-                options: [:]
-            ),
-            destination: defaultDestination
-        )
-
         guard let templates else {
-            return [defaultRenderParameters]
+            return []
         }
 
         return templates.map { template in

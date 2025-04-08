@@ -83,6 +83,10 @@ enum Dependencies {
 
     static let boxShadowTokensContextProvider: BoxShadowTokensContextProvider = DefaultBoxShadowTokensContextProvider()
 
+    static let gradientTokensContextProvider: ColorTokensContextProvider = DefaultGradientTokensContextProvider(
+        tokensResolver: tokensResolver
+    )
+
     // MARK: -
 
     static let templateContextCoder: TemplateContextCoder = DefaultTemplateContextCoder()
@@ -105,7 +109,8 @@ enum Dependencies {
         StencilCollectionDropLastModificator(),
         StencilCollectionRemovingFirstModificator(),
         StencilHexToAlphaFilter(),
-        StencilFullHexModificator()
+        StencilFullHexModificator(),
+        StencilRecursiveTokenFindModicator()
     ]
 
     static let templateRenderer: TemplateRenderer = DefaultTemplateRenderer(
@@ -170,6 +175,7 @@ enum Dependencies {
 
     static let themeTokensGenerator: ThemeTokensGenerator = DefaultThemeTokensGenerator(
         colorTokensContextProvider: colorTokensContextProvider,
+        gradientTokensContextProvider: gradientTokensContextProvider,
         boxShadowsContextProvider: boxShadowTokensContextProvider,
         templateRenderer: templateRenderer
     )
@@ -177,6 +183,16 @@ enum Dependencies {
     static let spacingTokensGenerator: SpacingTokensGenerator = DefaultSpacingTokensGenerator(
         tokensResolver: tokensResolver,
         templateRenderer: templateRenderer
+    )
+
+    static let borderTokensGenerator: BorderTokensGenerator = DefaultBorderTokensGenerator(
+        tokensResolver: tokensResolver,
+        templateRenderer: templateRenderer
+    )
+
+    static let gradientTokensGenerator: GradientTokensGenerator = DefaultGradientTokensGenerator(
+        templateRenderer: templateRenderer,
+        gradientProvider: gradientTokensContextProvider
     )
 
     static let tokensGenerator: TokensGenerator = DefaultTokensGenerator(
@@ -188,7 +204,9 @@ enum Dependencies {
         typographyTokensGenerator: typographyTokensGenerator,
         boxShadowTokensGenerator: boxShadowTokensGenerator,
         themeTokensGenerator: themeTokensGenerator,
-        spacingTokensGenerator: spacingTokensGenerator
+        spacingTokensGenerator: spacingTokensGenerator,
+        bordersTokensGenerator: borderTokensGenerator,
+        gradientTokensGenerator: gradientTokensGenerator
     )
 
     static let libraryGenerator: LibraryGenerator = DefaultLibraryGenerator(

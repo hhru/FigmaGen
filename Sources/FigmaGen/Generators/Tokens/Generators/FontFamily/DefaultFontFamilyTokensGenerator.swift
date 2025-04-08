@@ -24,7 +24,11 @@ final class DefaultFontFamilyTokensGenerator: FontFamilyTokensGenerator {
 
             return FontFamilyToken(
                 path: tokenValue.name.components(separatedBy: "."),
-                value: try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: .undefined)
+                value: try tokensResolver.resolveValue(
+                    value,
+                    tokenValues: tokenValues,
+                    theme: nil
+                )
             )
         }
     }
@@ -37,14 +41,23 @@ final class DefaultFontFamilyTokensGenerator: FontFamilyTokensGenerator {
 
             return FontWeightToken(
                 path: tokenValue.name.components(separatedBy: "."),
-                value: try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: .undefined)
+                value: try tokensResolver.resolveValue(
+                    value,
+                    tokenValues: tokenValues,
+                    theme: nil
+                )
             )
         }
     }
 
     // MARK: -
 
-    func generate(renderParameters: RenderParameters, tokenValues: TokenValues) throws {
+    func generate(
+        renderParameters: RenderParameters,
+        tokenValues: TokenValues,
+        themes: [Theme],
+        fallbackTheme: Theme
+    ) throws {
         let fontFamilyTokens = try makeFontFamilyTokens(tokenValues: tokenValues)
         let fontWeightTokens = try makeFontWightTokens(tokenValues: tokenValues)
 

@@ -12,6 +12,8 @@ struct TokensTemplateConfiguration {
     let boxShadows: [TemplateConfiguration]?
     let theme: [TemplateConfiguration]?
     let spacing: [TemplateConfiguration]?
+    let borders: [TemplateConfiguration]?
+    let gradients: [TemplateConfiguration]?
 }
 
 // MARK: - Decodable
@@ -28,6 +30,8 @@ extension TokensTemplateConfiguration: Decodable {
         case boxShadows
         case theme
         case spacing
+        case borders
+        case gradients
     }
 
     // MARK: - Initializers
@@ -48,5 +52,7 @@ extension TokensTemplateConfiguration: Decodable {
         boxShadows = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .boxShadows)?.templates
         theme = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .theme)?.templates
         spacing = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .spacing)?.templates
+        borders = try? container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .borders)?.templates
+        gradients = try? container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .gradients)?.templates
     }
 }

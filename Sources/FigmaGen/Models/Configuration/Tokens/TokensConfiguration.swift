@@ -14,6 +14,7 @@ struct TokensConfiguration: Decodable {
     let file: FileConfiguration?
     let remoteRepoConfig: RemoteRepoConfiguration?
     let accessToken: AccessTokenConfiguration?
+    let themesConfiguration: TokenThemesConfiguration?
     let templates: TokensTemplateConfiguration?
 
     // MARK: - Initializers
@@ -28,17 +29,20 @@ struct TokensConfiguration: Decodable {
 
         self.remoteRepoConfig = try container.decodeIfPresent(forKey: .remoteRepoConfig)
         self.templates = try container.decodeIfPresent(forKey: .templates)
+        self.themesConfiguration = try TokenThemesConfiguration(from: decoder)
     }
 
     init(
         file: FileConfiguration?,
         remoteRepoConfig: RemoteRepoConfiguration?,
         accessToken: AccessTokenConfiguration?,
+        themesConfiguration: TokenThemesConfiguration?,
         templates: TokensTemplateConfiguration?
     ) {
         self.file = file
         self.remoteRepoConfig = remoteRepoConfig
         self.accessToken = accessToken
+        self.themesConfiguration = themesConfiguration
         self.templates = templates
     }
 
@@ -53,6 +57,7 @@ struct TokensConfiguration: Decodable {
             file: file ?? base.file,
             remoteRepoConfig: remoteRepoConfig,
             accessToken: accessToken ?? base.accessToken,
+            themesConfiguration: themesConfiguration,
             templates: templates
         )
     }

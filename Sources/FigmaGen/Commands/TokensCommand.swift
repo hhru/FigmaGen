@@ -68,6 +68,20 @@ final class TokensCommand: AsyncExecutableCommand {
             """
     )
 
+    let themes = VariadicKey<String>(
+        "--themes",
+        description: """
+            An option that will be merged with template context.
+            """
+    )
+
+    let fallbackTheme = Key<String>(
+        "--fallbackTheme",
+        description: """
+            the default theme used when the requested theme is unavailable. Must be one of the values listed in themes.
+            """
+    )
+
     let colorsTemplate = Key<String>(
         "--colors-template",
         description: """
@@ -236,6 +250,54 @@ final class TokensCommand: AsyncExecutableCommand {
              """
     )
 
+    let bordersTemplate = Key<String>(
+        "--borders-template",
+        description: """
+        Path to the template file.
+        If no template is passed a default template will be used.
+        """
+    )
+
+    let bordersTemplateOptions = VariadicKey<String>(
+        "--borders-options",
+        description: """
+            An option that will be merged with template context, and overwrite any values of the same name.
+            Can be repeated multiple times and must be in the format: -o "name:value".
+            """
+    )
+
+    let bordersDestination = Key<String>(
+        "--borders-destination",
+        description: """
+            The path to the file to generate.
+            By default, generated code will be printed on stdout.
+            """
+    )
+
+    let gradientTemplate = Key<String>(
+        "--gradient-template",
+        description: """
+        Path to the template file.
+        If no template is passed a default template will be used.
+        """
+    )
+
+    let gradientTemplateOptions = VariadicKey<String>(
+        "--gradient-options",
+        description: """
+            An option that will be merged with template context, and overwrite any values of the same name.
+            Can be repeated multiple times and must be in the format: -o "name:value".
+            """
+    )
+
+    let gradientDestination = Key<String>(
+        "--gradient-destination",
+        description: """
+            The path to the file to generate.
+            By default, generated code will be printed on stdout.
+            """
+    )
+
     // MARK: - Initializers
 
     init(generator: TokensGenerator) {
@@ -265,6 +327,7 @@ extension TokensCommand {
             file: resolveFileConfiguration(),
             remoteRepoConfig: resolveRemoteRepoConfiguration(),
             accessToken: resolveAccessTokenConfiguration(),
+            themesConfiguration: resolveTokenThemesConfiguration(),
             templates: TokensTemplateConfiguration(
                 colors: [
                     TemplateConfiguration(
@@ -313,6 +376,20 @@ extension TokensCommand {
                         template: spacingTemplate.value,
                         templateOptions: resolveTemplateOptions(spacingTemplateOptions.value),
                         destination: spacingDestination.value
+                    )
+                ],
+                borders: [
+                    TemplateConfiguration(
+                        template: bordersTemplate.value,
+                        templateOptions: resolveTemplateOptions(bordersTemplateOptions.value),
+                        destination: bordersDestination.value
+                    )
+                ],
+                gradients: [
+                    TemplateConfiguration(
+                        template: gradientTemplate.value,
+                        templateOptions: resolveTemplateOptions(gradientTemplateOptions.value),
+                        destination: gradientDestination.value
                     )
                 ]
             )
@@ -374,5 +451,19 @@ extension TokensCommand {
         }
 
         return templateOptions
+    }
+
+    private func resolveTokenThemesConfiguration() -> TokenThemesConfiguration? {
+        let themes = themes.value
+        let fallbackTheme = fallbackTheme.value
+
+        guard let fallbackTheme, !themes.isEmpty else {
+            return nil
+        }
+
+        return TokenThemesConfiguration(
+            themes: themes.map { Theme($0) },
+            fallbackTheme: Theme(fallbackTheme)
+        )
     }
 }
