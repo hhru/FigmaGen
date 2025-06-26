@@ -17,6 +17,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     let spacingTokensGenerator: SpacingTokensGenerator
     let bordersTokensGenerator: BorderTokensGenerator
     let gradientTokensGenerator: GradientTokensGenerator
+    let animationTimeTokensGenerator: AnimationTimeTokensGenerator
 
     // MARK: - Initializers
 
@@ -31,7 +32,8 @@ final class DefaultTokensGenerator: TokensGenerator {
         themeTokensGenerator: ThemeTokensGenerator,
         spacingTokensGenerator: SpacingTokensGenerator,
         bordersTokensGenerator: BorderTokensGenerator,
-        gradientTokensGenerator: GradientTokensGenerator
+        gradientTokensGenerator: GradientTokensGenerator,
+        animationTimeTokensGenerator: AnimationTimeTokensGenerator
     ) {
         self.tokensProvider = tokensProvider
         self.tokensGenerationParametersResolver = tokensGenerationParametersResolver
@@ -44,6 +46,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         self.spacingTokensGenerator = spacingTokensGenerator
         self.bordersTokensGenerator = bordersTokensGenerator
         self.gradientTokensGenerator = gradientTokensGenerator
+        self.animationTimeTokensGenerator = animationTimeTokensGenerator
     }
 
     // MARK: - Instance Methods
@@ -60,6 +63,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateSpacingTokens(parameters: parameters, tokenValues: tokenValues)
         try generateBorderTokens(parameters: parameters, tokenValues: tokenValues)
         try generateGradientTokens(parameters: parameters, tokenValues: tokenValues)
+        try generateAnimationTimeTokens(parameters: parameters, tokenValues: tokenValues)
     }
 
     private func fetchTokens(from parameters: TokensGenerationParameters) async throws -> TokenValues {
@@ -165,6 +169,17 @@ final class DefaultTokensGenerator: TokensGenerator {
             gradientTokensGenerator,
             tokensName: "gradients",
             renderParameters: parameters.tokens.gradientsRenderParameters,
+            tokenValues: tokenValues,
+            themes: parameters.themes,
+            fallbackTheme: parameters.fallbackTheme
+        )
+    }
+
+    private func generateAnimationTimeTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
+        try generateTokens(
+            animationTimeTokensGenerator,
+            tokensName: "animationTime",
+            renderParameters: parameters.tokens.animationTimesRenderParameters,
             tokenValues: tokenValues,
             themes: parameters.themes,
             fallbackTheme: parameters.fallbackTheme

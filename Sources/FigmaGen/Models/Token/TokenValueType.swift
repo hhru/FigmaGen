@@ -6,6 +6,7 @@ enum TokenValueType: Hashable {
 
     case a11yScales(value: String)
     case animation(value: TokenAnimationValue)
+    case animationTime(value: TokenAnimationTimeValue)
     case border(value: TokenBorderValue)
     case borderRadius(value: String)
     case borderWidth(value: String)
@@ -53,7 +54,7 @@ enum TokenValueType: Hashable {
              let .textDecoration(value):
             return value
 
-        case .animation, .boxShadow, .typography, .unknown, .border:
+        case .animation, .animationTime, .boxShadow, .typography, .unknown, .border:
             return nil
         }
     }

@@ -102,6 +102,12 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             defaultTemplateType: .native(name: "GradientTokens")
         )
 
+        let animationTimesRenderParameters = renderParametersResolver.resolveRenderParameters(
+            templates: configuration.templates?.animationTimes,
+            // TODO: @d.viter добавить template
+            defaultTemplateType: .native(name: "AnimationTimeTokens")
+        )
+
         return TokensGenerationParameters(
             file: file,
             remoteFile: remoteFile,
@@ -116,7 +122,8 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
                 themeRenderParameters: themeRenderParameters,
                 spacingRenderParameters: spacingRenderParameters,
                 bordersRenderParameters: borderRenderParameters,
-                gradientsRenderParameters: gradientRenderParameters
+                gradientsRenderParameters: gradientRenderParameters,
+                animationTimesRenderParameters: animationTimesRenderParameters
             )
         )
     }

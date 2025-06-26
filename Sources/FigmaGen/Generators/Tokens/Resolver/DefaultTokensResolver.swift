@@ -234,6 +234,15 @@ final class DefaultTokensResolver: TokensResolver {
             colorStopList: colorStopList
         )
     }
+
+    func resolveAnimationDurationValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> Double {
+        let resolvedValue = try resolveValue(value, tokenValues: tokenValues, theme: theme)
+        guard let value = Double(resolvedValue) else {
+            throw TokensGeneratorError(code: .unexpectedTokenValueType(name: "duration"))
+        }
+
+        return value / 1000
+    }
 }
 
 extension Int {
