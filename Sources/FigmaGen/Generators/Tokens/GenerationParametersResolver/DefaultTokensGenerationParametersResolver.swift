@@ -104,7 +104,6 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
 
         let animationTimesRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.animationTimes,
-            // TODO: @d.viter добавить template
             defaultTemplateType: .native(name: "AnimationTimeTokens")
         )
 
