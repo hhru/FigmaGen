@@ -63,6 +63,10 @@ final class TokensCommand: AsyncExecutableCommand {
     let animationTimeTemplateOptions = AnimationTimeCommandKeys.templateOptions
     let animationTimeDestination = AnimationTimeCommandKeys.destination
 
+    let animationEaseTemplate = AnimationEaseCommandKeys.template
+    let animationEaseTemplateOptions = AnimationEaseCommandKeys.templateOptions
+    let animationEaseDestination = AnimationEaseCommandKeys.destination
+
     // MARK: - Initializers
 
     init(generator: TokensGenerator) {
@@ -162,6 +166,13 @@ extension TokensCommand {
                         template: animationTimeTemplate.value,
                         templateOptions: resolveTemplateOptions(animationTimeTemplateOptions.value),
                         destination: animationTimeDestination.value
+                    )
+                ],
+                animationEases: [
+                    TemplateConfiguration(
+                        template: animationEaseTemplate.value,
+                        templateOptions: resolveTemplateOptions(animationEaseTemplateOptions.value),
+                        destination: animationEaseDestination.value
                     )
                 ]
             )
