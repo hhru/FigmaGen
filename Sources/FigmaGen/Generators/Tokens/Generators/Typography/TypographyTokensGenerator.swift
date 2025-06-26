@@ -1,4 +1,3 @@
 import Foundation
 
-protocol TypographyTokensGenerator: BaseTokenGenerator {
-}
+protocol TypographyTokensGenerator: BaseTokenGenerator { }
