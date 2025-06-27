@@ -107,6 +107,11 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             defaultTemplateType: .native(name: "AnimationTimeTokens")
         )
 
+        let animationEasesRenderParameters = renderParametersResolver.resolveRenderParameters(
+            templates: configuration.templates?.animationEases,
+            defaultTemplateType: .native(name: "AnimationEaseTokens")
+        )
+
         return TokensGenerationParameters(
             file: file,
             remoteFile: remoteFile,
@@ -122,7 +127,8 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
                 spacingRenderParameters: spacingRenderParameters,
                 bordersRenderParameters: borderRenderParameters,
                 gradientsRenderParameters: gradientRenderParameters,
-                animationTimesRenderParameters: animationTimesRenderParameters
+                animationTimesRenderParameters: animationTimesRenderParameters,
+                animationEasesRenderParameters: animationEasesRenderParameters
             )
         )
     }

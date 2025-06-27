@@ -21,7 +21,7 @@ public struct MagritteAnimationTimes: Sendable {
 
     public let {% call propertyName time.path.last %}: Double = {{ time.duration}}
     {% endfor %}
-     {% endif %}
+    {% endif %}
 }
 {% else %}
 // No animation time tokens found

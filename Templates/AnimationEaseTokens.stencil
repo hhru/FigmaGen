@@ -1,0 +1,70 @@
+{% include "FileHeader.stencil" %}
+{% if semanticAnimationEaseBase or semanticAnimationEaseSpring or coreAnimationEaseBase or coreAnimationEaseSpring %}
+{% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
+{% macro makeBase baseAnimations %}
+{% for animation in baseAnimations %}
+    public let {% call propertyName animation.path.last %} = AnimationEaseBase(
+        x1: {{ animation.x1 }},
+        y1: {{ animation.y1 }},
+        x2: {{ animation.x2 }},
+        y2: {{ animation.y2 }}
+    )
+{% endfor %}
+{% endmacro %}
+{% macro makeSpring springAnimations %}
+{% for animation in springAnimations %}
+    public let {% call propertyName animation.path.last %} = AnimationEaseSpring(
+        stiffness: {{ animation.stiffness }},
+        damping: {{ animation.damping }},
+        mass: {{ animation.mass }}
+    )
+{% endfor %}
+{% endmacro %}
+
+import Foundation
+
+public struct AnimationEase: Sendable {
+    {% if semanticAnimationEaseBase or semanticAnimationEaseSpring %}
+
+    // MARK: - Semantic
+    {% if semanticAnimationEaseBase %}
+
+    {% call makeBase semanticAnimationEaseBase %}
+    {% endif %}
+    {% if semanticAnimationEaseSpring %}
+
+    {% call makeSpring semanticAnimationEaseSpring %}
+    {% endif %}
+    {% endif %}
+    
+    {% if coreAnimationEaseBase or coreAnimationEaseSpring %}
+
+    // MARK: - Core
+    {% if coreAnimationEaseBase %}
+
+    {% call makeBase coreAnimationEaseBase %}
+    {% endif %}
+    {% if coreAnimationEaseSpring %}
+
+    {% call makeSpring coreAnimationEaseSpring %}
+    {% endif %}
+    {% endif %}
+}
+
+struct AnimationEaseBase {
+    let path: [String]
+    let x1: String
+    let y1: String
+    let x2: String
+    let y2: String
+}
+
+struct AnimationEaseSpring {
+    let path: [String]
+    let stiffness: String
+    let damping: String
+    let mass: String
+}
+{% else %}
+// No animation ease tokens found
+{% endif %}
