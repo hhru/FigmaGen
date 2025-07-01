@@ -16,6 +16,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     let themeTokensGenerator: ThemeTokensGenerator
     let spacingTokensGenerator: SpacingTokensGenerator
     let bordersTokensGenerator: BorderTokensGenerator
+    let borderRadiusesTokensGenerator: BorderRadiusTokensGenerator
     let gradientTokensGenerator: GradientTokensGenerator
     let animationTimeTokensGenerator: AnimationTimeTokensGenerator
     let animationEaseTokensGenerator: AnimationEaseTokensGenerator
@@ -33,6 +34,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         themeTokensGenerator: ThemeTokensGenerator,
         spacingTokensGenerator: SpacingTokensGenerator,
         bordersTokensGenerator: BorderTokensGenerator,
+        borderRadiusesTokensGenerator: BorderRadiusTokensGenerator,
         gradientTokensGenerator: GradientTokensGenerator,
         animationTimeTokensGenerator: AnimationTimeTokensGenerator,
         animationEaseTokensGenerator: AnimationEaseTokensGenerator
@@ -47,6 +49,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         self.themeTokensGenerator = themeTokensGenerator
         self.spacingTokensGenerator = spacingTokensGenerator
         self.bordersTokensGenerator = bordersTokensGenerator
+        self.borderRadiusesTokensGenerator = borderRadiusesTokensGenerator
         self.gradientTokensGenerator = gradientTokensGenerator
         self.animationTimeTokensGenerator = animationTimeTokensGenerator
         self.animationEaseTokensGenerator = animationEaseTokensGenerator
@@ -65,6 +68,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateThemeTokens(parameters: parameters, tokenValues: tokenValues)
         try generateSpacingTokens(parameters: parameters, tokenValues: tokenValues)
         try generateBorderTokens(parameters: parameters, tokenValues: tokenValues)
+        try generateBorderRadiusTokens(parameters: parameters, tokenValues: tokenValues)
         try generateGradientTokens(parameters: parameters, tokenValues: tokenValues)
         try generateAnimationTimeTokens(parameters: parameters, tokenValues: tokenValues)
         try generateAnimationEaseTokens(parameters: parameters, tokenValues: tokenValues)
@@ -162,6 +166,17 @@ final class DefaultTokensGenerator: TokensGenerator {
             bordersTokensGenerator,
             tokensName: "border",
             renderParameters: parameters.tokens.bordersRenderParameters,
+            tokenValues: tokenValues,
+            themes: parameters.themes,
+            fallbackTheme: parameters.fallbackTheme
+        )
+    }
+
+    private func generateBorderRadiusTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
+        try generateTokens(
+            borderRadiusesTokensGenerator,
+            tokensName: "borderRadius",
+            renderParameters: parameters.tokens.borderRadiusesRenderParameters,
             tokenValues: tokenValues,
             themes: parameters.themes,
             fallbackTheme: parameters.fallbackTheme

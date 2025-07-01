@@ -190,6 +190,11 @@ enum Dependencies {
         templateRenderer: templateRenderer
     )
 
+    static let borderRadiusTokensGenerator: BorderRadiusTokensGenerator = DefaultBorderRadiusTokensGenerator(
+        tokensResolver: tokensResolver,
+        templateRenderer: templateRenderer
+    )
+
     static let gradientTokensGenerator: GradientTokensGenerator = DefaultGradientTokensGenerator(
         templateRenderer: templateRenderer,
         gradientProvider: gradientTokensContextProvider
@@ -216,6 +221,7 @@ enum Dependencies {
         themeTokensGenerator: themeTokensGenerator,
         spacingTokensGenerator: spacingTokensGenerator,
         bordersTokensGenerator: borderTokensGenerator,
+        borderRadiusesTokensGenerator: borderRadiusTokensGenerator,
         gradientTokensGenerator: gradientTokensGenerator,
         animationTimeTokensGenerator: animationTimeTokensGenerator,
         animationEaseTokensGenerator: animationEaseTokensGenerator
