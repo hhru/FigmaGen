@@ -13,6 +13,7 @@ struct TokensTemplateConfiguration {
     let theme: [TemplateConfiguration]?
     let spacing: [TemplateConfiguration]?
     let borders: [TemplateConfiguration]?
+    let borderRadiuses: [TemplateConfiguration]?
     let gradients: [TemplateConfiguration]?
     let animationTimes: [TemplateConfiguration]?
     let animationEases: [TemplateConfiguration]?
@@ -33,6 +34,7 @@ extension TokensTemplateConfiguration: Decodable {
         case theme
         case spacing
         case borders
+        case borderRadiuses
         case gradients
         case animationTimes
         case animationEases
@@ -65,6 +67,10 @@ extension TokensTemplateConfiguration: Decodable {
         animationEases = try? container.decodeIfPresent(
             TemplateConfigurationWrapper.self,
             forKey: .animationEases
+        )?.templates
+        borderRadiuses = try? container.decodeIfPresent(
+            TemplateConfigurationWrapper.self,
+            forKey: .borderRadiuses
         )?.templates
     }
 }
