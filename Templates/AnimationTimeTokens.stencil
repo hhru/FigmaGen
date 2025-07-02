@@ -1,0 +1,28 @@
+{% include "FileHeader.stencil" %}
+{% if semanticAnimationTimes or coreAnimationTimes %}
+{% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
+
+import Foundation
+
+public struct MagritteAnimationTimes: Sendable {
+
+    {% if semanticAnimationTimes %}
+    // MARK: - semantic
+    {% for time in semanticAnimationTimes %}
+
+    public let {% call propertyName time.path.last %}: Double = {{ time.duration }}
+    {% endfor %}
+    {% endif %}
+    
+    {% if coreAnimationTimes %}
+
+    // MARK: - core
+    {% for time in coreAnimationTimes %}
+
+    public let {% call propertyName time.path.last %}: Double = {{ time.duration }}
+    {% endfor %}
+    {% endif %}
+}
+{% else %}
+// No animation time tokens found
+{% endif %}

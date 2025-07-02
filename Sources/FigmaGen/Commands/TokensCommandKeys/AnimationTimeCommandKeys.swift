@@ -1,9 +1,9 @@
 import SwiftCLI
 
-enum BordersCommandKeys {
+enum AnimationTimeCommandKeys {
 
     static let template = Key<String>(
-        "--borders-template",
+        "--animationTime-template",
         description: """
             Path to the template file.
             If no template is passed a default template will be used.
@@ -11,7 +11,7 @@ enum BordersCommandKeys {
     )
 
     static let templateOptions = VariadicKey<String>(
-        "--borders-options",
+        "--animationTime-options",
         description: """
             An option that will be merged with template context, and overwrite any values of the same name.
             Can be repeated multiple times and must be in the format: -o "name:value".
@@ -19,7 +19,7 @@ enum BordersCommandKeys {
     )
 
     static let destination = Key<String>(
-        "--borders-destination",
+        "--animationTime-destination",
         description: """
             The path to the file to generate.
             By default, generated code will be printed on stdout.

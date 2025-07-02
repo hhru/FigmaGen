@@ -92,4 +92,14 @@ protocol TokensResolver {
     ///   - theme: Theme
     /// - Returns: ``LinearGradient`` object with values resolved from `linear-gradient()`
     func resolveLinearGradientValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> LinearGradient
+    
+    /// Resolving animation duration in `value` using ``resolveValue(_:tokenValues:)``,
+    /// convert `String` to `Double` value and convert milliseconds to seconds
+    /// 
+    /// - Parameters:
+    ///   - value: String value to resolve
+    ///   - tokenValues: All token values
+    ///   - theme: Theme
+    /// - Returns: Resolved value.
+    func resolveAnimationDurationValue(_ value: String, tokenValues: TokenValues, theme: Theme?) throws -> Double
 }

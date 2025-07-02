@@ -195,6 +195,11 @@ enum Dependencies {
         gradientProvider: gradientTokensContextProvider
     )
 
+    static let animationTimeTokensGenerator: AnimationTimeTokensGenerator = DefaultAnimationTimeTokensGenerator(
+        tokensResolver: tokensResolver,
+        templateRenderer: templateRenderer
+    )
+
     static let tokensGenerator: TokensGenerator = DefaultTokensGenerator(
         tokensProvider: tokensProvider,
         tokensGenerationParametersResolver: tokensGenerationParametersResolver,
@@ -206,7 +211,8 @@ enum Dependencies {
         themeTokensGenerator: themeTokensGenerator,
         spacingTokensGenerator: spacingTokensGenerator,
         bordersTokensGenerator: borderTokensGenerator,
-        gradientTokensGenerator: gradientTokensGenerator
+        gradientTokensGenerator: gradientTokensGenerator,
+        animationTimeTokensGenerator: animationTimeTokensGenerator
     )
 
     static let libraryGenerator: LibraryGenerator = DefaultLibraryGenerator(

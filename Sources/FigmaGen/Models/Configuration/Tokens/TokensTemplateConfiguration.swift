@@ -14,6 +14,7 @@ struct TokensTemplateConfiguration {
     let spacing: [TemplateConfiguration]?
     let borders: [TemplateConfiguration]?
     let gradients: [TemplateConfiguration]?
+    let animationTimes: [TemplateConfiguration]?
 }
 
 // MARK: - Decodable
@@ -32,6 +33,7 @@ extension TokensTemplateConfiguration: Decodable {
         case spacing
         case borders
         case gradients
+        case animationTimes
     }
 
     // MARK: - Initializers
@@ -54,5 +56,9 @@ extension TokensTemplateConfiguration: Decodable {
         spacing = try container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .spacing)?.templates
         borders = try? container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .borders)?.templates
         gradients = try? container.decodeIfPresent(TemplateConfigurationWrapper.self, forKey: .gradients)?.templates
+        animationTimes = try? container.decodeIfPresent(
+            TemplateConfigurationWrapper.self,
+            forKey: .animationTimes
+        )?.templates
     }
 }
