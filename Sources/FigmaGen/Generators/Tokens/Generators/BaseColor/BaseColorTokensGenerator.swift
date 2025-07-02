@@ -1,4 +1,3 @@
 import Foundation
 
-protocol BaseColorTokensGenerator: BaseTokenGenerator {
-}
+protocol BaseColorTokensGenerator: BaseTokenGenerator { }

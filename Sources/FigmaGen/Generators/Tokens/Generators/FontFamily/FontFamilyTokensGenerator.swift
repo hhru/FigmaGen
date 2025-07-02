@@ -1,4 +1,3 @@
 import Foundation
 
-protocol FontFamilyTokensGenerator: BaseTokenGenerator {
-}
+protocol FontFamilyTokensGenerator: BaseTokenGenerator { }
