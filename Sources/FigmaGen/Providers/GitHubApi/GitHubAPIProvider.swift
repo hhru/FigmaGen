@@ -62,15 +62,11 @@ final class GitHubAPIProvider: RemoteRepoProvider {
     }
 
     private func handleHTTPError(_ error: HTTPError) -> Error {
-        guard let errorData = error.data, error.reason is HTTPStatusCode else {
+        guard error.reason is HTTPStatusCode else {
             return error
         }
 
-        guard let apiError = try? responseDecoder.decode(FigmaError.self, from: errorData) else {
-            return error
-        }
-
-        return apiError
+        return GitHubError(error)
     }
 }
 
