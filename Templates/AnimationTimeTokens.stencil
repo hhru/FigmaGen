@@ -10,7 +10,7 @@ public struct MagritteAnimationTimes: Sendable {
     // MARK: - semantic
     {% for time in semanticAnimationTimes %}
 
-    public let {% call propertyName time.path.last %}: Double = {{ time.duration}}
+    public let {% call propertyName time.path.last %}: Double = {{ time.duration }}
     {% endfor %}
     {% endif %}
     
@@ -19,9 +19,9 @@ public struct MagritteAnimationTimes: Sendable {
     // MARK: - core
     {% for time in coreAnimationTimes %}
 
-    public let {% call propertyName time.path.last %}: Double = {{ time.duration}}
+    public let {% call propertyName time.path.last %}: Double = {{ time.duration }}
     {% endfor %}
-     {% endif %}
+    {% endif %}
 }
 {% else %}
 // No animation time tokens found

@@ -5,9 +5,9 @@ enum BordersCommandKeys {
     static let template = Key<String>(
         "--borders-template",
         description: """
-        Path to the template file.
-        If no template is passed a default template will be used.
-        """
+            Path to the template file.
+            If no template is passed a default template will be used.
+            """
     )
 
     static let templateOptions = VariadicKey<String>(
