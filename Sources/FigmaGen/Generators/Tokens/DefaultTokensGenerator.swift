@@ -20,6 +20,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     let gradientTokensGenerator: GradientTokensGenerator
     let animationTimeTokensGenerator: AnimationTimeTokensGenerator
     let animationEaseTokensGenerator: AnimationEaseTokensGenerator
+    let blurTokensGenerator: BlurTokensGenerator
 
     // MARK: - Initializers
 
@@ -37,7 +38,8 @@ final class DefaultTokensGenerator: TokensGenerator {
         borderRadiusesTokensGenerator: BorderRadiusTokensGenerator,
         gradientTokensGenerator: GradientTokensGenerator,
         animationTimeTokensGenerator: AnimationTimeTokensGenerator,
-        animationEaseTokensGenerator: AnimationEaseTokensGenerator
+        animationEaseTokensGenerator: AnimationEaseTokensGenerator,
+        blurTokensGenerator: BlurTokensGenerator
     ) {
         self.tokensProvider = tokensProvider
         self.tokensGenerationParametersResolver = tokensGenerationParametersResolver
@@ -53,6 +55,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         self.gradientTokensGenerator = gradientTokensGenerator
         self.animationTimeTokensGenerator = animationTimeTokensGenerator
         self.animationEaseTokensGenerator = animationEaseTokensGenerator
+        self.blurTokensGenerator = blurTokensGenerator
     }
 
     // MARK: - Instance Methods
@@ -72,6 +75,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateGradientTokens(parameters: parameters, tokenValues: tokenValues)
         try generateAnimationTimeTokens(parameters: parameters, tokenValues: tokenValues)
         try generateAnimationEaseTokens(parameters: parameters, tokenValues: tokenValues)
+        try generateBlurTokens(parameters: parameters, tokenValues: tokenValues)
     }
 
     private func fetchTokens(from parameters: TokensGenerationParameters) async throws -> TokenValues {
@@ -210,6 +214,17 @@ final class DefaultTokensGenerator: TokensGenerator {
             animationEaseTokensGenerator,
             tokensName: "animationEase",
             renderParameters: parameters.tokens.animationEasesRenderParameters,
+            tokenValues: tokenValues,
+            themes: parameters.themes,
+            fallbackTheme: parameters.fallbackTheme
+        )
+    }
+
+    private func generateBlurTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
+        try generateTokens(
+            blurTokensGenerator,
+            tokensName: "blur",
+            renderParameters: parameters.tokens.blurRenderParameters,
             tokenValues: tokenValues,
             themes: parameters.themes,
             fallbackTheme: parameters.fallbackTheme

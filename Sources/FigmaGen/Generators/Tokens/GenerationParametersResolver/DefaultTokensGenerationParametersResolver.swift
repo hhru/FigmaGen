@@ -117,6 +117,11 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             defaultTemplateType: .native(name: "AnimationEaseTokens")
         )
 
+        let blurRenderParameters = renderParametersResolver.resolveRenderParameters(
+            templates: configuration.templates?.blur,
+            defaultTemplateType: .native(name: "BlurTokens")
+        )
+
         return TokensGenerationParameters(
             file: file,
             remoteFile: remoteFile,
@@ -134,7 +139,8 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
                 borderRadiusesRenderParameters: borderRadiusParameters,
                 gradientsRenderParameters: gradientRenderParameters,
                 animationTimesRenderParameters: animationTimesRenderParameters,
-                animationEasesRenderParameters: animationEasesRenderParameters
+                animationEasesRenderParameters: animationEasesRenderParameters,
+                blurRenderParameters: blurRenderParameters
             )
         )
     }
