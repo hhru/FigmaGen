@@ -57,6 +57,7 @@ struct DefaultBorderRadiusTokensGenerator: BorderRadiusTokensGenerator {
             to: renderParameters.destination,
             context: [
                 "coreBorderRadius": coreBorderRadius,
+                "allSemanticBorderRadiuses": semanticBorderRadiuses,
                 "semanticBorderRadius": semanticBorderRadius,
                 "staticBorderRadius": staticBorderRadius
             ]

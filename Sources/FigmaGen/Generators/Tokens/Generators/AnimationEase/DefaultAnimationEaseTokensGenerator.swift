@@ -92,10 +92,13 @@ struct DefaultAnimationEaseTokensGenerator: AnimationEaseTokensGenerator {
         let semanticAnimationEaseBase = semanticAnimationEase.compactMap { $0.base }
         let semanticAnimationEaseSpring = semanticAnimationEase.compactMap { $0.spring }
 
+        let all = coreAnimationEase + semanticAnimationEase
+
         try templateRenderer.renderTemplate(
             renderParameters.template,
             to: renderParameters.destination,
             context: [
+                "allAnimations": all,
                 "animationTimesCore": timesCore,
                 "animationTimesSemantic": timesSemantic,
                 "coreAnimationEaseBase": coreAnimationEaseBase,
