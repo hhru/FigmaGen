@@ -15,6 +15,7 @@ struct TokensTemplateConfiguration {
     let borders: [TemplateConfiguration]?
     let gradients: [TemplateConfiguration]?
     let animationTimes: [TemplateConfiguration]?
+    let animationEases: [TemplateConfiguration]?
 }
 
 // MARK: - Decodable
@@ -34,6 +35,7 @@ extension TokensTemplateConfiguration: Decodable {
         case borders
         case gradients
         case animationTimes
+        case animationEases
     }
 
     // MARK: - Initializers
@@ -59,6 +61,10 @@ extension TokensTemplateConfiguration: Decodable {
         animationTimes = try? container.decodeIfPresent(
             TemplateConfigurationWrapper.self,
             forKey: .animationTimes
+        )?.templates
+        animationEases = try? container.decodeIfPresent(
+            TemplateConfigurationWrapper.self,
+            forKey: .animationEases
         )?.templates
     }
 }

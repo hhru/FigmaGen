@@ -18,6 +18,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     let bordersTokensGenerator: BorderTokensGenerator
     let gradientTokensGenerator: GradientTokensGenerator
     let animationTimeTokensGenerator: AnimationTimeTokensGenerator
+    let animationEaseTokensGenerator: AnimationEaseTokensGenerator
 
     // MARK: - Initializers
 
@@ -33,7 +34,8 @@ final class DefaultTokensGenerator: TokensGenerator {
         spacingTokensGenerator: SpacingTokensGenerator,
         bordersTokensGenerator: BorderTokensGenerator,
         gradientTokensGenerator: GradientTokensGenerator,
-        animationTimeTokensGenerator: AnimationTimeTokensGenerator
+        animationTimeTokensGenerator: AnimationTimeTokensGenerator,
+        animationEaseTokensGenerator: AnimationEaseTokensGenerator
     ) {
         self.tokensProvider = tokensProvider
         self.tokensGenerationParametersResolver = tokensGenerationParametersResolver
@@ -47,6 +49,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         self.bordersTokensGenerator = bordersTokensGenerator
         self.gradientTokensGenerator = gradientTokensGenerator
         self.animationTimeTokensGenerator = animationTimeTokensGenerator
+        self.animationEaseTokensGenerator = animationEaseTokensGenerator
     }
 
     // MARK: - Instance Methods
@@ -64,6 +67,7 @@ final class DefaultTokensGenerator: TokensGenerator {
         try generateBorderTokens(parameters: parameters, tokenValues: tokenValues)
         try generateGradientTokens(parameters: parameters, tokenValues: tokenValues)
         try generateAnimationTimeTokens(parameters: parameters, tokenValues: tokenValues)
+        try generateAnimationEaseTokens(parameters: parameters, tokenValues: tokenValues)
     }
 
     private func fetchTokens(from parameters: TokensGenerationParameters) async throws -> TokenValues {
@@ -180,6 +184,17 @@ final class DefaultTokensGenerator: TokensGenerator {
             animationTimeTokensGenerator,
             tokensName: "animationTime",
             renderParameters: parameters.tokens.animationTimesRenderParameters,
+            tokenValues: tokenValues,
+            themes: parameters.themes,
+            fallbackTheme: parameters.fallbackTheme
+        )
+    }
+
+    private func generateAnimationEaseTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
+        try generateTokens(
+            animationEaseTokensGenerator,
+            tokensName: "animationEase",
+            renderParameters: parameters.tokens.animationEasesRenderParameters,
             tokenValues: tokenValues,
             themes: parameters.themes,
             fallbackTheme: parameters.fallbackTheme
