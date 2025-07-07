@@ -9,6 +9,7 @@ enum TokenValueType: Hashable {
     case animationEaseBase(value: TokenAnimationEaseBaseValue)
     case animationEaseSpring(value: TokenAnimationEaseSpringValue)
     case animationTime(value: TokenAnimationTimeValue)
+    case blur(value: String)
     case border(value: TokenBorderValue)
     case borderRadius(value: String)
     case borderWidth(value: String)
@@ -37,6 +38,7 @@ enum TokenValueType: Hashable {
     var stringValue: String? {
         switch self {
         case let .a11yScales(value),
+             let .blur(value),
              let .borderWidth(value),
              let .borderRadius(value),
              let .color(value),

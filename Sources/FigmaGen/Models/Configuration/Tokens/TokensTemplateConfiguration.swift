@@ -17,6 +17,7 @@ struct TokensTemplateConfiguration {
     let gradients: [TemplateConfiguration]?
     let animationTimes: [TemplateConfiguration]?
     let animationEases: [TemplateConfiguration]?
+    let blur: [TemplateConfiguration]?
 }
 
 // MARK: - Decodable
@@ -38,6 +39,7 @@ extension TokensTemplateConfiguration: Decodable {
         case gradients
         case animationTimes
         case animationEases
+        case blur
     }
 
     // MARK: - Initializers
@@ -71,6 +73,10 @@ extension TokensTemplateConfiguration: Decodable {
         borderRadiuses = try? container.decodeIfPresent(
             TemplateConfigurationWrapper.self,
             forKey: .borderRadiuses
+        )?.templates
+        blur = try? container.decodeIfPresent(
+            TemplateConfigurationWrapper.self,
+            forKey: .blur
         )?.templates
     }
 }

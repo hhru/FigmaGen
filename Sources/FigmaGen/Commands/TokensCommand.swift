@@ -71,6 +71,10 @@ final class TokensCommand: AsyncExecutableCommand {
     let animationEaseTemplateOptions = AnimationEaseCommandKeys.templateOptions
     let animationEaseDestination = AnimationEaseCommandKeys.destination
 
+    let blurTemplate = BlurCommandKeys.template
+    let blurTemplateOptions = BlurCommandKeys.templateOptions
+    let blurDestination = BlurCommandKeys.destination
+
     // MARK: - Initializers
 
     init(generator: TokensGenerator) {
@@ -184,6 +188,13 @@ extension TokensCommand {
                         template: animationEaseTemplate.value,
                         templateOptions: resolveTemplateOptions(animationEaseTemplateOptions.value),
                         destination: animationEaseDestination.value
+                    )
+                ],
+                blur: [
+                    TemplateConfiguration(
+                        template: blurTemplate.value,
+                        templateOptions: resolveTemplateOptions(blurTemplateOptions.value),
+                        destination: blurDestination.value
                     )
                 ]
             )

@@ -30,6 +30,7 @@ extension GitHubTokenValue: Decodable {
         case animationTime
         case animationEaseBase
         case animationEaseSpring
+        case blur
         case border
         case borderRadius
         case borderWidth
@@ -86,6 +87,9 @@ extension GitHubTokenValue: Decodable {
 
         case .animationTime:
             self.type = .animationTime(value: try container.decode(forKey: .value))
+
+        case .blur:
+            self.type = .blur(value: try container.decode(forKey: .value))
 
         case .borderRadius:
             self.type = .borderRadius(value: try container.decode(forKey: .value))
@@ -180,6 +184,9 @@ extension GitHubTokenValue: Encodable {
             try container.encode(value, forKey: .value)
 
         case let .animationTime(value):
+            try container.encode(value, forKey: .value)
+
+        case let .blur(value):
             try container.encode(value, forKey: .value)
 
         case let .borderRadius(value):

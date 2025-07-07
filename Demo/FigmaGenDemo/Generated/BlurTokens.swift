@@ -1,0 +1,3 @@
+// swiftlint:disable all
+// Generated using FigmaGen - https://github.com/hhru/FigmaGen
+// No border tokens found
