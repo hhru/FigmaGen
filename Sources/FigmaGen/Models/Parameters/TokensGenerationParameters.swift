@@ -16,6 +16,7 @@ struct TokensGenerationParameters {
         let themeRenderParameters: [RenderParameters]?
         let spacingRenderParameters: [RenderParameters]?
         let bordersRenderParameters: [RenderParameters]?
+        let borderRadiusesRenderParameters: [RenderParameters]?
         let gradientsRenderParameters: [RenderParameters]?
         let animationTimesRenderParameters: [RenderParameters]?
         let animationEasesRenderParameters: [RenderParameters]?

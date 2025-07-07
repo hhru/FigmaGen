@@ -97,6 +97,11 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             defaultTemplateType: .native(name: "BorderTokens")
         )
 
+        let borderRadiusParameters = renderParametersResolver.resolveRenderParameters(
+            templates: configuration.templates?.borderRadiuses,
+            defaultTemplateType: .native(name: "BorderRadiusTokens")
+        )
+
         let gradientRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.gradients,
             defaultTemplateType: .native(name: "GradientTokens")
@@ -126,6 +131,7 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
                 themeRenderParameters: themeRenderParameters,
                 spacingRenderParameters: spacingRenderParameters,
                 bordersRenderParameters: borderRenderParameters,
+                borderRadiusesRenderParameters: borderRadiusParameters,
                 gradientsRenderParameters: gradientRenderParameters,
                 animationTimesRenderParameters: animationTimesRenderParameters,
                 animationEasesRenderParameters: animationEasesRenderParameters

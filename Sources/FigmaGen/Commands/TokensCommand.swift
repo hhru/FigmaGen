@@ -55,6 +55,10 @@ final class TokensCommand: AsyncExecutableCommand {
     let bordersTemplateOptions = BordersCommandKeys.templateOptions
     let bordersDestination = BordersCommandKeys.destination
 
+    let borderRadiusesTemplate = BordersRadiusCommandKeys.template
+    let borderRadiusesTemplateOptions = BordersRadiusCommandKeys.templateOptions
+    let borderRadiusesDestination = BordersRadiusCommandKeys.destination
+
     let gradientTemplate = GradientCommandKeys.template
     let gradientTemplateOptions = GradientCommandKeys.templateOptions
     let gradientDestination = GradientCommandKeys.destination
@@ -152,6 +156,13 @@ extension TokensCommand {
                         template: bordersTemplate.value,
                         templateOptions: resolveTemplateOptions(bordersTemplateOptions.value),
                         destination: bordersDestination.value
+                    )
+                ],
+                borderRadiuses: [
+                    TemplateConfiguration(
+                        template: borderRadiusesTemplate.value,
+                        templateOptions: resolveTemplateOptions(borderRadiusesTemplateOptions.value),
+                        destination: borderRadiusesDestination.value
                     )
                 ],
                 gradients: [
