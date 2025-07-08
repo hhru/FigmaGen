@@ -11,292 +11,69 @@ final class TokensCommand: AsyncExecutableCommand {
     let name = "tokens"
     let shortDescription = "Generates code for tokens from a Figma file."
 
-    let fileKey = Key<String>(
-        "--fileKey",
-        description: """
-            Figma file key to generate text styles from.
-            """
-    )
+    let fileKey = FigmaCommandKeys.fileKey
+    let fileVersion = FigmaCommandKeys.fileVersion
+    let accessToken = FigmaCommandKeys.accessToken
 
-    let fileVersion = Key<String>(
-        "--fileVersion",
-        description: """
-            Figma file version ID to generate color styles from.
-            """
-    )
+    let remoteFileOwnerKey = GitHubRemoteFileCommandKeys.ownerKey
+    let remoteFileRepoKey = GitHubRemoteFileCommandKeys.repoKey
+    let remoteFileBranchKey = GitHubRemoteFileCommandKeys.branchKey
+    let remoteFilePathKey = GitHubRemoteFileCommandKeys.pathKey
+    let remoteRepoAccessTokenKey = GitHubRemoteFileCommandKeys.repoAccessTokenKey
 
-    let remoteFileOwnerKey = Key<String>(
-        "--remoteFileOwner",
-        description: """
-            Remote Repo owner key to generate text styles from.
-            """
-    )
+    let themes = ThemeCommandKeys.themes
+    let fallbackTheme = ThemeCommandKeys.fallbackTheme
+    let themeTemplate = ThemeCommandKeys.themeTemplate
+    let themeTemplateOptions = ThemeCommandKeys.themeTemplateOptions
+    let themeDestination = ThemeCommandKeys.themeDestination
 
-    let remoteFileRepoKey = Key<String>(
-        "--remoteFileRepo",
-        description: """
-            Remote Repo key to generate text styles from.
-            """
-    )
+    let colorsTemplate = ColorsCommandKeys.template
+    let colorsTemplateOptions = ColorsCommandKeys.templateOptions
+    let colorsDestination = ColorsCommandKeys.destination
 
-    let remoteFileBranchKey = Key<String>(
-        "--remoteFileBranch",
-        description: """
-            Remote Repo branch to generate text styles from.
-            """
-    )
+    let baseColorsTemplate = ColorsCommandKeys.baseColorsTemplate
+    let baseColorsTemplateOptions = ColorsCommandKeys.baseColorsTemplateOptions
+    let baseColorsDestination = ColorsCommandKeys.baseColorsDestination
 
-    let remoteFilePathKey = Key<String>(
-        "--remoteFilePath",
-        description: """
-            Remote Repo file key to generate text styles from.
-            """
-    )
+    let fontFamiliesTemplate = FontFamiliesCommandKeys.template
+    let fontFamiliesTemplateOptions = FontFamiliesCommandKeys.templateOptions
+    let fontFamiliesDestination = FontFamiliesCommandKeys.destination
 
-    let remoteRepoAccessTokenKey = Key<String>(
-        "--remoteRepoAccessToken",
-        description: """
-            Remote Repo personal access token to make requests to the GitHub.
-            """
-    )
+    let typographiesTemplate = TypographiesCommandKeys.template
+    let typographiesTemplateOptions = TypographiesCommandKeys.templateOptions
+    let typographiesDestination = TypographiesCommandKeys.destination
 
-    let accessToken = Key<String>(
-        "--accessToken",
-        description: """
-            A personal access token to make requests to the Figma API.
-            Get more info: https://www.figma.com/developers/api#access-tokens
-            """
-    )
+    let boxShadowsTemplate = BoxShadowsCommandKeys.template
+    let boxShadowsTemplateOptions = BoxShadowsCommandKeys.templateOptions
+    let boxShadowsDestination = BoxShadowsCommandKeys.destination
 
-    let themes = VariadicKey<String>(
-        "--themes",
-        description: """
-            An option that will be merged with template context.
-            """
-    )
+    let spacingTemplate = SpacingCommandKeys.template
+    let spacingTemplateOptions = SpacingCommandKeys.templateOptions
+    let spacingDestination = SpacingCommandKeys.destination
 
-    let fallbackTheme = Key<String>(
-        "--fallbackTheme",
-        description: """
-            the default theme used when the requested theme is unavailable. Must be one of the values listed in themes.
-            """
-    )
+    let bordersTemplate = BordersCommandKeys.template
+    let bordersTemplateOptions = BordersCommandKeys.templateOptions
+    let bordersDestination = BordersCommandKeys.destination
 
-    let colorsTemplate = Key<String>(
-        "--colors-template",
-        description: """
-            Path to the template file.
-            If no template is passed a default template will be used.
-            """
-    )
+    let borderRadiusesTemplate = BordersRadiusCommandKeys.template
+    let borderRadiusesTemplateOptions = BordersRadiusCommandKeys.templateOptions
+    let borderRadiusesDestination = BordersRadiusCommandKeys.destination
 
-    let colorsTemplateOptions = VariadicKey<String>(
-        "--colors-options",
-        description: #"""
-            An option that will be merged with template context, and overwrite any values of the same name.
-            Can be repeated multiple times and must be in the format: -o "name:value".
-            """#
-    )
+    let gradientTemplate = GradientCommandKeys.template
+    let gradientTemplateOptions = GradientCommandKeys.templateOptions
+    let gradientDestination = GradientCommandKeys.destination
 
-    let colorsDestination = Key<String>(
-        "--colors-destination",
-        description: """
-            The path to the file to generate.
-            By default, generated code will be printed on stdout.
-            """
-    )
+    let animationTimeTemplate = AnimationTimeCommandKeys.template
+    let animationTimeTemplateOptions = AnimationTimeCommandKeys.templateOptions
+    let animationTimeDestination = AnimationTimeCommandKeys.destination
 
-    let baseColorsTemplate = Key<String>(
-        "--base-colors-template",
-        description: """
-            Path to the template file.
-            If no template is passed a default template will be used.
-            """
-    )
+    let animationEaseTemplate = AnimationEaseCommandKeys.template
+    let animationEaseTemplateOptions = AnimationEaseCommandKeys.templateOptions
+    let animationEaseDestination = AnimationEaseCommandKeys.destination
 
-    let baseColorsTemplateOptions = VariadicKey<String>(
-        "--base-colors-options",
-        description: #"""
-            An option that will be merged with template context, and overwrite any values of the same name.
-            Can be repeated multiple times and must be in the format: -o "name:value".
-            """#
-    )
-
-    let baseColorsDestination = Key<String>(
-        "--base-colors-destination",
-        description: """
-            The path to the file to generate.
-            By default, generated code will be printed on stdout.
-            """
-    )
-
-    let fontFamiliesTemplate = Key<String>(
-        "--font-families-template",
-        description: """
-            Path to the template file.
-            If no template is passed a default template will be used.
-            """
-    )
-
-    let fontFamiliesTemplateOptions = VariadicKey<String>(
-        "--font-families-options",
-        description: #"""
-            An option that will be merged with template context, and overwrite any values of the same name.
-            Can be repeated multiple times and must be in the format: -o "name:value".
-            """#
-    )
-
-    let fontFamiliesDestination = Key<String>(
-        "--font-families-destination",
-        description: """
-            The path to the file to generate.
-            By default, generated code will be printed on stdout.
-            """
-    )
-
-    let typographiesTemplate = Key<String>(
-        "--typographies-template",
-        description: """
-            Path to the template file.
-            If no template is passed a default template will be used.
-            """
-    )
-
-    let typographiesTemplateOptions = VariadicKey<String>(
-        "--typographies-options",
-        description: #"""
-            An option that will be merged with template context, and overwrite any values of the same name.
-            Can be repeated multiple times and must be in the format: -o "name:value".
-            """#
-    )
-
-    let typographiesDestination = Key<String>(
-        "--typographies-destination",
-        description: """
-            The path to the file to generate.
-            By default, generated code will be printed on stdout.
-            """
-    )
-
-    let boxShadowsTemplate = Key<String>(
-        "--box-shadows-template",
-        description: """
-            Path to the template file.
-            If no template is passed a default template will be used.
-            """
-    )
-
-    let boxShadowsTemplateOptions = VariadicKey<String>(
-        "--box-shadows-options",
-        description: #"""
-            An option that will be merged with template context, and overwrite any values of the same name.
-            Can be repeated multiple times and must be in the format: -o "name:value".
-            """#
-    )
-
-    let boxShadowsDestination = Key<String>(
-        "--box-shadows-destination",
-        description: """
-            The path to the file to generate.
-            By default, generated code will be printed on stdout.
-            """
-    )
-
-    let themeTemplate = Key<String>(
-        "--theme-template",
-        description: """
-            Path to the template file.
-            If no template is passed a default template will be used.
-            """
-    )
-
-    let themeTemplateOptions = VariadicKey<String>(
-        "--theme-options",
-        description: #"""
-            An option that will be merged with template context, and overwrite any values of the same name.
-            Can be repeated multiple times and must be in the format: -o "name:value".
-            """#
-    )
-
-    let themeDestination = Key<String>(
-        "--theme-destination",
-        description: """
-            The path to the file to generate.
-            By default, generated code will be printed on stdout.
-            """
-    )
-
-    let spacingTemplate = Key<String>(
-        "--spacing-template",
-        description: """
-            Path to the template file.
-            If no template is passed a default template will be used.
-            """
-    )
-
-    let spacingTemplateOptions = VariadicKey<String>(
-        "--spacing-options",
-        description: #"""
-             An option that will be merged with template context, and overwrite any values of the same name.
-             Can be repeated multiple times and must be in the format: -o "name:value".
-             """#
-    )
-
-    let spacingDestination = Key<String>(
-        "--spacing-destination",
-        description: """
-             The path to the file to generate.
-             By default, generated code will be printed on stdout.
-             """
-    )
-
-    let bordersTemplate = Key<String>(
-        "--borders-template",
-        description: """
-        Path to the template file.
-        If no template is passed a default template will be used.
-        """
-    )
-
-    let bordersTemplateOptions = VariadicKey<String>(
-        "--borders-options",
-        description: """
-            An option that will be merged with template context, and overwrite any values of the same name.
-            Can be repeated multiple times and must be in the format: -o "name:value".
-            """
-    )
-
-    let bordersDestination = Key<String>(
-        "--borders-destination",
-        description: """
-            The path to the file to generate.
-            By default, generated code will be printed on stdout.
-            """
-    )
-
-    let gradientTemplate = Key<String>(
-        "--gradient-template",
-        description: """
-        Path to the template file.
-        If no template is passed a default template will be used.
-        """
-    )
-
-    let gradientTemplateOptions = VariadicKey<String>(
-        "--gradient-options",
-        description: """
-            An option that will be merged with template context, and overwrite any values of the same name.
-            Can be repeated multiple times and must be in the format: -o "name:value".
-            """
-    )
-
-    let gradientDestination = Key<String>(
-        "--gradient-destination",
-        description: """
-            The path to the file to generate.
-            By default, generated code will be printed on stdout.
-            """
-    )
+    let blurTemplate = BlurCommandKeys.template
+    let blurTemplateOptions = BlurCommandKeys.templateOptions
+    let blurDestination = BlurCommandKeys.destination
 
     // MARK: - Initializers
 
@@ -385,11 +162,39 @@ extension TokensCommand {
                         destination: bordersDestination.value
                     )
                 ],
+                borderRadiuses: [
+                    TemplateConfiguration(
+                        template: borderRadiusesTemplate.value,
+                        templateOptions: resolveTemplateOptions(borderRadiusesTemplateOptions.value),
+                        destination: borderRadiusesDestination.value
+                    )
+                ],
                 gradients: [
                     TemplateConfiguration(
                         template: gradientTemplate.value,
                         templateOptions: resolveTemplateOptions(gradientTemplateOptions.value),
                         destination: gradientDestination.value
+                    )
+                ],
+                animationTimes: [
+                    TemplateConfiguration(
+                        template: animationTimeTemplate.value,
+                        templateOptions: resolveTemplateOptions(animationTimeTemplateOptions.value),
+                        destination: animationTimeDestination.value
+                    )
+                ],
+                animationEases: [
+                    TemplateConfiguration(
+                        template: animationEaseTemplate.value,
+                        templateOptions: resolveTemplateOptions(animationEaseTemplateOptions.value),
+                        destination: animationEaseDestination.value
+                    )
+                ],
+                blur: [
+                    TemplateConfiguration(
+                        template: blurTemplate.value,
+                        templateOptions: resolveTemplateOptions(blurTemplateOptions.value),
+                        destination: blurDestination.value
                     )
                 ]
             )

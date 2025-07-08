@@ -97,9 +97,29 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             defaultTemplateType: .native(name: "BorderTokens")
         )
 
+        let borderRadiusParameters = renderParametersResolver.resolveRenderParameters(
+            templates: configuration.templates?.borderRadiuses,
+            defaultTemplateType: .native(name: "BorderRadiusTokens")
+        )
+
         let gradientRenderParameters = renderParametersResolver.resolveRenderParameters(
             templates: configuration.templates?.gradients,
             defaultTemplateType: .native(name: "GradientTokens")
+        )
+
+        let animationTimesRenderParameters = renderParametersResolver.resolveRenderParameters(
+            templates: configuration.templates?.animationTimes,
+            defaultTemplateType: .native(name: "AnimationTimeTokens")
+        )
+
+        let animationEasesRenderParameters = renderParametersResolver.resolveRenderParameters(
+            templates: configuration.templates?.animationEases,
+            defaultTemplateType: .native(name: "AnimationEaseTokens")
+        )
+
+        let blurRenderParameters = renderParametersResolver.resolveRenderParameters(
+            templates: configuration.templates?.blur,
+            defaultTemplateType: .native(name: "BlurTokens")
         )
 
         return TokensGenerationParameters(
@@ -116,7 +136,11 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
                 themeRenderParameters: themeRenderParameters,
                 spacingRenderParameters: spacingRenderParameters,
                 bordersRenderParameters: borderRenderParameters,
-                gradientsRenderParameters: gradientRenderParameters
+                borderRadiusesRenderParameters: borderRadiusParameters,
+                gradientsRenderParameters: gradientRenderParameters,
+                animationTimesRenderParameters: animationTimesRenderParameters,
+                animationEasesRenderParameters: animationEasesRenderParameters,
+                blurRenderParameters: blurRenderParameters
             )
         )
     }

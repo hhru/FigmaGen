@@ -1,0 +1,46 @@
+{% include "FileHeader.stencil" %}
+{% if coreBlur or semanticBlur or staticBlur -%}
+{% set accessModifier %}{% if options.publicAccess %}public{% else %}internal{% endif %}{% endset %}
+{% set tokenTypeName %}{{ options.tokenTypeName|default:"BlurTokens" }}{% endset %}
+{% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
+{% macro blurProperty blur -%}
+    {{ accessModifier }} let {% call propertyName blur.path|removingFirst:"static"|removingFirst:"semantic"|removingFirst:"core"|join:"_" %}: Double = {{ blur.value }}.0
+{%- endmacro %}
+
+#if canImport(UIKit)
+import UIKit
+#else
+import AppKit
+#endif
+
+{{ accessModifier }} struct {{ tokenTypeName }} {
+
+    // MARK: - Instance Properties
+    {% if semanticBlur %}
+
+    // Semantic
+
+    {% for blur in semanticBlur %}
+    {% call blurProperty blur %}
+    {% endfor %}
+    {% endif %}
+    {% if staticBlur %}
+
+    // Static 
+
+    {% for blur in staticBlur %}
+    {% call blurProperty blur %}
+    {% endfor %}
+    {% endif %}
+    {% if coreBlur %}
+
+    // Core
+
+    {% for blur in coreBlur %}
+    {% call blurProperty blur %}
+    {% endfor %}
+    {% endif %}
+}
+{%- else -%}
+// No border tokens found
+{%- endif %}

@@ -21,7 +21,7 @@ final class GenerateCommand: AsyncExecutableCommand {
     let verbose = Flag(
         "--verbose",
         description: """
-            Enable verbose logging for debuging.
+            Enable verbose logging for debugging.
             By default is disabled.
             """
     )

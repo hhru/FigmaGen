@@ -1,0 +1,46 @@
+{% include "FileHeader.stencil" %}
+{% if semanticBorderRadius or coreBorderRadius or staticBorderRadius -%}
+{% set accessModifier %}{% if options.publicAccess %}public{% else %}internal{% endif %}{% endset %}
+{% set tokenTypeName %}{{ options.tokenTypeName|default:"BorderRadiusTokens" }}{% endset %}
+{% macro propertyName name %}{{ name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords }}{% endmacro %}
+{% macro borderRadiusProperty borderRadius -%}
+    {{ accessModifier }} let {% call propertyName borderRadius.path|removingFirst:"static"|removingFirst:"semantic"|removingFirst:"core"|join:"_" %}: Double = {{ borderRadius.value }}
+{%- endmacro %}
+
+#if canImport(UIKit)
+import UIKit
+#else
+import AppKit
+#endif
+
+{{ accessModifier }} struct {{ tokenTypeName }} {
+
+    // MARK: - Instance Properties
+    {% if semanticBorderRadius %}
+
+    // Semantic
+
+    {% for borderRadius in semanticBorderRadius %}
+    {% call borderRadiusProperty borderRadius %}
+    {% endfor %}
+    {% endif %}
+    {% if staticBorderRadius %}
+
+    // Static 
+
+    {% for borderRadius in staticBorderRadius %}
+    {% call borderRadiusProperty borderRadius %}
+    {% endfor %}
+    {% endif %}
+    {% if coreBorderRadius %}
+
+    // Core
+
+    {% for borderRadius in coreBorderRadius %}
+    {% call borderRadiusProperty borderRadius %}
+    {% endfor %}
+    {% endif %}
+}
+{%- else -%}
+// No border tokens found
+{%- endif %}

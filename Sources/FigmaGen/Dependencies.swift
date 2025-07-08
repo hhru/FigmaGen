@@ -190,9 +190,29 @@ enum Dependencies {
         templateRenderer: templateRenderer
     )
 
+    static let borderRadiusTokensGenerator: BorderRadiusTokensGenerator = DefaultBorderRadiusTokensGenerator(
+        tokensResolver: tokensResolver,
+        templateRenderer: templateRenderer
+    )
+
     static let gradientTokensGenerator: GradientTokensGenerator = DefaultGradientTokensGenerator(
         templateRenderer: templateRenderer,
         gradientProvider: gradientTokensContextProvider
+    )
+
+    static let animationTimeTokensGenerator: AnimationTimeTokensGenerator = DefaultAnimationTimeTokensGenerator(
+        tokensResolver: tokensResolver,
+        templateRenderer: templateRenderer
+    )
+
+    static let animationEaseTokensGenerator: AnimationEaseTokensGenerator = DefaultAnimationEaseTokensGenerator(
+        tokensResolver: tokensResolver,
+        templateRenderer: templateRenderer
+    )
+
+    static let blurTokensGenerator: BlurTokensGenerator = DefaultBlurTokensGenerator(
+        tokensResolver: tokensResolver,
+        templateRenderer: templateRenderer
     )
 
     static let tokensGenerator: TokensGenerator = DefaultTokensGenerator(
@@ -206,7 +226,11 @@ enum Dependencies {
         themeTokensGenerator: themeTokensGenerator,
         spacingTokensGenerator: spacingTokensGenerator,
         bordersTokensGenerator: borderTokensGenerator,
-        gradientTokensGenerator: gradientTokensGenerator
+        borderRadiusesTokensGenerator: borderRadiusTokensGenerator,
+        gradientTokensGenerator: gradientTokensGenerator,
+        animationTimeTokensGenerator: animationTimeTokensGenerator,
+        animationEaseTokensGenerator: animationEaseTokensGenerator,
+        blurTokensGenerator: blurTokensGenerator
     )
 
     static let libraryGenerator: LibraryGenerator = DefaultLibraryGenerator(
