@@ -92,7 +92,6 @@ extension GitHubAPIProvider {
 
     func request<Route: GitHubAPIRoute>(route: Route) -> Promise<Void> where Route.Response == GitHubAPIEmptyResponse {
         Promise { seal in
-
             let task = httpService.request(route: makeHTTPRoute(for: route))
 
             task.responseJSON { response in
