@@ -124,7 +124,7 @@ final class DefaultTokensGenerator: TokensGenerator {
     private func generateTypographyTokens(parameters: TokensGenerationParameters, tokenValues: TokenValues) throws {
         try generateTokens(
             typographyTokensGenerator,
-            tokensName: "typogrphy",
+            tokensName: "typography",
             renderParameters: parameters.tokens.typographyRenderParameters,
             tokenValues: tokenValues,
             themes: parameters.themes,
