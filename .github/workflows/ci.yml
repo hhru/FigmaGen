@@ -31,10 +31,6 @@ jobs:
         run: |
           gem install bundler
           bundle install --without=documentation
-      - name: Swift
-        uses: swift-actions/setup-swift@v2
-        with:
-          swift-version: "5.9"
       - name: Preparation
         run: set -o pipefail
       - name: Build
@@ -50,6 +46,8 @@ jobs:
   linux:
     name: Linux
     runs-on: ubuntu-22.04
+    container:
+      image: swift:5.9
     steps:
       - uses: actions/checkout@v2
       - name: Ruby
@@ -58,10 +56,6 @@ jobs:
         run: |
           gem install bundler
           bundle install --without=documentation
-      - name: Swift
-        uses: swift-actions/setup-swift@v2
-        with:
-          swift-version: "5.9"
       - name: Preparation
         run: set -o pipefail
       - name: Build
