@@ -7,6 +7,7 @@ enum GenerationParametersError: Error, CustomStringConvertible {
     case invalidFileConfiguration
     case invalidAccessToken
     case invalidGitHubAccessToken
+    case emptyGitHubAccessToken
 
     // MARK: - Instance Properties
 
@@ -20,6 +21,9 @@ enum GenerationParametersError: Error, CustomStringConvertible {
 
         case .invalidGitHubAccessToken:
             return "GitHiub access token cannot be empty or nil"
+
+        case .emptyGitHubAccessToken:
+            return "GitHiub access token is empty or nil, if your repository is private, add GitHiub access token."
         }
     }
 }

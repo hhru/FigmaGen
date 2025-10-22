@@ -34,11 +34,11 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
             )
         }
 
-        let remoteFile = try configuration.remoteRepoConfig.map { remoteFileConfiguration in
-            guard
-                let accessToken = accessTokenResolver.resolveAccessToken(from: remoteFileConfiguration.accessToken)
-            else {
-                throw GenerationParametersError.invalidGitHubAccessToken
+        let remoteFile = configuration.remoteRepoConfig.map { remoteFileConfiguration in
+            let accessToken = accessTokenResolver.resolveAccessToken(from: remoteFileConfiguration.accessToken)
+
+            if accessToken.isEmptyOrNil  {
+                print(GenerationParametersError.emptyGitHubAccessToken.description)
             }
 
             return RemoteFileParameters(

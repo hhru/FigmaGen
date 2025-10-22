@@ -5,14 +5,14 @@ struct RemoteFileParameters {
     let repo: String
     let branch: String
     let filePath: String
-    let accessToken: String
+    let accessToken: String?
 
     init(
         owner: String,
         repo: String,
         branch: String,
         filePath: String,
-        accessToken: String
+        accessToken: String?
     ) {
         self.owner = owner
         self.repo = repo
