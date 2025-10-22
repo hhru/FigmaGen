@@ -32,7 +32,9 @@ jobs:
           gem install bundler
           bundle install --without=documentation
       - name: Swift
-        uses: fwal/setup-swift@v1
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: "5.9"
       - name: Preparation
         run: set -o pipefail
       - name: Build
@@ -57,7 +59,9 @@ jobs:
           gem install bundler
           bundle install --without=documentation
       - name: Swift
-        uses: fwal/setup-swift@v1
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: "5.9"
       - name: Preparation
         run: set -o pipefail
       - name: Build
