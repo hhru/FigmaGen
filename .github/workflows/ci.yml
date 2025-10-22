@@ -50,6 +50,10 @@ jobs:
       image: swift:5.9
     steps:
       - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y libyaml-dev
       - name: Ruby
         uses: ruby/setup-ruby@v1
       - name: Bundler
