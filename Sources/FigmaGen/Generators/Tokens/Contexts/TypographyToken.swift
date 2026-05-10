@@ -6,11 +6,19 @@ struct TypographyToken {
 
     typealias FontSizeToken = ContextToken
     typealias FontScaleToken = ContextToken
-    typealias LetterSpacingToken = ContextToken
     typealias LineHeightToken = ContextToken
     typealias TextDecorationToken = ContextToken
     typealias ParagraphSpacingToken = ContextToken
     typealias ParagraphIndentToken = ContextToken
+
+    struct LetterSpacingToken {
+
+        // MARK: - Instance Properties
+
+        let path: [String]
+        let value: String
+        let rawValue: String
+    }
 
     // MARK: - Instance Properties
 
