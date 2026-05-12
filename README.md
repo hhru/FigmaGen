@@ -9,6 +9,7 @@
 FigmaGen is a command line tool for exporting resources and generating code from your [Figma](http://figma.com/) files.
 
 Currently, FigmaGen supports the following entities:
+
 - ✅ Color styles
 - ✅ Text styles
 - ✅ Shadow styles
