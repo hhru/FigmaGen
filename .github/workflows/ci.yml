@@ -18,13 +18,14 @@ env:
 jobs:
   macOS:
     name: macOS
-    runs-on: macOS-13
+    runs-on: macos-15
     env:
-      DEVELOPER_DIR: /Applications/Xcode_15.1.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
       SWIFTLINT_VERSION: 0.52.2
       DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
+      FIGMAGEN_ACCESS_TOKEN: ${{ secrets.FIGMAGEN_ACCESS_TOKEN }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Ruby
         uses: ruby/setup-ruby@v1
       - name: Bundler
@@ -49,7 +50,7 @@ jobs:
     container:
       image: swift:5.9
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Install dependencies
         run: |
           apt-get update
@@ -72,7 +73,7 @@ jobs:
     name: CocoaPods
     runs-on: macOS-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Ruby
         uses: ruby/setup-ruby@v1
       - name: Bundler
