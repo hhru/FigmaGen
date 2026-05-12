@@ -85,7 +85,8 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
 
         return TypographyToken.LetterSpacingToken(
             path: letterSpacingValue.components(separatedBy: "."),
-            value: String(round(fontLetterSpacing * 100) / 100.0)
+            value: String(round(fontLetterSpacing * 100) / 100.0),
+            rawValue: String(letterSpacing)
         )
     }
 

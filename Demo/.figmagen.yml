@@ -1,5 +1,6 @@
 base:
-  accessToken: 25961-4ac9fbc9-3bd8-4c43-bbe2-95e477f8a067
+  accessToken:
+    env: FIGMAGEN_ACCESS_TOKEN
 
 colorStyles:
   file: https://www.figma.com/file/61xw2FQn61Xr7VVFYwiHHy/Fugen-Demo?node-id=91%3A3
