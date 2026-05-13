@@ -54,7 +54,9 @@ test_demo: build
 
 	set -euo pipefail; \
 	cd $(DEMO_PATH); \
-	./figmagen generate; \
+	if [ "$${SKIP_FIGMAGEN_GENERATION:-}" != "YES" ]; then \
+		./figmagen generate; \
+	fi; \
 	bundle exec pod install; \
 	xcodebuild clean build test -workspace "$(DEMO_WORKSPACE)" -scheme "$(DEMO_TEST_SCHEME)" -destination "$(DEMO_TEST_DESTINATION)" | XCPRETTY_JSON_FILE_OUTPUT="../$(DEMO_TEST_LOG_PATH)" xcpretty -f `xcpretty-json-formatter`
 
