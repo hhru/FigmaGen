@@ -9,6 +9,7 @@
 FigmaGen is a command line tool for exporting resources and generating code from your [Figma](http://figma.com/) files.
 
 Currently, FigmaGen supports the following entities:
+
 - ✅ Color styles
 - ✅ Text styles
 - ✅ Shadow styles
@@ -43,7 +44,7 @@ Currently, FigmaGen supports the following entities:
 ### CocoaPods
 To install FigmaGen using [CocoaPods](http://cocoapods.org) dependency manager, add this line to your `Podfile`:
 ```ruby
-pod 'FigmaGen', '~> 2.0.0-beta.26'
+pod 'FigmaGen', '~> 2.0.0-beta.27'
 ```
 
 Then run this command:
@@ -73,7 +74,7 @@ $ brew install hhru/tap/figmagen
 For [Mint](https://github.com/yonaskolb/mint) package manager installation, run:
 
 ```sh
-$ mint install hhru/FigmaGen@2.0.0-beta.26
+$ mint install hhru/FigmaGen@2.0.0-beta.27
 ```
 
 ### ZIP archive
