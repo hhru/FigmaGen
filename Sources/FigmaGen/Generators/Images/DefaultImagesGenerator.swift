@@ -73,6 +73,7 @@ extension ImagesConfiguration {
             scales: scales,
             assets: assets,
             resources: resources,
+            coloredResources: coloredResources,
             postProcessor: postProcessor,
             onlyExportables: onlyExportables,
             useAbsoluteBounds: useAbsoluteBounds,

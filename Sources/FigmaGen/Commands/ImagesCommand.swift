@@ -70,12 +70,22 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             """
     )
 
+    let coloredResources = Key<String>(
+        "--coloredResources",
+        description: """
+            Optional path to folder to store generated ImageVector Kotlin files for
+            multi-color icons (components with "colored" in their Figma node name).
+            Requires --postProcessor to be set — the downloaded SVG is saved here and
+            converted to a .kt file by --postProcessor (invoked with --outputFormat kt).
+            """
+    )
+
     let postProcessor = Key<String>(
         "--postProcessor",
         "-p",
         description: """
             The path to the bash script to make operations with generated images.
-            Only executes for generated images from --resources folder.
+            Executes for generated images from --resources and --coloredResources folders.
             """
     )
 
@@ -289,6 +299,7 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             generatation: generationConfiguration,
             assets: assets.value,
             resources: resources.value,
+            coloredResources: coloredResources.value,
             postProcessor: postProcessor.value,
             format: resolveImageFormat(),
             scales: resolveImageScales(),
