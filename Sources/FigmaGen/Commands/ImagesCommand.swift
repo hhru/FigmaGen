@@ -191,6 +191,14 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             """
     )
 
+    let symbolRenderAs = Key<String>(
+        "--symbolRenderAs",
+        description: """
+            Set rendering mode in Xcode assets for SF Symbols, can be 'template`, `multicolor` or `hierarchical'.
+            By default, Xcode assets will be generated with automatic rendering mode.
+            """
+    )
+
     // MARK: - Initializers
 
     init(generator: ImagesGenerator) {
@@ -240,6 +248,20 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
         }
     }
 
+    private func resolveSymbolRenderAs() -> SymbolRenderingMode? {
+        switch symbolRenderAs.value {
+        case nil:
+            return nil
+
+        case let rawSymbolRenderingMode?:
+            guard let mode = SymbolRenderingMode(rawValue: rawSymbolRenderingMode) else {
+                fail(message: "Failed to generated images: Invalid rendering mode (\(rawSymbolRenderingMode)")
+            }
+
+            return mode
+        }
+    }
+
     private func resolveNamingStyle() -> ImageNamingStyle {
         switch namingStyle.value {
         case nil:
@@ -266,6 +288,7 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             useAbsoluteBounds: useAbsoluteBounds.value,
             preserveVectorData: preserveVectorData.value,
             renderAs: resolveRenderingMode(),
+            symbolRenderAs: resolveSymbolRenderAs(),
             groupByFrame: groupByFrame.value,
             groupByComponentSet: groupByComponentSet.value,
             namingStyle: resolveNamingStyle(),

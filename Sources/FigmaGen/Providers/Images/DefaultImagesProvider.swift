@@ -232,16 +232,14 @@ final class DefaultImagesProvider: ImagesProvider {
             when(
                 fulfilled: self.imageRenderProvider.renderImages(
                     of: file,
-                    // TODO: @d.viter тут должно быть parameters.sfSymbolKey
-                    nodes: nodes.getImagesWithoutSymbols(by: "colored"),
+                    nodes: nodes.getImagesWithoutSymbols(by: parameters.sfSymbolKey),
                     format: parameters.format,
                     scales: parameters.scales,
                     useAbsoluteBounds: parameters.useAbsoluteBounds
                 ),
                 self.imageRenderProvider.renderImages(
                     of: file,
-                    // TODO: @d.viter тут должно быть parameters.sfSymbolKey
-                    nodes: nodes.getSymbols(by: "colored"),
+                    nodes: nodes.getSymbols(by: parameters.sfSymbolKey),
                     format: .svg,
                     scales: parameters.scales,
                     useAbsoluteBounds: parameters.useAbsoluteBounds

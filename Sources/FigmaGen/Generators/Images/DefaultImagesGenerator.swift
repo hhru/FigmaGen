@@ -78,6 +78,7 @@ extension ImagesConfiguration {
             useAbsoluteBounds: useAbsoluteBounds,
             preserveVectorData: preserveVectorData,
             renderAs: renderAs,
+            symbolRenderAs: symbolRenderAs,
             groupByFrame: groupByFrame,
             groupByComponentSet: groupByComponentSet,
             namingStyle: namingStyle,

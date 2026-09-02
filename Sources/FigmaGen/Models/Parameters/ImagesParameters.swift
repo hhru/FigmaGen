@@ -13,6 +13,7 @@ struct ImagesParameters {
     let useAbsoluteBounds: Bool
     let preserveVectorData: Bool
     let renderAs: ImageRenderingMode?
+    let symbolRenderAs: SymbolRenderingMode?
     let groupByFrame: Bool
     let groupByComponentSet: Bool
     let namingStyle: ImageNamingStyle

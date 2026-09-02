@@ -14,6 +14,7 @@ struct ImagesConfiguration: Decodable {
         case useAbsoluteBounds
         case preserveVectorData
         case renderAs
+        case symbolRenderAs
         case groupByFrame
         case groupByComponentSet
         case namingStyle
@@ -32,6 +33,7 @@ struct ImagesConfiguration: Decodable {
     let useAbsoluteBounds: Bool
     let preserveVectorData: Bool
     let renderAs: ImageRenderingMode?
+    let symbolRenderAs: SymbolRenderingMode?
     let groupByFrame: Bool
     let groupByComponentSet: Bool
     let namingStyle: ImageNamingStyle
@@ -50,6 +52,7 @@ struct ImagesConfiguration: Decodable {
         useAbsoluteBounds: Bool,
         preserveVectorData: Bool,
         renderAs: ImageRenderingMode?,
+        symbolRenderAs: SymbolRenderingMode?,
         groupByFrame: Bool,
         groupByComponentSet: Bool,
         namingStyle: ImageNamingStyle,
@@ -65,6 +68,7 @@ struct ImagesConfiguration: Decodable {
         self.useAbsoluteBounds = useAbsoluteBounds
         self.preserveVectorData = preserveVectorData
         self.renderAs = renderAs
+        self.symbolRenderAs = symbolRenderAs
         self.groupByFrame = groupByFrame
         self.groupByComponentSet = groupByComponentSet
         self.namingStyle = namingStyle
@@ -84,6 +88,7 @@ struct ImagesConfiguration: Decodable {
         useAbsoluteBounds = try container.decodeIfPresent(forKey: .useAbsoluteBounds) ?? false
         preserveVectorData = try container.decodeIfPresent(forKey: .preserveVectorData) ?? false
         renderAs = try container.decodeIfPresent(forKey: .renderAs)
+        symbolRenderAs = try container.decodeIfPresent(forKey: .symbolRenderAs)
         groupByFrame = try container.decodeIfPresent(forKey: .groupByFrame) ?? false
         groupByComponentSet = try container.decodeIfPresent(forKey: .groupByComponentSet) ?? false
         namingStyle = try container.decodeIfPresent(forKey: .namingStyle) ?? .camelCase
@@ -106,6 +111,7 @@ struct ImagesConfiguration: Decodable {
             useAbsoluteBounds: useAbsoluteBounds,
             preserveVectorData: preserveVectorData,
             renderAs: renderAs,
+            symbolRenderAs: symbolRenderAs,
             groupByFrame: groupByFrame,
             groupByComponentSet: groupByComponentSet,
             namingStyle: namingStyle,
