@@ -183,6 +183,14 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             """
     )
 
+    let sfSymbolKey = Key<String>(
+        "--sfSymbolKey",
+        description: """
+            Colored icons flag name from Figma.
+            By default, assets will be generated without processing colored info.
+            """
+    )
+
     // MARK: - Initializers
 
     init(generator: ImagesGenerator) {
@@ -260,7 +268,8 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             renderAs: resolveRenderingMode(),
             groupByFrame: groupByFrame.value,
             groupByComponentSet: groupByComponentSet.value,
-            namingStyle: resolveNamingStyle()
+            namingStyle: resolveNamingStyle(),
+            sfSymbolKey: sfSymbolKey.value
         )
     }
 

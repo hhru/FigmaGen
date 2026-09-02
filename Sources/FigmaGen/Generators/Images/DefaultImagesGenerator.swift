@@ -80,7 +80,8 @@ extension ImagesConfiguration {
             renderAs: renderAs,
             groupByFrame: groupByFrame,
             groupByComponentSet: groupByComponentSet,
-            namingStyle: namingStyle
+            namingStyle: namingStyle,
+            sfSymbolKey: sfSymbolKey
         )
     }
 }

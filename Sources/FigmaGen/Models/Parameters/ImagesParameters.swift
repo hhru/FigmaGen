@@ -16,4 +16,5 @@ struct ImagesParameters {
     let groupByFrame: Bool
     let groupByComponentSet: Bool
     let namingStyle: ImageNamingStyle
+    let sfSymbolKey: String?
 }

@@ -22,10 +22,16 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
     private func resolveName(
         for node: ImageRenderedNode,
         setNode: ImageComponentSetRenderedNode,
-        namingStyle: ImageNamingStyle
+        namingStyle: ImageNamingStyle,
+        sfSymbolKey: String
     ) -> String {
-        let name = setNode.type == .component ? node.base.name : "\(setNode.name) \(node.base.name)"
+        var name = setNode.type == .component ? node.base.name : "\(setNode.name) \(node.base.name)"
 
+        if !sfSymbolKey.isEmpty, name.contains(sfSymbolKey) {
+            name = name
+                .replacingOccurrences(of: "\(sfSymbolKey)=false", with: "")
+                .replacingOccurrences(of: "\(sfSymbolKey)=true", with: "\(sfSymbolKey)")
+        }
         switch namingStyle {
         case .camelCase:
             return name.camelized
@@ -41,7 +47,12 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
         parameters: ImagesParameters,
         folderPath: Path
     ) -> ImageAsset {
-        let name = resolveName(for: node, setNode: setNode, namingStyle: parameters.namingStyle)
+        let name = resolveName(
+            for: node,
+            setNode: setNode,
+            namingStyle: parameters.namingStyle,
+            sfSymbolKey: parameters.sfSymbolKey ?? ""
+        )
 
         let folderPath = resolveFolderPath(
             groupByFrame: parameters.groupByFrame,
