@@ -1,6 +1,7 @@
 import Foundation
 
-// Palette layer role of a path. Black Figma fills become primary, #FF0002 fills become secondary.
+/// Роль пути в палитре слоёв. Определяется по id пути, а если его нет - по заливке:
+/// чёрная заливка из Figma даёт primary, любая другая - secondary.
 enum SFSymbolRole: String {
 
     case primary

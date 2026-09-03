@@ -1,6 +1,6 @@
 import Foundation
 
-// Everything the SVG template needs to lay a Figma drawing out in SF Symbols coordinates.
+// Всё, что нужно SVG-шаблону, чтобы разложить рисунок из Figma в координатах SF Symbols.
 struct SVGImageToken {
 
     let name: String

@@ -1,10 +1,4 @@
 import Foundation
-import FigmaGenTools
-
-protocol SVGParser {
-
-    func parse(id: String, data: Data) throws -> SVGPathsResult
-}
 
 final class DefaultSVGParser: NSObject, SVGParser {
 
@@ -14,8 +8,8 @@ final class DefaultSVGParser: NSObject, SVGParser {
         static let path = "path"
         static let svg = "svg"
 
-        // Elements whose paths only describe reusable definitions and never
-        // contribute to the visible drawing.
+        // Элементы, чьи пути описывают только переиспользуемые определения
+        // и никогда не участвуют в видимом рисунке.
         static let ignored: Set<String> = ["clipPath", "defs", "mask", "pattern", "symbol"]
     }
 
@@ -59,8 +53,8 @@ final class DefaultSVGParser: NSObject, SVGParser {
     }
 
     private func startGroup(attributes attributeDict: [String: String]) {
-        let effectiveFill = fillColor(from: attributeDict)
-        ?? groupStack.last?.fill
+        // Заливка наследуется от ближайшей родительской группы, если у самой группы её нет.
+        let effectiveFill = fillColor(from: attributeDict) ?? groupStack.last?.fill
 
         let context = SVGGroupContext(
             id: attributeDict[Attributes.id],
@@ -72,10 +66,11 @@ final class DefaultSVGParser: NSObject, SVGParser {
     }
 
     private func makeCanvas(from attributes: [String: String]) -> SVGCanvas? {
-        if let width = length(from: attributes[Attributes.width]),
-           let height = length(from: attributes[Attributes.height]),
-           width > 0.0,
-           height > 0.0 {
+        if
+            let width = length(from: attributes[Attributes.width]),
+            let height = length(from: attributes[Attributes.height]),
+            width > 0.0,
+            height > 0.0 {
             return SVGCanvas(width: width, height: height)
         }
 
@@ -181,9 +176,11 @@ extension DefaultSVGParser: XMLParserDelegate {
             return
         }
 
-        let inheritedFill = fillColor(from: attributeDict)
-        ?? groupStack.last?.fill
+        let inheritedFill = fillColor(from: attributeDict) ?? groupStack.last?.fill
         let groupIDs = groupStack.compactMap(\.id)
+
+        // Преобразования собираются от внешней группы к внутренней - в том порядке,
+        // в каком их применяет SVG. Собственный transform пути добавляет `SVGPath.allTransforms`.
         let transforms = groupStack.compactMap(\.transform)
 
         let path = SVGPath(
@@ -211,23 +208,5 @@ extension DefaultSVGParser: XMLParserDelegate {
         }
 
         _ = groupStack.popLast()
-    }
-
-    func combinedTransform(
-        groupStack: [SVGGroupContext],
-        pathAttributes: [String: String]
-    ) -> [String] {
-        let groupTransforms = groupStack.compactMap(\.transform)
-
-        let pathTransform = pathAttributes[Attributes.transform]
-
-        let allTransforms = groupTransforms
-        + [pathTransform].compactMap { $0 }
-
-        guard !allTransforms.isEmpty else {
-            return []
-        }
-
-        return allTransforms
     }
 }

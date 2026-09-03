@@ -14,11 +14,11 @@ struct ImagesConfiguration: Decodable {
         case useAbsoluteBounds
         case preserveVectorData
         case renderAs
-        case symbolRenderAs
         case groupByFrame
         case groupByComponentSet
         case namingStyle
         case sfSymbolKey
+        case symbolRenderAs
         case sfSymbolTemplate
     }
 
@@ -34,11 +34,11 @@ struct ImagesConfiguration: Decodable {
     let useAbsoluteBounds: Bool
     let preserveVectorData: Bool
     let renderAs: ImageRenderingMode?
-    let symbolRenderAs: SymbolRenderingMode?
     let groupByFrame: Bool
     let groupByComponentSet: Bool
     let namingStyle: ImageNamingStyle
     let sfSymbolKey: String?
+    let symbolRenderAs: SymbolRenderingMode?
     let sfSymbolTemplate: String?
 
     // MARK: - Initializers
@@ -54,11 +54,11 @@ struct ImagesConfiguration: Decodable {
         useAbsoluteBounds: Bool,
         preserveVectorData: Bool,
         renderAs: ImageRenderingMode?,
-        symbolRenderAs: SymbolRenderingMode?,
         groupByFrame: Bool,
         groupByComponentSet: Bool,
         namingStyle: ImageNamingStyle,
         sfSymbolKey: String?,
+        symbolRenderAs: SymbolRenderingMode?,
         sfSymbolTemplate: String?
     ) {
         self.generatation = generatation
@@ -71,11 +71,11 @@ struct ImagesConfiguration: Decodable {
         self.useAbsoluteBounds = useAbsoluteBounds
         self.preserveVectorData = preserveVectorData
         self.renderAs = renderAs
-        self.symbolRenderAs = symbolRenderAs
         self.groupByFrame = groupByFrame
         self.groupByComponentSet = groupByComponentSet
         self.namingStyle = namingStyle
         self.sfSymbolKey = sfSymbolKey
+        self.symbolRenderAs = symbolRenderAs
         self.sfSymbolTemplate = sfSymbolTemplate
     }
 
@@ -92,11 +92,11 @@ struct ImagesConfiguration: Decodable {
         useAbsoluteBounds = try container.decodeIfPresent(forKey: .useAbsoluteBounds) ?? false
         preserveVectorData = try container.decodeIfPresent(forKey: .preserveVectorData) ?? false
         renderAs = try container.decodeIfPresent(forKey: .renderAs)
-        symbolRenderAs = try container.decodeIfPresent(forKey: .symbolRenderAs)
         groupByFrame = try container.decodeIfPresent(forKey: .groupByFrame) ?? false
         groupByComponentSet = try container.decodeIfPresent(forKey: .groupByComponentSet) ?? false
         namingStyle = try container.decodeIfPresent(forKey: .namingStyle) ?? .camelCase
         sfSymbolKey = try container.decodeIfPresent(forKey: .sfSymbolKey)
+        symbolRenderAs = try container.decodeIfPresent(forKey: .symbolRenderAs)
         sfSymbolTemplate = try container.decodeIfPresent(forKey: .sfSymbolTemplate)
 
         generatation = try GenerationConfiguration(from: decoder)
@@ -116,11 +116,11 @@ struct ImagesConfiguration: Decodable {
             useAbsoluteBounds: useAbsoluteBounds,
             preserveVectorData: preserveVectorData,
             renderAs: renderAs,
-            symbolRenderAs: symbolRenderAs,
             groupByFrame: groupByFrame,
             groupByComponentSet: groupByComponentSet,
             namingStyle: namingStyle,
             sfSymbolKey: sfSymbolKey,
+            symbolRenderAs: symbolRenderAs,
             sfSymbolTemplate: sfSymbolTemplate
         )
     }

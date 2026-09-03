@@ -1,8 +1,8 @@
 import Foundation
 
-// Size of the root `<svg>` element, which Figma exports equal to the component box.
-// SF Symbols geometry is built from this box and not from the visible path bounds,
-// so that the padding designed in Figma is preserved.
+/// Размер корневого элемента `<svg>`, который Figma выгружает равным боксу компонента.
+/// Геометрия SF Symbols строится именно от этого бокса, а не от границ видимых путей,
+/// чтобы сохранить заложенные в Figma отступы.
 struct SVGCanvas: Equatable {
 
     let width: Double

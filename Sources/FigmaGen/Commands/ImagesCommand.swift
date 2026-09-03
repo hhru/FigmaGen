@@ -203,7 +203,7 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
         "--sfSymbolTemplate",
         description: """
             Path to the SF Symbol template file.
-            If no template is passed a default template will be used.
+            If no template is passed SF Symbols won't be created.
             """
     )
 
@@ -249,7 +249,7 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
 
         case let rawRenderingMode?:
             guard let mode = ImageRenderingMode(rawValue: rawRenderingMode) else {
-                fail(message: "Failed to generated images: Invalid rendering mode (\(rawRenderingMode)")
+                fail(message: "Failed to generate images: Invalid rendering mode (\(rawRenderingMode))")
             }
 
             return mode
@@ -263,7 +263,7 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
 
         case let rawSymbolRenderingMode?:
             guard let mode = SymbolRenderingMode(rawValue: rawSymbolRenderingMode) else {
-                fail(message: "Failed to generated images: Invalid rendering mode (\(rawSymbolRenderingMode)")
+                fail(message: "Failed to generate symbols: Invalid rendering mode (\(rawSymbolRenderingMode)")
             }
 
             return mode
@@ -296,11 +296,11 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             useAbsoluteBounds: useAbsoluteBounds.value,
             preserveVectorData: preserveVectorData.value,
             renderAs: resolveRenderingMode(),
-            symbolRenderAs: resolveSymbolRenderAs(),
             groupByFrame: groupByFrame.value,
             groupByComponentSet: groupByComponentSet.value,
             namingStyle: resolveNamingStyle(),
             sfSymbolKey: sfSymbolKey.value,
+            symbolRenderAs: resolveSymbolRenderAs(),
             sfSymbolTemplate: sfSymbolTemplate.value
         )
     }

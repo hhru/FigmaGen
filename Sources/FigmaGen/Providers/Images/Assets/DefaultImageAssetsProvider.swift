@@ -83,10 +83,8 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
 
         let symbolRenderingMode = isSymbol ? parameters.symbolRenderAs : nil
 
-        let filePaths = node.urls.keys.reduce(into: [:]) {
-            result,
-            scale in
-            result[scale] = folderPath
+        let filePaths = node.urls.keys.reduce(into: [:]) { result, scale in
+            result[isSymbol ? .none : scale] = folderPath
                 .appending(fileName: name, extension: assetSetExtension)
                 .appending(fileName: name.appending(scale.fileNameSuffix), extension: assetExtension)
                 .string
@@ -97,8 +95,8 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
             filePaths: filePaths,
             preserveVectorData: parameters.preserveVectorData,
             renderAs: parameters.renderAs,
-            symbolRenderAs: symbolRenderingMode,
-            isSymbol: isSymbol
+            isSymbol: isSymbol,
+            symbolRenderAs: symbolRenderingMode
         )
     }
 
@@ -107,7 +105,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
         parameters: ImagesParameters,
         folderPath: Path
     ) -> [ImageComponentSetAsset] {
-        nodes.compactMap { setNode in
+        nodes.map { setNode in
             var assets: [ImageRenderedNode: ImageAsset] = [:]
 
             setNode.components.forEach { node in
@@ -333,10 +331,10 @@ extension AssetSymbolRenderingIntent {
     fileprivate init(from renderingIntent: SymbolRenderingMode) {
         switch renderingIntent {
         case .template:
-            self = .hierarchical
+            self = .template
 
         case .multicolor:
-            self = .hierarchical
+            self = .multicolor
 
         case .hierarchical:
             self = .hierarchical

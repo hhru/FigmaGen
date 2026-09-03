@@ -22,25 +22,25 @@ final class DefaultSFSymbolProvider: SFSymbolProvider {
     func saveData(from url: URL, to filePath: String, template: String?) -> Promise<Void> {
         firstly {
             self.fetchData(from: url)
-        }.map(on: DispatchQueue.global(qos: .userInitiated)) { [weak self] fileData in
-            guard let self, let template else {
+        }.map(on: DispatchQueue.global(qos: .userInitiated)) { fileData in
+            guard let template else {
                 return
             }
 
             let filePath = Path(filePath)
-            
+
             if filePath.exists {
                 try filePath.delete()
             }
 
             let result = try self.svgParser.parse(id: filePath.string, data: fileData)
 
-            let token = try extractPaths(from: result)
+            let token = try self.extractPaths(from: result)
 
-            try templateRenderer.renderTemplate(
+            try self.templateRenderer.renderTemplate(
                 RenderTemplate(type: .custom(path: template), options: [:]),
                 to: RenderDestination.file(path: filePath.string),
-                context: makeContext(for: token)
+                context: self.makeContext(for: token)
             )
         }
     }
@@ -58,111 +58,13 @@ final class DefaultSFSymbolProvider: SFSymbolProvider {
             self.dataCache.setValue(data, forKey: url)
         }
     }
-final class DefaultSFSymbolProvider {
 
-    // MARK: - Nested Types
-
-    // Geometry of the SF Symbols template, matching the reference pipeline
-    // described in Kolya/SF_SYMBOLS.md.
-    private enum Geometry {
-
-        // Typographic metrics shared by every row of the template. The cap height is 0.70459 of the
-        // em, which matches the cap height of SF Pro and confirms that one em is 100 design units:
-        // a design box of emDesignHeight units renders at exactly the point size of the font.
-        static let capHeight = 70.459
-        static let emDesignHeight = 100
-
-        // The reported width of a symbol is the width of its rasterized artwork rounded up to a
-        // whole device pixel. A design box of exactly emDesignHeight units lands on that boundary,
-        // where the rounding goes either way, so the box is inset by a fraction of a unit. Half a
-        // unit is a fifth of a device pixel at @3x and a point size of 24, which is invisible, and
-        // it keeps the rounding on the low side.
-        static let designBoxInset = 0.5
-
-        // Vertical extent of the margin guides, relative to the baseline of their own row.
-        static let marginGuideTopOffset = 95.215
-        static let marginGuideBottomOffset = 24.121
-
-        // Horizontal centers of the weight columns, taken from the labels
-        // of the "Weight/Scale Variations" section of the template.
-        static let weights: [(name: String, centerX: Double)] = [
-            (name: "Ultralight", centerX: 559.711),
-            (name: "Regular", centerX: 1449.845),
-            (name: "Black", centerX: 2933.4)
-        ]
-
-        // Baselines of the scale rows. Every scale is authored explicitly and carries the same
-        // drawing, so SF Symbols derives nothing and the image scale requested by the application
-        // cannot change the rendered size.
-        static let scales: [(name: String, baseline: Double)] = [
-            (name: "S", baseline: 696.0),
-            (name: "M", baseline: 1126.0),
-            (name: "L", baseline: 1556.0)
-        ]
-    }
-
-    private enum Fill {
-
-        // Figma fills mapped to the secondary Palette layer. Black is mapped to the primary layer
-        // by SVGParser, and any other fill fails generation.
-        static let secondary: Set<String> = ["#ff0002"]
-    }
-
-    // MARK: - Instance Properties
-
-    // teper ne nujno (est' parameter)
-    //    private let templateRenderer = DefaultTemplateRenderer(
-    //        contextCoder: DefaultTemplateContextCoder(),
-    //        stencilExtensions: [
-    //            StencilByteToHexFilter(),
-    //            StencilHexToByteFilter(),
-    //            StencilByteToFloatFilter(),
-    //            StencilFloatToByteFilter(),
-    //            StencilVectorInfoFilter(contextCoder: DefaultTemplateContextCoder()),
-    //            StencilColorRGBHexInfoFilter(contextCoder: DefaultTemplateContextCoder()),
-    //            StencilColorRGBAHexInfoFilter(contextCoder: DefaultTemplateContextCoder()),
-    //            StencilColorRGBInfoFilter(contextCoder: DefaultTemplateContextCoder()),
-    //            StencilColorRGBAInfoFilter(contextCoder: DefaultTemplateContextCoder()),
-    //            StencilColorInfoFilter(contextCoder: DefaultTemplateContextCoder()),
-    //            StencilFontInfoFilter(contextCoder: DefaultTemplateContextCoder()),
-    //            StencilFontInitializerModificator(contextCoder: DefaultTemplateContextCoder()),
-    //            StencilFontSystemFilter(contextCoder: DefaultTemplateContextCoder()),
-    //            StencilCollectionDropFirstModificator(),
-    //            StencilCollectionDropLastModificator(),
-    //            StencilCollectionRemovingFirstModificator(),
-    //            StencilHexToAlphaFilter(),
-    //            StencilFullHexModificator(),
-    //            StencilRecursiveTokenFindModicator()
-    //        ]
-    //    )
-
-    // MARK: - Instance Methods
-
-    private func resolveRole(of path: SVGPath) throws -> SFSymbolRole {
+    private func resolveRole(of path: SVGPath) -> SFSymbolRole {
         if let id = path.id, let role = SFSymbolRole(rawValue: id.lowercased()) {
             return role
         }
 
-        switch path.fill {
-        case .black:
-            return .primary
-
-        case let .other(fill) where Fill.secondary.contains(normalizeFill(fill)):
-            return .secondary
-
-        case let .other(fill):
-            throw SVGParserError.unsupportedFill(fill)
-
-        case nil:
-            throw SVGParserError.unsupportedFill("")
-        }
-    }
-
-    private func normalizeFill(_ fill: String) -> String {
-        fill
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .lowercased()
-            .replacingOccurrences(of: " ", with: "")
+        return path.role
     }
 
     private func extractPaths(from result: SVGPathsResult) throws -> SVGImageToken {
@@ -174,53 +76,61 @@ final class DefaultSFSymbolProvider {
             throw SVGParserError.invalidSVG
         }
 
-        // The component box fills the em design box, so the symbol renders at the point size given
-        // to .font(.system(size:)). The optical size of the drawing is therefore chosen by that
-        // point size and not baked into the geometry. The width keeps the proportions of the Figma
-        // component box, so that intentional padding and non-square components survive.
-        let designHeight = Geometry.emDesignHeight - Geometry.designBoxInset
-        let designWidth = designHeight * canvas.width / canvas.height
+        // Бокс компонента всегда занимает весь em дизайн-бокса, поэтому символ рисуется ровно
+        // в том кегле, который передан в .font(.system(size:)). Оптический размер рисунка задаётся
+        // этим кеглем и не зашивается в геометрию.
+        // Ширина сохраняет пропорции бокса компонента из Figma, чтобы заложенные дизайнером отступы
+        // и неквадратные компоненты пережили конвертацию. Она округляется до целой дизайн-единицы,
+        // потому что поля задают итоговый бокс символа, а дробное поле может расширить его на целую
+        // единицу. Квадратный компонент и так целый, а у неквадратного в худшем случае правое поле
+        // сдвинется на половину единицы, не задев сам рисунок.
+        let designHeight = SFSymbolGeometry.emDesignHeight
+        let scale = designHeight / canvas.height
+        let designWidth = (canvas.width * scale).rounded()
 
-        let pathData = try result.allPaths.map { path -> String in
-            guard let data = path.data else {
-                throw SVGParserError.invalidPathData("")
-            }
-
-            return data
-        }
-
-        // Figma clips the drawing to the component box, but the exported path data is not clipped
-        // and regularly reaches a fraction of a point outside it. The reported symbol size follows
-        // the artwork rather than the margin guides, so it is the union of the component box and
-        // the artwork that has to fit the design box, not the component box alone.
-        let sourceBox = try pathData
-            .map { try SVGPathBounds.make(pathData: $0) }
-            .reduce(SVGPathBounds(minX: 0.0, minY: 0.0, maxX: canvas.width, maxY: canvas.height)) {
-                $0.union($1)
-            }
-
-        let scale = min(designWidth / sourceBox.width, designHeight / sourceBox.height)
-
-        // Figma draws downwards from the top left corner, while the template draws upwards from the
-        // baseline. The design box is centered on the cap height center, and the source box is
-        // centered in the design box.
-        let transformer = SVGPathTransformer(
-            scale: scale,
-            translationX: (designWidth - sourceBox.width * scale) / 2.0 - sourceBox.minX * scale,
-            translationY: -Geometry.capHeight / 2.0 - designHeight / 2.0
-                + (designHeight - sourceBox.height * scale) / 2.0
-                - sourceBox.minY * scale
+        // И Figma, и шаблон рисуют сверху вниз, поэтому переворот по Y не нужен - достаточно
+        // масштаба и сдвига. Сдвиг ставит центр дизайн-бокса в центр cap height той строки,
+        // в которую группа символа переносится шаблоном.
+        let baseTransform = SVGTransform(
+            a: scale,
+            b: 0.0,
+            c: 0.0,
+            d: scale,
+            e: 0.0,
+            f: -SFSymbolGeometry.capHeight / 2.0 - designHeight / 2.0
         )
 
+        return SVGImageToken(
+            name: URL(fileURLWithPath: result.id).deletingPathExtension().lastPathComponent,
+            opticalSize: Int(canvas.height.rounded()),
+            designWidth: designWidth,
+            designHeight: designHeight,
+            layers: try makeLayers(from: result, baseTransform: baseTransform)
+        )
+    }
+
+    /// Раскладывает пути по ролям, сохраняя порядок появления ролей в файле:
+    /// он определяет номера слоёв и motion-групп в шаблоне.
+    private func makeLayers(from result: SVGPathsResult, baseTransform: SVGTransform) throws -> [SFSymbolLayer] {
         var roles: [SFSymbolRole] = []
         var pathsByRole: [SFSymbolRole: [SFSymbolPathData]] = [:]
 
-        for (path, data) in zip(result.allPaths, pathData) {
-            let role = try resolveRole(of: path)
+        for path in result.allPaths {
+            guard let data = path.data else {
+                throw SVGParserError.invalidPathData("for \(result.id)")
+            }
+
+            let role = resolveRole(of: path)
 
             if !roles.contains(role) {
                 roles.append(role)
             }
+
+            // Собственный и унаследованный transform пути применяются к его координатам
+            // до перевода в пространство шаблона, поэтому базовое преобразование идёт первым.
+            let transformer = SVGPathTransformer(
+                transform: baseTransform.concatenating(try SVGTransformParser.transform(from: path.allTransforms))
+            )
 
             pathsByRole[role, default: []].append(
                 SFSymbolPathData(
@@ -230,15 +140,9 @@ final class DefaultSFSymbolProvider {
             )
         }
 
-        return SVGImageToken(
-            name: URL(fileURLWithPath: result.id).deletingPathExtension().lastPathComponent,
-            opticalSize: Int(canvas.height.rounded()),
-            designWidth: designWidth,
-            designHeight: designHeight,
-            layers: roles.enumerated().map { index, role in
-                SFSymbolLayer(index: index, role: role, paths: pathsByRole[role] ?? [])
-            }
-        )
+        return roles.enumerated().map { index, role in
+            SFSymbolLayer(index: index, role: role, paths: pathsByRole[role] ?? [])
+        }
     }
 
     private func makeContext(for token: SVGImageToken) -> [String: Any] {
@@ -246,7 +150,7 @@ final class DefaultSFSymbolProvider {
             [
                 "index": layer.index,
                 "role": layer.role.rawValue,
-                // Motion groups are numbered from the topmost layer, the way Xcode exports them.
+                // Motion-группы нумеруются от самого верхнего слоя - так их выгружает Xcode.
                 "motionGroup": token.layers.count - 1 - layer.index,
                 "paths": layer.paths.map { path in
                     ["data": path.data, "fillRule": path.fillRule ?? ""]
@@ -254,11 +158,11 @@ final class DefaultSFSymbolProvider {
             ]
         }
 
-        let variants = Geometry.scales.flatMap { scale in
-            Geometry.weights.map { weight -> [String: Any] in
-                // The guides sit exactly on the edges of the design box: they define the advance of
-                // the symbol, and the artwork is fitted to the same box.
-                let originX = weight.centerX - token.designWidth / 2.0
+        let variants = SFSymbolGeometry.scales.flatMap { scale in
+            SFSymbolGeometry.weights.map { weight -> [String: Any] in
+                // Округляется, чтобы оба поля попали на целые дизайн-единицы: центр колонки дробный,
+                // и точное центрирование поставило бы поля на доли единицы.
+                let originX = (weight.centerX - token.designWidth / 2.0).rounded()
 
                 return [
                     "id": "\(weight.name)-\(scale.name)",
@@ -266,8 +170,8 @@ final class DefaultSFSymbolProvider {
                     "baseline": SVGNumber.string(from: scale.baseline),
                     "leftMargin": SVGNumber.string(from: originX),
                     "rightMargin": SVGNumber.string(from: originX + token.designWidth),
-                    "guideTop": SVGNumber.string(from: scale.baseline - Geometry.marginGuideTopOffset),
-                    "guideBottom": SVGNumber.string(from: scale.baseline + Geometry.marginGuideBottomOffset)
+                    "guideTop": SVGNumber.string(from: scale.baseline - SFSymbolGeometry.marginGuideTopOffset),
+                    "guideBottom": SVGNumber.string(from: scale.baseline + SFSymbolGeometry.marginGuideBottomOffset)
                 ]
             }
         }
@@ -281,22 +185,24 @@ final class DefaultSFSymbolProvider {
             "variants": variants
         ]
     }
+}
 
-    // MARK: - BorderTokensGenerator
+extension SVGPath {
 
-    //    func generate(
-    //        renderParameters: RenderParameters,
-    //        tokenValues: TokenValues,
-    //        result: SVGPathsResult,
-    //        themes: [Theme],
-    //        fallbackTheme: Theme
-    //    ) throws {
-    //        let token = try extractPaths(from: result)
-    //
-    //        try templateRenderer.renderTemplate(
-    //            renderParameters.template,
-    //            to: renderParameters.destination,
-    //            context: makeContext(for: token)
-    //        )
-    //    }
+    var role: SFSymbolRole {
+        // TODO: @d.viter тут было еще wholeID.contains("icon")
+        if id == "primary" || fill == .black {
+            return .primary
+        }
+
+        if id == "secondary" || fill != .black || wholeID.contains("detail-a")  {
+            return .secondary
+        }
+
+        if id == "tertiary" || wholeID.contains("detail-b")  {
+            return .tertiary
+        }
+
+        return .tertiary
+    }
 }

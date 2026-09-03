@@ -1,5 +1,6 @@
 import Foundation
 
+/// Посимвольный сканер, общий для данных пути (`d`) и для списка преобразований (`transform`).
 struct SVGReader {
 
     // MARK: - Type Properties
@@ -30,6 +31,14 @@ struct SVGReader {
         index < characters.count && characters[index].isASCII && characters[index].isNumber
     }
 
+    /// `true`, если, кроме разделителей, в строке ничего не осталось.
+    /// Нужна, чтобы не проглатывать молча хвост, который не удалось разобрать.
+    mutating func isAtEnd() -> Bool {
+        skipSeparators()
+
+        return index >= characters.count
+    }
+
     mutating func readCommand() -> Character? {
         skipSeparators()
 
@@ -40,6 +49,36 @@ struct SVGReader {
         defer { index += 1 }
 
         return characters[index]
+    }
+
+    /// Имя функции преобразования: `translate`, `matrix` и т.д.
+    mutating func readIdentifier() -> String? {
+        skipSeparators()
+
+        let start = index
+
+        while index < characters.count, characters[index].isLetter {
+            index += 1
+        }
+
+        guard index > start else {
+            return nil
+        }
+
+        return String(characters[start..<index])
+    }
+
+    /// Считывает ожидаемый символ и возвращает `true`, если он там действительно был.
+    mutating func readCharacter(_ character: Character) -> Bool {
+        skipSeparators()
+
+        guard index < characters.count, characters[index] == character else {
+            return false
+        }
+
+        index += 1
+
+        return true
     }
 
     mutating func hasNumber() -> Bool {
@@ -109,7 +148,7 @@ struct SVGReader {
         return Double(String(characters[start..<index]))
     }
 
-    // Arc flags may be written without separators, so they are always a single digit.
+    /// Флаги дуги можно записывать без разделителей, поэтому это всегда ровно одна цифра.
     mutating func readFlag() -> Double? {
         skipSeparators()
 
@@ -132,4 +171,4 @@ struct SVGReader {
             return nil
         }
     }
-    }
+}

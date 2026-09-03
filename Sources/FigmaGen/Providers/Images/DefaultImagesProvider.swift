@@ -227,8 +227,7 @@ final class DefaultImagesProvider: ImagesProvider {
                     onlyExportables: parameters.onlyExportables
                 )
             }
-        }
-        .then { nodes in
+        }.then { nodes in
             when(
                 fulfilled: self.imageRenderProvider.renderImages(
                     of: file,
@@ -245,8 +244,7 @@ final class DefaultImagesProvider: ImagesProvider {
                     useAbsoluteBounds: parameters.useAbsoluteBounds
                 )
             ).map { $0 + $1 }
-        }
-        .then { nodes in
+        }.then { nodes in
             // сюда приходят url-ы для pdf-ок и для svg
             self.saveAssetImagesIfNeeded(
                 nodes: nodes,
@@ -264,10 +262,15 @@ extension Array where Element == ImageComponentSetNode {
         }
 
         return compactMap { node in
-            ImageComponentSetNode(
+            let images = node.components.filter({ !$0.name.contains("\(sfSymbolKey)=true") })
+            guard !images.isEmpty else {
+                return nil
+            }
+
+            return ImageComponentSetNode(
                 name: node.name,
                 parentName: node.parentName,
-                components: node.components.filter({ !$0.name.contains("\(sfSymbolKey)=true") })
+                components: images
             )
         }
     }

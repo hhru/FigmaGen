@@ -2,7 +2,7 @@ import Foundation
 
 struct SFSymbolPathData {
 
-    // Path data already converted into the coordinate space of an SF Symbols variant.
+    // Данные пути, уже переведённые в координатное пространство SF Symbols.
     let data: String
     let fillRule: String?
 }

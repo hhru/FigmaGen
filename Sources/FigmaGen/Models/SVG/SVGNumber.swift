@@ -2,9 +2,8 @@ import Foundation
 
 enum SVGNumber {
 
-    // MARK: - Type Methods
-
-    /// Упорядочивает форматы так же, как и в конвейере обработки ссылок: шесть знаков после запятой без нулей в конце.
+    /// Форматирует число для атрибутов SVG: до шести знаков после запятой, без хвостовых нулей
+    /// и без отрицательного нуля.
     static func string(from value: Double) -> String {
         var text = String(format: "%.6f", value)
 

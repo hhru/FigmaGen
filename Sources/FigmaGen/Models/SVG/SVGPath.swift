@@ -7,22 +7,13 @@ struct SVGPath {
     let inheritedTransforms: [String]
     let fill: SVGColor?
 
-    init(
-        attributes: [String : String],
-        groupIDs: [String],
-        inheritedTransforms: [String],
-        fill: SVGColor?
-    ) {
-        self.attributes = attributes
-        self.groupIDs = groupIDs
-        self.inheritedTransforms = inheritedTransforms
-        self.fill = fill
-
-        print("id: ", attributes["id"])
-    }
-
     var id: String? {
         attributes["id"]
+    }
+    
+    var wholeID: String {
+        (groupIDs + [attributes["id"]].compactMap { $0 })
+            .joined(separator: ";")
     }
 
     var data: String? {
@@ -33,27 +24,21 @@ struct SVGPath {
         attributes["fill-rule"]
     }
 
-    var isPrimary: Bool {
-        id == "primary" || fill == .black
-    }
-
-    var isSecondary: Bool {
-        id == "secondary" || fill != .black
-    }
-
-    var isTertiary: Bool {
-        id == "tertiary" || fill != .black
-    }
-
-    var isUnknown: Bool {
-        fill == nil
-    }
-
-    var transform: String? {
-        attributes["transform"]
-    }
-
     var allTransforms: [String] {
-        inheritedTransforms + [transform].compactMap { $0 }
+        inheritedTransforms + [attributes["transform"]].compactMap { $0 }
+    }
+
+    // MARK: - Initializers
+
+    init(
+        attributes: [String: String],
+        groupIDs: [String],
+        inheritedTransforms: [String],
+        fill: SVGColor?
+    ) {
+        self.attributes = attributes
+        self.groupIDs = groupIDs
+        self.inheritedTransforms = inheritedTransforms
+        self.fill = fill
     }
 }
