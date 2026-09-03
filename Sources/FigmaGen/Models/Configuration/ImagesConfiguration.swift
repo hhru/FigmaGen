@@ -19,6 +19,7 @@ struct ImagesConfiguration: Decodable {
         case groupByComponentSet
         case namingStyle
         case sfSymbolKey
+        case sfSymbolTemplate
     }
 
     // MARK: - Instance Properties
@@ -38,6 +39,7 @@ struct ImagesConfiguration: Decodable {
     let groupByComponentSet: Bool
     let namingStyle: ImageNamingStyle
     let sfSymbolKey: String?
+    let sfSymbolTemplate: String?
 
     // MARK: - Initializers
 
@@ -56,7 +58,8 @@ struct ImagesConfiguration: Decodable {
         groupByFrame: Bool,
         groupByComponentSet: Bool,
         namingStyle: ImageNamingStyle,
-        sfSymbolKey: String?
+        sfSymbolKey: String?,
+        sfSymbolTemplate: String?
     ) {
         self.generatation = generatation
         self.assets = assets
@@ -73,6 +76,7 @@ struct ImagesConfiguration: Decodable {
         self.groupByComponentSet = groupByComponentSet
         self.namingStyle = namingStyle
         self.sfSymbolKey = sfSymbolKey
+        self.sfSymbolTemplate = sfSymbolTemplate
     }
 
     init(from decoder: Decoder) throws {
@@ -93,6 +97,7 @@ struct ImagesConfiguration: Decodable {
         groupByComponentSet = try container.decodeIfPresent(forKey: .groupByComponentSet) ?? false
         namingStyle = try container.decodeIfPresent(forKey: .namingStyle) ?? .camelCase
         sfSymbolKey = try container.decodeIfPresent(forKey: .sfSymbolKey)
+        sfSymbolTemplate = try container.decodeIfPresent(forKey: .sfSymbolTemplate)
 
         generatation = try GenerationConfiguration(from: decoder)
     }
@@ -115,7 +120,8 @@ struct ImagesConfiguration: Decodable {
             groupByFrame: groupByFrame,
             groupByComponentSet: groupByComponentSet,
             namingStyle: namingStyle,
-            sfSymbolKey: sfSymbolKey
+            sfSymbolKey: sfSymbolKey,
+            sfSymbolTemplate: sfSymbolTemplate
         )
     }
 }

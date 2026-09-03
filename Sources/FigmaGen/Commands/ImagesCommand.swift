@@ -199,6 +199,14 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             """
     )
 
+    let sfSymbolTemplate = Key<String>(
+        "--sfSymbolTemplate",
+        description: """
+            Path to the SF Symbol template file.
+            If no template is passed a default template will be used.
+            """
+    )
+
     // MARK: - Initializers
 
     init(generator: ImagesGenerator) {
@@ -292,7 +300,8 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             groupByFrame: groupByFrame.value,
             groupByComponentSet: groupByComponentSet.value,
             namingStyle: resolveNamingStyle(),
-            sfSymbolKey: sfSymbolKey.value
+            sfSymbolKey: sfSymbolKey.value,
+            sfSymbolTemplate: sfSymbolTemplate.value
         )
     }
 

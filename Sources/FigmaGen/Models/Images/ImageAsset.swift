@@ -9,8 +9,5 @@ struct ImageAsset: Encodable, Hashable {
     let preserveVectorData: Bool
     let renderAs: ImageRenderingMode?
     let symbolRenderAs: SymbolRenderingMode?
-
-    var isSymbol: Bool {
-        symbolRenderAs != nil
-    }
+    let isSymbol: Bool
 }

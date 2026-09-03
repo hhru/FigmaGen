@@ -9,6 +9,8 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
 
     let assetsProvider: AssetsProvider
     let dataProvider: DataProvider
+    let svgParser = SVGParser()
+    let sfSymbolProvider = SFSymbolProvider()
 
     // MARK: - Initializers
 
@@ -85,7 +87,8 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
             filePaths: filePaths,
             preserveVectorData: parameters.preserveVectorData,
             renderAs: parameters.renderAs,
-            symbolRenderAs: isSymbol ? parameters.symbolRenderAs : nil
+            symbolRenderAs: isSymbol ? parameters.symbolRenderAs : nil,
+            isSymbol: isSymbol
         )
     }
 

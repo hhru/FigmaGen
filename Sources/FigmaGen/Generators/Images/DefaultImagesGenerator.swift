@@ -82,7 +82,8 @@ extension ImagesConfiguration {
             groupByFrame: groupByFrame,
             groupByComponentSet: groupByComponentSet,
             namingStyle: namingStyle,
-            sfSymbolKey: sfSymbolKey
+            sfSymbolKey: sfSymbolKey,
+            sfSymbolTemplate: sfSymbolTemplate
         )
     }
 }
