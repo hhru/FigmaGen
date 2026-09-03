@@ -1,7 +1,12 @@
 import Foundation
 import FigmaGenTools
 
-final class SVGParser: NSObject {
+protocol SVGParser {
+
+    func parse(id: String, data: Data) throws -> SVGPathsResult
+}
+
+final class DefaultSVGParser: NSObject, SVGParser {
 
     private enum ElementName {
 
@@ -25,20 +30,16 @@ final class SVGParser: NSObject {
         static let width = "width"
     }
 
+    private var canvas: SVGCanvas?
     private var parsedPaths: [SVGPath] = []
     private var groupStack: [SVGGroupContext] = []
     private var ignoredElementDepth = 0
 
-    private(set) var canvas: SVGCanvas?
-
-    func parse(data: Data) throws -> [SVGPath] {
+    func parse(id: String, data: Data) throws -> SVGPathsResult {
         parsedPaths.removeAll()
         groupStack.removeAll()
         ignoredElementDepth = 0
         canvas = nil
-
-//        let decoder = JSONDecoder()
-//        let response = try? decoder.decode(AnyCodable.self, from: data)
 
         let parser = XMLParser(data: data)
 
@@ -47,31 +48,14 @@ final class SVGParser: NSObject {
         parser.shouldProcessNamespaces = false
 
         guard parser.parse() else {
-            let error = parser.parserError
-
-            print("XML parsing failed")
-            print("Error:", error?.localizedDescription ?? "<nil>")
-            print("Domain:", (error as NSError?)?.domain ?? "<nil>")
-            print("Code:", (error as NSError?)?.code ?? -1)
-            print("Line:", parser.lineNumber)
-            print("Column:", parser.columnNumber)
-
-            if let error = error as? NSError {
-                print("User info:", error.userInfo)
-            }
-
-            if let text = String(data: data, encoding: .utf8) {
-                print("SVG prefix:")
-                print(String(text.prefix(500)))
-
-                print("SVG suffix:")
-                print(String(text.suffix(500)))
-            }
-            throw error
-            ?? SVGParserError.invalidXML
+            throw parser.parserError ?? SVGParserError.invalidXML
         }
 
-        return parsedPaths
+        return SVGPathsResult(
+            id: id,
+            canvas: canvas,
+            allPaths: parsedPaths
+        )
     }
 
     private func startGroup(attributes attributeDict: [String: String]) {
@@ -172,7 +156,7 @@ final class SVGParser: NSObject {
     }
 }
 
-extension SVGParser: XMLParserDelegate {
+extension DefaultSVGParser: XMLParserDelegate {
 
     func parser(
         _ parser: XMLParser,

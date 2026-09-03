@@ -17,6 +17,8 @@ struct SVGPath {
         self.groupIDs = groupIDs
         self.inheritedTransforms = inheritedTransforms
         self.fill = fill
+
+        print("id: ", attributes["id"])
     }
 
     var id: String? {

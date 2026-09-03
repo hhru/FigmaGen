@@ -9,14 +9,18 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
 
     let assetsProvider: AssetsProvider
     let dataProvider: DataProvider
-    let svgParser = SVGParser()
-    let sfSymbolProvider = SFSymbolProvider()
+    let sfSymbolProvider: SFSymbolProvider
 
     // MARK: - Initializers
 
-    init(assetsProvider: AssetsProvider, dataProvider: DataProvider) {
+    init(
+        assetsProvider: AssetsProvider,
+        dataProvider: DataProvider,
+        sfSymbolProvider: SFSymbolProvider
+    ) {
         self.assetsProvider = assetsProvider
         self.dataProvider = dataProvider
+        self.sfSymbolProvider = sfSymbolProvider
     }
 
     // MARK: - Instance Methods
@@ -25,11 +29,14 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
         for node: ImageRenderedNode,
         setNode: ImageComponentSetRenderedNode,
         namingStyle: ImageNamingStyle,
-        sfSymbolKey: String
+        sfSymbolKey: String?
     ) -> String {
         var name = setNode.type == .component ? node.base.name : "\(setNode.name) \(node.base.name)"
 
-        if !sfSymbolKey.isEmpty, name.contains(sfSymbolKey) {
+        if
+            let sfSymbolKey,
+            !sfSymbolKey.isEmpty,
+            name.lowercased().contains(sfSymbolKey.lowercased()) {
             name = name
                 .replacingOccurrences(of: "\(sfSymbolKey)=false", with: "")
                 .replacingOccurrences(of: "\(sfSymbolKey)=true", with: "\(sfSymbolKey)")
@@ -53,7 +60,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
             for: node,
             setNode: setNode,
             namingStyle: parameters.namingStyle,
-            sfSymbolKey: parameters.sfSymbolKey ?? ""
+            sfSymbolKey: parameters.sfSymbolKey
         )
 
         let folderPath = resolveFolderPath(
@@ -63,7 +70,8 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
             folderPath: folderPath
         )
 
-        let isSymbol = name.lowercased().contains(parameters.sfSymbolKey ?? "")
+        let isSymbol = parameters.sfSymbolKey != nil
+        && name.lowercased().contains(parameters.sfSymbolKey?.lowercased() ?? "")
 
         let assetSetExtension = isSymbol
             ? AssetSymbolSet.pathExtension
@@ -72,6 +80,8 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
         let assetExtension = isSymbol
             ? ImageFormat.svg.fileExtension
             : parameters.format.fileExtension
+
+        let symbolRenderingMode = isSymbol ? parameters.symbolRenderAs : nil
 
         let filePaths = node.urls.keys.reduce(into: [:]) {
             result,
@@ -87,7 +97,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
             filePaths: filePaths,
             preserveVectorData: parameters.preserveVectorData,
             renderAs: parameters.renderAs,
-            symbolRenderAs: isSymbol ? parameters.symbolRenderAs : nil,
+            symbolRenderAs: symbolRenderingMode,
             isSymbol: isSymbol
         )
     }
@@ -98,11 +108,6 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
         folderPath: Path
     ) -> [ImageComponentSetAsset] {
         nodes.compactMap { setNode in
-            // TODO: @d.viter delete next
-            guard setNode.name.contains("bubble round hyperstar") else {
-                return nil
-            }
-
             var assets: [ImageRenderedNode: ImageAsset] = [:]
 
             setNode.components.forEach { node in
@@ -175,6 +180,24 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
         return when(fulfilled: promises)
     }
 
+    private func saveSymbolFiles(
+        node: ImageRenderedNode,
+        asset: ImageAsset,
+        parameters: ImagesParameters
+    ) -> Promise<Void> {
+        let promises = node.urls.compactMap { scale, url in
+            asset.filePaths[scale].map {
+                self.sfSymbolProvider.saveData(
+                    from: url,
+                    to: $0,
+                    template: parameters.sfSymbolTemplate
+                )
+            }
+        }
+
+        return when(fulfilled: promises)
+    }
+
     private func saveAssetFolders(
         assets: [ImageComponentSetAsset: AssetFolder],
         groupByFrame: Bool,
@@ -202,10 +225,14 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
         return when(fulfilled: promises).asVoid()
     }
 
-    private func saveImageFiles(assets: [ImageComponentSetAsset]) -> Promise<Void> {
+    private func saveImageFiles(assets: [ImageComponentSetAsset], parameters: ImagesParameters) -> Promise<Void> {
         let promises = assets.flatMap { setAsset in
             setAsset.assets.map { node, asset in
-                saveImageFiles(node: node, asset: asset)
+                if asset.isSymbol {
+                    saveSymbolFiles(node: node, asset: asset, parameters: parameters)
+                } else {
+                    saveImageFiles(node: node, asset: asset)
+                }
             }
         }
 
@@ -242,7 +269,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
                     in: folderPath
                 )
             }.then {
-                self.saveImageFiles(assets: assets)
+                self.saveImageFiles(assets: assets, parameters: parameters)
             }
         }
     }

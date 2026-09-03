@@ -75,8 +75,6 @@ final class DefaultImageRenderProvider: ImageRenderProvider {
                 .map { $0.id },
             format: format.figmaFormat,
             scale: scale.figmaScale,
-            // TODO: @d.viter check is next needed
-            svgIncludeID: true,
             useAbsoluteBounds: useAbsoluteBounds
         )
 

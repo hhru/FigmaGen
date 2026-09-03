@@ -10,7 +10,7 @@ struct SVGPathsResult {
     let tertiaryPaths: [SVGPath]
     let unknownPaths: [SVGPath]
 
-    init(id: String, canvas: SVGCanvas? = nil, allPaths: [SVGPath]) {
+    init(id: String, canvas: SVGCanvas?, allPaths: [SVGPath]) {
         self.id = id
         self.canvas = canvas
         self.allPaths = allPaths
