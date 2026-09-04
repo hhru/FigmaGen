@@ -209,6 +209,14 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             """
     )
 
+    let symbolLayersName = Key<String>(
+        "--symbolLayersName",
+        description: """
+            Names for primary, secondary and tertiary layers separated by comma.
+            By default use black color for primary and other - for secondary, tertiary ignored.
+            """
+    )
+
     let sfSymbolTemplate = Key<String>(
         "--sfSymbolTemplate",
         description: """
@@ -312,7 +320,8 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             namingStyle: resolveNamingStyle(),
             sfSymbolKey: sfSymbolKey.value,
             symbolRenderAs: resolveSymbolRenderAs(),
-            sfSymbolTemplate: sfSymbolTemplate.value
+            sfSymbolTemplate: sfSymbolTemplate.value,
+            symbolLayersName: symbolLayersName.value
         )
     }
 

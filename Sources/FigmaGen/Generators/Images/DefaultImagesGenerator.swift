@@ -84,7 +84,8 @@ extension ImagesConfiguration {
             namingStyle: namingStyle,
             sfSymbolKey: sfSymbolKey,
             symbolRenderAs: symbolRenderAs,
-            sfSymbolTemplate: sfSymbolTemplate
+            sfSymbolTemplate: sfSymbolTemplate,
+            symbolLayersName: symbolLayersName
         )
     }
 }

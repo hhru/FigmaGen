@@ -188,7 +188,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
                 self.sfSymbolProvider.saveData(
                     from: url,
                     to: $0,
-                    template: parameters.sfSymbolTemplate
+                    parameters: parameters
                 )
             }
         }

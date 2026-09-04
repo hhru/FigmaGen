@@ -11,6 +11,7 @@ final class DefaultSFSymbolProvider: SFSymbolProvider {
 
     private let svgParser: SVGParser
     private let dataCache = Cache<URL, Data>()
+    private var symbolLayersName = [String]()
 
     init(svgParser: SVGParser, templateRenderer: TemplateRenderer) {
         self.svgParser = svgParser
@@ -19,11 +20,20 @@ final class DefaultSFSymbolProvider: SFSymbolProvider {
 
     // MARK: - Instance Methods
 
-    func saveData(from url: URL, to filePath: String, template: String?) -> Promise<Void> {
+    func saveData(
+        from url: URL,
+        to filePath: String,
+        parameters: ImagesParameters
+    ) -> Promise<Void> {
         firstly {
             self.fetchData(from: url)
         }.map(on: DispatchQueue.global(qos: .userInitiated)) { fileData in
-            guard let template else {
+            self.symbolLayersName = parameters
+                .symbolLayersName?
+                .replacingOccurrences(of: " ", with: "")
+                .components(separatedBy: ",") ?? []
+
+            guard let template = parameters.sfSymbolTemplate else {
                 return
             }
 
@@ -64,7 +74,7 @@ final class DefaultSFSymbolProvider: SFSymbolProvider {
             return role
         }
 
-        return path.role
+        return path.role(symbolLayersName: symbolLayersName)
     }
 
     private func extractPaths(from result: SVGPathsResult) throws -> SVGImageToken {
@@ -189,17 +199,26 @@ final class DefaultSFSymbolProvider: SFSymbolProvider {
 
 extension SVGPath {
 
-    var role: SFSymbolRole {
-        // TODO: @d.viter тут было еще wholeID.contains("icon")
-        if id == "primary" || fill == .black {
+    func role(symbolLayersName: [String]) -> SFSymbolRole {
+        let primaryLayerName: String = symbolLayersName.first ?? ""
+        let secondaryLayerName: String = symbolLayersName.dropFirst().first ?? ""
+        let tertiaryLayerName: String = symbolLayersName.dropFirst(2).first ?? ""
+
+        if
+            id == "secondary"
+                || symbolLayersName.isEmpty && fill == .black
+                || wholeID.contains(primaryLayerName)  {
             return .primary
         }
 
-        if id == "secondary" || fill != .black || wholeID.contains("detail-a")  {
+        if
+            id == "secondary"
+                || symbolLayersName.isEmpty && fill != .black
+                || wholeID.contains(secondaryLayerName)  {
             return .secondary
         }
 
-        if id == "tertiary" || wholeID.contains("detail-b")  {
+        if id == "tertiary" || wholeID.contains(tertiaryLayerName)  {
             return .tertiary
         }
 

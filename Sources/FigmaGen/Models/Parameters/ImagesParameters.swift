@@ -20,4 +20,5 @@ struct ImagesParameters {
     let sfSymbolKey: String?
     let symbolRenderAs: SymbolRenderingMode?
     let sfSymbolTemplate: String?
+    let symbolLayersName: String?
 }
