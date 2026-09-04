@@ -8,6 +8,7 @@ enum Dependencies {
     static let dataProvider: DataProvider = DefaultDataProvider()
     static let svgParser: SVGParser = DefaultSVGParser()
     static let sfSymbolProvider: SFSymbolProvider = DefaultSFSymbolProvider(
+        dataProvider: dataProvider,
         svgParser: svgParser,
         templateRenderer: templateRenderer
     )

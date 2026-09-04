@@ -228,68 +228,62 @@ final class DefaultImagesProvider: ImagesProvider {
                 )
             }
         }.then { nodes in
-            when(
-                fulfilled: self.imageRenderProvider.renderImages(
-                    of: file,
-                    nodes: nodes.getImagesWithoutSymbols(by: parameters.sfSymbolKey),
-                    format: parameters.format,
-                    scales: parameters.scales,
-                    useAbsoluteBounds: parameters.useAbsoluteBounds
-                ),
-                self.imageRenderProvider.renderImages(
-                    of: file,
-                    nodes: nodes.getSymbols(by: parameters.sfSymbolKey),
-                    format: .svg,
-                    scales: parameters.scales,
-                    useAbsoluteBounds: parameters.useAbsoluteBounds
-                )
-            ).map { $0 + $1 }
-        }.then { nodes in
-            // сюда приходят url-ы для pdf-ок и для svg
+            self.renderImagesAndSymbols(of: file, nodes: nodes, parameters: parameters)
+        }.then { renderedNodes in
             self.saveAssetImagesIfNeeded(
-                nodes: nodes,
+                nodes: renderedNodes,
                 parameters: parameters
             )
+        }
+    }
+
+    private func renderImagesAndSymbols(
+        of file: FileParameters,
+        nodes: [ImageComponentSetNode],
+        parameters: ImagesParameters
+    ) -> Promise<[ImageComponentSetRenderedNode]> {
+        let imageNodes = nodes.filteringComponents { !$0.isSFSymbol(key: parameters.sfSymbolKey) }
+        let symbolNodes = nodes.filteringComponents { $0.isSFSymbol(key: parameters.sfSymbolKey) }
+
+        return when(
+            fulfilled: imageRenderProvider.renderImages(
+                of: file,
+                nodes: imageNodes,
+                format: parameters.format,
+                scales: parameters.scales,
+                useAbsoluteBounds: parameters.useAbsoluteBounds
+            ),
+            imageRenderProvider.renderImages(
+                of: file,
+                nodes: symbolNodes,
+                format: .svg,
+                scales: [.none],
+                useAbsoluteBounds: parameters.useAbsoluteBounds
+            )
+        ).map { renderedImages, renderedSymbols in
+            renderedImages + renderedSymbols
         }
     }
 }
 
 extension Array where Element == ImageComponentSetNode {
 
-    func getImagesWithoutSymbols(by sfSymbolKey: String?) -> [ImageComponentSetNode] {
-        guard let sfSymbolKey else {
-            return self
-        }
+    func filteringComponents(_ isIncluded: (ImageNode) -> Bool) -> [ImageComponentSetNode] {
+        compactMap { node in
+            let components = node.components.filter(isIncluded)
 
-        return compactMap { node in
-            let images = node.components.filter({ !$0.name.contains("\(sfSymbolKey)=true") })
-            guard !images.isEmpty else {
+            guard !components.isEmpty else {
                 return nil
+            }
+
+            guard node.type == .componentSet else {
+                return node
             }
 
             return ImageComponentSetNode(
                 name: node.name,
                 parentName: node.parentName,
-                components: images
-            )
-        }
-    }
-
-    func getSymbols(by sfSymbolKey: String?) -> [ImageComponentSetNode] {
-        guard let sfSymbolKey else {
-            return []
-        }
-
-        return compactMap { node in
-            let symbols = node.components.filter({ $0.name.contains("\(sfSymbolKey)=true") })
-            guard !symbols.isEmpty else {
-                return nil
-            }
-
-            return ImageComponentSetNode(
-                name: node.name,
-                parentName: node.parentName,
-                components: symbols
+                components: components
             )
         }
     }

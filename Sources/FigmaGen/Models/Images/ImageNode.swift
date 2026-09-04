@@ -7,4 +7,10 @@ struct ImageNode: Encodable, Hashable {
     let id: String
     let name: String
     let description: String?
+
+    // MARK: - Instance Methods
+
+    func isSFSymbol(key: String?) -> Bool {
+        key.map { name.contains("\($0)=true") } ?? false
+    }
 }

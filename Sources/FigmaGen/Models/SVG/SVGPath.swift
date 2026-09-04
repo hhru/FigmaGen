@@ -2,43 +2,21 @@ import Foundation
 
 struct SVGPath {
 
-    let attributes: [String: String]
-    let groupIDs: [String]
-    let inheritedTransforms: [String]
+    // MARK: - Instance Properties
+
+    let id: String?
+    let data: String?
+    let fillRule: String?
     let fill: SVGColor?
+    let transform: String?
+    let groupIDs: [String]
+    let groupTransforms: [String]
 
-    var id: String? {
-        attributes["id"]
-    }
-    
-    var wholeID: String {
-        (groupIDs + [attributes["id"]].compactMap { $0 })
-            .joined(separator: ";")
+    var idChain: String {
+        (groupIDs + [id].compactMap { $0 }).joined(separator: ";")
     }
 
-    var data: String? {
-        attributes["d"]
-    }
-
-    var fillRule: String? {
-        attributes["fill-rule"]
-    }
-
-    var allTransforms: [String] {
-        inheritedTransforms + [attributes["transform"]].compactMap { $0 }
-    }
-
-    // MARK: - Initializers
-
-    init(
-        attributes: [String: String],
-        groupIDs: [String],
-        inheritedTransforms: [String],
-        fill: SVGColor?
-    ) {
-        self.attributes = attributes
-        self.groupIDs = groupIDs
-        self.inheritedTransforms = inheritedTransforms
-        self.fill = fill
+    var transformChain: [String] {
+        groupTransforms + [transform].compactMap { $0 }
     }
 }

@@ -7,33 +7,29 @@ final class DefaultSFSymbolProvider: SFSymbolProvider {
 
     // MARK: - Instance Properties
 
+    private let dataProvider: DataProvider
+    private let svgParser: SVGParser
     private let templateRenderer: TemplateRenderer
 
-    private let svgParser: SVGParser
-    private let dataCache = Cache<URL, Data>()
-    private var symbolLayersName = [String]()
+    // MARK: - Initializers
 
-    init(svgParser: SVGParser, templateRenderer: TemplateRenderer) {
+    init(dataProvider: DataProvider, svgParser: SVGParser, templateRenderer: TemplateRenderer) {
+        self.dataProvider = dataProvider
         self.svgParser = svgParser
         self.templateRenderer = templateRenderer
     }
 
     // MARK: - Instance Methods
 
-    func saveData(
+    func saveSymbol(
         from url: URL,
         to filePath: String,
         parameters: ImagesParameters
     ) -> Promise<Void> {
         firstly {
-            self.fetchData(from: url)
-        }.map(on: DispatchQueue.global(qos: .userInitiated)) { fileData in
-            self.symbolLayersName = parameters
-                .symbolLayersName?
-                .replacingOccurrences(of: " ", with: "")
-                .components(separatedBy: ",") ?? []
-
-            guard let template = parameters.sfSymbolTemplate else {
+            self.dataProvider.fetchData(from: url)
+        }.map(on: DispatchQueue.global(qos: .userInitiated)) { svgData in
+            guard let templatePath = parameters.sfSymbolTemplate else {
                 return
             }
 
@@ -43,125 +39,110 @@ final class DefaultSFSymbolProvider: SFSymbolProvider {
                 try filePath.delete()
             }
 
-            let result = try self.svgParser.parse(id: filePath.string, data: fileData)
+            let layerNames = parameters.symbolLayersName?
+                .replacingOccurrences(of: " ", with: "")
+                .components(separatedBy: ",") ?? []
 
-            let token = try self.extractPaths(from: result)
+            let symbol = try self.makeSymbol(
+                from: self.svgParser.parse(data: svgData),
+                filePath: filePath,
+                layerNames: layerNames
+            )
 
             try self.templateRenderer.renderTemplate(
-                RenderTemplate(type: .custom(path: template), options: [:]),
-                to: RenderDestination.file(path: filePath.string),
-                context: self.makeContext(for: token)
+                RenderTemplate(type: .custom(path: templatePath), options: [:]),
+                to: .file(path: filePath.string),
+                context: self.makeContext(for: symbol)
             )
         }
     }
 
-    // MARK: - Private methods
+    // MARK: -
 
-    private func fetchData(from url: URL) -> Promise<Data> {
-        perform(on: DispatchQueue.global(qos: .userInitiated)) {
-            if let data = self.dataCache.value(forKey: url) {
-                return data
-            }
-
-            return try Data(contentsOf: url)
-        }.get { data in
-            self.dataCache.setValue(data, forKey: url)
-        }
-    }
-
-    private func resolveRole(of path: SVGPath) -> SFSymbolRole {
-        if let id = path.id, let role = SFSymbolRole(rawValue: id.lowercased()) {
-            return role
-        }
-
-        return path.role(symbolLayersName: symbolLayersName)
-    }
-
-    private func extractPaths(from result: SVGPathsResult) throws -> SVGImageToken {
-        guard let canvas = result.canvas, canvas.width > 0.0, canvas.height > 0.0 else {
+    private func makeSymbol(from document: SVGDocument, filePath: Path, layerNames: [String]) throws -> SFSymbol {
+        guard let canvas = document.canvas, canvas.width > 0.0, canvas.height > 0.0 else {
             throw SVGParserError.missingCanvasSize
         }
 
-        guard !result.allPaths.isEmpty else {
+        guard !document.paths.isEmpty else {
             throw SVGParserError.invalidSVG
         }
 
         // Бокс компонента всегда занимает весь em дизайн-бокса, поэтому символ рисуется ровно
-        // в том кегле, который передан в .font(.system(size:)). Оптический размер рисунка задаётся
-        // этим кеглем и не зашивается в геометрию.
+        // в том кегле, который передан в .font(.system(size:)).
         // Ширина сохраняет пропорции бокса компонента из Figma, чтобы заложенные дизайнером отступы
         // и неквадратные компоненты пережили конвертацию. Она округляется до целой дизайн-единицы,
         // потому что поля задают итоговый бокс символа, а дробное поле может расширить его на целую
-        // единицу. Квадратный компонент и так целый, а у неквадратного в худшем случае правое поле
-        // сдвинется на половину единицы, не задев сам рисунок.
+        // единицу.
         let designHeight = SFSymbolGeometry.emDesignHeight
-        let scale = designHeight / canvas.height
-        let designWidth = (canvas.width * scale).rounded()
+        let canvasScale = designHeight / canvas.height
+        let designWidth = (canvas.width * canvasScale).rounded()
 
         // И Figma, и шаблон рисуют сверху вниз, поэтому переворот по Y не нужен - достаточно
         // масштаба и сдвига. Сдвиг ставит центр дизайн-бокса в центр cap height той строки,
         // в которую группа символа переносится шаблоном.
-        let baseTransform = SVGTransform(
-            a: scale,
-            b: 0.0,
-            c: 0.0,
-            d: scale,
-            e: 0.0,
-            f: -SFSymbolGeometry.capHeight / 2.0 - designHeight / 2.0
-        )
+        let canvasToTemplate = SVGTransform
+            .translation(x: 0.0, y: -SFSymbolGeometry.capHeight / 2.0 - designHeight / 2.0)
+            .concatenating(.scale(x: canvasScale, y: canvasScale))
 
-        return SVGImageToken(
-            name: URL(fileURLWithPath: result.id).deletingPathExtension().lastPathComponent,
+        return SFSymbol(
+            name: filePath.lastComponentWithoutExtension,
             opticalSize: Int(canvas.height.rounded()),
             designWidth: designWidth,
             designHeight: designHeight,
-            layers: try makeLayers(from: result, baseTransform: baseTransform)
+            layers: try makeLayers(
+                from: document.paths,
+                canvasToTemplate: canvasToTemplate,
+                layerNames: layerNames,
+                filePath: filePath
+            )
         )
     }
 
-    /// Раскладывает пути по ролям, сохраняя порядок появления ролей в файле:
-    /// он определяет номера слоёв и motion-групп в шаблоне.
-    private func makeLayers(from result: SVGPathsResult, baseTransform: SVGTransform) throws -> [SFSymbolLayer] {
-        var roles: [SFSymbolRole] = []
-        var pathsByRole: [SFSymbolRole: [SFSymbolPathData]] = [:]
+    private func makeLayers(
+        from paths: [SVGPath],
+        canvasToTemplate: SVGTransform,
+        layerNames: [String],
+        filePath: Path
+    ) throws -> [SFSymbolLayer] {
+        var layerRoles: [SFSymbolRole] = []
+        var pathsByRole: [SFSymbolRole: [SFSymbolPath]] = [:]
 
-        for path in result.allPaths {
-            guard let data = path.data else {
-                throw SVGParserError.invalidPathData("for \(result.id)")
+        for path in paths {
+            guard let pathData = path.data else {
+                throw SVGParserError.invalidPathData("for \(filePath.string)")
             }
 
-            let role = resolveRole(of: path)
+            let role = SFSymbolRole(of: path, layerNames: layerNames)
 
-            if !roles.contains(role) {
-                roles.append(role)
+            if !layerRoles.contains(role) {
+                layerRoles.append(role)
             }
 
-            // Собственный и унаследованный transform пути применяются к его координатам
-            // до перевода в пространство шаблона, поэтому базовое преобразование идёт первым.
-            let transformer = SVGPathTransformer(
-                transform: baseTransform.concatenating(try SVGTransformParser.transform(from: path.allTransforms))
+            let pathTransform = canvasToTemplate.concatenating(
+                try SVGTransformParser.transform(from: path.transformChain)
             )
 
             pathsByRole[role, default: []].append(
-                SFSymbolPathData(
-                    data: try transformer.transform(pathData: data),
+                SFSymbolPath(
+                    data: try SVGPathTransformer(transform: pathTransform).transform(pathData: pathData),
                     fillRule: path.fillRule
                 )
             )
         }
 
-        return roles.enumerated().map { index, role in
-            SFSymbolLayer(index: index, role: role, paths: pathsByRole[role] ?? [])
+        return layerRoles.map { role in
+            SFSymbolLayer(role: role, paths: pathsByRole[role] ?? [])
         }
     }
 
-    private func makeContext(for token: SVGImageToken) -> [String: Any] {
-        let layers = token.layers.map { layer -> [String: Any] in
+    private func makeContext(for symbol: SFSymbol) -> [String: Any] {
+        let layers = symbol.layers.enumerated().map { index, layer -> [String: Any] in
             [
-                "index": layer.index,
+                "index": index,
                 "role": layer.role.rawValue,
                 // Motion-группы нумеруются от самого верхнего слоя - так их выгружает Xcode.
-                "motionGroup": token.layers.count - 1 - layer.index,
+                "motionGroup": symbol.layers.count - 1 - index,
                 "paths": layer.paths.map { path in
                     ["data": path.data, "fillRule": path.fillRule ?? ""]
                 }
@@ -172,14 +153,14 @@ final class DefaultSFSymbolProvider: SFSymbolProvider {
             SFSymbolGeometry.weights.map { weight -> [String: Any] in
                 // Округляется, чтобы оба поля попали на целые дизайн-единицы: центр колонки дробный,
                 // и точное центрирование поставило бы поля на доли единицы.
-                let originX = (weight.centerX - token.designWidth / 2.0).rounded()
+                let originX = (weight.centerX - symbol.designWidth / 2.0).rounded()
 
                 return [
                     "id": "\(weight.name)-\(scale.name)",
                     "originX": SVGNumber.string(from: originX),
                     "baseline": SVGNumber.string(from: scale.baseline),
                     "leftMargin": SVGNumber.string(from: originX),
-                    "rightMargin": SVGNumber.string(from: originX + token.designWidth),
+                    "rightMargin": SVGNumber.string(from: originX + symbol.designWidth),
                     "guideTop": SVGNumber.string(from: scale.baseline - SFSymbolGeometry.marginGuideTopOffset),
                     "guideBottom": SVGNumber.string(from: scale.baseline + SFSymbolGeometry.marginGuideBottomOffset)
                 ]
@@ -187,41 +168,12 @@ final class DefaultSFSymbolProvider: SFSymbolProvider {
         }
 
         return [
-            "name": token.name,
-            "opticalSize": token.opticalSize,
-            "designWidth": SVGNumber.string(from: token.designWidth),
-            "designHeight": SVGNumber.string(from: token.designHeight),
+            "name": symbol.name,
+            "opticalSize": symbol.opticalSize,
+            "designWidth": SVGNumber.string(from: symbol.designWidth),
+            "designHeight": SVGNumber.string(from: symbol.designHeight),
             "layers": layers,
             "variants": variants
         ]
-    }
-}
-
-extension SVGPath {
-
-    func role(symbolLayersName: [String]) -> SFSymbolRole {
-        let primaryLayerName: String = symbolLayersName.first ?? ""
-        let secondaryLayerName: String = symbolLayersName.dropFirst().first ?? ""
-        let tertiaryLayerName: String = symbolLayersName.dropFirst(2).first ?? ""
-
-        if
-            id == "secondary"
-                || symbolLayersName.isEmpty && fill == .black
-                || wholeID.contains(primaryLayerName)  {
-            return .primary
-        }
-
-        if
-            id == "secondary"
-                || symbolLayersName.isEmpty && fill != .black
-                || wholeID.contains(secondaryLayerName)  {
-            return .secondary
-        }
-
-        if id == "tertiary" || wholeID.contains(tertiaryLayerName)  {
-            return .tertiary
-        }
-
-        return .tertiary
     }
 }

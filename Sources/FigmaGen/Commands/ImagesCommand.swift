@@ -196,8 +196,9 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
     let sfSymbolKey = Key<String>(
         "--sfSymbolKey",
         description: """
-            Colored icons flag name from Figma.
-            By default, assets will be generated without processing colored info.
+            Name of the Figma property that marks SF Symbols: components named with '<key>=true'
+            are rendered as SVG and saved to .symbolset instead of .imageset.
+            By default, no SF Symbols are generated.
             """
     )
 
@@ -281,7 +282,7 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
 
         case let rawSymbolRenderingMode?:
             guard let mode = SymbolRenderingMode(rawValue: rawSymbolRenderingMode) else {
-                fail(message: "Failed to generate symbols: Invalid rendering mode (\(rawSymbolRenderingMode)")
+                fail(message: "Failed to generate symbols: Invalid rendering mode (\(rawSymbolRenderingMode))")
             }
 
             return mode

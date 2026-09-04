@@ -67,7 +67,6 @@ struct SVGPathTransformer {
             )
         }
 
-        // Хвост, который не удалось разобрать, раньше молча отбрасывался вместе с частью рисунка.
         guard !commands.isEmpty, reader.isAtEnd() else {
             throw SVGParserError.invalidPathData(pathData)
         }
