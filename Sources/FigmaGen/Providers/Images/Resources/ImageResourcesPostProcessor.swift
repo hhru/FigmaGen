@@ -29,8 +29,6 @@ final class ImageResourcesPostProcessor {
         let postProcessorPath = Path(postProcessorPath).absolute()
         let filePath = Path(filePath).absolute()
 
-        try shell("\(postProcessorPath) --filePath \(filePath)")
-
         let coloredResourcesArgument = coloredResources
             .map { " --coloredResources \(Path($0).absolute())" } ?? ""
 
