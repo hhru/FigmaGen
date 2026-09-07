@@ -131,7 +131,6 @@ final class SVGPathTransformerTests: XCTestCase {
     }
 
     func testTrailingGarbageIsRejected() throws {
-        // Раньше неразобранный хвост молча отбрасывался вместе с частью рисунка.
         XCTAssertThrowsError(try transform("M0 0 L10 10 ?!", by: .identity))
     }
 
