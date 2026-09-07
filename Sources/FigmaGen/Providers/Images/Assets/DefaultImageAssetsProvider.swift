@@ -35,8 +35,8 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
 
         if let sfSymbolKey, !sfSymbolKey.isEmpty {
             name = name
-                .replacingOccurrences(of: "\(sfSymbolKey)=false", with: "")
-                .replacingOccurrences(of: "\(sfSymbolKey)=true", with: sfSymbolKey)
+                .replacingOccurrences(of: "\(sfSymbolKey)=false", with: "", options: .caseInsensitive)
+                .replacingOccurrences(of: "\(sfSymbolKey)=true", with: sfSymbolKey, options: .caseInsensitive)
         }
 
         switch namingStyle {

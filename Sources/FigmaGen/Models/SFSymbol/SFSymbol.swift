@@ -3,8 +3,9 @@ import Foundation
 struct SFSymbol {
 
     let name: String
-    let opticalSize: Int
-    let designWidth: Double
-    let designHeight: Double
+    let opticalWidth: CGFloat
+    let opticalHeight: CGFloat
+    let designWidth: CGFloat
+    let designHeight: CGFloat
     let layers: [SFSymbolLayer]
 }

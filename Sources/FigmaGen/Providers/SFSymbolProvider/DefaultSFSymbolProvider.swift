@@ -87,7 +87,8 @@ final class DefaultSFSymbolProvider: SFSymbolProvider {
 
         return SFSymbol(
             name: filePath.lastComponentWithoutExtension,
-            opticalSize: Int(canvas.height.rounded()),
+            opticalWidth: canvas.width,
+            opticalHeight: canvas.height,
             designWidth: designWidth,
             designHeight: designHeight,
             layers: try makeLayers(
@@ -169,7 +170,8 @@ final class DefaultSFSymbolProvider: SFSymbolProvider {
 
         return [
             "name": symbol.name,
-            "opticalSize": symbol.opticalSize,
+            "opticalWidth": SVGNumber.string(from: symbol.opticalWidth),
+            "opticalHeight": SVGNumber.string(from: symbol.opticalHeight),
             "designWidth": SVGNumber.string(from: symbol.designWidth),
             "designHeight": SVGNumber.string(from: symbol.designHeight),
             "layers": layers,

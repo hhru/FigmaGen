@@ -197,7 +197,7 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
         "--sfSymbolKey",
         description: """
             Name of the Figma property that marks SF Symbols: components named with '<key>=true'
-            are rendered as SVG and saved to .symbolset instead of .imageset.
+            (case-insensitive) are rendered as SVG and saved to .symbolset instead of .imageset.
             By default, no SF Symbols are generated.
             """
     )
