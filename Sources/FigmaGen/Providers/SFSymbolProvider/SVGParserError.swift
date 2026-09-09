@@ -8,7 +8,6 @@ enum SVGParserError: LocalizedError {
     case invalidPathData(String)
     case invalidTransform(String)
     case unsupportedArcTransform(String)
-    case unsupportedFill(String)
 
     var errorDescription: String? {
         switch self {
@@ -32,9 +31,6 @@ enum SVGParserError: LocalizedError {
                 The SVG file contains an elliptical arc in \"\(pathData)\" \
                 under a transform that is not a similarity, which would change the shape of the arc.
                 """
-
-        case let .unsupportedFill(fill):
-            return "The SVG file contains a path with unsupported fill \"\(fill)\"."
         }
     }
 }

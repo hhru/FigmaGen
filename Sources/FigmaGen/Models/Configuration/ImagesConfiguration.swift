@@ -21,6 +21,7 @@ struct ImagesConfiguration: Decodable {
         case sfSymbolKey
         case symbolRenderAs
         case sfSymbolTemplate
+        case symbolLayersName
     }
 
     // MARK: - Instance Properties
@@ -42,6 +43,7 @@ struct ImagesConfiguration: Decodable {
     let sfSymbolKey: String?
     let symbolRenderAs: SymbolRenderingMode?
     let sfSymbolTemplate: String?
+    let symbolLayersName: String?
 
     // MARK: - Initializers
 
@@ -62,7 +64,8 @@ struct ImagesConfiguration: Decodable {
         namingStyle: ImageNamingStyle,
         sfSymbolKey: String?,
         symbolRenderAs: SymbolRenderingMode?,
-        sfSymbolTemplate: String?
+        sfSymbolTemplate: String?,
+        symbolLayersName: String?
     ) {
         self.generatation = generatation
         self.assets = assets
@@ -81,6 +84,7 @@ struct ImagesConfiguration: Decodable {
         self.sfSymbolKey = sfSymbolKey
         self.symbolRenderAs = symbolRenderAs
         self.sfSymbolTemplate = sfSymbolTemplate
+        self.symbolLayersName = symbolLayersName
     }
 
     init(from decoder: Decoder) throws {
@@ -103,6 +107,7 @@ struct ImagesConfiguration: Decodable {
         sfSymbolKey = try container.decodeIfPresent(forKey: .sfSymbolKey)
         symbolRenderAs = try container.decodeIfPresent(forKey: .symbolRenderAs)
         sfSymbolTemplate = try container.decodeIfPresent(forKey: .sfSymbolTemplate)
+        symbolLayersName = try container.decodeIfPresent(forKey: .symbolLayersName)
 
         generatation = try GenerationConfiguration(from: decoder)
     }
@@ -127,7 +132,8 @@ struct ImagesConfiguration: Decodable {
             namingStyle: namingStyle,
             sfSymbolKey: sfSymbolKey,
             symbolRenderAs: symbolRenderAs,
-            sfSymbolTemplate: sfSymbolTemplate
+            sfSymbolTemplate: sfSymbolTemplate,
+            symbolLayersName: symbolLayersName
         )
     }
 }

@@ -3,9 +3,9 @@ import PromiseKit
 
 protocol SFSymbolProvider {
 
-    func saveData(
+    func saveSymbol(
         from url: URL,
         to filePath: String,
-        template: String?
+        parameters: ImagesParameters
     ) -> Promise<Void>
 }

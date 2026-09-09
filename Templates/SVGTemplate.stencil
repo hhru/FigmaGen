@@ -2,7 +2,7 @@
 <!--Generator: FigmaGen-->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 3300 2200">
- <!--glyph: "{{ name }}", point size: 100.0, optical size: {{ opticalSize }}, design box: {{ designWidth }}x{{ designHeight }}-->
+ <!--glyph: "{{ name }}", point size: 100.0, optical size: {{ opticalWidth }}x{{ opticalHeight }}, design box: {{ designWidth }}x{{ designHeight }}-->
  <!-- слои и их роли задаются в SFSymbolProvider: чёрные пути из Figma - primary, #FF0002 - secondary -->
  <style>.defaults {-sfsymbols-draw-reverses-motion-groups:true}
 

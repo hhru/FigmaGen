@@ -33,14 +33,12 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
     ) -> String {
         var name = setNode.type == .component ? node.base.name : "\(setNode.name) \(node.base.name)"
 
-        if
-            let sfSymbolKey,
-            !sfSymbolKey.isEmpty,
-            name.lowercased().contains(sfSymbolKey.lowercased()) {
+        if let sfSymbolKey, !sfSymbolKey.isEmpty {
             name = name
-                .replacingOccurrences(of: "\(sfSymbolKey)=false", with: "")
-                .replacingOccurrences(of: "\(sfSymbolKey)=true", with: "\(sfSymbolKey)")
+                .replacingOccurrences(of: "\(sfSymbolKey)=false", with: "", options: .caseInsensitive)
+                .replacingOccurrences(of: "\(sfSymbolKey)=true", with: sfSymbolKey, options: .caseInsensitive)
         }
+
         switch namingStyle {
         case .camelCase:
             return name.camelized
@@ -70,24 +68,27 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
             folderPath: folderPath
         )
 
-        let isSymbol = parameters.sfSymbolKey != nil
-        && name.lowercased().contains(parameters.sfSymbolKey?.lowercased() ?? "")
+        let isSymbol = node.base.isSFSymbol(key: parameters.sfSymbolKey)
 
-        let assetSetExtension = isSymbol
-            ? AssetSymbolSet.pathExtension
-            : AssetImageSet.pathExtension
+        let filePaths: [ImageScale: String]
 
-        let assetExtension = isSymbol
-            ? ImageFormat.svg.fileExtension
-            : parameters.format.fileExtension
-
-        let symbolRenderingMode = isSymbol ? parameters.symbolRenderAs : nil
-
-        let filePaths = node.urls.keys.reduce(into: [:]) { result, scale in
-            result[isSymbol ? .none : scale] = folderPath
-                .appending(fileName: name, extension: assetSetExtension)
-                .appending(fileName: name.appending(scale.fileNameSuffix), extension: assetExtension)
-                .string
+        if isSymbol {
+            filePaths = [
+                .none: folderPath
+                    .appending(fileName: name, extension: AssetSymbolSet.pathExtension)
+                    .appending(fileName: name, extension: ImageFormat.svg.fileExtension)
+                    .string
+            ]
+        } else {
+            filePaths = node.urls.keys.reduce(into: [:]) { result, scale in
+                result[scale] = folderPath
+                    .appending(fileName: name, extension: AssetImageSet.pathExtension)
+                    .appending(
+                        fileName: name.appending(scale.fileNameSuffix),
+                        extension: parameters.format.fileExtension
+                    )
+                    .string
+            }
         }
 
         return ImageAsset(
@@ -96,7 +97,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
             preserveVectorData: parameters.preserveVectorData,
             renderAs: parameters.renderAs,
             isSymbol: isSymbol,
-            symbolRenderAs: symbolRenderingMode
+            symbolRenderAs: isSymbol ? parameters.symbolRenderAs : nil
         )
     }
 
@@ -184,12 +185,8 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
         parameters: ImagesParameters
     ) -> Promise<Void> {
         let promises = node.urls.compactMap { scale, url in
-            asset.filePaths[scale].map {
-                self.sfSymbolProvider.saveData(
-                    from: url,
-                    to: $0,
-                    template: parameters.sfSymbolTemplate
-                )
+            asset.filePaths[scale].map { filePath in
+                self.sfSymbolProvider.saveSymbol(from: url, to: filePath, parameters: parameters)
             }
         }
 
