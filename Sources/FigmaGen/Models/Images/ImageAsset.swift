@@ -8,4 +8,6 @@ struct ImageAsset: Encodable, Hashable {
     let filePaths: [ImageScale: String]
     let preserveVectorData: Bool
     let renderAs: ImageRenderingMode?
+    let isSymbol: Bool
+    let symbolRenderAs: SymbolRenderingMode?
 }

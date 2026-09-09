@@ -73,6 +73,7 @@ extension ImagesConfiguration {
             scales: scales,
             assets: assets,
             resources: resources,
+            coloredResources: coloredResources,
             postProcessor: postProcessor,
             onlyExportables: onlyExportables,
             useAbsoluteBounds: useAbsoluteBounds,
@@ -80,7 +81,10 @@ extension ImagesConfiguration {
             renderAs: renderAs,
             groupByFrame: groupByFrame,
             groupByComponentSet: groupByComponentSet,
-            namingStyle: namingStyle
+            namingStyle: namingStyle,
+            sfSymbolKey: sfSymbolKey,
+            symbolRenderAs: symbolRenderAs,
+            sfSymbolTemplate: sfSymbolTemplate
         )
     }
 }

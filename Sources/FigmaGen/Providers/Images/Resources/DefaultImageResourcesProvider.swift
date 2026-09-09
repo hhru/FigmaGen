@@ -85,7 +85,8 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
     private func saveImageFiles(
         node: ImageRenderedNode,
         resource: ImageResource,
-        postProcessor: String?
+        postProcessor: String?,
+        coloredResources: String?
     ) -> Promise<Void> {
         let promises = node.urls.compactMap { scale, url in
             resource.filePaths[scale].map { filePath in
@@ -93,7 +94,11 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
                     .saveData(from: url, to: filePath)
                     .done {
                         if let postProcessor {
-                            try self.postProcessor.execute(postProcessorPath: postProcessor, filePath: filePath)
+                            try self.postProcessor.execute(
+                                postProcessorPath: postProcessor,
+                                filePath: filePath,
+                                coloredResources: coloredResources
+                            )
                         }
                     }
             }
@@ -105,6 +110,7 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
     private func saveImageFiles(
         resources: [ImageRenderedNode: ImageResource],
         postProcessor: String?,
+        coloredResources: String?,
         in folderPath: Path
     ) throws -> Promise<Void> {
         if folderPath.exists {
@@ -112,7 +118,12 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
         }
 
         let promises = resources.map { node, resource in
-            saveImageFiles(node: node, resource: resource, postProcessor: postProcessor)
+            saveImageFiles(
+                node: node,
+                resource: resource,
+                postProcessor: postProcessor,
+                coloredResources: coloredResources
+            )
         }
 
         return when(fulfilled: promises)
@@ -132,7 +143,12 @@ final class DefaultImageResourcesProvider: ImageResourcesProvider, ImagesFolderP
                 folderPath: Path(folderPath)
             )
         }.nest { resources in
-            try self.saveImageFiles(resources: resources, postProcessor: parameters.postProcessor, in: Path(folderPath))
+            try self.saveImageFiles(
+                resources: resources,
+                postProcessor: parameters.postProcessor,
+                coloredResources: parameters.coloredResources,
+                in: Path(folderPath)
+            )
         }
     }
 }

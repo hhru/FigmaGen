@@ -75,6 +75,7 @@ final class DefaultImageRenderProvider: ImageRenderProvider {
                 .map { $0.id },
             format: format.figmaFormat,
             scale: scale.figmaScale,
+            svgIncludeID: true,
             useAbsoluteBounds: useAbsoluteBounds
         )
 

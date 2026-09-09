@@ -25,10 +25,15 @@ final class ImageResourcesPostProcessor {
 
     // MARK: -
 
-    func execute(postProcessorPath: String, filePath: String) throws {
+    func execute(postProcessorPath: String, filePath: String, coloredResources: String? = nil) throws {
         let postProcessorPath = Path(postProcessorPath).absolute()
         let filePath = Path(filePath).absolute()
 
         try shell("\(postProcessorPath) --filePath \(filePath)")
+
+        let coloredResourcesArgument = coloredResources
+            .map { " --coloredResources \(Path($0).absolute())" } ?? ""
+
+        try shell("\(postProcessorPath) --filePath \(filePath)\(coloredResourcesArgument)")
     }
 }

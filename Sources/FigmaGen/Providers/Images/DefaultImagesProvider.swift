@@ -228,17 +228,68 @@ final class DefaultImagesProvider: ImagesProvider {
                 )
             }
         }.then { nodes in
-            self.imageRenderProvider.renderImages(
-                of: file,
-                nodes: nodes,
-                format: parameters.format,
-                scales: parameters.scales,
-                useAbsoluteBounds: parameters.useAbsoluteBounds
-            )
+            when(
+                fulfilled: self.imageRenderProvider.renderImages(
+                    of: file,
+                    nodes: nodes.getImagesWithoutSymbols(by: parameters.sfSymbolKey),
+                    format: parameters.format,
+                    scales: parameters.scales,
+                    useAbsoluteBounds: parameters.useAbsoluteBounds
+                ),
+                self.imageRenderProvider.renderImages(
+                    of: file,
+                    nodes: nodes.getSymbols(by: parameters.sfSymbolKey),
+                    format: .svg,
+                    scales: parameters.scales,
+                    useAbsoluteBounds: parameters.useAbsoluteBounds
+                )
+            ).map { $0 + $1 }
         }.then { nodes in
+            // сюда приходят url-ы для pdf-ок и для svg
             self.saveAssetImagesIfNeeded(
                 nodes: nodes,
                 parameters: parameters
+            )
+        }
+    }
+}
+
+extension Array where Element == ImageComponentSetNode {
+
+    func getImagesWithoutSymbols(by sfSymbolKey: String?) -> [ImageComponentSetNode] {
+        guard let sfSymbolKey else {
+            return self
+        }
+
+        return compactMap { node in
+            let images = node.components.filter({ !$0.name.contains("\(sfSymbolKey)=true") })
+            guard !images.isEmpty else {
+                return nil
+            }
+
+            return ImageComponentSetNode(
+                name: node.name,
+                parentName: node.parentName,
+                components: images
+            )
+        }
+    }
+
+    func getSymbols(by sfSymbolKey: String?) -> [ImageComponentSetNode] {
+        guard let sfSymbolKey else {
+            return []
+        }
+
+        return compactMap { node in
+            let symbols = node.components.filter({ $0.name.contains("\(sfSymbolKey)=true") })
+            guard !symbols.isEmpty else {
+                return nil
+            }
+
+            return ImageComponentSetNode(
+                name: node.name,
+                parentName: node.parentName,
+                components: symbols
             )
         }
     }
