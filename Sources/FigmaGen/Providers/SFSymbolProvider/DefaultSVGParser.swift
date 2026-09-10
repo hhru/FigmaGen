@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(FoundationXML)
+import FoundationXML
+#endif
+
 final class DefaultSVGParser: SVGParser {
 
     // MARK: - Instance Methods
