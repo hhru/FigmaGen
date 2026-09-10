@@ -7,6 +7,7 @@ struct ImagesConfiguration: Decodable {
     private enum CodingKeys: String, CodingKey {
         case assets
         case resources
+        case coloredResources
         case postProcessor
         case format
         case scales
@@ -17,6 +18,10 @@ struct ImagesConfiguration: Decodable {
         case groupByFrame
         case groupByComponentSet
         case namingStyle
+        case sfSymbolKey
+        case symbolRenderAs
+        case sfSymbolTemplate
+        case symbolLayersName
     }
 
     // MARK: - Instance Properties
@@ -24,6 +29,7 @@ struct ImagesConfiguration: Decodable {
     let generatation: GenerationConfiguration
     let assets: String?
     let resources: String?
+    let coloredResources: String?
     let postProcessor: String?
     let format: ImageFormat
     let scales: [ImageScale]
@@ -34,6 +40,10 @@ struct ImagesConfiguration: Decodable {
     let groupByFrame: Bool
     let groupByComponentSet: Bool
     let namingStyle: ImageNamingStyle
+    let sfSymbolKey: String?
+    let symbolRenderAs: SymbolRenderingMode?
+    let sfSymbolTemplate: String?
+    let symbolLayersName: String?
 
     // MARK: - Initializers
 
@@ -41,6 +51,7 @@ struct ImagesConfiguration: Decodable {
         generatation: GenerationConfiguration,
         assets: String?,
         resources: String?,
+        coloredResources: String?,
         postProcessor: String?,
         format: ImageFormat,
         scales: [ImageScale],
@@ -50,11 +61,16 @@ struct ImagesConfiguration: Decodable {
         renderAs: ImageRenderingMode?,
         groupByFrame: Bool,
         groupByComponentSet: Bool,
-        namingStyle: ImageNamingStyle
+        namingStyle: ImageNamingStyle,
+        sfSymbolKey: String?,
+        symbolRenderAs: SymbolRenderingMode?,
+        sfSymbolTemplate: String?,
+        symbolLayersName: String?
     ) {
         self.generatation = generatation
         self.assets = assets
         self.resources = resources
+        self.coloredResources = coloredResources
         self.postProcessor = postProcessor
         self.format = format
         self.scales = scales
@@ -65,6 +81,10 @@ struct ImagesConfiguration: Decodable {
         self.groupByFrame = groupByFrame
         self.groupByComponentSet = groupByComponentSet
         self.namingStyle = namingStyle
+        self.sfSymbolKey = sfSymbolKey
+        self.symbolRenderAs = symbolRenderAs
+        self.sfSymbolTemplate = sfSymbolTemplate
+        self.symbolLayersName = symbolLayersName
     }
 
     init(from decoder: Decoder) throws {
@@ -72,6 +92,7 @@ struct ImagesConfiguration: Decodable {
 
         assets = try container.decodeIfPresent(forKey: .assets)
         resources = try container.decodeIfPresent(forKey: .resources)
+        coloredResources = try container.decodeIfPresent(forKey: .coloredResources)
 
         postProcessor = try container.decodeIfPresent(forKey: .postProcessor)
         format = try container.decodeIfPresent(forKey: .format) ?? .pdf
@@ -83,6 +104,10 @@ struct ImagesConfiguration: Decodable {
         groupByFrame = try container.decodeIfPresent(forKey: .groupByFrame) ?? false
         groupByComponentSet = try container.decodeIfPresent(forKey: .groupByComponentSet) ?? false
         namingStyle = try container.decodeIfPresent(forKey: .namingStyle) ?? .camelCase
+        sfSymbolKey = try container.decodeIfPresent(forKey: .sfSymbolKey)
+        symbolRenderAs = try container.decodeIfPresent(forKey: .symbolRenderAs)
+        sfSymbolTemplate = try container.decodeIfPresent(forKey: .sfSymbolTemplate)
+        symbolLayersName = try container.decodeIfPresent(forKey: .symbolLayersName)
 
         generatation = try GenerationConfiguration(from: decoder)
     }
@@ -94,6 +119,7 @@ struct ImagesConfiguration: Decodable {
             generatation: generatation.resolve(base: base),
             assets: assets,
             resources: resources,
+            coloredResources: coloredResources,
             postProcessor: postProcessor,
             format: format,
             scales: scales,
@@ -103,7 +129,11 @@ struct ImagesConfiguration: Decodable {
             renderAs: renderAs,
             groupByFrame: groupByFrame,
             groupByComponentSet: groupByComponentSet,
-            namingStyle: namingStyle
+            namingStyle: namingStyle,
+            sfSymbolKey: sfSymbolKey,
+            symbolRenderAs: symbolRenderAs,
+            sfSymbolTemplate: sfSymbolTemplate,
+            symbolLayersName: symbolLayersName
         )
     }
 }

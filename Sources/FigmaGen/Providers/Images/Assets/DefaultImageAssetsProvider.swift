@@ -9,12 +9,18 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
 
     let assetsProvider: AssetsProvider
     let dataProvider: DataProvider
+    let sfSymbolProvider: SFSymbolProvider
 
     // MARK: - Initializers
 
-    init(assetsProvider: AssetsProvider, dataProvider: DataProvider) {
+    init(
+        assetsProvider: AssetsProvider,
+        dataProvider: DataProvider,
+        sfSymbolProvider: SFSymbolProvider
+    ) {
         self.assetsProvider = assetsProvider
         self.dataProvider = dataProvider
+        self.sfSymbolProvider = sfSymbolProvider
     }
 
     // MARK: - Instance Methods
@@ -22,9 +28,16 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
     private func resolveName(
         for node: ImageRenderedNode,
         setNode: ImageComponentSetRenderedNode,
-        namingStyle: ImageNamingStyle
+        namingStyle: ImageNamingStyle,
+        sfSymbolKey: String?
     ) -> String {
-        let name = setNode.type == .component ? node.base.name : "\(setNode.name) \(node.base.name)"
+        var name = setNode.type == .component ? node.base.name : "\(setNode.name) \(node.base.name)"
+
+        if let sfSymbolKey, !sfSymbolKey.isEmpty {
+            name = name
+                .replacingOccurrences(of: "\(sfSymbolKey)=false", with: "", options: .caseInsensitive)
+                .replacingOccurrences(of: "\(sfSymbolKey)=true", with: sfSymbolKey, options: .caseInsensitive)
+        }
 
         switch namingStyle {
         case .camelCase:
@@ -41,7 +54,12 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
         parameters: ImagesParameters,
         folderPath: Path
     ) -> ImageAsset {
-        let name = resolveName(for: node, setNode: setNode, namingStyle: parameters.namingStyle)
+        let name = resolveName(
+            for: node,
+            setNode: setNode,
+            namingStyle: parameters.namingStyle,
+            sfSymbolKey: parameters.sfSymbolKey
+        )
 
         let folderPath = resolveFolderPath(
             groupByFrame: parameters.groupByFrame,
@@ -50,18 +68,36 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
             folderPath: folderPath
         )
 
-        let filePaths = node.urls.keys.reduce(into: [:]) { result, scale in
-            result[scale] = folderPath
-                .appending(fileName: name, extension: AssetImageSet.pathExtension)
-                .appending(fileName: name.appending(scale.fileNameSuffix), extension: parameters.format.fileExtension)
-                .string
+        let isSymbol = node.base.isSFSymbol(key: parameters.sfSymbolKey)
+
+        let filePaths: [ImageScale: String]
+
+        if isSymbol {
+            filePaths = [
+                .none: folderPath
+                    .appending(fileName: name, extension: AssetSymbolSet.pathExtension)
+                    .appending(fileName: name, extension: ImageFormat.svg.fileExtension)
+                    .string
+            ]
+        } else {
+            filePaths = node.urls.keys.reduce(into: [:]) { result, scale in
+                result[scale] = folderPath
+                    .appending(fileName: name, extension: AssetImageSet.pathExtension)
+                    .appending(
+                        fileName: name.appending(scale.fileNameSuffix),
+                        extension: parameters.format.fileExtension
+                    )
+                    .string
+            }
         }
 
         return ImageAsset(
             name: name,
             filePaths: filePaths,
             preserveVectorData: parameters.preserveVectorData,
-            renderAs: parameters.renderAs
+            renderAs: parameters.renderAs,
+            isSymbol: isSymbol,
+            symbolRenderAs: isSymbol ? parameters.symbolRenderAs : nil
         )
     }
 
@@ -103,15 +139,55 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
         return AssetImageSet(contents: contents)
     }
 
+    private func makeAssetSymbolSet(for asset: ImageAsset) -> AssetSymbolSet {
+        let assetImages = asset.filePaths.map { scale, filePath in
+            AssetImage(fileName: Path(filePath).lastComponent, scale: scale.assetImageScale)
+        }
+        let contents = AssetSymbolSetContents(
+            info: .defaultFigmaGen,
+            properties: AssetSymbolProperties(from: asset),
+            symbols: assetImages
+        )
+        return AssetSymbolSet(contents: contents)
+    }
+
     private func makeAssetImageSets(for assets: [ImageRenderedNode: ImageAsset]) -> [String: AssetImageSet] {
         assets.values.reduce(into: [:]) { result, asset in
+            guard !asset.isSymbol else {
+                return
+            }
+
             result[asset.name] = makeAssetImageSet(for: asset)
+        }
+    }
+
+    private func makeAssetSymbolSets(for assets: [ImageRenderedNode: ImageAsset]) -> [String: AssetSymbolSet] {
+        assets.values.reduce(into: [:]) { result, asset in
+            guard asset.isSymbol else {
+                return
+            }
+
+            result[asset.name] = makeAssetSymbolSet(for: asset)
         }
     }
 
     private func saveImageFiles(node: ImageRenderedNode, asset: ImageAsset) -> Promise<Void> {
         let promises = node.urls.compactMap { scale, url in
             asset.filePaths[scale].map { self.dataProvider.saveData(from: url, to: $0) }
+        }
+
+        return when(fulfilled: promises)
+    }
+
+    private func saveSymbolFiles(
+        node: ImageRenderedNode,
+        asset: ImageAsset,
+        parameters: ImagesParameters
+    ) -> Promise<Void> {
+        let promises = node.urls.compactMap { scale, url in
+            asset.filePaths[scale].map { filePath in
+                self.sfSymbolProvider.saveSymbol(from: url, to: filePath, parameters: parameters)
+            }
         }
 
         return when(fulfilled: promises)
@@ -144,10 +220,14 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
         return when(fulfilled: promises).asVoid()
     }
 
-    private func saveImageFiles(assets: [ImageComponentSetAsset]) -> Promise<Void> {
+    private func saveImageFiles(assets: [ImageComponentSetAsset], parameters: ImagesParameters) -> Promise<Void> {
         let promises = assets.flatMap { setAsset in
             setAsset.assets.map { node, asset in
-                saveImageFiles(node: node, asset: asset)
+                if asset.isSymbol {
+                    saveSymbolFiles(node: node, asset: asset, parameters: parameters)
+                } else {
+                    saveImageFiles(node: node, asset: asset)
+                }
             }
         }
 
@@ -172,6 +252,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
                 assets.reduce(into: [:]) { result, asset in
                     result[asset] = AssetFolder(
                         imageSets: self.makeAssetImageSets(for: asset.assets),
+                        symbolSets: self.makeAssetSymbolSets(for: asset.assets),
                         contents: AssetFolderContents(info: .defaultFigmaGen)
                     )
                 }
@@ -183,7 +264,7 @@ final class DefaultImageAssetsProvider: ImageAssetsProvider, ImagesFolderPathRes
                     in: folderPath
                 )
             }.then {
-                self.saveImageFiles(assets: assets)
+                self.saveImageFiles(assets: assets, parameters: parameters)
             }
         }
     }
@@ -220,6 +301,15 @@ extension AssetImageProperties {
     }
 }
 
+extension AssetSymbolProperties {
+
+    fileprivate init?(from imageAsset: ImageAsset) {
+        self.init(
+            symbolRenderingIntent: imageAsset.symbolRenderAs.map { AssetSymbolRenderingIntent(from: $0) }
+        )
+    }
+}
+
 extension AssetImageTemplateRenderingIntent {
 
     fileprivate init(from renderingIntent: ImageRenderingMode) {
@@ -229,6 +319,22 @@ extension AssetImageTemplateRenderingIntent {
 
         case .template:
             self = .template
+        }
+    }
+}
+
+extension AssetSymbolRenderingIntent {
+
+    fileprivate init(from renderingIntent: SymbolRenderingMode) {
+        switch renderingIntent {
+        case .template:
+            self = .template
+
+        case .multicolor:
+            self = .multicolor
+
+        case .hierarchical:
+            self = .hierarchical
         }
     }
 }

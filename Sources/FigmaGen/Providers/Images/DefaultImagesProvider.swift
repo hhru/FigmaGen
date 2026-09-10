@@ -228,17 +228,62 @@ final class DefaultImagesProvider: ImagesProvider {
                 )
             }
         }.then { nodes in
-            self.imageRenderProvider.renderImages(
+            self.renderImagesAndSymbols(of: file, nodes: nodes, parameters: parameters)
+        }.then { renderedNodes in
+            self.saveAssetImagesIfNeeded(
+                nodes: renderedNodes,
+                parameters: parameters
+            )
+        }
+    }
+
+    private func renderImagesAndSymbols(
+        of file: FileParameters,
+        nodes: [ImageComponentSetNode],
+        parameters: ImagesParameters
+    ) -> Promise<[ImageComponentSetRenderedNode]> {
+        let imageNodes = nodes.filteringComponents { !$0.isSFSymbol(key: parameters.sfSymbolKey) }
+        let symbolNodes = nodes.filteringComponents { $0.isSFSymbol(key: parameters.sfSymbolKey) }
+
+        return when(
+            fulfilled: imageRenderProvider.renderImages(
                 of: file,
-                nodes: nodes,
+                nodes: imageNodes,
                 format: parameters.format,
                 scales: parameters.scales,
                 useAbsoluteBounds: parameters.useAbsoluteBounds
+            ),
+            imageRenderProvider.renderImages(
+                of: file,
+                nodes: symbolNodes,
+                format: .svg,
+                scales: [.none],
+                useAbsoluteBounds: parameters.useAbsoluteBounds
             )
-        }.then { nodes in
-            self.saveAssetImagesIfNeeded(
-                nodes: nodes,
-                parameters: parameters
+        ).map { renderedImages, renderedSymbols in
+            renderedImages + renderedSymbols
+        }
+    }
+}
+
+extension Array where Element == ImageComponentSetNode {
+
+    func filteringComponents(_ isIncluded: (ImageNode) -> Bool) -> [ImageComponentSetNode] {
+        compactMap { node in
+            let components = node.components.filter(isIncluded)
+
+            guard !components.isEmpty else {
+                return nil
+            }
+
+            guard node.type == .componentSet else {
+                return node
+            }
+
+            return ImageComponentSetNode(
+                name: node.name,
+                parentName: node.parentName,
+                components: components
             )
         }
     }

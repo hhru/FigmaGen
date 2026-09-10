@@ -70,12 +70,22 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             """
     )
 
+    let coloredResources = Key<String>(
+        "--coloredResources",
+        description: """
+            Optional path to folder to store generated ImageVector Kotlin files for
+            multi-color icons (components with "colored" in their Figma node name).
+            Requires --postProcessor to be set — the downloaded SVG is saved here and
+            converted to a .kt file by --postProcessor (invoked with --outputFormat kt).
+            """
+    )
+
     let postProcessor = Key<String>(
         "--postProcessor",
         "-p",
         description: """
             The path to the bash script to make operations with generated images.
-            Only executes for generated images from --resources folder.
+            Executes for generated images from --resources and --coloredResources folders.
             """
     )
 
@@ -183,6 +193,39 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             """
     )
 
+    let sfSymbolKey = Key<String>(
+        "--sfSymbolKey",
+        description: """
+            Name of the Figma property that marks SF Symbols: components named with '<key>=true'
+            (case-insensitive) are rendered as SVG and saved to .symbolset instead of .imageset.
+            By default, no SF Symbols are generated.
+            """
+    )
+
+    let symbolRenderAs = Key<String>(
+        "--symbolRenderAs",
+        description: """
+            Set rendering mode in Xcode assets for SF Symbols, can be 'template`, `multicolor` or `hierarchical'.
+            By default, Xcode assets will be generated with automatic rendering mode.
+            """
+    )
+
+    let symbolLayersName = Key<String>(
+        "--symbolLayersName",
+        description: """
+            Names for primary, secondary and tertiary layers separated by comma.
+            By default use black color for primary and other - for secondary, tertiary ignored.
+            """
+    )
+
+    let sfSymbolTemplate = Key<String>(
+        "--sfSymbolTemplate",
+        description: """
+            Path to the SF Symbol template file.
+            If no template is passed SF Symbols won't be created.
+            """
+    )
+
     // MARK: - Initializers
 
     init(generator: ImagesGenerator) {
@@ -225,7 +268,21 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
 
         case let rawRenderingMode?:
             guard let mode = ImageRenderingMode(rawValue: rawRenderingMode) else {
-                fail(message: "Failed to generated images: Invalid rendering mode (\(rawRenderingMode)")
+                fail(message: "Failed to generate images: Invalid rendering mode (\(rawRenderingMode))")
+            }
+
+            return mode
+        }
+    }
+
+    private func resolveSymbolRenderAs() -> SymbolRenderingMode? {
+        switch symbolRenderAs.value {
+        case nil:
+            return nil
+
+        case let rawSymbolRenderingMode?:
+            guard let mode = SymbolRenderingMode(rawValue: rawSymbolRenderingMode) else {
+                fail(message: "Failed to generate symbols: Invalid rendering mode (\(rawSymbolRenderingMode))")
             }
 
             return mode
@@ -251,6 +308,7 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             generatation: generationConfiguration,
             assets: assets.value,
             resources: resources.value,
+            coloredResources: coloredResources.value,
             postProcessor: postProcessor.value,
             format: resolveImageFormat(),
             scales: resolveImageScales(),
@@ -260,7 +318,11 @@ final class ImagesCommand: AsyncExecutableCommand, GenerationConfigurableCommand
             renderAs: resolveRenderingMode(),
             groupByFrame: groupByFrame.value,
             groupByComponentSet: groupByComponentSet.value,
-            namingStyle: resolveNamingStyle()
+            namingStyle: resolveNamingStyle(),
+            sfSymbolKey: sfSymbolKey.value,
+            symbolRenderAs: resolveSymbolRenderAs(),
+            sfSymbolTemplate: sfSymbolTemplate.value,
+            symbolLayersName: symbolLayersName.value
         )
     }
 

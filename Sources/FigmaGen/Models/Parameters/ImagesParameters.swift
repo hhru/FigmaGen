@@ -8,6 +8,7 @@ struct ImagesParameters {
     let scales: [ImageScale]
     let assets: String?
     let resources: String?
+    let coloredResources: String?
     let postProcessor: String?
     let onlyExportables: Bool
     let useAbsoluteBounds: Bool
@@ -16,4 +17,8 @@ struct ImagesParameters {
     let groupByFrame: Bool
     let groupByComponentSet: Bool
     let namingStyle: ImageNamingStyle
+    let sfSymbolKey: String?
+    let symbolRenderAs: SymbolRenderingMode?
+    let sfSymbolTemplate: String?
+    let symbolLayersName: String?
 }

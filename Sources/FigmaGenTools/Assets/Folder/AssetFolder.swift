@@ -13,6 +13,7 @@ public struct AssetFolder {
 
     public var colorSets: [String: AssetColorSet]
     public var imageSets: [String: AssetImageSet]
+    public var symbolSets: [String: AssetSymbolSet]
     public var folders: [String: AssetFolder]
     public var contents: AssetFolderContents
 
@@ -21,11 +22,13 @@ public struct AssetFolder {
     public init(
         colorSets: [String: AssetColorSet] = [:],
         imageSets: [String: AssetImageSet] = [:],
+        symbolSets: [String: AssetSymbolSet] = [:],
         folders: [String: Self] = [:],
         contents: AssetFolderContents = AssetFolderContents()
     ) {
         self.colorSets = colorSets
         self.imageSets = imageSets
+        self.symbolSets = symbolSets
         self.folders = folders
         self.contents = contents
     }
@@ -41,6 +44,7 @@ public struct AssetFolder {
 
         colorSets = [:]
         imageSets = [:]
+        symbolSets = [:]
         folders = [:]
 
         try folderPath
@@ -56,6 +60,9 @@ public struct AssetFolder {
 
                 case AssetImageSet.pathExtension:
                     imageSets[nodeName] = try AssetImageSet(folderPath: nodePath.string)
+
+                case AssetSymbolSet.pathExtension:
+                    symbolSets[nodeName] = try AssetSymbolSet(folderPath: nodePath.string)
 
                 case nil:
                     folders[nodeName] = try Self(folderPath: nodePath.string)
@@ -94,6 +101,7 @@ public struct AssetFolder {
 
         try saveNodes(colorSets, in: folderPath)
         try saveNodes(imageSets, in: folderPath)
+        try saveNodes(symbolSets, in: folderPath)
         try saveFolders(in: folderPath)
 
         let contentsEncoder = JSONEncoder(outputFormatting: [.prettyPrinted, .sortedKeys])

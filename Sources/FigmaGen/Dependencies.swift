@@ -6,6 +6,12 @@ enum Dependencies {
     // MARK: - Type Properties
 
     static let dataProvider: DataProvider = DefaultDataProvider()
+    static let svgParser: SVGParser = DefaultSVGParser()
+    static let sfSymbolProvider: SFSymbolProvider = DefaultSFSymbolProvider(
+        dataProvider: dataProvider,
+        svgParser: svgParser,
+        templateRenderer: templateRenderer
+    )
 
     static let gitHubHTTPService: GitHubHTTPService = HTTPService()
     static let gitHubAPIProvider: RemoteRepoProvider = GitHubAPIProvider(httpService: gitHubHTTPService)
@@ -37,7 +43,8 @@ enum Dependencies {
 
     static let imageAssetsProvider: ImageAssetsProvider = DefaultImageAssetsProvider(
         assetsProvider: assetsProvider,
-        dataProvider: dataProvider
+        dataProvider: dataProvider,
+        sfSymbolProvider: sfSymbolProvider
     )
 
     static let imageResourcesProvider: ImageResourcesProvider = DefaultImageResourcesProvider(
