@@ -21,6 +21,12 @@ final class TokensCommand: AsyncExecutableCommand {
     let remoteFilePathKey = GitHubRemoteFileCommandKeys.pathKey
     let remoteRepoAccessTokenKey = GitHubRemoteFileCommandKeys.repoAccessTokenKey
 
+    let tokenSetCoreKey = GitHubRemoteFileCommandKeys.tokenSetCoreKey
+    let tokenSetSemanticKey = GitHubRemoteFileCommandKeys.tokenSetSemanticKey
+    let tokenSetColorsKey = GitHubRemoteFileCommandKeys.tokenSetColorsKey
+    let tokenSetTypographyKey = GitHubRemoteFileCommandKeys.tokenSetTypographyKey
+    let tokenSetThemesKey = GitHubRemoteFileCommandKeys.tokenSetThemesKey
+
     let themes = ThemeCommandKeys.themes
     let fallbackTheme = ThemeCommandKeys.fallbackTheme
     let themeTemplate = ThemeCommandKeys.themeTemplate
@@ -232,7 +238,18 @@ extension TokensCommand {
             repo: fileRepo,
             branch: fileBranch,
             filePath: filePath,
-            accessToken: AccessTokenConfiguration(value: remoteRepoAccessToken)
+            accessToken: AccessTokenConfiguration(value: remoteRepoAccessToken),
+            tokenSets: resolveTokenSetsMapping()
+        )
+    }
+
+    private func resolveTokenSetsMapping() -> W3CTokenSetsMapping {
+        W3CTokenSetsMapping(
+            core: tokenSetCoreKey.value,
+            semantic: tokenSetSemanticKey.value,
+            colors: tokenSetColorsKey.value,
+            typography: tokenSetTypographyKey.value,
+            themes: tokenSetThemesKey.value
         )
     }
 
