@@ -24,15 +24,15 @@ struct W3CTokenSetsMapping: Decodable, Hashable {
     // MARK: - Initializers
 
     init(
-        core: String?,
-        semantic: String?,
-        colors: String?,
-        typography: String?,
-        themes: String?
+        core: String? = nil,
+        semantic: String? = nil,
+        colors: String? = nil,
+        typography: String? = nil,
+        themes: String? = nil
     ) {
         self.core = core ?? "core"
-        self.semantic = semantic ?? "semantic"
-        self.colors = colors ?? "colors"
+        self.semantic = semantic ?? "common"
+        self.colors = colors ?? "palette"
         self.typography = typography ?? "typography"
         self.themes = themes ?? "themes"
     }
@@ -40,10 +40,12 @@ struct W3CTokenSetsMapping: Decodable, Hashable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        core = try container.decodeIfPresent(forKey: .core) ?? "core"
-        semantic = try container.decodeIfPresent(forKey: .semantic) ?? "semantic"
-        colors = try container.decodeIfPresent(forKey: .colors) ?? "colors"
-        typography = try container.decodeIfPresent(forKey: .typography) ?? "typography"
-        themes = try container.decodeIfPresent(forKey: .themes) ?? "themes"
+        self.init(
+            core: try container.decodeIfPresent(forKey: .core),
+            semantic: try container.decodeIfPresent(forKey: .semantic),
+            colors: try container.decodeIfPresent(forKey: .colors),
+            typography: try container.decodeIfPresent(forKey: .typography),
+            themes: try container.decodeIfPresent(forKey: .themes)
+        )
     }
 }

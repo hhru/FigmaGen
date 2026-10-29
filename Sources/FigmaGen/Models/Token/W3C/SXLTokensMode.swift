@@ -11,7 +11,7 @@ struct SXLTokensMode: Decodable, Hashable {
     // MARK: - Instance Properties
 
     let name: String
-    let isEnabled: Bool?
+    let isEnabled: Bool
 
     /// Пути к файлам относительно манифеста и их статус (`enabled`, `source`, `disabled`).
     let files: [String: String]
@@ -28,6 +28,6 @@ struct SXLTokensMode: Decodable, Hashable {
 
         name = try container.decodeIfPresent(String.self, forKey: .name) ?? "unknown"
         isEnabled = try container.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
-        files = try container.decodeIfPresent([String: String].self, forKey: .enabled) ?? [:]
+        files = try container.decodeIfPresent([String: String].self, forKey: .files) ?? [:]
     }
 }

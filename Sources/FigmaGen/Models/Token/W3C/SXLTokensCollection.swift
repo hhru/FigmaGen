@@ -19,6 +19,6 @@ struct SXLTokensCollection: Decodable, Hashable {
 
         name = try container.decodeIfPresent(String.self, forKey: .name) ?? "unknown"
         isEnabled = try container.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
-        modes = try container.decodeIfPresent([SXLTokensMode].self, forKey: .enabled) ?? []
+        modes = try container.decodeIfPresent([SXLTokensMode].self, forKey: .modes) ?? []
      }
 }
