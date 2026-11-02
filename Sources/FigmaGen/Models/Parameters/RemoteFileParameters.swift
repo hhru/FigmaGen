@@ -7,6 +7,7 @@ struct RemoteFileParameters {
     let filePath: String
     let accessToken: String?
     let tokenSets: W3CTokenSetsMapping
+    let includeDisabled: Bool
 
     init(
         owner: String,
@@ -14,7 +15,8 @@ struct RemoteFileParameters {
         branch: String,
         filePath: String,
         accessToken: String?,
-        tokenSets: W3CTokenSetsMapping
+        tokenSets: W3CTokenSetsMapping,
+        includeDisabled: Bool
     ) {
         self.owner = owner
         self.repo = repo
@@ -22,5 +24,6 @@ struct RemoteFileParameters {
         self.filePath = filePath
         self.accessToken = accessToken
         self.tokenSets = tokenSets
+        self.includeDisabled = includeDisabled
     }
 }

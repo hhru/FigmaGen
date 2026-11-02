@@ -26,6 +26,7 @@ final class TokensCommand: AsyncExecutableCommand {
     let tokenSetColorsKey = GitHubRemoteFileCommandKeys.tokenSetColorsKey
     let tokenSetTypographyKey = GitHubRemoteFileCommandKeys.tokenSetTypographyKey
     let tokenSetThemesKey = GitHubRemoteFileCommandKeys.tokenSetThemesKey
+    let includeDisabledFlag = GitHubRemoteFileCommandKeys.includeDisabledFlag
 
     let themes = ThemeCommandKeys.themes
     let fallbackTheme = ThemeCommandKeys.fallbackTheme
@@ -239,7 +240,8 @@ extension TokensCommand {
             branch: fileBranch,
             filePath: filePath,
             accessToken: AccessTokenConfiguration(value: remoteRepoAccessToken),
-            tokenSets: resolveTokenSetsMapping()
+            tokenSets: resolveTokenSetsMapping(),
+            includeDisabled: includeDisabledFlag.value
         )
     }
 
