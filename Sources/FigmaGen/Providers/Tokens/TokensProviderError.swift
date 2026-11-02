@@ -10,8 +10,12 @@ struct TokensProviderError: Error, CustomStringConvertible {
         case failedCreateData
         case unsupportedManifestSchema(schema: String)
         case manifestCollectionNotFound(name: String)
+        case manifestCollectionNotEnabled(name: String)
+        case manifestCollectionHasMultipleModes(name: String, modes: [String])
         case tokensFileNotFound(path: String)
         case invalidTokenValue(name: String, type: String)
+        case invalidTokenField(name: String, field: String)
+        case multipleShadowsNotSupported(name: String, count: Int)
         case themeNotFound(theme: String)
     }
 
@@ -42,11 +46,23 @@ struct TokensProviderError: Error, CustomStringConvertible {
         case let .manifestCollectionNotFound(name):
             return "Collection '\(name)' not found in tokens manifest"
 
+        case let .manifestCollectionNotEnabled(name):
+            return "Collection '\(name)' not enabled in tokens manifest"
+
+        case let .manifestCollectionHasMultipleModes(name, modes):
+            return "Collection '\(name)' has several modes (\(modes.joined(separator: ", "))), only single mode is supported"
+
         case let .tokensFileNotFound(path):
             return "Tokens file '\(path)' not found"
 
         case let .invalidTokenValue(name, type):
             return "Invalid value of token '\(name)' with type '\(type)'"
+
+        case let .invalidTokenField(name, field):
+            return "Token '\(name)' has missing or invalid field '\(field)'"
+
+        case let .multipleShadowsNotSupported(name, count):
+            return "Token '\(name)' contains \(count) shadows, only single shadow is supported"
 
         case let .themeNotFound(theme):
             return "Theme '\(theme)' not found in tokens manifest"

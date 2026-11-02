@@ -16,6 +16,12 @@ struct SXLTokensMode: Decodable, Hashable {
     /// Пути к файлам относительно манифеста и их статус (`enabled`, `source`, `disabled`).
     let files: [String: String]
 
+    var allFiles: [String] {
+        files
+            .keys
+            .sorted()
+    }
+
     var enabledFiles: [String] {
         files
             .filter { $0.value != "disabled" }
