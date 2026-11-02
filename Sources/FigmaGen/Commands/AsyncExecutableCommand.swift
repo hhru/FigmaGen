@@ -18,7 +18,11 @@ extension AsyncExecutableCommand {
 
     func execute() throws {
         _Concurrency.Task {
-            try await executeAsyncAndExit()
+            do {
+                try await executeAsyncAndExit()
+            } catch {
+                fail(message: "\(error)")
+            }
         }
 
         RunLoop.main.run()
