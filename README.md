@@ -542,8 +542,10 @@ Remote repository section:
 - `owner`: owner of the remote repository
 - `repo`: name of the remote repository
 - `branch`: name of the branch in remote repository
-- `filePath`: file name or path to the file in remote repository
+- `filePath`: path to the [SXL Studio](https://www.sxl-studio.com) tokens manifest (`config.json`) in remote repository
 - `accessToken`: an access token string or object that is needed to execute GitHub API requests 
+- `tokenSets`: optional mapping of FigmaGen token sets to manifest collections (see below)
+- `includeDisabled`: optional flag, `true` includes manifest collections and modes with `enabled: false` and files with `disabled` status (`false` by default)
 
 Remote repository parameters structure:
 ```yaml
@@ -551,7 +553,7 @@ Remote repository parameters structure:
     owner: { your repository owner }
     repo: { your repository name }
     branch: { your repository branch }
-    filePath: { your repository file path }
+    filePath: { path to tokens manifest }
     accessToken: { your GitHub access token }
     # OR
     accessToken:
@@ -565,9 +567,9 @@ Sample configuration for remote repository parameters with string `accessToken`:
 ```yaml
   remoteRepoConfig: 
     owner: hhru
-    repo: FigmaGen
+    repo: magritte-design-tokens
     branch: master
-    filePath: tokens.json
+    filePath: tokens/config.json
     accessToken: ghp_259614ac9fbc93bd84c43bbe2bt53m0TaM4A
 ```
 
@@ -575,15 +577,101 @@ Sample configuration for remote repository parameters with object `accessToken`:
 ```yaml
   remoteRepoConfig: 
     owner: hhru
-    repo: FigmaGen
+    repo: magritte-design-tokens
     branch: master
-    filePath: tokens.json
+    filePath: tokens/config.json
     accessToken:
       env: GITHUB_API
       keychain:
         service: GitHub Token
         key: hh
 ```
+
+#### Tokens format
+
+Tokens are stored in [W3C Design Tokens](https://www.designtokens.org/tr/drafts/format/) format (`$value`, `$type`, `$description`)
+and split into several files listed in the SXL Studio manifest:
+
+```
+tokens/
+├── config.json          # manifest: collections, modes and their files
+├── palette.json
+├── core.json
+├── common.json
+├── typography.json
+├── themes/
+│   ├── hh-day.json
+│   ├── hh-night.json
+│   └── zp-day.json
+└── diff-id.*.json       # Figma sync file, is not listed in the manifest and is not downloaded
+```
+
+Only files listed in the manifest are downloaded, paths are resolved relative to the manifest.
+Collections and modes with `enabled: false` and files with `disabled` status are skipped unless `includeDisabled` is `true`.
+Files with `enabled` and `source` statuses are both used as token sources.
+
+Modes of the `themes` collection are used as themes (`themes` and `fallbackTheme` must be present among them).
+Other collections must contain a single mode, otherwise generation fails.
+
+Manifest collections are mapped to FigmaGen token sets. Default mapping can be overridden with `tokenSets`:
+```yaml
+  remoteRepoConfig:
+    ...
+    tokenSets:
+      core: core
+      semantic: common
+      colors: palette
+      typography: typography
+      themes: themes
+```
+
+The same parameters can be passed to the `tokens` command:
+```
+--tokenSetCore, --tokenSetSemantic, --tokenSetColors, --tokenSetTypography, --tokenSetThemes
+--includeDisabled
+```
+
+Tokens are converted to the same template context as before, W3C types are mapped to Tokens Studio ones:
+
+| W3C `$type` | Context |
+|---|---|
+| `fontSize`, `lineHeight`, `fontWeight`, `fontFamily` | same as `fontSizes`, `lineHeights`, `fontWeights`, `fontFamilies` |
+| `shadow` (`offsetX`, `offsetY`) | `boxShadow` (`x`, `y`), only a single shadow per token is supported |
+| `typography`, `template` | `typography` |
+| `number` | plain value |
+| `duration` (`"100ms"`) | `animationTime` (`duration: 0.1`, `durationMs: "100"`) |
+| `cubicBezier` (`[x1, y1, x2, y2]`) | `animationEaseBase` |
+| `easing` (`"spring(mass, stiffness, damping, velocity)"`) | `animationEaseSpring` |
+| `transition` | `coreTransitions`, `semanticTransitions`, `allTransitions` in `animationEases` context |
+
+JSON numbers are converted to strings as `Double` (`2` → `"2.0"`, `0.96` → `"0.96"`), string values are kept as is.
+Arrays of strings in composite values are joined with `", "` (`fontFamily: ["HH Sans", "Helvetica"]` → `"HH Sans, Helvetica"`).
+Tokens with unsupported `$type` are skipped with a warning.
+
+New template context fields:
+- `description`: token `$description` as is (`nil` if absent), available in all tokens.
+- `velocity`: initial velocity of `animationEaseSpring` tokens.
+- `Transition` tokens: `path`, `x1`, `y1`, `x2`, `y2`, `duration` (seconds), `durationMs`, `delay` (seconds), `delayMs`, `description`.
+  `duration` and `delay` are optional: a value that can't be resolved is omitted with a warning.
+
+Alpha in `rgba(hex, alpha)` colors can be set in percents (`10%`) or as a fraction from 0 to 1 (`0.1`).
+Alpha without `%` greater than 1 is treated as percents (`10` → `10%`) with a warning.
+
+#### Migration from monolithic Tokens Studio JSON
+
+Monolithic Tokens Studio JSON (`tokens.json`) is no longer supported in `remoteRepoConfig`.
+Point `filePath` to the tokens manifest:
+```diff
+   remoteRepoConfig:
+     owner: hhru
+     repo: magritte-design-tokens
+-    branch: json-before-migration
+-    filePath: tokens.json
++    branch: master
++    filePath: tokens/config.json
+```
+
+Generation from Figma file (`file`) still uses Tokens Studio plugin data and is not changed.
 
 ## Working on FigmaGen
 
