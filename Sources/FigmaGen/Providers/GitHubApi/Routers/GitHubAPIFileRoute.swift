@@ -1,9 +1,7 @@
 import Foundation
 import FigmaGenTools
 
-struct GitHubAPIFileRoute: GitHubAPIRoute {
-
-    typealias Response = GitHubFile
+struct GitHubAPIFileRoute<Response: Decodable>: GitHubAPIRoute {
 
     private let owner: String
     private let repo: String
