@@ -74,6 +74,31 @@ final class TokensResolverTests: XCTestCase {
         XCTAssertEqual(actualColor, expectedColor)
     }
 
+    func testResolveRGBAColorWithFractionAlpha() throws {
+        let value = "rgba(#FFFFFF, 0.48)"
+        let expectedColor = Color(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.48)
+
+        let actualColor = try tokensResolver.resolveRGBAColorValue(value, tokenValues: .empty, theme: .light)
+
+        XCTAssertEqual(actualColor, expectedColor)
+    }
+
+    func testResolveRGBAColorWithAlphaGreaterThanOneWithoutPercent() throws {
+        var warnings: [String] = []
+        let tokensResolver = DefaultTokensResolver { warnings.append($0) }
+
+        let value = "rgba(#FFFFFF, 48)"
+        let expectedColor = Color(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.48)
+
+        let actualColor = try tokensResolver.resolveRGBAColorValue(value, tokenValues: .empty, theme: .light)
+
+        XCTAssertEqual(actualColor, expectedColor)
+        XCTAssertEqual(warnings.count, 1)
+        XCTAssertThrowsError(
+            try tokensResolver.resolveRGBAColorValue("rgba(#FFFFFF, 148)", tokenValues: .empty, theme: .light)
+        )
+    }
+
     func testResolveRGBAColorWithoutReferences() throws {
         let value = "rgba(#FFFFFF, 48%)"
         let expectedColor = Color(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.48)

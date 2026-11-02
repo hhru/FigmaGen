@@ -41,8 +41,7 @@ struct W3CTokensNormalizer {
         let themedTokens = try themesCollection.modes
             .filter { includeDisabled || $0.isEnabled }
             .map { mode in
-                let value = (Theme(mode.name), try tokens(of: [mode], files: files))
-                return value
+                (Theme(mode.name), try tokens(of: [mode], files: files))
             }
 
         return TokenValues(
