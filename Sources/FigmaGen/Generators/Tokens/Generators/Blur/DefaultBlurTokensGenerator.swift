@@ -30,7 +30,8 @@ struct DefaultBlurTokensGenerator: BlurTokensGenerator {
                 value,
                 tokenValues: tokenValues,
                 theme: nil
-            )
+            ),
+            description: token.description
         )
     }
 

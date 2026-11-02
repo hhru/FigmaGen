@@ -10,6 +10,7 @@ struct W3CTokensNormalizer {
         let name: String
         let type: String?
         let value: W3CTokenJSON
+        let description: String?
     }
 
     // MARK: - Instance Properties
@@ -104,7 +105,14 @@ struct W3CTokensNormalizer {
         let type = object["$type"]?.stringValue ?? inheritedType
 
         if let value = object["$value"] {
-            return [Leaf(name: path.joined(separator: "."), type: type, value: value)]
+            return [
+                Leaf(
+                    name: path.joined(separator: "."),
+                    type: type,
+                    value: value,
+                    description: object["$description"]?.stringValue
+                )
+            ]
         }
 
         return object
@@ -120,7 +128,7 @@ struct W3CTokensNormalizer {
             return nil
         }
 
-        return TokenValue(type: type, name: leaf.name)
+        return TokenValue(type: type, name: leaf.name, description: leaf.description)
     }
 
     // swiftlint:disable:next function_body_length

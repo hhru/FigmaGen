@@ -31,7 +31,8 @@ struct DefaultBorderTokensGenerator: BorderTokensGenerator {
                 tokenValues: tokens,
                 theme: nil
             ),
-            style: value.style
+            style: value.style,
+            description: token.description
         )
     }
 
@@ -49,7 +50,8 @@ struct DefaultBorderTokensGenerator: BorderTokensGenerator {
                 value,
                 tokenValues: tokens,
                 theme: nil
-            )
+            ),
+            description: token.description
         )
     }
 

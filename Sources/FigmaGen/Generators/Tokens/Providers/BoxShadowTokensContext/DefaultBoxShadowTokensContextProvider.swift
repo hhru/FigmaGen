@@ -26,7 +26,8 @@ final class DefaultBoxShadowTokensContextProvider: BoxShadowTokensContextProvide
             x: boxShadowValue.x,
             y: boxShadowValue.y,
             blur: boxShadowValue.blur,
-            spread: boxShadowValue.spread
+            spread: boxShadowValue.spread,
+            description: themedToken.description
         )
     }
 

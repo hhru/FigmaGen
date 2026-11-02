@@ -8,6 +8,7 @@ struct AnimationEase {
         let y1: String
         let x2: String
         let y2: String
+        let description: String?
     }
 
     struct Spring {
@@ -15,6 +16,8 @@ struct AnimationEase {
         let stiffness: String
         let damping: String
         let mass: String
+        let velocity: String?
+        let description: String?
     }
 
     let base: Base?

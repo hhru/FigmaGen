@@ -33,4 +33,5 @@ struct TypographyToken {
     let paragraphIndent: ParagraphIndentToken?
     let textDecoration: TextDecorationToken?
     let fontScale: FontScaleToken?
+    let description: String?
 }

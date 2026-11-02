@@ -27,7 +27,8 @@ final class DefaultBaseColorTokensGenerator: BaseColorTokensGenerator {
                 value,
                 tokenValues: tokenValues,
                 theme: nil
-            )
+            ),
+            description: token.description
         )
     }
 

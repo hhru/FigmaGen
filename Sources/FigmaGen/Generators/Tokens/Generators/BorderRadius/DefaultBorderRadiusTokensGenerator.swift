@@ -30,7 +30,8 @@ struct DefaultBorderRadiusTokensGenerator: BorderRadiusTokensGenerator {
                 value,
                 tokenValues: tokenValues,
                 theme: nil
-            )
+            ),
+            description: token.description
         )
     }
 
