@@ -135,7 +135,7 @@ struct W3CTokensNormalizer {
         let value = leaf.value
 
         switch leaf.type {
-        case "color":
+        case "color", "gradient":
             return .color(value: try string(value, leaf))
 
         case "spacing":

@@ -179,6 +179,19 @@ final class W3CTokensNormalizerTests: XCTestCase {
         XCTAssertEqual(warnings.count, 1)
     }
 
+    func testGradient() throws {
+        let gradient = "linear-gradient(180deg, rgba({color.base.black}, 0) 0%, rgba({color.base.black}, 0.48) 100%)"
+
+        let tokenValues = try normalize(
+            theme: #"{"gradient": {"fade": {"$value": "\#(gradient)", "$type": "gradient"}}}"#
+        )
+
+        XCTAssertEqual(
+            tokenValues.tokens(for: Theme("hh-day")),
+            [TokenValue(type: .color(value: gradient), name: "gradient.fade")]
+        )
+    }
+
     func testDescription() throws {
         let tokenValues = try normalize(
             theme: ##"{"color": {"text": {"$value": "#000000", "$type": "color", "$description": "DEPRECATED"}}}"##

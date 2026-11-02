@@ -637,6 +637,7 @@ Tokens are converted to the same template context as before, W3C types are mappe
 |---|---|
 | `fontSize`, `lineHeight`, `fontWeight`, `fontFamily` | same as `fontSizes`, `lineHeights`, `fontWeights`, `fontFamilies` |
 | `shadow` (`offsetX`, `offsetY`) | `boxShadow` (`x`, `y`), only a single shadow per token is supported |
+| `gradient` (`"linear-gradient(...)"`) | `gradients` |
 | `typography`, `template` | `typography` |
 | `number` | plain value |
 | `duration` (`"100ms"`) | `animationTime` (`duration: 0.1`, `durationMs: "100"`) |
