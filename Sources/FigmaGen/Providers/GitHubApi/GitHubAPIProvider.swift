@@ -61,12 +61,8 @@ final class GitHubAPIProvider: RemoteRepoProvider {
         )
     }
 
-    private func handleHTTPError(_ error: HTTPError) -> Error {
-        guard error.reason is HTTPStatusCode else {
-            return error
-        }
-
-        return GitHubError(error)
+    private func handleHTTPError(_ error: HTTPError, path: String) -> Error {
+        GitHubError(error, path: path)
     }
 }
 
@@ -81,7 +77,7 @@ extension GitHubAPIProvider {
             task.responseDecodable(type: Route.Response.self, decoder: responseDecoder) { response in
                 switch response.result {
                 case let .failure(error):
-                    seal.reject(self.handleHTTPError(error))
+                    seal.reject(self.handleHTTPError(error, path: route.urlPath))
 
                 case let .success(value):
                     seal.fulfill(value)
@@ -97,7 +93,7 @@ extension GitHubAPIProvider {
             task.responseJSON { response in
                 switch response.result {
                 case let .failure(error):
-                    seal.reject(self.handleHTTPError(error))
+                    seal.reject(self.handleHTTPError(error, path: route.urlPath))
 
                 case .success:
                     seal.fulfill(Void())

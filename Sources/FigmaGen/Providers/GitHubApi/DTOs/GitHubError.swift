@@ -7,19 +7,26 @@ struct GitHubError: Error, Hashable, CustomStringConvertible {
 
     let code: Int
     let content: String
+    let path: String
 
     // MARK: - CustomStringConvertible
 
-    init(_ error: HTTPError) {
+    init(_ error: HTTPError, path: String) {
         code = error.statusCode?.rawValue ?? 0
-        content = error.statusCode?.httpErrorDescription ?? ""
+        content = error.statusCode?.httpErrorDescription ?? error.description
+        self.path = path
     }
 
     var description: String {
-        if 400...404 ~= code {
-            return "\(type(of: self)) \(content) (access token error)"
-        }
+        switch code {
+        case 404:
+            return "\(type(of: self)) \(content) for '\(path)' (check owner, repo, branch and filePath or access token)"
 
-        return "\(type(of: self)) \(content)"
+        case 400...403:
+            return "\(type(of: self)) \(content) for '\(path)' (access token error)"
+
+        default:
+            return "\(type(of: self)) \(content) for '\(path)'"
+        }
     }
 }
