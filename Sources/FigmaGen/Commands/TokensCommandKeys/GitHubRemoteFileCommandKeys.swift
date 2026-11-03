@@ -71,4 +71,12 @@ enum GitHubRemoteFileCommandKeys {
             Manifest collection whose modes are themes.
             """
     )
+
+    static let includeDisabledFlag = Flag(
+        "--includeDisabled",
+        description: """
+            Include manifest collections and modes with `enabled: false`.
+            By default they are skipped.
+            """
+    )
 }
