@@ -6,6 +6,15 @@ struct TokenValue: Hashable {
 
     let type: TokenValueType
     let name: String
+    let description: String?
+
+    // MARK: - Initializers
+
+    init(type: TokenValueType, name: String, description: String? = nil) {
+        self.type = type
+        self.name = name
+        self.description = description
+    }
 }
 
 // MARK: - Decodable
@@ -49,6 +58,7 @@ extension TokenValue: Decodable {
         case type
         case name
         case value
+        case description
     }
 
     // MARK: - Initializers
@@ -58,6 +68,7 @@ extension TokenValue: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         self.name = try container.decode(forKey: .name)
+        self.description = try? container.decodeIfPresent(String.self, forKey: .description)
 
         let rawTypeValue = try container.decode(String.self, forKey: .type)
         let rawType = RawType(rawValue: rawTypeValue) ?? .unknown
@@ -158,6 +169,7 @@ extension TokenValue: Encodable {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encode(name, forKey: .name)
+        try container.encodeIfPresent(description, forKey: .description)
 
         switch type {
         case let .a11yScales(value):

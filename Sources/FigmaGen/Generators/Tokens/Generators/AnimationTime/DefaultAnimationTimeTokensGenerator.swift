@@ -31,7 +31,8 @@ struct DefaultAnimationTimeTokensGenerator: AnimationTimeTokensGenerator {
                 tokenValues: tokenValues,
                 theme: nil
             ),
-            durationMs: value.duration
+            durationMs: value.duration,
+            description: token.description
         )
     }
 

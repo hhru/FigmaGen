@@ -3,6 +3,16 @@ import Expression
 
 final class DefaultTokensResolver: TokensResolver {
 
+    // MARK: - Instance Properties
+
+    private let warn: (String) -> Void
+
+    // MARK: - Initializers
+
+    init(warn: @escaping (String) -> Void = { logger.warning($0) }) {
+        self.warn = warn
+    }
+
     // MARK: - Instance Methods
 
     private func evaluteValue(_ value: String) -> String {
@@ -73,12 +83,36 @@ final class DefaultTokensResolver: TokensResolver {
         alphaPercent: String,
         value: String
     ) throws -> Color {
-        let alpha = alphaPercent.replacingOccurrences(of: "%", with: "")
-        guard let alpha = Double(alpha) else {
-            throw TokensGeneratorError(code: .invalidAlphaComponent(alpha: alphaPercent + value))
+        let alpha = try resolveAlpha(alphaPercent, rgbaValue: value)
+
+        return try makeColor(hex: hex, alpha: alpha)
+    }
+
+    /// Альфа в процентах (`"10%"`) или долях (`"0.1"`).
+    /// Значение без `%` больше 1 считается процентами (`"10"` → 0.1) с предупреждением.
+    private func resolveAlpha(_ alpha: String, rgbaValue: String) throws -> CGFloat {
+        let trimmedAlpha = alpha.trimmingCharacters(in: .whitespaces)
+        let isPercent = trimmedAlpha.hasSuffix("%")
+
+        guard let number = Double(trimmedAlpha.replacingOccurrences(of: "%", with: "")) else {
+            throw TokensGeneratorError(code: .invalidAlphaComponent(alpha: alpha + rgbaValue))
         }
 
-        return try makeColor(hex: hex, alpha: alpha / 100.0)
+        if isPercent {
+            return number / 100.0
+        }
+
+        if number <= 1.0 {
+            return number
+        }
+
+        guard number <= 100.0 else {
+            throw TokensGeneratorError(code: .invalidAlphaComponent(alpha: alpha + rgbaValue))
+        }
+
+        warn("\(rgbaValue): alpha \"\(alpha)\" без % больше 1 — интерпретирована как \(alpha)% (поделена на 100)")
+
+        return number / 100.0
     }
 
     private func resolveRGBA(

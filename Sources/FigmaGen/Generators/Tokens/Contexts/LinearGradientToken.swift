@@ -18,4 +18,5 @@ struct LinearGradientToken: TokenProtocol, Encodable {
     let stops: [ColorStop]
     let startPoint: Point
     let endPoint: Point
+    let description: String?
 }

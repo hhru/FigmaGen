@@ -27,7 +27,8 @@ struct DefaultAnimationEaseTokensGenerator: AnimationEaseTokensGenerator {
                     x1: value.x1,
                     y1: value.y1,
                     x2: value.x2,
-                    y2: value.y2
+                    y2: value.y2,
+                    description: token.description
                 ),
                 spring: nil
             )
@@ -38,7 +39,9 @@ struct DefaultAnimationEaseTokensGenerator: AnimationEaseTokensGenerator {
                     path: token.name.components(separatedBy: "."),
                     stiffness: value.stiffness,
                     damping: value.damping,
-                    mass: value.mass
+                    mass: value.mass,
+                    velocity: value.velocity,
+                    description: token.description
                 )
             )
         } else {
@@ -61,8 +64,54 @@ struct DefaultAnimationEaseTokensGenerator: AnimationEaseTokensGenerator {
                 tokenValues: tokenValues,
                 theme: nil
             ),
-            durationMs: value.duration
+            durationMs: value.duration,
+            description: token.description
         )
+    }
+
+    private func makeTransitionToken(
+        from token: TokenValue,
+        tokenValues: TokenValues
+    ) -> Transition? {
+        guard case .animation(let value) = token.type else {
+            return nil
+        }
+
+        let duration = resolveTransitionTime(value.duration, field: "duration", of: token, tokenValues: tokenValues)
+        let delay = value.delay.flatMap { delay in
+            resolveTransitionTime(delay, field: "delay", of: token, tokenValues: tokenValues)
+        }
+
+        return Transition(
+            path: token.name.components(separatedBy: "."),
+            x1: value.x1,
+            y1: value.y1,
+            x2: value.x2,
+            y2: value.y2,
+            duration: duration,
+            durationMs: duration.map { _ in value.duration },
+            delay: delay,
+            delayMs: delay.flatMap { _ in value.delay },
+            description: token.description
+        )
+    }
+
+    private func resolveTransitionTime(
+        _ value: String,
+        field: String,
+        of token: TokenValue,
+        tokenValues: TokenValues
+    ) -> Double? {
+        let tokenValue = try? tokensResolver.resolveAnimationDurationValue(
+            value,
+            tokenValues: tokenValues,
+            theme: nil
+        )
+        if tokenValue.isNil {
+            logger.warning("Transition token '\(token.name)': \(field) '\(value)' can't be resolved and will be omitted")
+        }
+
+        return  tokenValue
     }
 
     // MARK: - AnimationTokensGenerator
@@ -94,6 +143,13 @@ struct DefaultAnimationEaseTokensGenerator: AnimationEaseTokensGenerator {
 
         let all = coreAnimationEase + semanticAnimationEase
 
+        let coreTransitions = tokenValues.core.compactMap { value in
+            makeTransitionToken(from: value, tokenValues: tokenValues)
+        }
+        let semanticTransitions = tokenValues.semantic.compactMap { value in
+            makeTransitionToken(from: value, tokenValues: tokenValues)
+        }
+
         try templateRenderer.renderTemplate(
             renderParameters.template,
             to: renderParameters.destination,
@@ -104,7 +160,10 @@ struct DefaultAnimationEaseTokensGenerator: AnimationEaseTokensGenerator {
                 "coreAnimationEaseBase": coreAnimationEaseBase,
                 "coreAnimationEaseSpring": coreAnimationEaseSpring,
                 "semanticAnimationEaseBase": semanticAnimationEaseBase,
-                "semanticAnimationEaseSpring": semanticAnimationEaseSpring
+                "semanticAnimationEaseSpring": semanticAnimationEaseSpring,
+                "coreTransitions": coreTransitions,
+                "semanticTransitions": semanticTransitions,
+                "allTransitions": coreTransitions + semanticTransitions
             ]
         )
     }

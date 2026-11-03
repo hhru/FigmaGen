@@ -8,4 +8,5 @@ struct ColorToken: TokenProtocol, Encodable {
     let path: [String]
     let value: String
     let reference: String
+    let description: String?
 }

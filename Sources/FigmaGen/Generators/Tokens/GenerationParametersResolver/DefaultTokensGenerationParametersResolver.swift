@@ -46,7 +46,9 @@ final class DefaultTokensGenerationParametersResolver: TokensGenerationParameter
                 repo: remoteFileConfiguration.repo,
                 branch: remoteFileConfiguration.branch,
                 filePath: remoteFileConfiguration.filePath,
-                accessToken: accessToken
+                accessToken: accessToken,
+                tokenSets: remoteFileConfiguration.tokenSets ?? .init(),
+                includeDisabled: remoteFileConfiguration.includeDisabled ?? false
             )
         }
 

@@ -36,4 +36,47 @@ enum GitHubRemoteFileCommandKeys {
             Remote Repo personal access token to make requests to the GitHub.
             """
     )
+
+    static let tokenSetCoreKey = Key<String>(
+        "--tokenSetCore",
+        description: """
+            Manifest collection with core tokens.
+            """
+    )
+
+    static let tokenSetSemanticKey = Key<String>(
+        "--tokenSetSemantic",
+        description: """
+            Manifest collection with semantic tokens.
+            """
+    )
+
+    static let tokenSetColorsKey = Key<String>(
+        "--tokenSetColors",
+        description: """
+            Manifest collection with base colors.
+            """
+    )
+
+    static let tokenSetTypographyKey = Key<String>(
+        "--tokenSetTypography",
+        description: """
+            Manifest collection with typography tokens.
+            """
+    )
+
+    static let tokenSetThemesKey = Key<String>(
+        "--tokenSetThemes",
+        description: """
+            Manifest collection whose modes are themes.
+            """
+    )
+
+    static let includeDisabledFlag = Flag(
+        "--includeDisabled",
+        description: """
+            Include manifest collections and modes with `enabled: false`.
+            By default they are skipped.
+            """
+    )
 }

@@ -93,7 +93,8 @@ struct DefaultGradientTokensContextProvider: ColorTokensContextProvider {
             endPoint: LinearGradientToken.Point(
                 x: points.end.x,
                 y: points.end.y
-            )
+            ),
+            description: themeToken.description
         )
     }
 

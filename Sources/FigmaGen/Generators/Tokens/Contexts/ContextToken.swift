@@ -6,4 +6,5 @@ struct ContextToken {
 
     let path: [String]
     let value: String
+    let description: String?
 }

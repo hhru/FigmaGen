@@ -9,4 +9,5 @@ struct TokenAnimationValue: Codable, Hashable {
     let x2: String
     let y2: String
     let duration: String
+    let delay: String?
 }

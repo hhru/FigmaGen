@@ -82,7 +82,18 @@ final class DefaultTokensGenerator: TokensGenerator {
         if let file = parameters.file {
             return try await tokensProvider.fetchTokens(from: file)
         } else if let remoteFile = parameters.remoteFile {
-            return try await tokensProvider.fetchTokens(from: remoteFile)
+            let tokenValues = try await tokensProvider.fetchTokens(from: remoteFile)
+
+            let missingThemes = ([parameters.fallbackTheme] + parameters.themes)
+                .filter { tokenValues.themedTokens[$0].isNil }
+                .map(\.name)
+                .joined(separator: ", ")
+
+            if !missingThemes.isEmpty {
+                throw TokensProviderError(code: .themeNotFound(theme: missingThemes))
+            }
+
+            return tokenValues
         } else {
             throw GenerationParametersError.invalidFileConfiguration
         }

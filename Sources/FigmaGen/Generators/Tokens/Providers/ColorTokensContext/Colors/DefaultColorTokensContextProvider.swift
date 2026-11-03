@@ -49,7 +49,8 @@ final class DefaultColorTokensContextProvider: ColorTokensContextProvider {
             name: token.name,
             path: path,
             value: themeHexColorValue,
-            reference: themeReference
+            reference: themeReference,
+            description: themeToken.description
         )
     }
 

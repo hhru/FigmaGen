@@ -28,7 +28,8 @@ final class DefaultFontFamilyTokensGenerator: FontFamilyTokensGenerator {
                     value,
                     tokenValues: tokenValues,
                     theme: nil
-                )
+                ),
+                description: tokenValue.description
             )
         }
     }
@@ -45,7 +46,8 @@ final class DefaultFontFamilyTokensGenerator: FontFamilyTokensGenerator {
                     value,
                     tokenValues: tokenValues,
                     theme: nil
-                )
+                ),
+                description: tokenValue.description
             )
         }
     }

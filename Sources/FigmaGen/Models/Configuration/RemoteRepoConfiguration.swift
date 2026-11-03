@@ -7,4 +7,6 @@ struct RemoteRepoConfiguration: Decodable {
     let branch: String
     let filePath: String
     let accessToken: AccessTokenConfiguration?
+    let tokenSets: W3CTokenSetsMapping?
+    let includeDisabled: Bool?
 }

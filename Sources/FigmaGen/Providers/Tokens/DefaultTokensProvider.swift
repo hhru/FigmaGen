@@ -48,21 +48,6 @@ final class DefaultTokensProvider: TokensProvider {
         return try jsonDecoder.decode(TokenValues.self, from: valuesData)
     }
 
-    private func extractTokens(from file: GitHubFile) throws -> TokenValues {
-        guard let valuesData = try? JSONEncoder().encode(file) else {
-            throw TokensProviderError(code: .failedCreateData)
-        }
-
-        let json = try? JSONSerialization.jsonObject(with: valuesData, options: .mutableContainers)
-
-        let jsonData = json.flatMap { try? JSONSerialization.data(withJSONObject: $0, options: .prettyPrinted) }
-        if let jsonData {
-            logger.debug(String(decoding: jsonData, as: UTF8.self))
-        }
-
-        return try jsonDecoder.decode(TokenValues.self, from: valuesData)
-    }
-
     private func fetchFile(_ file: FileParameters) async throws -> FigmaFile {
         let route = FigmaAPIFileRoute(
             accessToken: file.accessToken,
@@ -77,18 +62,61 @@ final class DefaultTokensProvider: TokensProvider {
             .async()
     }
 
-    private func fetchFile(_ file: RemoteFileParameters) async throws -> GitHubFile {
-        let route = GitHubAPIFileRoute(
-            owner: file.owner,
-            repo: file.repo,
-            branch: file.branch,
-            filePath: file.filePath,
-            accessToken: file.accessToken
+    private func fetchRemoteFile<Response: Decodable>(
+        _ filePath: String,
+        from remoteFile: RemoteFileParameters
+    ) async throws -> Response {
+        let route = GitHubAPIFileRoute<Response>(
+            owner: remoteFile.owner,
+            repo: remoteFile.repo,
+            branch: remoteFile.branch,
+            filePath: filePath,
+            accessToken: remoteFile.accessToken
         )
 
         return try await gitHubApiProvider
             .request(route: route)
             .async()
+    }
+
+    private func fetchManifest(from remoteFile: RemoteFileParameters) async throws -> SXLTokensManifest {
+        let manifest: SXLTokensManifest = try await fetchRemoteFile(remoteFile.filePath, from: remoteFile)
+
+        guard manifest.schema == SXLTokensManifest.schema else {
+            throw TokensProviderError(code: .unsupportedManifestSchema(schema: manifest.schema ?? "nil"))
+        }
+
+        return manifest
+    }
+
+    private func fetchTokensFiles(
+        of manifest: SXLTokensManifest,
+        from remoteFile: RemoteFileParameters
+    ) async throws -> [String: W3CTokenJSON] {
+        let manifestDirectory = (remoteFile.filePath as NSString).deletingLastPathComponent
+
+        let filePaths = Set(
+            manifest.collections
+                .filter { remoteFile.includeDisabled || $0.isEnabled }
+                .flatMap { $0.modes }
+                .filter { remoteFile.includeDisabled || $0.isEnabled }
+                .flatMap { remoteFile.includeDisabled ? $0.allFiles : $0.enabledFiles }
+        )
+
+        return try await withThrowingTaskGroup(of: (path: String, json: W3CTokenJSON).self) { group in
+            for filePath in filePaths {
+                group.addTask {
+                    let fullPath = (manifestDirectory as NSString).appendingPathComponent(filePath)
+                    let file: W3CTokenJSON = try await self.fetchRemoteFile(fullPath, from: remoteFile)
+
+                    return (path: filePath, json: file)
+                }
+            }
+
+            return try await group.reduce(into: [:]) { files, file in
+                files[file.path] = file.json
+            }
+        }
     }
 
     // MARK: -
@@ -100,8 +128,13 @@ final class DefaultTokensProvider: TokensProvider {
     }
 
     func fetchTokens(from remoteFile: RemoteFileParameters) async throws -> TokenValues {
-        let gitHubFile = try await fetchFile(remoteFile)
+        let manifest = try await fetchManifest(from: remoteFile)
+        let files = try await fetchTokensFiles(of: manifest, from: remoteFile)
 
-        return try extractTokens(from: gitHubFile)
+        return try W3CTokensNormalizer(includeDisabled: remoteFile.includeDisabled).normalize(
+            manifest: manifest,
+            files: files,
+            mapping: remoteFile.tokenSets
+        )
     }
 }
