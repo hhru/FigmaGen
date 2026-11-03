@@ -12,4 +12,5 @@ struct BoxShadowToken {
     let y: String
     let blur: String
     let spread: String
+    let description: String?
 }

@@ -30,7 +30,8 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
         guard lineHeightResolvedValue.hasSuffix("%") else {
             return TypographyToken.LineHeightToken(
                 path: lineHeightValue.components(separatedBy: "."),
-                value: lineHeightResolvedValue
+                value: lineHeightResolvedValue,
+                description: nil
             )
         }
 
@@ -51,7 +52,8 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
 
         return TypographyToken.LineHeightToken(
             path: lineHeightValue.components(separatedBy: "."),
-            value: String(round(fontLineHeight * 100) / 100.0)
+            value: String(round(fontLineHeight * 100) / 100.0),
+            description: nil
         )
     }
 
@@ -93,7 +95,8 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
     private func makeContextToken(value: String, tokenValues: TokenValues) throws -> ContextToken {
         ContextToken(
             path: value.components(separatedBy: "."),
-            value: try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: nil)
+            value: try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: nil),
+            description: nil
         )
     }
 
@@ -119,7 +122,8 @@ final class DefaultTypographyTokensGenerator: TypographyTokensGenerator {
             },
             fontScale: try value.fontScale.map { fontScale in
                 try makeContextToken(value: fontScale, tokenValues: tokenValues)
-            }
+            },
+            description: tokenValue.description
         )
     }
 

@@ -7,4 +7,5 @@ struct TokenAnimationEaseSpringValue: Codable, Hashable {
     let stiffness: String
     let damping: String
     let mass: String
+    let velocity: String?
 }

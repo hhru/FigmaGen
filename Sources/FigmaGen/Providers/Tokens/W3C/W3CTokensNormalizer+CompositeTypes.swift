@@ -80,7 +80,8 @@ extension W3CTokensNormalizer {
             value: TokenAnimationEaseSpringValue(
                 stiffness: arguments[1],
                 damping: arguments[2],
-                mass: arguments[0]
+                mass: arguments[0],
+                velocity: arguments.count == 4 ? arguments[3] : nil
             )
         )
     }
@@ -102,7 +103,8 @@ extension W3CTokensNormalizer {
             y1: bezier.y1,
             x2: bezier.x2,
             y2: bezier.y2,
-            duration: try milliseconds(duration, leaf)
+            duration: try milliseconds(duration, leaf),
+            delay: try object["delay"].map { try milliseconds($0, leaf) }
         )
     }
 

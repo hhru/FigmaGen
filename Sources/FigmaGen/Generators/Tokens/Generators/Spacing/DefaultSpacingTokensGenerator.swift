@@ -23,7 +23,8 @@ final class DefaultSpacingTokensGenerator: SpacingTokensGenerator {
 
         return SpacingToken(
             path: token.name.components(separatedBy: "."),
-            value: try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: nil)
+            value: try tokensResolver.resolveValue(value, tokenValues: tokenValues, theme: nil),
+            description: token.description
         )
     }
 
